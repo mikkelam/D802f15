@@ -1,0 +1,86 @@
+% ----------------------------------------------------------------- %
+% Horizontal brackets.                                              %
+% ----------------------------------------------------------------- %
+
+\newcommand{\hbra}{
+%\hbox to .995       \columnwidth{\vrule width0.3mm height 1.8mm depth-0.3mm
+\hbox to .995       \linewidth{\vrule width0.3mm height 1.8mm depth-0.3mm
+                    \leaders\hrule height1.8mm depth-1.5mm\hfill
+                    \vrule width0.3mm height 1.8mm depth-0.3mm}}
+\newcommand{\hket}{
+\hbox to .995 
+%                    \columnwidth{\vrule width0.3mm height1.5mm
+                    \linewidth{\vrule width0.3mm height1.5mm
+                    \leaders\hrule height0.3mm\hfill
+                    \vrule width0.3mm height1.5mm}}
+
+% ----------------------------------------------------------------- %
+% Typesetting definitions:                     output:              %
+%                                                                   %
+% \begin{defn}                                                      % 
+% \Category{M,N}{terms}\\               M, N ::=      terms         %
+% \entry{x}{variable}\\                   x             variable    % 
+% \entry{M\ N}{application}\\             M N           application %
+% \entry{\lambda x.\ M}{abstraction}      \x.M          abstraction %
+% \end{defn}                                                        %
+%                                                                   %
+% This is a tabbing environment; the last entry should have no \\.  %
+% ----------------------------------------------------------------- %
+
+\makeatletter
+  \newcommand{\addToLabel}[1]{%
+    \protected@edef\@currentlabel{\@currentlabel#1}%
+  }
+\makeatother
+
+\newcommand{\ratio}{.3}
+
+\newenvironment{display}[1]{
+  \pagebreak[2]% to prevent ugly broken displays
+\begin{tabbing}
+%\hspace{1.5em} \= \hspace{\ratio\columnwidth-1.5em} \= \hspace{1.5em} \= \hspace{1.5em} \= \kill
+\hspace{1.5em} \= \hspace{\ratio\linewidth-1.5em} \= \hspace{1.5em} \= \hspace{1.5em} \= \kill
+  {\bfseries#1}\\[-.7ex]
+  \hbra\\[-.6ex]
+  }{\\[-.7ex]\hket
+  \end{tabbing}\vspace{-1.0ex}\normalsize}
+
+\newcommand{\entry}[2]{\>$#1$\>\>#2}
+\newcommand{\clause}[2]{$#1$\>\>#2}
+\newcommand{\Category}[2]{\clause{#1::=}{#2}}
+\newcommand{\simplecategory}[3]{\clause{#1::=#2}{#3}}
+\newcommand{\subclause}[1]{\>\>\>#1}
+\newcommand{\redrule}[3]{$#1$\>\>$#2$\>\>\>#3}
+
+\newcommand{\labelledClause}[2]{%
+  $#1$
+  \>\>\>{\small #2}%
+  \refstepcounter{rule}%
+  \addToLabel{#2}%
+}
+
+\newcommand{\wlabelledClause}[2]{%
+  $#1$
+  \>\>\>\>{\small #2}%
+  \refstepcounter{rule}%
+  \addToLabel{#2}%
+}
+
+
+% \newcommand{\nodisplaybreak}[1]{ 
+%   \noindent\begin{minipage}{\columnwidth}#1
+%   \end{minipage}}
+
+% \newcommand{\nofulldisplaybreak}[1]{ 
+%   \iffull\begin{tabbing}\nodisplaybreak{#1}\end{tabbing}\else{#1}\fi}  \hbra\\[-.6ex]
+%   }{\\[-.7ex]\hket
+%   \end{tabbing}\vspace{-1.0ex}\normalsize}
+
+% \newcommand{\entry}[2]{\>$#1$\>\>#2}
+% \newcommand{\clause}[2]{$#1$\>\>#2}
+% \newcommand{\Category}[2]{\clause{#1::=}{#2}}
+% \newcommand{\simplecategory}[3]{\clause{#1::=#2}{#3}}
+% \newcommand{\subclause}[1]{\>\>\>#1}
+% \newcommand{\redrule}[3]{$#1$\>\>$#2$\>\>\>#3}
+
+
