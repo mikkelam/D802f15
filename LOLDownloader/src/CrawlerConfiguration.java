@@ -7,7 +7,7 @@ public class CrawlerConfiguration {
 	String api_key = "d3f768b0-5701-4167-b643-d54fc76dd90d";
 	String region = "euw";
 	int request_delay_ms = 1500;
-	int first_match_id = 1550842810; //The first match ID accessible by LoL API
+	int first_match_id = 1971892117; //Match played February 15th 2015. Crawl will start here and go backwards.
 
 	int matches_per_file;
 	int offset;
