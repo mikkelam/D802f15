@@ -25,15 +25,16 @@ public class CrawlerConfiguration {
 		
 	    //Get API file
 		System.out.print("Node number: ");
-		String api_key_file = api_key_path + in.nextInt() + ".txt";
+		int node = in.nextInt();
+		String api_key_file = api_key_path + node + ".txt";
 		LoadApiKey(api_key_file);
 		if (api_key == null || api_key == ""){
-			System.out.print("Something went wrong. Mare sure the api-key is stored correctly as raw text in: " + api_key_path + api_key_file);
+			System.out.print("Something went wrong. Mare sure the api-key is stored correctly as raw text at: " + api_key_file);
 			System.exit(0);
 		}
 		
 	    //Get matches per file
-		System.out.print("Matches per file (default 100): ");
+		System.out.print("\nMatches per file (default 100): ");
 		str_input = in.nextLine();
 		matches_per_file = 100;
 		if (tryParseInt(str_input))
