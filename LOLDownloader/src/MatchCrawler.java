@@ -38,7 +38,7 @@ public class MatchCrawler {
 	    			writer.write("]}"); //end of file, close matches list
 	    			writer.close();
 	    		}
-	    		file_path = cc.path + "region-" + cc.region + "-start-" + next_match_id + "-size-" + cc.matches_per_file + ".txt";
+	    		file_path = cc.output_path + "region-" + cc.region + "-start-" + next_match_id + "-size-" + cc.matches_per_file + ".txt";
 	    		file = new File(file_path);
 	    		file.getParentFile().mkdirs();
 	    		writer = new FileWriter(file);
