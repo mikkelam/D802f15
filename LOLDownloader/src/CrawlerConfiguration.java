@@ -24,12 +24,18 @@ public class CrawlerConfiguration {
 		String str_input;
 		
 	    //Get API file
-		System.out.print("Node number: ");
-		int node = in.nextInt();
+		System.out.print("Node number (default 1): ");
+		int node = 1;
+		str_input = in.nextLine();
+		if (tryParseInt(str_input))
+			node = Integer.parseInt(str_input);
+		else if (!str_input.equals(""))
+			System.out.print("\nWARNING! Could not parse node number, using value: " + node);
+		
 		String api_key_file = api_key_path + node + ".txt";
 		LoadApiKey(api_key_file);
 		if (api_key == null || api_key == ""){
-			System.out.print("Something went wrong. Mare sure the api-key is stored correctly as raw text at: " + api_key_file);
+			System.out.print("\nSomething went wrong. Mare sure the api-key is stored correctly as raw text at: " + api_key_file);
 			System.exit(0);
 		}
 		
@@ -39,6 +45,8 @@ public class CrawlerConfiguration {
 		matches_per_file = 100;
 		if (tryParseInt(str_input))
 			matches_per_file = Integer.parseInt(str_input);
+		else if (!str_input.equals(""))
+			System.out.print("\nWARNING! Could not parse matches per file, using value: " + matches_per_file);
 		
 		//Get crawl offset
 		System.out.print("\nCrawl offset (default 0): ");
@@ -46,6 +54,8 @@ public class CrawlerConfiguration {
 		offset = 0;
 		if (tryParseInt(str_input))
 			offset = Integer.parseInt(str_input);
+		else if (!str_input.equals(""))
+			System.out.print("\nWARNING! Could not parse crawl offset, using value: " + offset);
 		
 		//Get matches to crawl
 		System.out.print("\nMatches to crawl (default 1000): ");
@@ -53,6 +63,8 @@ public class CrawlerConfiguration {
 		matches_to_crawl = 1000;
 		if (tryParseInt(str_input))
 			matches_to_crawl = Integer.parseInt(str_input);
+		else if (!str_input.equals(""))
+			System.out.print("\nWARNING! Could not parse matches to crawl, using value: " + matches_to_crawl);
 		
 		in.close();
 	}
