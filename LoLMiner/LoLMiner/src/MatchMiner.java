@@ -7,20 +7,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class MatchCrawler {
-	CrawlerConfiguration cc;
+public class MatchMiner {
+	MiningConfiguration cc;
 	int matches_in_current_file;
 	int next_match_id;
 	int start_id;
 	
-	public MatchCrawler(CrawlerConfiguration cc) {
+	public MatchMiner(MiningConfiguration cc) {
 		this.cc = cc;
 		matches_in_current_file = 0;
-		start_id = cc.first_match_id - cc.offset;
+		start_id = cc.first_match_id - cc.mining_offset;
 		next_match_id = start_id;
 	}
 	
-	public void Start() throws IOException, InterruptedException {
+	public void Start() throws InterruptedException, IOException {
 		FileWriter writer = null;
 		File file;
 		String line, file_path;
@@ -28,21 +28,19 @@ public class MatchCrawler {
 		BufferedReader br;
 		matches_in_current_file = cc.matches_per_file; //make sure we start by in a new file
 		
-	    while(next_match_id > start_id - cc.matches_to_crawl){
+	    while(next_match_id > start_id - cc.matches_to_mine){
 	    	Thread.sleep(cc.request_delay_ms);
 	    	
 	    	//Create new file if current file is full
 	    	if (matches_in_current_file == cc.matches_per_file){
 	    		matches_in_current_file = 0;
 	    		if (writer != null){
-	    			writer.write("]}"); //end of file, close matches list
 	    			writer.close();
 	    		}
 	    		file_path = cc.output_path + "region-" + cc.region + "-start-" + next_match_id + "-size-" + cc.matches_per_file + ".txt";
 	    		file = new File(file_path);
 	    		file.getParentFile().mkdirs();
 	    		writer = new FileWriter(file);
-	    		writer.write("{\"matches\":[");
 	    	}
 	    	
 	    	//Fetch data from next match
@@ -51,20 +49,24 @@ public class MatchCrawler {
 		    	is = url.openStream();
 		    }
 			catch(FileNotFoundException exception){
-				System.out.println("(" + (start_id - next_match_id + 1) + "/" + cc.matches_to_crawl + ") Match id " + next_match_id + ": File not found");
+				System.out.println("(" + (start_id - next_match_id + 1) + "/" + cc.matches_to_mine + ") Match id " + next_match_id + ": File not found");
 				next_match_id--;
 				continue;
 			}
-		    		
-		    //Separate matches by comma in same file
-		    if (matches_in_current_file > 0)
-		    	writer.write(", ");
+		    catch(IOException exception){
+		    	System.out.println("(" + (start_id - next_match_id + 1) + "/" + cc.matches_to_mine + ") Match id " + next_match_id + ": IO Exception - waiting " + cc.exception_delay_ms + " ms");
+				Thread.sleep(cc.exception_delay_ms);
+				continue;
+		    }
+		    
+		    //Append data from match into file
 		    br = new BufferedReader(new InputStreamReader(is));
 		    while ((line = br.readLine()) != null)
 		    	writer.write(line + "\n");
-		    System.out.println("(" + (start_id - next_match_id + 1) + "/" + cc.matches_to_crawl + ") Match id " + next_match_id + ": Crawl OK");
+		    System.out.println("(" + (start_id - next_match_id + 1) + "/" + cc.matches_to_mine + ") Match id " + next_match_id + ": Mining OK");
 		    matches_in_current_file++;
 		    next_match_id--;
 	    }
+	    writer.close();
 	}
 }
