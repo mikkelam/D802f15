@@ -44,7 +44,7 @@ public class MatchMiner {
 	    	}
 	    	
 	    	//Fetch data from next match
-		    URL url = new URL("https://" + cc.region + ".api.pvp.net/api/lol/" + cc.region + "/v2.2/match/" + next_match_id + "/?api_key=" + cc.api_key);
+		    URL url = new URL("https://" + cc.region + ".api.pvp.net/api/lol/" + cc.region + "/v2.2/match/" + next_match_id + "/?includeTimeline=true&api_key=" + cc.api_key);
 		    try{
 		    	is = url.openStream();
 		    }

@@ -14,8 +14,10 @@ public class MiningConfiguration {
 	int request_delay_ms = 1500; //1.5 seconds
 	int exception_delay_ms = 600000; //10 minutes
 	int first_match_id = 1971892117; //Match played February 15th 2015. Mining will start here and go backwards.
+	
+	int matches_per_file_default = 1000;
 	int mining_offset_default = 0;
-	int matches_to_mine_default = 1000;
+	int matches_to_mine_default = 200000;
 
 	int matches_per_file;
 	int mining_offset; //offset from first_match_id where mining starts
@@ -31,22 +33,22 @@ public class MiningConfiguration {
 			System.out.print("Enter the name of your API key file (e.g. 'key1.txt'): ");
 			String api_key_file_name = in.nextLine();
 			if (api_key_file_name.equals("")){
-				System.out.print("\nWARNING! You did not provide a correct filename for your api key file.");
+				System.out.print("\nWARNING! You did not provide a correct filename for your api key file.\n");
 				continue;
 			}
 			String api_key_file_path = api_key_path + api_key_file_name;
 			LoadApiKey(api_key_file_path);
 			if (api_key == null || api_key == ""){
-				System.out.print("\nSomething went wrong. Mare sure the api-key is stored correctly as raw text at: " + api_key_file_path);
+				System.out.print("\nSomething went wrong. Mare sure the api-key is stored correctly as raw text at: " + api_key_file_path + "\n");
 				continue;
 			}
 			break;
 		}
 		
 	    //Get matches per file
-		System.out.print("\nMatches per file (default 100): ");
+		System.out.print("\nMatches per file (default "+ matches_per_file_default + "): ");
 		str_input = in.nextLine();
-		matches_per_file = 100;
+		matches_per_file = matches_per_file_default;
 		if (tryParseInt(str_input))
 			matches_per_file = Integer.parseInt(str_input);
 		else if (!str_input.equals(""))
@@ -59,7 +61,7 @@ public class MiningConfiguration {
 		if (tryParseInt(str_input))
 			mining_offset = Integer.parseInt(str_input);
 		else if (!str_input.equals(""))
-			System.out.print("\nWARNING! Could not parse crawl offset, using value: " + mining_offset_default);
+			System.out.print("\nWARNING! Could not parse crawl offset, using value: " + mining_offset);
 		
 		//Get matches to mine
 		System.out.print("\nMatches to mine (default " + matches_to_mine_default + "): ");
@@ -68,7 +70,7 @@ public class MiningConfiguration {
 		if (tryParseInt(str_input))
 			matches_to_mine = Integer.parseInt(str_input);
 		else if (!str_input.equals(""))
-			System.out.print("\nWARNING! Could not parse matches to mine, using value: " + matches_to_mine_default);
+			System.out.print("\nWARNING! Could not parse matches to mine, using value: " + matches_to_mine);
 		
 		in.close();
 	}
