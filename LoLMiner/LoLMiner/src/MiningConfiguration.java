@@ -11,7 +11,7 @@ public class MiningConfiguration {
 	String api_key_path = "api-keys/";
 	String output_path = "mined-data/";
 	String region = "euw";
-	int request_delay_ms = 1500; //1.5 seconds
+	int request_delay_ms = 2000; //1.5 seconds
 	int exception_delay_ms = 600000; //10 minutes
 	int first_match_id = 1971892117; //Match played February 15th 2015. Mining will start here and go backwards.
 	
