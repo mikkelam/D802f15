@@ -28,13 +28,13 @@ def parsePoint(line):
 		featureList[0] = 1
 	return LabeledPoint(featureList[0], featureList[1:]) #LbabeledPoint is imported
 
-data = sc.textFile(','.join(glob.glob('../LoLMiner/LoLMiner/src/mined-data/*.txt')))  #"data.txt")
+data = sc.textFile(','.join(glob.glob('../LoLMiner/LoLMiner/src/mined-data/region-euw-start-1971603524-size-1000.txt')))  #"data.txt")
 parsedData = data.map(parsePoint)
 model = LogisticRegressionWithSGD.train(parsedData)
 
 # Evaluating the model on training data
 labelsAndPreds = parsedData.map(lambda p: (p.label,  model.predict(p.features)))
 trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count() / float(parsedData.count())
-print("lines of json" + str(parsedData.count()))
+print("lines of json: " + str(parsedData.count()))
 print("Training Error = " + str(trainErr))
 
