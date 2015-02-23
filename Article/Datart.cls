@@ -19,7 +19,7 @@
 \DeclareStringOption[true]{indentfirst}
 \DeclareStringOption[]{microtype}
 \DeclareStringOption[section]{placeins}
-\DeclareStringOption[authoryear]{natbib}
+\DeclareStringOption[numbers]{natbib}
 \ProcessKeyvalOptions*
 
 % BABEL, INPUTENC ETC...
