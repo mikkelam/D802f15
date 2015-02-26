@@ -1,4 +1,5 @@
 *.tex#
 *.tex~
 *.DS_Store
-*/mined-data/
+*/mined-data/*.txt
+*.pyc
