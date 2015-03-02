@@ -1,0 +1,18 @@
+The fact that a valve can break is modeled by letting the domain of Valve = {open, closed, brokenopen, brokenclosed}
+
+The fact the a broken valve remains in same state is catched by 
+P(brokenopen_{t+1} | brokenopen_t) = 1
+P(brokenclosed_{t+1} | brokeclosed_t) = 1
+
+Inflow of water and outflow through valve is catched by P(Watertank)_{t+1} because it is conditional dependent on P(Watertank)_t and P(Valve)_t
+
+We have chosen different probabilities for the failure of the valve flow sensor, depending on an actual flow or not.
+If there is a flow, it will show flow with probability 0.99. However, if there isn't a flow, it will show noflow with probability 0.95.
+Our reason for this difference is because we think a humidity sensor has been used. It is easy to measure humidity when water is flowing,
+but when no water is flowing, there might still be some humidity causing false positives. 
+
+Given evidence:
+valve-flow-sensor: noflow, noflow, flow, noflow, flow, noflow, flow, flow, flow, noflow, noflow, noflow, flow, noflow, flow, 
+overflow-sensor: nowater, nowater, nowater, water, nowater, nowater, water, water, nowater, nowater, water, water, nowater, nowater, water
+
+Show screenshot of probabilities for Watertank and Valve values.
