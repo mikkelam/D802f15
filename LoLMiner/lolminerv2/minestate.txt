@@ -1,4 +1,4 @@
-region	code	url	key	matched
+region	code	url	key	matchid
 BR	BR1	br.api.pvp.net	9e65270b-a381-4439-b77b-f5db14c8c418	480391973
 BR	BR1	br.api.pvp.net	8f51e649-5553-47d9-a2ac-11e4bf312d8d	480391972
 BR	BR1	br.api.pvp.net	50ddc994-025b-4b15-8b9b-64a71daeefb1	480391971
