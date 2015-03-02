@@ -10,10 +10,10 @@ public class MiningConfiguration {
 	String api_key;
 	String api_key_path = "api-keys/";
 	String output_path = "mined-data/";
-	String region = "euw";
+	String region = "eune";
 	int request_delay_ms = 2000; //1.5 seconds
-	int exception_delay_ms = 60000; //10 minutes
-	int first_match_id = 1971892117; //Match played February 15th 2015. Mining will start here and go backwards.
+	int exception_delay_ms = 60000; //1 minutes
+	int first_match_id = 1110319250; //Match played February 15th 2015. Mining will start here and go backwards.
 	
 	int matches_per_file_default = 1000;
 	int mining_offset_default = 0;

@@ -1,0 +1,124 @@
+
+#### 1 ####
+Lav en user på alle nodes som alle skal bruge
+> adduser "asdasd"
+
+#### 2 #### 
+Alle nodes:
+
+> ssh-keygen
+> ssh-copy-id  "hduser@node-id"
+Dette skal gøres fra master til alle slaves
+og fra alle slaves til master
+
+#### 3 ####
+Alle nodes:
+
+Lav en hosts fil således:
+"
+127.0.0.1 localhost
+
+ip node1
+ip node2
+ip node3
+ip node4
+"
+
+__________________________________________________________
+HADOOP
+
+#### 1 ####
+Alle nodes:
+Lav en hadoop gruppe
+> addgroup hadoop
+> adduser hduser hadoop
+
+- Download hadoop og placer det i /usr/local/hadoop
+
+Fix rettigheder
+> chown -R hduser:hduser /usr/local/hadoop
+
+#### 2 ####
+Smid i .bashrc
+
+export JAVA_HOME=/usr/lib/jvm/default-java
+export HADOOP_INSTALL=/usr/local/hadoop
+export PATH=$PATH:$HADOOP_INSTALL/bin
+export PATH=$PATH:$HADOOP_INSTALL/sbin
+export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_HOME=$HADOOP_INSTALL
+export HADOOP_HDFS_HOME=$HADOOP_INSTALL
+export YARN_HOME=$HADOOP_INSTALL
+
+
+i /usr/local/hadoop/etc/hadoop/hadoop-env.sh overkriv JAVA_HOME med:
+> export JAVA_HOME=/usr/lib/jvm/default-java
+
+#### 3 ####
+i /usr/local/hadoop/etc/hadoop/core-site.xml paste denne property:
+
+<property>
+  <name>fs.defaultFS</name>
+  <value>hdfs://MASTER:9000</value>
+</property>
+
+Udskift MASTER med hostname for masternode
+
+#### 4 ####
+i /usr/local/hadoop/etc/hadoop/hdfs-site.xml paste disse properties:
+
+<property>
+  <name>dfs.namenode.data.dir</name>
+  <value>file:/home/hduser/data/hdfs/namenode</value>
+</property>
+
+<property>
+  <name>dfs.datanode.data.dir</name>
+  <value>file:/home/hduser/data/hdfs/datanode</value>
+</property>
+
+hvor hduser er navnet på brugeren
+
+#### 5 ####
+Lav en /usr/local/hadoop/etc/hadoop/slaves fil på master med alle hostnames der skal køre slaves, adskilt af newline
+
+
+_________________________________________________________
+SPARK
+
+#### 1 ####
+Alle nodes:
+- Download spark og placer det i /usr/local/spark
+
+Fix rettigheder
+> chown -R sparkuser:sparkuser /usr/local/spark
+
+#### 2 ####
+Lav en /usr/local/spark/conf/slaves fil på master med alle hostnames der skal køre slaves, adskilt af newline
+
+#### 3 ####
+
+
+__________________________________________________________
+Drift 
+
+På master:
+
+> start-dfs.sh
+> cd /usr/local/spark
+> ./sbin/start-all.sh
+
+__________________________________________________________
+Http servere:
+
+master:8080 - Spark master
+master:50070 - hadoop overview
+
+
+
+
+
+
+
+
+
