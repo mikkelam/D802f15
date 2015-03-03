@@ -7,7 +7,7 @@ public class program {
 	public static void main(String[] args) throws InterruptedException, IOException {
 		//Asks user for configuration variables
 
-    List<String> apikeys = new ArrayList<String>(){{
+    ArrayList<String> apikeys = new ArrayList<String>(){{
     add("d3f768b0-5701-4167-b643-d54fc76dd90d");
     add("8f51e649-5553-47d9-a2ac-11e4bf312d8d");
     add("50ddc994-025b-4b15-8b9b-64a71daeefb1");
@@ -19,16 +19,16 @@ public class program {
     add("67ec6161-94a5-4b33-9b4a-0d6850942019");
   }};
 
-		MiningConfiguration cc1 = new MiningConfiguration("br", "480391973", apikeys);
-    MiningConfiguration cc2 = new MiningConfiguration("eune", "1110281173", apikeys);
-    MiningConfiguration cc3 = new MiningConfiguration("euw", "1971545619", apikeys);
-    MiningConfiguration cc4 = new MiningConfiguration("kr", "1781960703", apikeys);
-    MiningConfiguration cc5 = new MiningConfiguration("lan", "144987050", apikeys);
-    MiningConfiguration cc6 = new MiningConfiguration("las", "185680551", apikeys);
-    MiningConfiguration cc7 = new MiningConfiguration("na", "1747836991", apikeys);
-    MiningConfiguration cc8 = new MiningConfiguration("oce", "80923992", apikeys);
-    MiningConfiguration cc9 = new MiningConfiguration("tr", "226013823", apikeys);
-    MiningConfiguration cc10 = new MiningConfiguration("ru", "61927894", apikeys);
+		MiningConfiguration cc1 = new MiningConfiguration("br", 480391973, apikeys);
+    MiningConfiguration cc2 = new MiningConfiguration("eune", 1110281173, apikeys);
+    MiningConfiguration cc3 = new MiningConfiguration("euw", 1971545619, apikeys);
+    MiningConfiguration cc4 = new MiningConfiguration("kr", 1781960703, apikeys);
+    MiningConfiguration cc5 = new MiningConfiguration("lan", 144987050, apikeys);
+    MiningConfiguration cc6 = new MiningConfiguration("las", 185680551, apikeys);
+    MiningConfiguration cc7 = new MiningConfiguration("na", 1747836991, apikeys);
+    MiningConfiguration cc8 = new MiningConfiguration("oce", 80923992, apikeys);
+    MiningConfiguration cc9 = new MiningConfiguration("tr", 226013823, apikeys);
+    MiningConfiguration cc10 = new MiningConfiguration("ru", 61927894, apikeys);
 
 
 		
