@@ -1,7 +1,7 @@
 
 \section{Representation of features}
 \label{sec:representationoffeatures}
-From the definition of features in section \ref{sec:choosingfeatures}, we can calculate that
+From the definition of features in \Cref{sec:choosingfeatures}, we can calculate that
 
 \[|X_1| = |T| \cdot m \]
 
@@ -9,26 +9,27 @@ From the definition of features in section \ref{sec:choosingfeatures}, we can ca
 
 \[|X_3| = m^2  \]
 
-where $m = |C|$ is the total number of champions in LoL.
+where $m = |C|$ is the total number of champions. With 123 total champions, we have that for each match:
+\begin{itemize}
+\item $2 \cdot 5 = 10$ $X_1$ features are present out of 246 possible
+\item $2 \cdot (5 \cdot 4)/2 = 20$ $X_2$ features are present out of 15006 possible
+\item $5 \cdot 5 = 25$ $X_3$ features are present out of 15129 possible
+\end{itemize}
 
-With 123 total champions in LoL, we have that for each match:
-$2 \cdot 5 = 10$ $X_1$ features are present out of 246 possible.
-$2 \cdot (5 \cdot 4)/2 = 20$ $X_2$ features are present out of 15006 possible.
-$5 \cdot 5 = 25$ $X_3$ features are present out of 15129 possible.
 By present, we mean the features which value is 1.
 It is clear that only a sparse number of features are present in each game. 
 
-For optimizing the machine learning methods used, we will for each match only represent the features that are present in that game. 
-Before applying a machine learning method, each of the features introduced in section \ref{sec:choosingfeatures} are assigned a unique ID.
-For each match in the training data, the machine learning method is then given the IDs of the features present in that match.
+For optimising the machine learning methods used, we will for each match only represent the features that are present in that game. 
+Before applying a machine learning method, each of the features introduced in \Cref{sec:choosingfeatures} are assigned a unique id.
+For each match in the training data, the machine learning method is then given the ids of the features present in that match.
 We will now show how each feature in $X_1$, $X_2$, and $X_3$ is assigned a unique id:
 
 \begin{center}
-Every feature $x_1(t, c) \in X_1$ is given the ID:
+Every feature $x_1(t, c) \in X_1$ is given the id:
 \[ c + t \frac{|X_1|}{|T|} \]
 \end{center}
 
-It is easy to see that this assign unique IDs to all features in $X_1$.
+It is easy to see that this assign unique ids to all features in $X_1$.
 Assigning unique IDs to features in $X_2$ is a bit more tricky since we are dealing with combinations and thus have the restriction $c_1 < c_2$.
 If we enumerate all features $x_2(t, c_1, c_2) \in X_2$ for a single $t$ by $(c_1, c_2)$, we get the following enumeration:
 \begin{align*}
@@ -37,28 +38,30 @@ If we enumerate all features $x_2(t, c_1, c_2) \in X_2$ for a single $t$ by $(c_
                         & \vdots    \\
                          &      (m-2, m-1)\\                   
 \end{align*}
-If using row and column indexes starting at $0$, we see that row $0$ contains $m-1$ elements, row $1$ contains $m-2$ elements, and so on.
+If using row and column indecies starting at $0$, we see that row $0$ contains $m-1$ elements, row $1$ contains $m-2$ elements, and so on.
 That is, any row $i$ contains $m-1-i$ elements.
 It is clear that the combination $(c_1, c_2)$ lies in row $c_1$ as element $c_2 - 1 - c_1$.
 Thus, any combination $(c_1, c_2)$ is preceded by all elements in row $0$ through $c_1 - 1$, as well as $c_2 - 1 - c_1$ elements in its own row.
 The number of elements in row $0$ through $c_1 - 1$ is an arithmetic series, and we can calculate the total number of elements
-using the formula $n(a_0 + a_{n-1}/2$, where $n$ is the number of rows and $a_i$ is the number of elements in row $i$.
+using the formula $\frac{n(a_0 + a_{n-1})}{2}$, where $n$ is the number of rows and $a_i$ is the number of elements in row $i$.
 Since we have $m-1$ elements in row $0$ and $m - 1 - (c_1 - 1)$ elements in row $c_1 - 1$,
-we get that $c_1(m-1 + m-1-(c_1-1))/2 = c_1(2m-1-c_1)/2$ elements are contained in the rows $0$ through $c_1 - 1$.
+we get that 
+\[\frac{c_1(m-1 + m-1-(c_1-1))}{2} = \frac{c_1(2m-1-c_1)}{2}\] 
+elements are contained in the rows $0$ through $c_1 - 1$.
 By adding the number of elements preceding $(c_1, c_2)$ in its own row, we get that $(c_1, c_2)$ is preceded by a total of
-$c_1(2m-1-c_1)/2 + c_2-1-c_1 = c_1(2m-3-c_1)/2 + c_2-1$ elements.
-We can now use the number of elements that precede $(c_1, c_2)$ as the ID for the feature $x_3(t, c_1, c_2)$. However, we must remember to add the offset $2m$, to not clash with the $x_t(c)$ features, and we must also add the offset $t \cdot m(m-1)/2$ since we for each $t \in T$ have $m(m-1)/2$ of the $x_3(t, c_1, c_2)$ features.
+$\frac{c_1(2m-1-c_1)}{2} + c_2-1-c_1 = \frac{c_1(2m-3-c_1)}{2} + c_2-1$ elements.
+We can now use the number of elements that precede $(c_1, c_2)$ as the id for the feature $x_3(t, c_1, c_2)$. However, we must remember to add the offset $2m$, to not clash with the $x_t(c)$ features, and we must also add the offset $t \cdot \frac{m(m-1)}{2}$ since we for each $t \in T$ have $\frac{m(m-1)}{2}$ of the $x_3(t, c_1, c_2)$ features.
 We finally get that:
 
 \begin{center}
-Every feature $x_2(t, c_1, c_2) \in X_2$, is given the ID:
+Every feature $x_2(t, c_1, c_2) \in X_2$, is given the id:
 \[ |X_1| + t \cdot \frac{|X_2|}{|T|} + \frac{c_1(2m-3-c_1)}{2} + c_2-1\]
 \end{center}
 
-Assigning an ID to the features in $X_3$ is simple since we are dealing with permutations. If we start enumerating all those features in the same way we did for the $X_2$ features, we will quickly see that the feature $x_3(c_1, c_2)$ appears as the $c_1m+c_2$'th element in the enumeration.
+Assigning an id to the features in $X_3$ is simple since we are dealing with permutations. If we start enumerating all those features in the same way we did for the $X_2$ features, we will quickly see that the feature $x_3(c_1, c_2)$ appears as element number $c_1m+c_2$' in the enumeration.
 Now, we only need to add the correct offset of $|X_1| + |X_2| + |X_3|$, to get that:
 \begin{center}
-Every feature $x_3(c_1, c_2) \in X_4$ is given the ID:
+Every feature $x_3(c_1, c_2) \in X_4$ is given the id:
 \[|X_1| + |X_2| + c_1m+c_2\]
 \end{center}
 
