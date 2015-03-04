@@ -16,6 +16,7 @@
 \DeclareStringOption[true]{cleveref}
 \DeclareStringOption[utf8]{inputenc}
 \DeclareStringOption[T1]{fontenc}
+\DeclareStringOption[true]{lmodern}
 \DeclareStringOption[true]{indentfirst}
 \DeclareStringOption[]{microtype}
 \DeclareStringOption[section]{placeins}
@@ -125,7 +126,7 @@
 
 % Bibliography
 \RequirePackage{natbib}
-\bibliographystyle{plainnat}
+\bibliographystyle{apalike}
 
 % REFERENCES
 \RequirePackage[bookmarks=true,bookmarksopen=true,bookmarksnumbered=true,colorlinks=true,breaklinks=true,backref=page,linkcolor=blue,citecolor=blue]{hyperref}
@@ -135,6 +136,15 @@
 \makeatletter
 \expandafter\ifstrequal\expandafter{\ML@cleveref}{true}{%
   \RequirePackage[\ML@language]{cleveref}
+}
+{%
+  \relax}
+\makeatother
+
+% LMODERN OR NOT?
+\makeatletter
+\expandafter\ifstrequal\expandafter{\ML@lmodern}{true}{%
+  \RequirePackage{lmodern}
 }
 {%
   \relax}

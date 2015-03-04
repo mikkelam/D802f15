@@ -1,0 +1,39 @@
+\section{Choosing features}\label{sec:choosingfeatures}
+Throughout this article, we will by $T = \{0, 1\}$ denote the two teams \textit{blue} and \textit{red}, respectively, and by $C = \{0, 1, \ddots, m-1\}$ denote the set of all chammpions in LoL. When referring to features, we will by $t$ denote an element in $T$ and by $c$ denote an element in $C$.
+
+Some champions in LoL may in general be better than other champions.
+To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
+We define a set of features $X_1 = \{x_1(t, c)\}$, where
+\[x_1(t, c) = \begin{cases} 1 & \textit{if} \; c \; \textit{is present on team} \; t \\
+						    0 & \textit{otherwise} \end{cases}\]
+
+Some champions in LoL deal very high damage (the damage dealer), but die very fast when taking damage. Other champions deal very little damage, but can be almost impossible to kill (the tank). Let alone, the two types of champions are not that strong, but when playing together they can pose a serious threat, since the tank can be used by the damage dealer as a shield, allowing him to stay alive for much longer and thus deal much more damage.
+To capture the synergy between two champions on the same team, we will for each team need a feature that represents the presence or absence of every 2-combination of champions on that team. We therefore define a set of features $X_2 = \{x_2(t, c_1, c_2\}$, where $c_1 < c_2$, and
+
+\[
+x_2(t, c_1, c_2) = \begin{cases} 1 & \textit{if both} \; c_1 \; \textit{and} \; c_2 \; \textit{are present on team} \; t \\
+                                 0 & \textit{otherwise} \end{cases}
+\]
+
+We make the restriction $c_1 < c_2$ because we want to ignore permutations. This is because the two features $x_2(t, c_1, c_2)$ and $x_2(t, c_2, c_1)$ represent the same thing, namely that the two champions $c_1$ and $c_2$ both are present on team $t$.
+
+Some champions in LoL may have an advantage when fighting against a particular enemy champion.
+For instance, a champion that is good at dodging ranged attacks is generally good against an enemy that only has ranged attacks.
+We say that the better suited champion \textit{counters} the other.
+To capture that one champion may counter another champion, we will for each champion on team $t$ need a feature that represents the presence or absence of every possible champion on the other team.
+For all $c_1, c_2 \in C$, we define a set of features $X_3(c_1, c_2)$, where
+
+\[x_3(c_1, c_2) = \begin{cases} 1 & \textit{if} \; c_1 \; \textit{is present on team blue and} \; c_2 \; \textit{is present on team red} \\ 
+						  	    0 & \textit{otherwise} \end{cases}\]
+
+In this case, we do not have the restriction $c_1, c_2$ and thus consider permutations instead of combinations.
+To understand why, consider that $c_1$ counters $c_2$.
+In this case, the feature $x_3(c_1, c_2) = 1$ is favorable to the blue team, while $x_3(c_2, c_1) = 1$ is favorable to the red team.
+Note that in some game modes, $x_3(c_1, c_2) = x_3(c_2, c_1) = 1$ is allowed. That is, the same champions may appear on both teams.
+For this type of feature, we may also have that $c_1 = c_2$.
+In that way we can capture if a champion can counter itself due to some asymmetries in the map layout.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
