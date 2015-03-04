@@ -7,6 +7,7 @@ from pyspark.mllib.classification import LogisticRegressionWithSGD
 from pyspark.mllib.regression import LabeledPoint
 from pyspark.mllib.linalg import SparseVector
 
+
 def _get_teams(match):
 	team1 = []
 	team2 = []
@@ -63,7 +64,7 @@ def parsePoint(line):
 		features[value] = 1
 	return LabeledPoint(game_result, SparseVector(30381, features)) #values in the feature vector are too large, 30381
 
-def test(x):
+def matchfilter(x):
 	try:
 		json_object = json.loads(x)
 		if json_object["queueType"] == "RANKED_SOLO_5x5":
@@ -75,20 +76,23 @@ def test(x):
 sc = SparkContext("local", "Simple App")
 data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/traning/*.txt')))
 eval_data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/eval/*.txt')))
-eval_parsedData = eval_data.filter(lambda x: test(x)).map(parsePoint)
 
-parsedData = data.filter(lambda x: test(x)).map(parsePoint)
+traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.8, 0.2], 1)
 
+parsedData = traning_data.map(parsePoint)
 
 # Build the model
 model = LogisticRegressionWithSGD.train(parsedData)
 
-eval_count = eval_parsedData.count()
-test_count = parsedData.count()
 
-# Evaluating the model on training data
+
+# Evaluating the model on evaluation data
+eval_parsedData = eval_data.map(parsePoint)
 labelsAndPreds = eval_parsedData.map(lambda p: (p.label, model.predict(p.features)))
 trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count()
+
+eval_count = eval_parsedData.count()
+test_count = parsedData.count()
 #print float(eval_parsedData.count())
 print("Training Error = " + str(trainErr))
 
