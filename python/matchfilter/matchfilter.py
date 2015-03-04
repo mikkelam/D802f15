@@ -20,6 +20,12 @@ class MatchFilter:
                     return False
         return True
 
+    def __passes_participants(self, json_object):
+        filter = {
+            "highestAchievedSeasonTier": ["MASTER", "CHALLENGER", "DIAMOND", "PLATINUM"]
+        }
+        return self.__smart_filter(filter, json_object)
+        
     def __passes_game_type(self, json_object):
         filter = {
             "matchMode": ["CLASSIC"],
@@ -40,4 +46,4 @@ class MatchFilter:
 
     def passes(self, json_object):
         """ Takes a json_object representing a LoL match as input, and returns whether it passes our filter."""
-        return self.__passes_game_type(json_object) and self.__passes_no_leavers(json_object)
+        return self.__passes_game_type(json_object) and self.__passes_no_leavers(json_object) and self.__passes_participants(json_object)
