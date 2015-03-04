@@ -3,3 +3,4 @@
 *.DS_Store
 */mined-data/*.txt
 *.pyc
+*.class

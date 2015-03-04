@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<smile version="1.0" id="Network1" numsamples="1000" discsamples="10000">
+	<nodes>
+		<cpt id="WT" dynamic="plate">
+			<state id="L0" />
+			<state id="L10" />
+			<state id="L20" />
+			<state id="L30" />
+			<state id="Overflow" />
+			<probabilities>1 0 0 0 0</probabilities>
+		</cpt>
+		<cpt id="WLS" dynamic="plate">
+			<state id="L0" />
+			<state id="L10" />
+			<state id="L20" />
+			<state id="L30" />
+			<parents>WT</parents>
+			<probabilities>0.9 0.05 0.03 0.02 0.04 0.9 0.04 0.02 0.02 0.04 0.9 0.04 0.02 0.03 0.05 0.9 0.02 0.03 0.05 0.9</probabilities>
+		</cpt>
+		<cpt id="Valve" dynamic="plate">
+			<state id="open" />
+			<state id="closed" />
+			<state id="openbroken" />
+			<state id="closedbroken" />
+			<parents>WLS</parents>
+			<probabilities>0 1 0 0 0 1 0 0 0 1 0 0 1 0 0 0</probabilities>
+		</cpt>
+		<cpt id="VFS" dynamic="plate">
+			<state id="flow" />
+			<state id="noflow" />
+			<parents>Valve</parents>
+			<probabilities>0.99 0.01 0.05 0.95 0.99 0.01 0.05 0.95</probabilities>
+		</cpt>
+		<cpt id="OS" dynamic="plate">
+			<state id="water" />
+			<state id="nowater" />
+			<parents>WT</parents>
+			<probabilities>0.05 0.95 0.05 0.95 0.05 0.95 0.05 0.95 0.95 0.05</probabilities>
+		</cpt>
+	</nodes>
+	<dynamic numslices="15">
+		<cpt id="WT" order="1">
+			<parents>Valve WT</parents>
+			<probabilities>1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Valve" order="1">
+			<parents>Valve</parents>
+			<probabilities>0.99 0 0.01 0 0.99 0 0 0.01 0 0 1 0 0 0 0 1 0.99 0 0.01 0 0.99 0 0 0.01 0 0 1 0 0 0 0 1 0.99 0 0.01 0 0 0.99 0 0.01 0 0 1 0 0 0 0 1 0.99 0 0.01 0 0.99 0 0 0.01 0 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+	</dynamic>
+	<extensions>
+		<genie version="1.0" app="GeNIe 2.0.5494.1" name="Network1" faultnameformat="nodestate">
+			<plate leftwidth="120" rightwidth="120">44 38 1279 640</plate>
+			<node id="WT">
+				<name>Watertank</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>394 138 520 222</position>
+			</node>
+			<node id="WLS">
+				<name>Water level sensor</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>511 365 637 449</position>
+				<barchart width="193" height="90" />
+			</node>
+			<node id="VFS">
+				<name>Valve flow sensor</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>738 365 864 449</position>
+			</node>
+			<node id="OS">
+				<name>Overflow sensor</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>283 367 409 451</position>
+			</node>
+			<node id="Valve">
+				<name>Valve</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>657 143 804 215</position>
+			</node>
+		</genie>
+	</extensions>
+</smile>
