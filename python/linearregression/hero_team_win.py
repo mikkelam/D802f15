@@ -1,9 +1,7 @@
 from pyspark.mllib.classification import LogisticRegressionWithSGD
 from pyspark.mllib.regression import LabeledPoint
 from numpy import array
-from pyspark import SparkContext
 import json
-import glob
 from utility.utility import champion_index
 from matchfilter.matchfilter import MatchFilter
 
@@ -13,7 +11,7 @@ def parse_point(line):
 	#load the json scheme, if the json is not valid, an exception is thrown.
 	try:
 		json_object = json.loads(line)
-	except ValueError, ex_mathias:
+	except ValueError, nonvalidjson:
 		print "json object is not valid"
 
 	featureList = [0] * 247 # a list of zeros. index 0 is the label/class, followed by the featurelist
@@ -37,10 +35,8 @@ def filter_lines(line):
 	mf = MatchFilter() #filter the match, following the MatchFilter class
 	return mf.passes(json_object)
 
-def hero_team_win():
-	sc = SparkContext("local", "Simple App")
-	data = sc.textFile(','.join(glob.glob('../LoLMiner/LoLMiner/src/mined-data/region-euw-start-1971603524-size-1000.txt')))  #"data.txt")
-
+def hero_team_win(data):
+	
 	#filter data
 	filteredData = data.filter(filter_lines)
 	
