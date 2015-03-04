@@ -18,22 +18,25 @@ def _get_teams(match):
 		if participant["teamId"] == 100:
 			team1.append(champion_id)
 		if participant["teamId"] == 200:
-			team2.append(champion_id+team2_offset)
+			team2.append(champion_id)
 	team1.sort() 
 	team2.sort()
 	return (team1, team2)
 	
-def _get_team_combos(team1, team2): 
+def _get_team_combos(team1, team2, cross_team=False): 
 	combos = []
 	for champion1 in team1:
 		for champion2 in team2:
-			if champion1 < champion2:
+			if cross_team:
 				combos.append((champion1, champion2))
+			else:
+				if champion1 < champion2:
+					combos.append((champion1, champion2))
 	return combos
 	
 	
 def _get_combo_list(offset, team1, team2, number_of_champions, cross_team=False):
-	combos = _get_team_combos(team1, team2) #finds the combos of the teams
+	combos = _get_team_combos(team1, team2, cross_team) #finds the combos of the teams
 	feature_list = []
 	for combo in combos: 
 		if len(combo) == 2 and not cross_team: #The combo list is a list of combos within a team
@@ -41,7 +44,7 @@ def _get_combo_list(offset, team1, team2, number_of_champions, cross_team=False)
 			combo_index = offset+(champ1_id*(2*number_of_champions-1-champ1_id))/2+champ2_id-(champ1_id+1) #Implementation of offset+x(2n-1-x)/2+y-(x+1)
 		elif len(combo) == 2 and cross_team: #The combo list is a list of crossteam combos 
 			champ1_id, champ2_id = combo
-			combo_index = offset+champ1_id*(number_of_champions/2)+champ2_id-number_of_champions # Implementation of offset+x*n+y
+			combo_index = offset+champ1_id*(number_of_champions)+champ2_id # Implementation of offset+x*n+y
 		feature_list.append(combo_index)
 	return feature_list
 
@@ -57,11 +60,15 @@ def parsePoint(line):
 	game_result = 0.0
 	if line_data["teams"][0]["winner"]:
 		game_result = 1.0
-	values = team1+team2+team1_combo_list+team2_combo_list+cross_team_combo_list
-	ones = [1.0]*(len(values))
+		
+	#Adds offset to team2 
+	team2 = [num_of_champs + champ_id for champ_id in team2]
+	
+	#Combine all feature list to a feature list
+	feature_list = team1+team2+team1_combo_list+team2_combo_list+cross_team_combo_list
 	features = {}
-	for value in values:
-		features[value] = 1
+	for feature in feature_list:
+		features[feature] = 1
 	return LabeledPoint(game_result, SparseVector(30381, features)) #values in the feature vector are too large, 30381
 
 def matchfilter(x):
@@ -77,7 +84,7 @@ sc = SparkContext("local", "Simple App")
 data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/traning/*.txt')))
 eval_data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/eval/*.txt')))
 
-traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.8, 0.2], 1)
+traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.9, 0.1], 1)
 
 parsedData = traning_data.map(parsePoint)
 
