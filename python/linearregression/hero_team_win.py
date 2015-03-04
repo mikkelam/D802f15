@@ -45,7 +45,7 @@ def hero_team_win(data):
 
 	#train the model
 	parsedTrainData = trainData.map(parse_point)
-	model = LogisticRegressionWithSGD.train(parsedTrainData, iterations=10, regParam=0.01, regType="l1")
+	model = LogisticRegressionWithSGD.train(parsedTrainData, iterations=100, regParam=0.01, regType="l2")
 	
 	# Evaluating the model on evaluate data
 	parsedEvaluateData = evaluateData.map(parse_point)
