@@ -4,3 +4,7 @@
 */mined-data/*.txt
 *.pyc
 *.class
+*.aux
+*.log
+*.out
+article/main.pdf
