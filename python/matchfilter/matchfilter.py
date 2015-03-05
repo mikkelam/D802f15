@@ -6,44 +6,70 @@ class MatchFilter:
 
     def __smart_filter(self, filter, json_object):
         """
-        Returns whether a json_object passes a filter.
-        #filter: A dictionary of (k, v) pairs, where k is a string and v is a list og values.
-        #to pass the filter, the json_object must for each attribute k have a value found in v.
+        Returns whether a json_object passes a smart-filter.
+        Example of a filter:
+        {
+        a->b->c: [x, y, z],
+        f->*->g: [v]
+        }
+        See __smart_filter_check_path(path, allowed_values, json_object) for specification of how a single filter line works
         """
-        for key in filter:
-                passes = False
-                for val in filter[key]:
-                    if json_object[key] == val:
-                        passes = True
-                if not passes:
-                    self.last_discard_reason = "Value of '" + key + "' = '" + json_object[key] + "' not found in filter."
-                    return False
+
+        for key_value_pair in filter:
+            if not self.__smart_filter_check_path(key_value_pair, filter[key_value_pair], json_object):
+                return False
         return True
 
-    def __passes_participants(self, json_object):
-        filter = {
-            "highestAchievedSeasonTier": ["MASTER", "CHALLENGER", "DIAMOND", "PLATINUM"]
-        }
-        return self.__smart_filter(filter, json_object)
-        
-    def __passes_game_type(self, json_object):
+    def __smart_filter_check_path(self, path, allowed_values, json_object):
+        """
+        Example: a->b: ["x", "!y"]
+        Meaning: Check that json_object[a][b] is either x or not y.
+        Example: a->*->b: ["x", "y", "z"]
+        Meaning: For all v in json_object[a], v[b] must be either x, y, or z.
+        """
+        head_and_tail = path.split("->", 1) #"a->b->c->d" becomes ["a", "b->c->d"]
+        head = head_and_tail[0]
+        if len(head_and_tail) > 1:
+            tail = head_and_tail[1]
+        else:
+            tail = ""
+
+        if head == "*":
+            for key in json_object:
+                if tail == "":
+                    if not self.__smart_filter_check_path(key, allowed_values, json_object):
+                        return False
+                else:
+                    if not self.__smart_filter_check_path(tail, allowed_values, key):
+                        return False
+
+            return True
+        else:
+            if not head in json_object:
+                self.last_discard_reason = "Match did not have the key '" + str(head) + "'"
+                return False
+            elif tail == "":
+                for val in allowed_values:
+                    if (val[0] == "!"): #First character in a key may be NOT operator
+                        if json_object[head] != val[1:]:
+                            return True
+                    else:
+                        if json_object[head] == val:
+                            return True
+                self.last_discard_reason = "Value of '" + str(head) + "' was '" + str(json_object[head]) + "' and did not match any of allowed values: " + str(allowed_values)
+                return False
+            else:
+                return self.__smart_filter_check_path(tail, allowed_values, json_object[head])
+
+    def passes(self, json_object):
         filter = {
             "matchMode": ["CLASSIC"],
             "matchType": ["MATCHED_GAME"],
-            "queueType": ["RANKED_SOLO_5x5", "RANKED_PREMADE_5x5", "NORMAL_5x5_BLIND", "NORMAL_5x5_DRAFT"]
+            "queueType": ["RANKED_SOLO_5x5", "RANKED_PREMADE_5x5", "NORMAL_5x5_BLIND", "NORMAL_5x5_DRAFT"],
+            "participants->*->highestAchievedSeasonTier": ["MASTER", "CHALLENGER", "DIAMOND", "PLATINUM", "UNRANKED"],
+            "participants->*->timeline->xpPerMinDeltas->*": ["!0"]
         }
         return self.__smart_filter(filter, json_object)
 
-    def __passes_no_leavers(self, json_object):
-        #If any participant has not XP in one of the 10 minute windows, he must have been afk, and we discard the game
-        for participant in json_object["participants"]:
-            for time_window in participant["timeline"]["xpPerMinDeltas"]:
-                if participant["timeline"]["xpPerMinDeltas"][time_window] == 0:
-                    self.last_discard_reason = "Participant with id: " + str(participant["participantId"]) +\
-                                               " has xpPerMinDeltas = 0 for window " + time_window
-                    return False
-        return True
-
-    def passes(self, json_object):
         """ Takes a json_object representing a LoL match as input, and returns whether it passes our filter."""
-        return self.__passes_game_type(json_object) and self.__passes_no_leavers(json_object) and self.__passes_participants(json_object)
+        #return self.__passes_game_type(json_object) and self.__passes_no_leavers(json_object) and self.__passes_participants(json_object)

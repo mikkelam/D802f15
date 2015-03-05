@@ -22,6 +22,7 @@ public class MatchMiner extends Thread {
 	public void run() {
 		try{
 		FileWriter writer = null;
+		FileWriter stateWriter = null;
 		File file;
 		String line, file_path;
 		InputStream is;
@@ -32,10 +33,9 @@ public class MatchMiner extends Thread {
 	    	try{Thread.sleep(cc.request_delay_ms/cc.apikeys.size());}
 	    	catch(InterruptedException exception){}
 	    		
-	    	
+	    	System.out.print("1");
 	    	//Fetch data from next match
 		    URL url = new URL("https://" + cc.region + ".api.pvp.net/api/lol/" + cc.region + "/v2.2/match/" + next_match_id + "/?includeTimeline=true&api_key=" + cc.getnextkey());
-
 
 		    try{
 		    	is = url.openStream();
@@ -45,11 +45,11 @@ public class MatchMiner extends Thread {
 				continue;
 			}
 		    catch(IOException exception){
-		    	System.out.println("(" + (cc.match_id - next_match_id + 1) + "/" + cc.matches_to_mine + ") Match id " + next_match_id + ": IO Exception - waiting " + cc.exception_delay_ms + " ms");
+		    	System.out.println("Match id" + next_match_id + ": IO Exception - waiting " + cc.exception_delay_ms + " ms");
 				Thread.sleep(cc.exception_delay_ms);
 				continue;
 		    }
-
+		    System.out.print("2");
 		    //Create new file if current file is full
 	    	if (matches_in_current_file == cc.matches_per_file){
 	    		matches_in_current_file = 0;
@@ -64,23 +64,34 @@ public class MatchMiner extends Thread {
 	    		catch(IOException exception){}
 	    		
 	    	}
-		    
+		    System.out.print(cc.input_path + cc.region + ".txt");
 		    //Append data from match into file
 		    br = new BufferedReader(new InputStreamReader(is));
 		    while ((line = br.readLine()) != null)
 		    	writer.write(line + "\n");
 		    matches_in_current_file++;
+		    try{stateWriter = new FileWriter(cc.input_path + cc.region + ".txt");}
+	    		catch(IOException exception){}
+	    	stateWriter.write(Integer.toString(next_match_id));
+	    	if (writer != null){
+	    			try{stateWriter.close();}
+	    			catch(IOException exception){}
+	    	}
+	    	System.out.println(cc.region + " " + next_match_id); // print current match id
 		    next_match_id--;
-		    System.out.println(cc.region + " " + next_match_id);
+		    
+
+		 
 	    }
 	    //try{writer.close();}
 	    //	catch(IOException exception){}
 
 	}
 	catch(MalformedURLException exception){
-		
+		System.out.print("fisse");
 	}
 	catch(Exception penises){
+		System.out.print("penises");
 	
 	}
 

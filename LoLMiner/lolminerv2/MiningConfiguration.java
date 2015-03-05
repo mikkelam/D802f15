@@ -8,35 +8,43 @@ import java.util.ArrayList;
 
 
 public class MiningConfiguration {
-
-	//Settings
+	int match_id;
+	int keyindex = 0;
+	String input_path = "miner-state/";
 	String output_path = "mined-data/";
 	String region;
 	List<String> apikeys;
-	int keyindex = 0;
 
-	int request_delay_ms = 2000; //1.5 seconds
-	int exception_delay_ms = 60000; //10 minutes
-	int match_id; //Match played February 15th 2015. Mining will start here and go backwards.
-	
-	int matches_per_file_default = 1000;
+	//Settings
+	int request_delay_ms = 2000; //2 seconds
+	int exception_delay_ms = 60000; //1 minutes 
+	int matches_per_file = 1000;
 
-	int matches_per_file;
-	int mining_offset; //offset from first_match_id where mining starts
-	int matches_to_mine;
-
-
-
-	public MiningConfiguration(String region, int match_id, ArrayList<String> apikeys){
-		this.match_id=match_id;
+	public MiningConfiguration(String region, ArrayList<String> apikeys){
 		this.region=region;
 		this.apikeys = apikeys;
+
+		try {
+	    	BufferedReader br = new BufferedReader(new FileReader(input_path + region + ".txt"));
+	        int line = Integer.parseInt(br.readLine());
+        	if (line != 0)
+        		this.match_id = line;
+        	br.close();
+        	System.out.print("MatchID loaded :" + this.match_id + "\n");
+	    }
+	    catch (IOException e) {
+		}
+		
 	}
 
 	public String getnextkey(){
 		String key = apikeys.get(keyindex % apikeys.size());
 		keyindex++;
 		return key;
+	}
+	void LoadRegionID(String file){
+		//load API key file
+	    
 	}
 	
 }
