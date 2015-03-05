@@ -45,7 +45,10 @@ class MatchFilter:
 
             return True
         else:
-            if tail == "":
+            if not head in json_object:
+                self.last_discard_reason = "Match did not have the key '" + str(head) + "'"
+                return False
+            elif tail == "":
                 for val in allowed_values:
                     if (val[0] == "!"): #First character in a key may be NOT operator
                         if json_object[head] != val[1:]:
