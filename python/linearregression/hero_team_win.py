@@ -1,8 +1,9 @@
-from pyspark.mllib.classification import LogisticRegressionWithSGD
+from pyspark.mllib.classification import LogisticRegressionWithLBFGS
 from pyspark.mllib.regression import LabeledPoint
 from numpy import array
 import json
 from utility.utility import champion_index
+from utility.utility import save_me
 from matchfilter.matchfilter import MatchFilter
 
 # Load and parse the data
@@ -45,7 +46,7 @@ def hero_team_win(data):
 
 	#train the model
 	parsedTrainData = trainData.map(parse_point)
-	model = LogisticRegressionWithSGD.train(parsedTrainData)
+	model = LogisticRegressionWithLBFGS.train(parsedTrainData)
 	
 	# Evaluating the model on evaluate data
 	parsedEvaluateData = evaluateData.map(parse_point)
@@ -58,5 +59,6 @@ def hero_team_win(data):
 
 	# print("Lines of training json: " + str( (parsedTrainData.count() ))) 
 	# print("Lines of evaluate json: " + str( (parsedEvaluateData.count() )))
+
 	print("Training Error on Evaluation Data = " + str(evalErr))
 	print("Training Error on Train Data= " + str(trainErr))
