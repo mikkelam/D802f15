@@ -21,7 +21,7 @@ def parse_point(line):
 		if p[ "teamId" ] == 200:
 			champIndex += 123 # first 123 is team blue, following 123 is team red
 		featureList[champIndex] = 1
-	if json_object["participants"][0]["stats"]["winner"] == True: ####!!!!! this never evaluate to true
+	if json_object["participants"][0]["stats"]["winner"] == True:
 		featureList[0] = 1
 	return LabeledPoint(featureList[0], featureList[1:]) #LbabeledPoint is imported
 
@@ -41,17 +41,22 @@ def hero_team_win(data):
 	filteredData = data.filter(filter_lines)
 	
 	#randomSplit() the data into training and test sets
-	trainData, evaluateData = filteredData.randomSplit([0.8, 0.2], 1) #train size, eval size, seed number
+	trainData, evaluateData = filteredData.randomSplit([0.7, 0.3], 1) #train size, eval size, seed number
 
 	#train the model
 	parsedTrainData = trainData.map(parse_point)
-	model = LogisticRegressionWithSGD.train(parsedTrainData, iterations=100, regParam=0.01, regType="l2")
+	model = LogisticRegressionWithSGD.train(parsedTrainData)
 	
 	# Evaluating the model on evaluate data
 	parsedEvaluateData = evaluateData.map(parse_point)
 	labelsAndPreds = parsedEvaluateData.map(lambda p: (p.label,  model.predict(p.features)))
-	trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count() / float(parsedEvaluateData.count())
+	evalErr = labelsAndPreds.filter(lambda (v, p): v != p).count() / float(parsedEvaluateData.count())
 	
+	# Evaluating the model on train data
+	labelsAndPreds = parsedTrainData.map(lambda p: (p.label,  model.predict(p.features)))
+	trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count() / float(parsedTrainData.count())
+
 	# print("Lines of training json: " + str( (parsedTrainData.count() ))) 
 	# print("Lines of evaluate json: " + str( (parsedEvaluateData.count() )))
-	print("Training Error = " + str(trainErr))
+	print("Training Error on Evaluation Data = " + str(evalErr))
+	print("Training Error on Train Data= " + str(trainErr))
