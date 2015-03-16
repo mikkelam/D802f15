@@ -1,8 +1,7 @@
 \section{Choosing features}\label{sec:choosingfeatures}
-Throughout this article, we will by $T = \{0, 1\}$ denote the two teams \textit{blue} and \textit{red}, respectively, and by $C = \{0, 1, \dots, m-1\}$ denote the set of all champions. When referring to features, we will by $t$ denote an element in $T$ and by $c$ denote an element in $C$.
+Throughout this article, $T = \{0, 1\}$ denotes the two teams \emph{blue} and \emph{red} respectively, and $C = \{0, 1, \dots, m-1\}$ denotes the set of all champions. When referring to features, $t$ denotes an element in $T$ and $c$ an element in $C$.
 
-Some champions may be better than other champions.
-To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
+Some champions may be better than other champions. To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
 We define a set of features $X_1 = \{x_1(t, c)\}$, where
 \[
 x_1(t, c) = 
@@ -12,7 +11,7 @@ x_1(t, c) =
 \end{cases}
 \]
 
-Some champions, considered damage dealers, deal very high damage, but die very easily when taking damage. Other champions deal very little damage, but can be almost impossible to kill these are considered tanks. When alone, these two types of champions are not that strong, but when teaming up, they can pose a serious threat. The tank can be used by the damage dealer as a living shield, allowing him to stay alive for much longer, thus deal more damage.
+Some champions are considered damage dealers, they deal very high damage, but die easily. Other champions deal very little damage, but can be almost impossible to kill, these are considered tanks. These two types of champions are weak when alone, but when they team up, they can pose a serious threat. The tank can be used by the damage dealer as a living shield, allowing him to stay alive for much longer, thus deal more damage.
 To capture the synergy between two champions on the same team, we will for each team need a feature that represents the presence or absence of every 2-combination %Skal muligvis ændres hvis vi har mere end 2kombinationer senere //Funder 
 of champions on that team. We therefore define a set of features $X_2 = \{x_2(t, c_1, c_2)\}$, where $c_1 < c_2$, and
 \[
@@ -23,12 +22,12 @@ x_2(t, c_1, c_2) =
 \end{cases}
 \]
 
-We make the restriction $c_1 < c_2$ because we want to ignore permutations. This is because the two features $x_2(t, c_1, c_2)$ and $x_2(t, c_2, c_1)$ represent the same thing, namely that the two champions $c_1$ and $c_2$ both are present on team $t$.
+We make the restriction $c_1 < c_2$, because we want to ignore permutations. This is because the two features $x_2(t, c_1, c_2)$ and $x_2(t, c_2, c_1)$ represent the same thing, namely that the two champions $c_1$ and $c_2$ both are present on team $t$.
 
 Some champions may have an advantage when fighting against a particular opposing champion.
 For instance, a champion that is good at dodging ranged attacks is good against an enemy that only has ranged attacks.
 We say that the better suited champion \emph{counters} the other.
-To capture that one champion may counter another champion, we will for each champion on team $t$ need a feature that represents the presence or absence of every possible champion on the other team.
+To capture that one champion may counter another, we will for each champion on team $t$ need a feature that represents the presence or absence of every possible champion on the other team.
 For all $c_1, c_2 \in C$, we define a set of features $X_3= \{x_3(c_1, c_2) \}$, where
 \[x_3(c_1, c_2) = 
 \begin{cases} 
