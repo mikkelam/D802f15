@@ -1,7 +1,7 @@
 import json
-import os
-import glob 
 import sys
+sys.path.append()
+import glob
 from pyspark import SparkContext
 from pyspark.mllib.classification import LogisticRegressionWithSGD
 from pyspark.mllib.regression import LabeledPoint
