@@ -63,8 +63,13 @@ class MatchFilter:
 
     def passes(self, json_object):
         filter = {
-            
-        }
+            "matchMode": ["CLASSIC"],
+            "matchType": ["MATCHED_GAME"],
+            "queueType": ["RANKED_SOLO_5x5", "RANKED_PREMADE_5x5", "NORMAL_5x5_BLIND", "NORMAL_5x5_DRAFT"],
+            "participants->*->highestAchievedSeasonTier": ["MASTER", "CHALLENGER", "DIAMOND", "PLATINUM"] ,
+            "participants->*->timeline->xpPerMinDeltas->*": ["!0"]
+            }
+        filter = {}
         return self.__smart_filter(filter, json_object)
 
         """ Takes a json_object representing a LoL match as input, and returns whether it passes our filter."""

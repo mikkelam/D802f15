@@ -1,13 +1,12 @@
 import glob
-from pyspark import SparkContext
-from pyspark import SparkConf
-from linearregression.hero_team_win import hero_team_win
+from prediction.features import team_composition
+from prediction.trainer import Trainer
+from pyspark.mllib.classification import LogisticRegressionWithLBFGS
+from prediction.utility.matchfilter import MatchFilter
 
 
 
+mf = MatchFilter()
 
-
-sc = SparkContext("local", "SimpleApp")
-data = sc.textFile('region-euw-start-1971866781-size-1000.txt')  #"data.txt")
-
-hero_team_win(data)
+trainer = Trainer(LogisticRegressionWithLBFGS, 'region-euw-start-1971865781-size-1000.txt', mf, team_composition)
+trainer.train()
