@@ -1,4 +1,5 @@
-#Copyright Thalley.com
+MAIN_LATEX_FILE=main
+
 echo Choose what you want to do
 echo 1 - Compile fast
 echo 2 - Compile with Table of contents
@@ -8,12 +9,15 @@ echo Q - Exit
 read -p "Your choice: [1, 2, 3, D, Q]" choice
 case $choice in
   3 )
-	pdflatex main
-	bibtex main;&
+	pdflatex --halt-on-error -interaction nonstopmode $MAIN_LATEX_FILE.tex
+	pdflatex --halt-on-error -interaction nonstopmode $MAIN_LATEX_FILE.tex
+	bibtex $MAIN_LATEX_FILE
+	pdflatex --halt-on-error -interaction nonstopmode $MAIN_LATEX_FILE.tex;&
+	
   2 )
-	pdflatex main;&
+	pdflatex --halt-on-error -interaction nonstopmode $MAIN_LATEX_FILE.tex;&
   1 ) 
-	pdflatex main;&
+	pdflatex --halt-on-error -interaction nonstopmode $MAIN_LATEX_FILE.tex;&
   D )
 	[ -f *.log ] && rm *.log
 	[ -f *.aux ] && rm *.aux
