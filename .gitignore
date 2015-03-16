@@ -7,4 +7,5 @@
 *.aux
 *.log
 *.out
-article/main.pdf
+Article/main.pdf
+*.swp
