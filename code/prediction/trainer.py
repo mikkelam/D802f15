@@ -25,9 +25,10 @@ class Trainer:
 		#json_data = map.(load json sample_data)
 
 		if self.local:
-			sc = SparkContext("local", "SimpleApp")
+		  sc = SparkContext("local", "SimpleApp")
 		else:
-		  sc = SparkContext("spark://7077")
+		  sc = SparkContext("spark://node1:7077")
+                  sc.addPyFiles
 		data = sc.textFile(self.data)
 
 
