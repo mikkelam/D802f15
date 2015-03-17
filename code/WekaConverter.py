@@ -21,7 +21,7 @@ class WekaConverter:
 		self.file.write(header + self.arff_data)
 		self.file.close() 
 
-		
+
 wc = WekaConverter(10, path="/Users/andreaseriksen/Desktop/Project F15/code/data/subset/10000Games.csv")
 wc.add([1, 3, 5, 6], True)
 wc.add([2, 3, 5, 8], False)
