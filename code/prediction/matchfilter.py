@@ -3,8 +3,15 @@ import fnmatch
 import re
 
 class MatchFilter:
-    def __init__(self):
+    def __init__(self,
+                 filter={"matchMode": ["CLASSIC"],
+                         "matchType": ["MATCHED_GAME"],
+                         "queueType": ["RANKED_SOLO_5x5", "RANKED_PREMADE_5x5", "NORMAL_5x5_BLIND", "NORMAL_5x5_DRAFT"],
+                         "participants->*->highestAchievedSeasonTier": ["MASTER", "CHALLENGER", "DIAMOND", "PLATINUM"] ,
+                         "participants->*->timeline->xpPerMinDeltas->*": ["!0"]}):
         self.last_discard_reason = ''
+        self.filter = filter
+
 
     def __smart_filter(self, filter, json_object):
         """
@@ -73,14 +80,7 @@ class MatchFilter:
 
 #5[.]3[.]0[.]291
     def passes(self, json_object):
-        filter = {
-            "matchMode": ["CLASSIC"],
-            "matchType": ["MATCHED_GAME"],
-            "queueType": ["RANKED_SOLO_5x5", "RANKED_PREMADE_5x5", "NORMAL_5x5_BLIND", "NORMAL_5x5_DRAFT"],
-            "participants->*->highestAchievedSeasonTier": ["MASTER", "CHALLENGER", "DIAMOND", "PLATINUM"] ,
-            "participants->*->timeline->xpPerMinDeltas->*": ["!0"]
-        }
-        return self.__smart_filter(filter, json_object)
+        return self.__smart_filter(self.filter, json_object)
 
         """ Takes a json_object representing a LoL match as input, and returns whether it passes our filter."""
         #return self.__passes_game_type(json_object) and self.__passes_no_leavers(json_object) and self.__passes_participants(json_object)
