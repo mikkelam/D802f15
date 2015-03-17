@@ -7,6 +7,7 @@ class FeatureType:
     BLUE_TEAM_PAIRS = 4,
     RED_TEAM_PAIRS = 5,
     FIRST_BLOOD = 6
+    AVG_RANK = 7
 
 
 class FeatureCreator:
@@ -36,7 +37,8 @@ class FeatureCreator:
             FeatureType.BLUE_TEAM_PAIRS: lambda: self.__make_2_combinations_omit_equals(self.blue_team),
             FeatureType.RED_TEAM_PAIRS: lambda: self.__make_2_combinations_omit_equals(self.red_team),
             FeatureType.CROSS_TEAM_PAIRS: lambda: self.__make_2_permutations(self.red_team, self.blue_team),
-			FeatureType.FIRST_BLOOD: lambda: self.__first_blood()
+            FeatureType.FIRST_BLOOD: lambda: self.__first_blood()
+            FeatureType.AVG_RANK: lambda: self.__avg_rank()
         }
         sparse_features = function_to_invoke[feature_type]() #invoke the function that generates features
         for id in sparse_features.sparse_feature_list:
@@ -80,12 +82,37 @@ class FeatureCreator:
         return SparseFeatureList(feature_ids, feature_type_count)
 
     def __first_blood(self):
-	    feature_type_count = 3
-	    feature_vaule = [2] #noone got first blood
-	    if self.match["teams"][0]["firstBlood"]: #blue team got first blood
-	        feature_value = [0]
-	    elif self.match["teams"][1]["firstBlood"]: #red team got first blood
-	        feature_value = [1]
-	    return SparseFeatureList(feature_value, feature_type_count)
-	 
- 	
+        feature_type_count = 3
+        feature_value = [2] #noone got first blood
+        if self.match["teams"][0]["firstBlood"]: #blue team got first blood
+            feature_value = [0]
+        elif self.match["teams"][1]["firstBlood"]: #red team got first blood
+            feature_value = [1]
+        return SparseFeatureList(feature_value, feature_type_count)
+     
+    def __avg_rank(self):
+        feature_type_count = 1
+        ranks = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'CHALLENGER']
+
+        feature_ids = []
+        t1,t2 = 0,0
+        t1sum,t2sum = 0,0
+        for idx, p in enumerate(json_object["participants"]):
+            if p['highestAchievedSeasonTier'] == 'UNRANKED':
+                continue
+            rank = ranks.index(p['highestAchievedSeasonTier'])
+            if p["teamId"] == 200:
+                t1+= 1
+                t1sum += rank
+            else: # team 2
+                t2+= 1
+                t2sum += rank
+
+        if t1 > 0 and t2 > 0:
+            feature_ids.append(int((t2sum/t2) < (t1sum/t1)))
+
+        return SparseFeatureList(feature_ids, feature_type_count)
+
+
+
+    
