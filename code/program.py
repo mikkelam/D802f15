@@ -6,7 +6,7 @@ from prediction.matchfilter import MatchFilter
 
 
 
-mf = MatchFilter()
+mf = MatchFilter({})
 
-trainer = Trainer(LogisticRegressionWithLBFGS, 'hdfs://node1:9000/user/hduser/mined-data/*', mf, team_composition,local=False)
+trainer = Trainer(LogisticRegressionWithLBFGS, 'region-euw-start-1971865781-size-1000.txt', mf, two_gram,local=True)
 trainer.train()
