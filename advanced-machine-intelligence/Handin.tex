@@ -1,4 +1,4 @@
-% Created 2015-03-11 ons 11:57
+% Created 2015-03-16 man 15:25
 \documentclass[colorlinks=true,linkcolor=blue]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -17,6 +17,9 @@
 \usepackage{hyperref}
 \tolerance=1000
 \usepackage[top=1in,bottom=1in,left=1.2in,right=1.2in]{geometry}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
 \author{Sander Jespersen, Mathias Melgaard Andersen, Anders Roland Nielsen, \\ Andreas Berre Eriksen, Kent Munthe Caspersen \& Mikkel Alexander Madsen}
 \date{\today}
 \title{aMI Handin assignments}
@@ -131,5 +134,47 @@ disp(newhmm.backwardMessages);
 0.4675 & 0.7339 & 0.7478 & 1.0000\\
 \end{tabular}
 \end{center}
+\section{Exercise 3}
+\label{sec-3}
+\subsection{Umbrella}
+\label{sec-3-1}
+\begin{itemize}
+\item By calculating the likelihood of the models correctness and the one with the highest likelihood is the most reliable model:
+\begin{itemize}
+\item 0.7 $\cdot$ 0.7 $\cdot$ 0.7 $\cdot$ 0.3 $\cdot$ 0.7 $\cdot$ 0.7 $\cdot$ 0.3 $\cdot$ 0.3 $\cdot$ 0.7 = 0.003176523
+\item 0.6 $\cdot$ 0.6 $\cdot$ 0.6 $\cdot$ 0.4 $\cdot$ 0.8 $\cdot$ 0.8 $\cdot$ 0.2 $\cdot$ 0.4 $\cdot$ 0.8 = 0.003538944
+\end{itemize}
+\item Matlab
+\end{itemize}
+\begin{verbatim}
+function p = SSP(obj, sequence)
+  p = 1;
+  for t=2:length(sequence),
+    transition = obj.transModel(sequence(t-1),sequence(t));
+    p = p * transition;                
+  end
+end
+\end{verbatim}
+\begin{itemize}
+\item MATLAB gave us the same results as the manual calculations of the likelihood.
+\end{itemize}
+
+\subsection{Water tank}
+\label{sec-3-2}
+
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.5cm, semithick]
+
+\node[state, minimum size=1.5cm] (A) {$Flow_t$};
+\node[state, minimum size=1.5cm] (B) [below of = A] {$WT_t$};
+\node[state, minimum size=1.5cm] (C) [below of = B] {$S_t$};
+\node[state, minimum size=1.5cm] (D) [right of = B] {$WT_{t+1}$};
+\node[state, minimum size=1.5cm] (E) [right of = C] {$S_{t+1}$};
+
+\path (A) edge (D)
+      (B) edge (D)
+      (B) edge (C)
+      (D) edge (E);
+
+\end{tikzpicture}
 % Emacs 24.4.1 (Org mode 8.2.10)
 \end{document}
