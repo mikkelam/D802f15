@@ -5,7 +5,8 @@ class FeatureType:
     RED_TEAM_SINGLES = 2,
     CROSS_TEAM_PAIRS = 3,
     BLUE_TEAM_PAIRS = 4,
-    RED_TEAM_PAIRS = 5
+    RED_TEAM_PAIRS = 5,
+    FIRST_BLOOD = 6
 
 
 class FeatureCreator:
@@ -34,7 +35,8 @@ class FeatureCreator:
             FeatureType.RED_TEAM_SINGLES: lambda: self.__make_singles(self.red_team),
             FeatureType.BLUE_TEAM_PAIRS: lambda: self.__make_2_combinations_omit_equals(self.blue_team),
             FeatureType.RED_TEAM_PAIRS: lambda: self.__make_2_combinations_omit_equals(self.red_team),
-            FeatureType.CROSS_TEAM_PAIRS: lambda: self.__make_2_permutations(self.red_team, self.blue_team)
+            FeatureType.CROSS_TEAM_PAIRS: lambda: self.__make_2_permutations(self.red_team, self.blue_team),
+			FeatureType.FIRST_BLOOD: lambda: self.__first_blood()
         }
         sparse_features = function_to_invoke[feature_type]() #invoke the function that generates features
         for id in sparse_features.sparse_feature_list:
@@ -76,3 +78,14 @@ class FeatureCreator:
                     feature_ids.append(id)
 
         return SparseFeatureList(feature_ids, feature_type_count)
+
+    def __first_blood(self):
+	    feature_type_count = 3
+	    feature_vaule = [2] #noone got first blood
+	    if self.match["teams"][0]["firstBlood"]: #blue team got first blood
+	        feature_value = [0]
+	    elif self.match["teams"][1]["firstBlood"]: #red team got first blood
+	        feature_value = [1]
+	    return SparseFeatureList(feature_value, feature_type_count)
+	 
+ 	
