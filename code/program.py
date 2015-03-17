@@ -1,5 +1,5 @@
 import glob
-from prediction.features import team_composition
+from prediction.features import *
 from prediction.trainer import Trainer
 from pyspark.mllib.classification import LogisticRegressionWithLBFGS
 from prediction.matchfilter import MatchFilter

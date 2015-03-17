@@ -28,7 +28,6 @@ class Trainer:
 		  sc = SparkContext("local", "SimpleApp")
 		else:
 		  sc = SparkContext("spark://node1:7077")
-                  sc.addPyFiles
 		data = sc.textFile(self.data)
 
 
