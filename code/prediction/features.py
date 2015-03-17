@@ -75,6 +75,36 @@ def team_composition(line):
     featureList[0] = 1
   return LabeledPoint(featureList[0], featureList[1:]) #LbabeledPoint is imported
 
+def team_rank(line): #8ranks * 2teams * 5players
+  json_object = json.loads(line)
+
+  ranks = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'CHALLENGER']
+
+  features = {}
+  t1,t2 = 0,0
+  t1sum,t2sum = 0,0
+  
+  for idx, p in enumerate(json_object["participants"]):
+    if p['highestAchievedSeasonTier'] == 'UNRANKED':
+      continue
+
+    rank = ranks.index(p['highestAchievedSeasonTier'])
+    if p["teamId"] == 200:
+      t1+= 1
+      t1sum += rank
+    else: # team 2
+      t2+= 1
+      t2sum += rank
+
+  if t1 > 0 and t2 > 0:
+    features[0] = (t2sum/t2) < (t1sum/t1)
+
+  if json_object["participants"][0]["teamId"] == 200:
+    game_result = int(json_object["participants"][0]["stats"]["winner"])
+  else:
+    game_result = int(json_object["participants"][0]["stats"]["winner"])
+
+  return LabeledPoint(game_result, SparseVector(1, features))
 
 
 def two_gram(line):
@@ -97,5 +127,6 @@ def two_gram(line):
   for feature in feature_list:
     features[feature] = 1
   return LabeledPoint(game_result, SparseVector(30381, features)) #values in the feature vector are too large, 30381
+
 
   

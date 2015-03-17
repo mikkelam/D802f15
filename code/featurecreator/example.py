@@ -1,7 +1,7 @@
 import json
 import os
 from featurecreator import *
-path = r"C:\Users\Kent\Desktop\D802f15\LoLMiner\LoLMiner\bin\mined-data\region-euw-start-1971862777-size-1000.txt"
+path = r"C:\Users\Kent\Desktop\D802f15\LoLMiner\LoLMiner\bin\mined-data\region-euw-start-1971861776-size-1000.txt"
 
 feature_creator = FeatureCreator()
 
@@ -11,8 +11,12 @@ with open(path, "r") as file:
         games_to_extract -= 1
         if games_to_extract == 0:
             break
-        single_match = json.loads(line)
+        try:
+            single_match = json.loads(line)
+        except:
+	        print ("invalid json")
         feature_creator.set_match(single_match)
+        feature_creator.make_features(FeatureType.FIRST_BLOOD)
         feature_creator.make_features(FeatureType.RED_TEAM_SINGLES)
         feature_creator.make_features(FeatureType.BLUE_TEAM_SINGLES)
         feature_creator.make_features(FeatureType.RED_TEAM_PAIRS)
