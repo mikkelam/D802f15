@@ -17,8 +17,8 @@ def duplicate_filter(match):
 	print match
 	return True
 		
-sc = SparkContext("local", "duplicates_filter")
-data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/subset/*.txt')))
+sc = SparkContext("spark://node1:7077")
+data = sc.textFile('hdfs://node1:9000/user/hduser/mined-data/*')
 
 
 filtered_data = data.filter(lambda line: json_filter(line))
