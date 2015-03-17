@@ -1,7 +1,7 @@
 import json
 import os
 from featurecreator import *
-path = r"/Users/andreaseriksen/Desktop/Project F15/code/data/subset/region-euw-start-1971861776-size-1000.txt"
+path = r"C:\Users\Kent\Desktop\D802f15\LoLMiner\LoLMiner\bin\mined-data\region-euw-start-1971861776-size-1000.txt"
 
 feature_creator = FeatureCreator()
 
@@ -14,7 +14,7 @@ with open(path, "r") as file:
         try:
             single_match = json.loads(line)
         except:
-	        print "invalid json"
+	        print ("invalid json")
         feature_creator.set_match(single_match)
         feature_creator.make_features(FeatureType.FIRST_BLOOD)
         feature_creator.make_features(FeatureType.RED_TEAM_SINGLES)

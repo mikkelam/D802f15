@@ -31,11 +31,11 @@ class FeatureCreator:
 
     def make_features(self, feature_type):
         function_to_invoke = {
-            FeatureType.BLUE_TEAM_SINGLES: lambda: self.__make_singles(self.blue_team),
-            FeatureType.RED_TEAM_SINGLES: lambda: self.__make_singles(self.red_team),
-            FeatureType.BLUE_TEAM_PAIRS: lambda: self.__make_2_combinations_omit_equals(self.blue_team),
-            FeatureType.RED_TEAM_PAIRS: lambda: self.__make_2_combinations_omit_equals(self.red_team),
-            FeatureType.CROSS_TEAM_PAIRS: lambda: self.__make_2_permutations(self.red_team, self.blue_team),
+            FeatureType.BLUE_TEAM_SINGLES: lambda: self.__make_single_team_pairs(self.blue_team),
+            FeatureType.RED_TEAM_SINGLES: lambda: self.__make_single_team_pairs(self.red_team),
+            FeatureType.BLUE_TEAM_PAIRS: lambda: self.__make_single_team_pairs(self.blue_team),
+            FeatureType.RED_TEAM_PAIRS: lambda: self.__make_single_team_pairs(self.red_team),
+            FeatureType.CROSS_TEAM_PAIRS: lambda: self.__make_cross_team_pairs(self.red_team, self.blue_team),
 			FeatureType.FIRST_BLOOD: lambda: self.__first_blood()
         }
         sparse_features = function_to_invoke[feature_type]() #invoke the function that generates features
@@ -43,15 +43,15 @@ class FeatureCreator:
             self.sparse_feature_list.append(id + self.feature_count)
         self.feature_count += sparse_features.feature_count
 
-    def __make_singles(self, champion_list):
+    def __make_single_team_pairs(self, champion_list):
         feature_type_count = len(FeatureCreator.champion_ids)
         feature_ids = []
         for id in champion_list:
             feature_ids.append(id)
         return SparseFeatureList(feature_ids, feature_type_count)
 
-    def __make_2_permutations(self, champion_list1, champion_list2):
-        #makes features representing 2-combinations, except pairs (x, x) of two equal values
+    def __make_cross_team_pairs(self, champion_list1, champion_list2):
+        # makes features representing 2-combinations, except pairs (x, x) of two equal values
         feature_type_count = pow(len(self.champion_ids), 2)
         feature_ids = []
 
@@ -64,8 +64,7 @@ class FeatureCreator:
 
         return SparseFeatureList(feature_ids, feature_type_count)
 
-    def __make_2_combinations_omit_equals(self, champion_list):
-        #makes features representing 2-combinations, except pairs (x, x) of two equal values
+    def __make_single_team_pairs(self, champion_list):
         feature_type_count = (FeatureCreator.champion_count * (FeatureCreator.champion_count - 1)) / 2
         feature_ids = []
 
