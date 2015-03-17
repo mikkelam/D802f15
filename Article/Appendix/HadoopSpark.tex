@@ -1,0 +1,98 @@
+\section{Setting up Hadoop and Apache Spark}
+\label{sec:hadoop}
+
+To get a cluster up and running each machine must first have a \emph{username}, this must have the same name across all machines.
+\lstset{language=bash}
+\begin{lstlisting}
+  adduser ``username''
+\end{lstlisting}
+For the machines to be able to communicate with the master they need a file with the following content named \emph{hosts}:
+\begin{verbatim}
+127.0.0.1 localhost
+
+ip node1
+ip node2
+ip node3
+...
+\end{verbatim}
+Following that each machine needs ssh configured, where \emph{node-id} is the alias created found in the \emph{hosts} file.
+\begin{lstlisting}
+  ssh-keygen
+  ssh-copy-id ``username@node-id''
+\end{lstlisting}
+This has to be done from master to each slave and from each slave to master.
+
+\subsubsection*{Hadoop}
+To set up Hadoop all nodes have to create a hadoop group.
+\begin{lstlisting}
+  addgroup hadoop
+  adduser username hadoop
+\end{lstlisting}
+At this point Hadoop should be downloaded and installed in the \textsf{/usr/local/hadoop} and then set up the rights.
+\begin{lstlisting}
+  chown -R username:username /usr/local/hadoop
+\end{lstlisting}
+The following will be put in \emph{.bashrc} file:
+\begin{verbatim}
+export JAVA_HOME=/usr/lib/jvm/default-java
+export HADOOP_INSTALL=/usr/local/hadoop
+export PATH=$PATH:$HADOOP_INSTALL/bin
+export PATH=$PATH:$HADOOP_INSTALL/sbin
+export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_HOME=$HADOOP_INSTALL
+export HADOOP_HDFS_HOME=$HADOOP_INSTALL
+export YARN_HOME=$HADOOP_INSTALL
+\end{verbatim}
+In the file \emph{hadoop-env.sh} found in \textsf{/usr/local/hadoop/etc/hadoop/} the line \emph{JAVA\_HOME} should be replaced with \emph{export JAVA\_HOME=/usr/lib/jvm/default-java}.
+In addition the \emph{core-site.xml} which is found in \textsf{/usr/local/hadoop/etc/hadoop/} needs an added property: 
+\begin{verbatim}
+<property>
+  <name>fs.defaultFS</name>
+  <value>hdfs://MASTER:9000</value>
+</property>
+\end{verbatim}
+\emph{MASTER} needs to be replaced with the hostname for the master node.
+
+Another file that needs added properties is \emph{hdfs-site.xml}, which can be found in the folder \textsf{/usr/local/hadoop/etc/hadoop/}:
+\begin{verbatim}
+<property>
+  <name>dfs.namenode.data.dir</name>
+  <value>file:/home/username/data/hdfs/namenode</value>
+</property>
+
+<property>
+  <name>dfs.datanode.data.dir</name>
+  <value>file:/home/username/data/hdfs/datanode</value>
+</property>
+\end{verbatim}
+The final thing that needs for Hadoop to run is for the master to know the slaves. Create a file \emph{slaves} in \textsf{/usr/local/hadoop/etc/hadoop/} with all the hostnames of slaves listed:
+\begin{verbatim}
+node1
+node2
+...
+\end{verbatim}
+
+\subsubsection*{Apache Spark}
+To get spark running download and install it to \textsf{/usr/local/spark} and again run the command to set up the correct rights.
+\begin{lstlisting}
+  chown -R username:username/usr/local/spark
+\end{lstlisting}
+The final step for setting up Apache Spark is copying the \emph{slaves} file into the folder \textsf{/usr/local/spark/conf/}.
+
+
+\subsubsection*{Starting the cluster}
+To start the cluster the master has to run the following commands:
+\begin{lstlisting}
+  start-dfs.sh
+  cd /usr/local/spark
+  ./sbin/start-all.sh
+\end{lstlisting}
+Now the cluster is ready to use.
+
+\subsubsection*{Using the cluster}
+WE MIGHT NEED STUFF HERE!
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
