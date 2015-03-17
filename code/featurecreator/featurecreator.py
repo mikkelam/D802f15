@@ -6,8 +6,11 @@ class FeatureType:
     CROSS_TEAM_PAIRS = 3,
     BLUE_TEAM_PAIRS = 4,
     RED_TEAM_PAIRS = 5,
-    FIRST_BLOOD = 6
-
+    FIRST_BLOOD = 6,
+    FIRST_DRAGON = 7,
+    FIRST_BARON = 8,
+    FIRST_INHIBITOR = 9,
+    FIRST_TOWER = 10
 
 class FeatureCreator:
     champion_ids = [266, 103, 84, 12, 32, 34, 1, 22, 268, 53, 63, 201, 51, 69, 31, 42, 122, 131, 36, 119, 60, 28, 81, 9, 114, 105, 3, 41, 86, 150, 79, 104, 120, 74, 39, 40, 59, 24, 126, 222, 429, 43, 30, 38, 55, 10, 85, 121, 96, 7, 64, 89, 127, 236, 117, 99, 54, 90, 57, 11, 21, 82, 25, 267, 75, 111, 76, 56, 20, 2, 61, 80, 78, 133, 33, 421, 58, 107, 92, 68, 13, 113, 35, 98, 102, 27, 14, 15, 72, 37, 16, 50, 134, 91, 44, 17, 412, 18, 48, 23, 4, 29, 77, 6, 110, 67, 45, 161, 254, 112, 8, 106, 19, 62, 101, 5, 157, 83, 154, 238, 115, 26, 143]
@@ -36,7 +39,11 @@ class FeatureCreator:
             FeatureType.BLUE_TEAM_PAIRS: lambda: self.__make_single_team_pairs(self.blue_team),
             FeatureType.RED_TEAM_PAIRS: lambda: self.__make_single_team_pairs(self.red_team),
             FeatureType.CROSS_TEAM_PAIRS: lambda: self.__make_cross_team_pairs(self.red_team, self.blue_team),
-			FeatureType.FIRST_BLOOD: lambda: self.__first_blood()
+			FeatureType.FIRST_BLOOD: lambda: self.__first_something("Blood"),
+            FeatureType.FIRST_DRAGON: lambda: self.__first_something("Dragon"),
+            FeatureType.FIRST_BARON: lambda: self.__first_something("Baron"),
+            FeatureType.FIRST_TOWER: lambda: self.__first_something("Tower"),
+            FeatureType.FIRST_INHIBITOR: lambda: self.__first_something("Inhibitor")
         }
         sparse_features = function_to_invoke[feature_type]() #invoke the function that generates features
         for id in sparse_features.sparse_feature_list:
@@ -78,13 +85,11 @@ class FeatureCreator:
 
         return SparseFeatureList(feature_ids, feature_type_count)
 
-    def __first_blood(self):
+    def __first_something(self, first_something):
 	    feature_type_count = 3
-	    feature_vaule = [2] #noone got first blood
-	    if self.match["teams"][0]["firstBlood"]: #blue team got first blood
+	    feature_value = [2] #noone got first blood
+	    if self.match["teams"][0]["first"+first_something]: #blue team got first something
 	        feature_value = [0]
-	    elif self.match["teams"][1]["firstBlood"]: #red team got first blood
+	    elif self.match["teams"][1]["first"+first_something]: #red team got first something
 	        feature_value = [1]
 	    return SparseFeatureList(feature_value, feature_type_count)
-	 
- 	
