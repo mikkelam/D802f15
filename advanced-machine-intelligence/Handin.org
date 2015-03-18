@@ -107,22 +107,27 @@ end
 #+end_src
 - MATLAB gave us the same results as the manual calculations of the likelihood.
 
-** Water tank
 
+** Water tank
+- Kalman Filter
 #+BEGIN_LATEX
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.5cm, semithick]
 
-\node[state, minimum size=1.5cm] (A) {$Flow_t$};
-\node[state, minimum size=1.5cm] (B) [below of = A] {$WT_t$};
+\node[state, minimum size=1.5cm] (B) {$WT_t$};
 \node[state, minimum size=1.5cm] (C) [below of = B] {$S_t$};
 \node[state, minimum size=1.5cm] (D) [right of = B] {$WT_{t+1}$};
 \node[state, minimum size=1.5cm] (E) [right of = C] {$S_{t+1}$};
 
-\path (A) edge (D)
-      (B) edge (D)
+\path (B) edge (D)
       (B) edge (C)
       (D) edge (E);
 
 \end{tikzpicture}
+\begin{enumerate}
+\item $WT_{t+1} = \mathcal{N}(WT_t,1)$
+\item $S_t = \mathcal{N}(WT_t,1.5)$
+\end{enumerate}
 #+END_LATEX
 
+- Filtered estimates:
+  
