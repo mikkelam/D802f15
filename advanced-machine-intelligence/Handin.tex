@@ -1,4 +1,4 @@
-% Created 2015-03-16 man 15:25
+% Created 2015-03-18 ons 12:03
 \documentclass[colorlinks=true,linkcolor=blue]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -159,22 +159,31 @@ end
 \item MATLAB gave us the same results as the manual calculations of the likelihood.
 \end{itemize}
 
+
 \subsection{Water tank}
 \label{sec-3-2}
-
+\begin{itemize}
+\item Kalman Filter
+\end{itemize}
 \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.5cm, semithick]
 
-\node[state, minimum size=1.5cm] (A) {$Flow_t$};
-\node[state, minimum size=1.5cm] (B) [below of = A] {$WT_t$};
+\node[state, minimum size=1.5cm] (B) {$WT_t$};
 \node[state, minimum size=1.5cm] (C) [below of = B] {$S_t$};
 \node[state, minimum size=1.5cm] (D) [right of = B] {$WT_{t+1}$};
 \node[state, minimum size=1.5cm] (E) [right of = C] {$S_{t+1}$};
 
-\path (A) edge (D)
-      (B) edge (D)
+\path (B) edge (D)
       (B) edge (C)
       (D) edge (E);
 
 \end{tikzpicture}
+\begin{enumerate}
+\item $WT_{t+1} = \mathcal{N}(WT_t,1)$
+\item $S_t = \mathcal{N}(WT_t,1.5)$
+\end{enumerate}
+
+\begin{itemize}
+\item Filtered estimates:
+\end{itemize}
 % Emacs 24.4.1 (Org mode 8.2.10)
 \end{document}
