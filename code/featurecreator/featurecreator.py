@@ -16,7 +16,7 @@ class FeatureCreator:
     def set_match(self, json_object):
         self.match = json_object
         self.sparse_feature_list = []
-        self.label = json_object["teams"][0]["winner"] == 1
+        self.label = json_object["teams"][0]["winner"]
         self.feature_count = 0
         self.blue_team = self.__map_champion_ids(True)
         self.red_team = self.__map_champion_ids(False)
