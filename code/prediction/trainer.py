@@ -23,13 +23,15 @@ class Trainer:
 		return self.match_filter.passes(json_object)
 
 	def train(self):
-				#json_data = map.(load json sample_data)
+		#json_data = map.(load json sample_data)
 
 		if self.local:
 		  sc = SparkContext("local", "SimpleApp")
 		else:
 		  sc = SparkContext("spark://node1:7077")
 		data = sc.textFile(self.data)
+
+		linecount = data.count()
 
 		sample_data = data.sample(False, self.sample, self.seed)
 
@@ -60,9 +62,6 @@ class Trainer:
 
 		print "Training Error on Evaluation Data:", eval_err
 		print "Training Error on Train Data:", train_err
-
-
-
 
 
 
