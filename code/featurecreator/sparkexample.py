@@ -29,7 +29,6 @@ def parsePoint(single_match):
 	feature_creator.make_features(FeatureType.BLUE_TEAM_SINGLES)
 	feature_creator.make_features(FeatureType.RED_TEAM_PAIRS)
 	feature_creator.make_features(FeatureType.BLUE_TEAM_PAIRS)
-	
 	#Creates the input to a sparce vector from the feature creator
 	features = {}
 	for feature in feature_creator.sparse_feature_list:
@@ -46,16 +45,9 @@ parsedData = traning_data.map(parsePoint)
 
 # Build the model
 
-#model = LogisticRegressionWithSGD.train(parsedData)
+model = LogisticRegressionWithSGD.train(parsedData)
 
 
-
-# Evaluating the model on evaluation data
-#eval_parsedData = eval_data.map(parsePoint)
-#labelsAndPreds = parsedData.map(lambda p: (p.label, model.predict(p.features)))
-#trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count()
-
-#eval_count = eval_parsedData.count()
 test_count = parsedData.count()
 #print float(eval_parsedData.count())
 print test_count
