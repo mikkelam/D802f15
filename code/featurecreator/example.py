@@ -4,8 +4,8 @@ from featurecreator import *
 
 from WekaConverter import WekaConverter
 
-inputpath = r"C:\Users\Kent\Desktop\D802f15\LoLMiner\LoLMiner\bin\mined-data\region-euw-start-1971861776-size-1000.txt" #Path to input files 
-outputpath = r"" #path to the output file
+inputpath = r"/Users/andreaseriksen/Desktop/Project F15/code/data/subset/" #Path to input files 
+outputpath = r"/Users/andreaseriksen/Desktop/Project F15/code/data/subset/test.arff" #path to the output file
 
 feature_creator_blue = FeatureCreator()
 feature_creator_red = FeatureCreator()
