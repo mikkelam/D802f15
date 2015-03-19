@@ -154,3 +154,16 @@ def blue_team(line):
   if json_object["participants"][0]["stats"]["winner"] == True:
     featureList[0] = 1
   return LabeledPoint(featureList[0], featureList[1:]) #LbabeledPoint is imported
+
+def word_count(line):
+  json_object = json.loads(line)
+
+  featureList = [0] * 124 # a list of zeros. index 0 is the label/class, followed by the featurelist
+  for p in json_object[ "participants" ]:
+    champIndex = 1 # index 0 must be the label
+    if p[ "teamId" ] == 200:
+      champIndex += __champion_index(p[ "championId" ])   
+    featureList[champIndex] = 1
+  if json_object["participants"][0]["stats"]["winner"] == True:
+    featureList[0] = 1
+  return LabeledPoint(featureList[0], featureList[1:]) #LbabeledPoint is imported
