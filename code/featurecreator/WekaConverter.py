@@ -9,6 +9,7 @@ class WekaConverter:
 		
 	def add(self, feature_list, label):
 		self.arff_data += "{"
+		feature_list.sort()
 		for feature in feature_list:
 			self.arff_data += "%d 1, " %(feature) 
 		self.arff_data += "%d %r}\n" %(self.total_features, label) 
@@ -22,7 +23,7 @@ class WekaConverter:
 		self.file.close() 
 
 
-wc = WekaConverter(10, path="/Users/andreaseriksen/Desktop/Project F15/code/data/subset/10000Games.csv")
+wc = WekaConverter(10, path="/Users/andreaseriksen/Desktop/Project F15/code/data/subset/10000Games.arff")
 wc.add([1, 3, 5, 6], True)
-wc.add([2, 3, 5, 8], False)
+wc.add([3, 5, 8, 2], False)
 wc.write()
