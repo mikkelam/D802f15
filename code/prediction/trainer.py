@@ -31,8 +31,6 @@ class Trainer:
 		  sc = SparkContext("spark://node1:7077")
 		data = sc.textFile(self.data)
 
-		linecount = data.count()
-
 		sample_data = data.sample(False, self.sample, self.seed)
 
 		filtered_data = sample_data.filter(self.__filter)
