@@ -35,8 +35,8 @@ class FeatureCreator:
 
     def make_features(self, feature_type):
         function_to_invoke = {
-            FeatureType.BLUE_TEAM_SINGLES: lambda: self.__make_single_team_pairs(self.blue_team),
-            FeatureType.RED_TEAM_SINGLES: lambda: self.__make_single_team_pairs(self.red_team),
+            FeatureType.BLUE_TEAM_SINGLES: lambda: self.__make_single_team(self.blue_team),
+            FeatureType.RED_TEAM_SINGLES: lambda: self.__make_single_team(self.red_team),
             FeatureType.BLUE_TEAM_PAIRS: lambda: self.__make_single_team_pairs(self.blue_team),
             FeatureType.RED_TEAM_PAIRS: lambda: self.__make_single_team_pairs(self.red_team),
             FeatureType.CROSS_TEAM_PAIRS: lambda: self.__make_cross_team_pairs(self.red_team, self.blue_team),
@@ -44,7 +44,7 @@ class FeatureCreator:
             FeatureType.FIRST_DRAGON: lambda: self.__first_something("Dragon"),
             FeatureType.FIRST_BARON: lambda: self.__first_something("Baron"),
             FeatureType.FIRST_TOWER: lambda: self.__first_something("Tower"),
-            FeatureType.FIRST_INHIBITOR: lambda: self.__first_something("Inhibitor")
+            FeatureType.FIRST_INHIBITOR: lambda: self.__first_something("Inhibitor"),
             FeatureType.AVG_RANK: lambda: self.__avg_rank()
         }
         sparse_features = function_to_invoke[feature_type]() #invoke the function that generates features
@@ -52,7 +52,7 @@ class FeatureCreator:
             self.sparse_feature_list.append(id + self.feature_count)
         self.feature_count += sparse_features.feature_count
 
-    def __make_single_team_pairs(self, champion_list):
+    def __make_single_team(self, champion_list):
         feature_type_count = len(FeatureCreator.champion_ids)
         feature_ids = []
         for id in champion_list:
