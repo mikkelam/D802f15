@@ -1,12 +1,13 @@
 \section{Setting up Hadoop and Apache Spark}
 \label{sec:hadoop}
+All machines in the cluster must be running Debian Wheezy 7.0 32-bit (linux) and connected in a switch with static ip setup. The following packages must be installed on all machines as well: openssh, openssh-server, openjdk-7-jre, openjdk-7-jdk. One machine must be chosen as the master.
 
-To get a cluster up and running each machine must first have a \emph{username}, this must have the same name across all machines.
+We first set up a new user for our cluster setup, this is considered good practice. The \emph{username} must be the same name across all machines.
 \lstset{language=bash}
 \begin{lstlisting}
-  adduser ``username''
+  adduser ``username'' % Maybe rethink these quotes?
 \end{lstlisting}
-For the machines to be able to communicate with the master they need a file with the following content named \emph{hosts}:
+To easier work with the IP's of the machines we set up a \emph{hosts} file:
 \begin{verbatim}
 127.0.0.1 localhost
 
@@ -15,26 +16,27 @@ ip node2
 ip node3
 ...
 \end{verbatim}
-Following that each machine needs ssh configured, where \emph{node-id} is the alias created found in the \emph{hosts} file.
+Which is saved in hosts : \begin{verbatim}/etc/hosts\end{verbatim}
+Following that, each machine needs ssh configured, where \emph{node-id} is the alias created in the \emph{hosts} file.
 \begin{lstlisting}
   ssh-keygen
   ssh-copy-id ``username@node-id''
 \end{lstlisting}
-This has to be done from master to each slave and from each slave to master.
+These commands must be run from master to each slave and from each slave to the master master.
 
 \subsubsection*{Hadoop}
-To set up Hadoop all nodes have to create a hadoop group.
+All of these steps must be done on all machines. To set up Hadoop all nodes have to create a hadoop group, and add the user to the group
 \begin{lstlisting}
   addgroup hadoop
-  adduser username hadoop
+  adduser ``username'' hadoop
 \end{lstlisting}
-At this point Hadoop should be downloaded and installed in the \textsf{/usr/local/hadoop} and then set up the rights.
+At this point Hadoop 2.6.0 32-bit should be downloaded and installed at \textsf{/usr/local/hadoop}. We then change the owner of the hadoop directory.
 \begin{lstlisting}
   chown -R username:username /usr/local/hadoop
 \end{lstlisting}
-The following will be put in \emph{.bashrc} file:
+The following will be put in \emph{/home/username/.bashrc} file:
 \begin{verbatim}
-export JAVA_HOME=/usr/lib/jvm/default-java
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-i386
 export HADOOP_INSTALL=/usr/local/hadoop
 export PATH=$PATH:$HADOOP_INSTALL/bin
 export PATH=$PATH:$HADOOP_INSTALL/sbin
@@ -43,8 +45,8 @@ export HADOOP_COMMON_HOME=$HADOOP_INSTALL
 export HADOOP_HDFS_HOME=$HADOOP_INSTALL
 export YARN_HOME=$HADOOP_INSTALL
 \end{verbatim}
-In the file \emph{hadoop-env.sh} found in \textsf{/usr/local/hadoop/etc/hadoop/} the line \emph{JAVA\_HOME} should be replaced with \emph{export JAVA\_HOME=/usr/lib/jvm/default-java}.
-In addition the \emph{core-site.xml} which is found in \textsf{/usr/local/hadoop/etc/hadoop/} needs an added property: 
+In the file \emph{hadoop-env.sh} found in \textsf{/usr/local/hadoop/etc/hadoop/} the line \emph{JAVA\_HOME} should be replaced with \emph{export JAVA\_HOME=/usr/lib/java-7-openjdk-i386}.
+In addition the \emph{core-site.xml} which is found in \textsf{/usr/local/hadoop/etc/hadoop/} needs an added property inside the configuration tag: 
 \begin{verbatim}
 <property>
   <name>fs.defaultFS</name>
@@ -65,7 +67,8 @@ Another file that needs added properties is \emph{hdfs-site.xml}, which can be f
   <value>file:/home/username/data/hdfs/datanode</value>
 </property>
 \end{verbatim}
-The final thing that needs for Hadoop to run is for the master to know the slaves. Create a file \emph{slaves} in \textsf{/usr/local/hadoop/etc/hadoop/} with all the hostnames of slaves listed:
+These should also be added in the configuration tag.
+The final thing that needs for Hadoop to run is for the master to know the slaves. Create a file called \emph{slaves} in \textsf{/usr/local/hadoop/etc/hadoop/} with all the hostnames of slaves listed separated by newline:
 \begin{verbatim}
 node1
 node2
@@ -73,11 +76,11 @@ node2
 \end{verbatim}
 
 \subsubsection*{Apache Spark}
-To get spark running download and install it to \textsf{/usr/local/spark} and again run the command to set up the correct rights.
+All of these steps must done on all machines. To get Spark 1.2.1 running, download the hadoop 32-bit precompiled version and install it to \textsf{/usr/local/spark} and again run the command to set up the correct rights.
 \begin{lstlisting}
   chown -R username:username/usr/local/spark
 \end{lstlisting}
-The final step for setting up Apache Spark is copying the \emph{slaves} file into the folder \textsf{/usr/local/spark/conf/}.
+The final step for setting up Apache Spark is copying the previous \emph{slaves} file into the folder \textsf{/usr/local/spark/conf/}.
 
 
 \subsubsection*{Starting the cluster}
