@@ -4,11 +4,7 @@ import re
 
 class MatchFilter:
     def __init__(self,
-                 filter={"matchMode": ["CLASSIC"],
-                         "matchType": ["MATCHED_GAME"],
-                         "queueType": ["RANKED_SOLO_5x5", "RANKED_PREMADE_5x5", "NORMAL_5x5_BLIND", "NORMAL_5x5_DRAFT"],
-                         "participants->*->highestAchievedSeasonTier": ["MASTER", "CHALLENGER", "DIAMOND", "PLATINUM"] ,
-                         "participants->*->timeline->xpPerMinDeltas->*": ["!0"]}):
+                 filter={}):
         self.last_discard_reason = ''
         self.filter = filter
 
