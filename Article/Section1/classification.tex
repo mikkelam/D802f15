@@ -16,7 +16,7 @@ The function $val(e,X_i)$ give us the value of the feature $X_i$ in example $e \
 
 The function 
 \begin{align}
-pval(e,Y) &= w_0 + w_1 \text{ val}(e,X_1) + w_2 \text{ val}(e,X_2) + \text{ ... } w_n \text{ val}(e,X_n) \\
+pval^{\overline{w}}(e,Y) &= w_0 + w_1 \text{ val}(e,X_1) + w_2 \text{ val}(e,X_2) + \text{ ... } w_n \text{ val}(e,X_n) \\
 &= \sum^n_{i=0} w_i \text{ val}(e,X_i)
 \end{align}
 
@@ -36,30 +36,106 @@ the worst-case error function.
  
 The absolute error function provides the sum of all absolute errors on the examples in $E$.
 
-$$absErr = \sum_{e \in E}\sum_{Y \in T} |val(e,Y) - pval(e,Y)|$$
+$$AbsErr = \sum_{e \in E}\sum_{Y \in T} |val(e,Y) - pval(e,Y)|$$
 
 This function is allways non-negative and only zero when $Y$ is predicted correctly in all examples. 
 
 The sum-of-squares error function assigns a larger error the further a prediction is from the actual value.
 
-$$ssErr = \sum_{e \in E}\sum_{Y \in T} (val(e,Y) - pval(e,Y))^2$$
+$$SSErr = \sum_{e \in E}\sum_{Y \in T} (val(e,Y) - pval(e,Y))^2$$
 
 The worst-case error function gives the maximum error predicted for all examples.
 
-$$maxErr = \max_{e \in E}\max_{Y \in T} | val(e,Y) - pval(e,Y) |$$
+$$MaxErr = \max_{e \in E}\max_{Y \in T} | val(e,Y) - pval(e,Y) |$$
 
 \begin{flushright}
 \cite[p. 290-291]{AI2010}
 \end{flushright}
 
+Using the sum-of-squares error function we get the cost function.
 
+\begin{align}
+Error_E(\overline{w}) &= \sum_{e \in E} (val(e,Y)-pval^{\overline{w}}(e,Y))^2 \\
+&= \sum_{e \in E} (val(e,Y)-\sum_{i=0}^n w_i \times val(e,X_i))^2
+\end{align}
 
+The goal when learning a classification model, is to chose the weights that minimize the error,
+that is.
 
-\subsubsection{Regression with multiple variables}
-% linear regression - multiple variables
+$$\text{argmin}_{\overline{w}} \text{ Error}_E(\overline{w})$$
+
+In the linear case these weights can be found analytically by taking the partial derivative of the cost function with respect 
+to each weight, setting it equal to zero and solving for the weight.
+However when using a more complex model or a large set of features, a more generel iterative solution is required.
+
+\subsubsection{Gradient descent}
+
+Another way of finding the weights that minimize the cost function, is called gradient descent.
+Gradient descent is an iterative approach that in each step takes the decreases the weights in
+proportion to their partial derivative.
+
+$$w_i = w_i - \eta \times \frac{\partial \text{ Error}_E(\overline{w})}{\partial w_i}$$ 
+
+where $\eta$ is the learining rate.
+
+For the sum-of-squares error function we get
+
+\begin{align}
+w_i &:= w_i - \eta \times \frac{\partial \sum_{e \in E}(val(e,Y) - pval^{\overline{w}}(e,Y))^2}{\partial w_i} \\
+&= w_i - \eta \times -2 \times (val(e,Y) - pval^{\overline{w}}(e,Y)) \times val(e,X_i) \\
+&= w_i + \eta \times \delta \times val(e,X_i)
+\end{align}
+
+Where $\delta = val(e,Y) - pval^{\overline{w}}(e,Y)$ and the constant 2 has been absorbed into $\eta$.
+
+\begin{flushright}
+\cite[p. 305]{AI2010}
+\end{flushright}
 
 \subsection{Logistic Regression}
 % logistic function
+
+For classification we use an activation function, whose purpose is to squash the result into the interval $(0,1)$.
+
+$$f^{\overline{w}}(X_1, X_2, \text{ ... } X_n) = f(w_0 + w_1 \times X_1 + w_2 \times X_2 + \text{ ... } + w_n \times X_n)$$
+
+\subsubsection{Activation Functions}
+
+The most basic activation function is the so called step function defined as 
+
+$$f(x) = \begin{cases}
+%	1 &\text{ if } f^{\overline{w}}(X_1,X_2, \text{ ... }, X_n) > 0 \\
+%	0 &\text{ if } f^{\overline{w}}(X_1,X_2, \text{ ... }, X_n) \leq 0 
+
+	1 &\text{ if } x \geq 0 \\
+	0 &\text{ if } x < 0 
+\end{cases}$$
+
+However the step function is not differentiable, and since this is a requirement for gradient descent we use another
+function called the sigmoid or logistic function.
+
+$$f(x) = \frac{1}{1+e^{-x}}$$
+
+Unlike the previous activation function this function has a very simple derivative.
+
+$$f'(x) = f(x) \times (1-f(x))$$
+
+Which makes it easy to implement in a gradient descent algorithm.
+
+The cost function then becomes.
+
+$$Error_E(\overline{w}) = \sum_{e \in E} (val(e,Y)-f(pval^{\overline{w}}(e,Y)))^2$$ 
+
+and the partial derivative becomes.
+
+$$\frac{\partial \text{Error}_E(\overline{w})}{\partial w_i} 
+	= -2 \times \delta \times f'(\sum_i w_i \times val(e,X_i)) \times val(e,X_i)$$
+
+
+
+\begin{flushright}
+\cite[p. 306-307]{AI2010}
+\end{flushright}
 
 
 \subsection{Regularization}
