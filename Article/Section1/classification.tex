@@ -131,6 +131,11 @@ and the partial derivative becomes.
 $$\frac{\partial \text{Error}_E(\overline{w})}{\partial w_i} 
 	= -2 \times \delta \times f'(\sum_i w_i \times val(e,X_i)) \times val(e,X_i)$$
 
+When using the sigmoid activation function the update step in gradient descent looks like this.
+
+$$w_i := w_i + \eta \times \delta \times pval^{\overline{w}}(e,Y) \times (1 - pval^{\overline{w}}(e,Y)) \times val(e,X_i)$$
+
+Where $pval^{\overline{w}}(e,Y) = f(\sum_i w_i \times val(e,X_i))$.  
 
 
 \begin{flushright}
