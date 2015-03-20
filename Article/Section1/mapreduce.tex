@@ -1,6 +1,7 @@
 \section{MapReduce} % (fold)
 \label{sec:mapreduce_programming_model}
 \textcolor{red}{Work In Progress}
+
 MapReduce is a programming model which is especially used in the context of ``Big Data''. The model is useful in the context of processing large amounts of data, utilizing parallelization. The main reason for the success of the MapReduce model, is mostly because it is easy for the programmer to parallelize, and its low-cost, high-compute property. MapReduce is best used in a distributed computing setting, handling data large enough to not fit into a single disk.
 
 It is mostly comprised of a \emph{map} procedure and a \emph{reduce} procedure, which is where the name comes from. The two procedures are split into the following actions:
@@ -11,3 +12,5 @@ It is mostly comprised of a \emph{map} procedure and a \emph{reduce} procedure, 
     \item[Reduce] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result
 \end{description}
 % section mapreduce_programming_model (end)
+
+%src: http://static.googleusercontent.com/media/research.google.com/da//archive/mapreduce-osdi04.pdf
