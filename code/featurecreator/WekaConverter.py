@@ -1,29 +1,32 @@
 class WekaConverter:
-	def __init__(self, total_features, relation="Lol",  path="", mode="w"):
-		self.mode = mode
-		self.path = path
-		self.relation = relation
-		self.total_features = total_features
-		self.arff_data = ""
-		self.file = open(path, mode)
-		
-	def add(self, feature_list, label):
-		self.arff_data += "{"
-		feature_list.sort()
-		for feature in feature_list:
-			self.arff_data += "%d 1, " %(feature) 
-		self.arff_data += "%d %r}\n" %(self.total_features, label) 
-			
-	def write(self):
-		header = "@RELATION %s\n" % self.relation
-		for i in range(0, self.total_features):
-			header += "@ATTRIBUTE %d {0, 1}\n" %i
-		header += "@ATTRIBUTE %d {False, True}\n@DATA\n" %(i+1)
-		self.file.write(header + self.arff_data)
-		self.file.close() 
+    def __init__(self, path, relation_name="Lol"):
+        self.path = path
+        self.relation_name = relation_name
+        self.lines = []
 
+    def add(self, feature_list, label):
+        self.lines.append([feature_list, label])
 
-wc = WekaConverter(10, path="/Users/andreaseriksen/Desktop/Project F15/code/data/subset/10000Games.arff")
-wc.add([1, 3, 5, 6], True)
-wc.add([3, 5, 8, 2], False)
-wc.write()
+    def write(self):
+        with open(self.path, "w") as file:
+            # write header
+            header = "@RELATION %s\n" % self.relation_name
+            for name in self.feature_names:
+                header += "@ATTRIBUTE " + name + " {0, 1}\n"
+            header += "@ATTRIBUTE BLUE-WINS {False, True}\n"
+            header += "@DATA\n"
+            file.write(header)
+
+            #write data
+            for line in self.lines:
+                current_line_str = "{"
+                features = line[0]
+                label = line[1]
+                features.sort()
+                for feature in features:
+                    current_line_str += "%d 1, " %(feature)
+                current_line_str += "%d %r}\n" %(len(self.feature_names), label)
+                file.write(current_line_str)
+
+    def set_feature_names(self, feature_names):
+        self.feature_names = feature_names
