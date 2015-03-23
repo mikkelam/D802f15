@@ -131,3 +131,45 @@ end
 
 - Filtered estimates:
   
+* Exercise 4
+** Incomplete observations
+  - $P(R_0) = (0.5, 0.5)$
+  - $P(R_t \mid R_{t-1} = t) = (0.7, 0.3)$
+  - $P(R_t \mid R_{t-1} = f) = (0.3, 0,7)$
+  - $P(U_t \mid R_t = t) = (0.9, 0.1)$
+  - $P(U_t \mid R_t = f) = (0.2, 0.8)$
+
+$S_1 = U \;\; \neg U \;\; U$
+
+$S_2 = U \;\; \neg U \;\; \neg U$ 
+
+Forward og backward hvor C er normaliseringskonstant:
+- $P(R_0 = i\mid S) = \alpha_i(i)\beta_i(i) \cdot C$
+- $P(R_0 \mid S_1) = (0.4827, 0.0745) \cdot C$
+- $P(R_0 \mid S_2) = (0.4692, 0.0775) \cdot C$
+- $P(R_0 \mid S) = (0.9519, 0.1520) \cdot  C = (0.8623, 0.1377)$
+
+Næste skridt
+- $P(R_{t-1}, R_t \mid S) = \alpha(t-1) P(R_t \mid R_{t-1}) P(U_T \mid R_t) \beta(t)$
+- $P(R_1, R_2 \mid S_1) = \alpha(1)P(R_2 \mid R_1)P(U_2 \mid R_2)\beta(2)$
+
+$forward_0 \cdot backward_1 \cdot Trans \cdot Sensor$
+- 0,8182 \cdot 0.3695 \cdot 0.7 \cdot 0.1 = 0.0212 
+- 0,8182 \cdot 0.6305 \cdot 0.3 \cdot 0.8 = 0.1256 
+- 0,1818 \cdot 0.3695 \cdot 0.3 \cdot 0.1 = 0.0020 
+- 0,1818 \cdot 0.6395 \cdot 0.7 \cdot 0.8 = 0.0642 
+
+
+$forward_1 \cdot backward_2 \cdot Trans \cdot Sensor$
+- 0.1738 \cdot 0.6273 \cdot 0.7 \cdot 0.9 = 0.0687 
+- 0,1738 \cdot 0.3737 \cdot 0.3 \cdot 0.2 = 0.0039 
+- 0,8268 \cdot 0.6273 \cdot 0.3 \cdot 0.9 = 0.1400 
+- 0,8268 \cdot 0.3737 \cdot 0.7 \cdot 0.2 = 0.0433 
+
+New trans model
+- $P(R_t = T \mid R_{t-1} = T) = 0.0212 + 0.0687 = 0.0899$
+- $P(R_t = F \mid R_{t-1} = T) = 0.0687 + 0.0039 = 0.1295$
+- $P(R_t = T \mid R_{t-1} = F) = 0.0020 + 0.1400 = 0.1420$
+- $P(R_t = F \mid R_{t-1} = F) = 0.0642 + 0.0433 = 0.1075$
+
+New Sensor model
