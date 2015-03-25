@@ -1,4 +1,4 @@
-% Created 2015-03-23 man 15:41
+% Created 2015-03-25 ons 13:49
 \documentclass[colorlinks=true,linkcolor=blue]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -240,7 +240,57 @@ New trans model
 \item $P(R_t = T \mid R_{t-1} = F) = 0.0020 + 0.1400 = 0.1420$
 \item $P(R_t = F \mid R_{t-1} = F) = 0.0642 + 0.0433 = 0.1075$
 \end{itemize}
+\begin{center}
+\begin{tabular}{l|rr}
+ & T & F\\
+\hline
+T & 0.0899 & 0.1295\\
+F & 0.1420 & 0.1075\\
+\end{tabular}
+\end{center}
 
 New Sensor model
+
+Umbrella is true:
+\begin{itemize}
+\item $P(R_1 \mid S_{1_{top}}) = 0.8182 \cdot 0.5900 = 0.4827$
+\item $P(R_1 \mid S_{1_{bot}}) = 0.1818 \cdot 0.4100 = 0.0745$
+\item $P(R_3 \mid S_{1_{top}}) = 0.7251 \cdot 0.6273 = 0.4549$
+\item $P(R_3 \mid S_{1_{bot}}) = 0.2749 \cdot 0.3727 = 0.2702$
+\item $P(R_1 \mid S_{2_{top}}) = 0.8182 \cdot 0.5735 = 0.4692$
+\item $P(R_1 \mid S_{2_{bot}}) = 0.1818 \cdot 0.4264 = 0.0775$
+\end{itemize}
+
+Summation of top and bottom respectively:
+\begin{itemize}
+\item 0.4827 + 0.4549 + 0.4692 = 1.4068
+\item 0.0745 + 0.2702 + 0.0775 = 0.4222
+\end{itemize}
+
+Umbrella is false:
+\begin{itemize}
+\item $P(R_2 \mid S_{1_{top}}) = 0.1738 \cdot 0.3695 = 0.0642$
+\item $P(R_2 \mid S_{1_{bot}}) = 0.8262 \cdot 0.6305 = 0.5209$
+\item $P(R_2 \mid S_{2_{top}}) = 0.1738 \cdot 0.3247 = 0.0564$
+\item $P(R_2 \mid S_{2_{bot}}) = 0.8262 \cdot 0.6753 = 0.5579$
+\item $P(R_3 \mid S_{2_{top}}) = 0.0683 \cdot 0.3444 = 0.0235$
+\item $P(R_3 \mid S_{2_{bot}}) = 0.9317 \cdot 0.6556 = 0.6108$
+\end{itemize}
+
+Summation of top and bottom respectively:
+\begin{itemize}
+\item 0.0642 + 0.0564 + 0.0235 = 0.1441
+\item 0.5209 + 0.5579 + 0.6108 = 1.6896
+\end{itemize}
+
+Normalisation of table:
+\begin{center}
+\begin{tabular}{l|rr}
+ & T & F\\
+\hline
+T & 0.9071 & 0.0929\\
+F & 0.1999 & 0.8001\\
+\end{tabular}
+\end{center}
 % Emacs 24.4.1 (Org mode 8.2.10)
 \end{document}
