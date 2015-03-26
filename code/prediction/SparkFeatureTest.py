@@ -71,8 +71,8 @@ class SparkFeatureTest:
 		parsedEval_3 = eval_data3.map(lambda line: self.__parsePoint__(line, testfeatures))
 
 		# Build the model
-		#model = LogisticRegressionWithSGD.train(parsedData)
-		model = pickle.load(open(self.outputpath + testname +"model.p","rb"))
+		model = LogisticRegressionWithSGD.train(parsedData)
+		
 		self.__save_model__(model, testname)
 		#Evalueates the traning and saves all results
 		file = open(self.outputpath + testname + ".txt",'w')
