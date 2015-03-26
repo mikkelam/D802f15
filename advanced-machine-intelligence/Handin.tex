@@ -1,4 +1,4 @@
-% Created 2015-03-18 ons 12:03
+% Created 2015-03-25 ons 13:49
 \documentclass[colorlinks=true,linkcolor=blue]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -185,5 +185,112 @@ end
 \begin{itemize}
 \item Filtered estimates:
 \end{itemize}
+
+\section{Exercise 4}
+\label{sec-4}
+\subsection{Incomplete observations}
+\label{sec-4-1}
+\begin{itemize}
+\item $P(R_0) = (0.5, 0.5)$
+\item $P(R_t \mid R_{t-1} = t) = (0.7, 0.3)$
+\item $P(R_t \mid R_{t-1} = f) = (0.3, 0,7)$
+\item $P(U_t \mid R_t = t) = (0.9, 0.1)$
+\item $P(U_t \mid R_t = f) = (0.2, 0.8)$
+\end{itemize}
+
+$S_1 = U \;\; \neg U \;\; U$
+
+$S_2 = U \;\; \neg U \;\; \neg U$ 
+
+Forward og backward hvor C er normaliseringskonstant:
+\begin{itemize}
+\item $P(R_0 = i\mid S) = \alpha_i(i)\beta_i(i) \cdot C$
+\item $P(R_0 \mid S_1) = (0.4827, 0.0745) \cdot C$
+\item $P(R_0 \mid S_2) = (0.4692, 0.0775) \cdot C$
+\item $P(R_0 \mid S) = (0.9519, 0.1520) \cdot  C = (0.8623, 0.1377)$
+\end{itemize}
+
+Næste skridt
+\begin{itemize}
+\item $P(R_{t-1}, R_t \mid S) = \alpha(t-1) P(R_t \mid R_{t-1}) P(U_T \mid R_t) \beta(t)$
+\item $P(R_1, R_2 \mid S_1) = \alpha(1)P(R_2 \mid R_1)P(U_2 \mid R_2)\beta(2)$
+\end{itemize}
+
+$forward_0 \cdot backward_1 \cdot Trans \cdot Sensor$
+\begin{itemize}
+\item 0,8182 $\cdot$ 0.3695 $\cdot$ 0.7 $\cdot$ 0.1 = 0.0212
+\item 0,8182 $\cdot$ 0.6305 $\cdot$ 0.3 $\cdot$ 0.8 = 0.1256
+\item 0,1818 $\cdot$ 0.3695 $\cdot$ 0.3 $\cdot$ 0.1 = 0.0020
+\item 0,1818 $\cdot$ 0.6395 $\cdot$ 0.7 $\cdot$ 0.8 = 0.0642
+\end{itemize}
+
+
+$forward_1 \cdot backward_2 \cdot Trans \cdot Sensor$
+\begin{itemize}
+\item 0.1738 $\cdot$ 0.6273 $\cdot$ 0.7 $\cdot$ 0.9 = 0.0687
+\item 0,1738 $\cdot$ 0.3737 $\cdot$ 0.3 $\cdot$ 0.2 = 0.0039
+\item 0,8268 $\cdot$ 0.6273 $\cdot$ 0.3 $\cdot$ 0.9 = 0.1400
+\item 0,8268 $\cdot$ 0.3737 $\cdot$ 0.7 $\cdot$ 0.2 = 0.0433
+\end{itemize}
+
+New trans model
+\begin{itemize}
+\item $P(R_t = T \mid R_{t-1} = T) = 0.0212 + 0.0687 = 0.0899$
+\item $P(R_t = F \mid R_{t-1} = T) = 0.0687 + 0.0039 = 0.1295$
+\item $P(R_t = T \mid R_{t-1} = F) = 0.0020 + 0.1400 = 0.1420$
+\item $P(R_t = F \mid R_{t-1} = F) = 0.0642 + 0.0433 = 0.1075$
+\end{itemize}
+\begin{center}
+\begin{tabular}{l|rr}
+ & T & F\\
+\hline
+T & 0.0899 & 0.1295\\
+F & 0.1420 & 0.1075\\
+\end{tabular}
+\end{center}
+
+New Sensor model
+
+Umbrella is true:
+\begin{itemize}
+\item $P(R_1 \mid S_{1_{top}}) = 0.8182 \cdot 0.5900 = 0.4827$
+\item $P(R_1 \mid S_{1_{bot}}) = 0.1818 \cdot 0.4100 = 0.0745$
+\item $P(R_3 \mid S_{1_{top}}) = 0.7251 \cdot 0.6273 = 0.4549$
+\item $P(R_3 \mid S_{1_{bot}}) = 0.2749 \cdot 0.3727 = 0.2702$
+\item $P(R_1 \mid S_{2_{top}}) = 0.8182 \cdot 0.5735 = 0.4692$
+\item $P(R_1 \mid S_{2_{bot}}) = 0.1818 \cdot 0.4264 = 0.0775$
+\end{itemize}
+
+Summation of top and bottom respectively:
+\begin{itemize}
+\item 0.4827 + 0.4549 + 0.4692 = 1.4068
+\item 0.0745 + 0.2702 + 0.0775 = 0.4222
+\end{itemize}
+
+Umbrella is false:
+\begin{itemize}
+\item $P(R_2 \mid S_{1_{top}}) = 0.1738 \cdot 0.3695 = 0.0642$
+\item $P(R_2 \mid S_{1_{bot}}) = 0.8262 \cdot 0.6305 = 0.5209$
+\item $P(R_2 \mid S_{2_{top}}) = 0.1738 \cdot 0.3247 = 0.0564$
+\item $P(R_2 \mid S_{2_{bot}}) = 0.8262 \cdot 0.6753 = 0.5579$
+\item $P(R_3 \mid S_{2_{top}}) = 0.0683 \cdot 0.3444 = 0.0235$
+\item $P(R_3 \mid S_{2_{bot}}) = 0.9317 \cdot 0.6556 = 0.6108$
+\end{itemize}
+
+Summation of top and bottom respectively:
+\begin{itemize}
+\item 0.0642 + 0.0564 + 0.0235 = 0.1441
+\item 0.5209 + 0.5579 + 0.6108 = 1.6896
+\end{itemize}
+
+Normalisation of table:
+\begin{center}
+\begin{tabular}{l|rr}
+ & T & F\\
+\hline
+T & 0.9071 & 0.0929\\
+F & 0.1999 & 0.8001\\
+\end{tabular}
+\end{center}
 % Emacs 24.4.1 (Org mode 8.2.10)
 \end{document}
