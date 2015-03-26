@@ -1,3 +1,5 @@
+import os
+
 class WekaConverter:
     def __init__(self, path, relation_name="Lol"):
         self.path = path
@@ -8,6 +10,9 @@ class WekaConverter:
         self.lines.append([feature_list, label])
 
     def write(self):
+        dir = os.path.dirname(self.path)
+        if not os.path.exists(dir):
+            os.makedirs(dir)
         with open(self.path, "w") as file:
             # write header
             header = "@RELATION %s\n" % self.relation_name
