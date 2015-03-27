@@ -16,7 +16,7 @@ sensorModel = [0.9, 0.1;
 
 % Vector with observations of the sensor variables. States are numbered
 % from 1 and onwards.
-data = [1, 1, 2, 1, 1];
+data = [1, 2, 1];
 
 
 % Instantiate the HMM class with the probabilities specified above
@@ -29,12 +29,14 @@ hmm=hmm.forward(data);
 
 hmm=hmm.backward(data);
 % Display some results
+hmm=hmm.viterbi(data);
 
-disp(hmm.backwardMessages);
-disp('Probabilities obtained by filtering:');
-for i=1:length(data),
+disp(hmm.viterbiMessages);
+%disp(hmm.backwardMessages);
+%disp('Probabilities obtained by filtering:');
+%for i=1:length(data),
    %fprintf('P(R%d=1|e1:%d) = %1.3f\n',i,i,hmm.forwardMessages(1,i));
-end
+%end
 
 %figure();
 %plot(hmm.forwardMessages(1,:));
