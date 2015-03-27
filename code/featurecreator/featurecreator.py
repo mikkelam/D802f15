@@ -11,7 +11,8 @@ class FeatureType:
     FIRST_BARON = 8,
     FIRST_INHIBITOR = 9,
     FIRST_TOWER = 10,
-    AVG_RANK = 11
+    AVG_RANK = 11,
+    PATCH_VERSION = 12
 
 class FeatureCreator:
 
@@ -31,7 +32,9 @@ class FeatureCreator:
             FeatureType.FIRST_BARON: lambda: self.__first_something("Baron"),
             FeatureType.FIRST_TOWER: lambda: self.__first_something("Tower"),
             FeatureType.FIRST_INHIBITOR: lambda: self.__first_something("Inhibitor"),
-            FeatureType.AVG_RANK: lambda: self.__avg_rank()
+            FeatureType.AVG_RANK: lambda: self.__avg_rank(),
+            FeatureType.PATCH_VERSION: lambda: self.__patch_version(),
+               
         }
 
     def set_match(self, json_object):
@@ -138,3 +141,12 @@ class FeatureCreator:
         self.__add_feature(feature_name)
 
 
+    def __patch_version(self):
+        return self.__add_feature("PATCH-VERSION-" + self.match['matchVersion'])
+
+
+
+
+
+
+        
