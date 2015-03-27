@@ -20,37 +20,53 @@ def matchfilter(line):
 		return False
 
 # Load and parse the data
-def parsePoint(single_match):
+def parsePoint(single_match, testfeatures, redlabel=False):
 	#Generates the features of the game
+	match = json.loads(single_match)
 	feature_creator = FeatureCreator()
-	feature_creator.set_match(single_match)
-	feature_creator.make_features(FeatureType.FIRST_BLOOD)
-	feature_creator.make_features(FeatureType.RED_TEAM_SINGLES)
-	feature_creator.make_features(FeatureType.BLUE_TEAM_SINGLES)
-	feature_creator.make_features(FeatureType.RED_TEAM_PAIRS)
-	feature_creator.make_features(FeatureType.BLUE_TEAM_PAIRS)
+	feature_creator.set_match(match)
+	
+	for feature in testfeatures:
+		feature_creator.make_features(feature)
+	
 	#Creates the input to a sparce vector from the feature creator
 	features = {}
-	for feature in feature_creator.sparse_feature_list:
+	for feature in feature_creator.current_match_features:
 		features[feature] = 1 
 	
-	return LabeledPoint(int(feature_creator.label), SparseVector(feature_creator.feature_count, features)) 
+	label = feature_creator.label
+	if redlabel:
+		label = not label
+	return LabeledPoint(int(label), SparseVector(3000, features)) 
+	
+	# Load and parse the data
+
 	
 sc = SparkContext("local", "Simple App")
 data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/traning/*.txt')))
 
 traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.9, 0.1], 1)
 
-parsedData = traning_data.map(parsePoint)
+blueparsedData = traning_data.map(lambda line: parsePoint(line, [FeatureType.BLUE_TEAM_SINGLES]))
+redparsedData = traning_data.map(lambda line: parsePoint(line, [FeatureType.RED_TEAM_SINGLES], True))
 
+doubleparsedData = traning_data.map(lambda line: parsePoint(line, [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES]))  #blueparsedData.union(redparsedData)
+#redparsedData
 # Build the model
+#parsedData = traning_data.map(lambda line: parsePoint(line, [FeatureType.BLUE_TEAM_SINGLES]))
+model = LogisticRegressionWithSGD.train(doubleparsedData)
 
-model = LogisticRegressionWithSGD.train(parsedData)
 
-
-test_count = parsedData.count()
+double_count = doubleparsedData.count()
 #print float(eval_parsedData.count())
-print test_count
+prediction = doubleparsedData.map(lambda p: (p.label,  model.predict(p.features)))
+error = prediction.filter(lambda (v, p): v != p).count()
+	
+outputpath ="/Users/andreaseriksen/Desktop/Project F15/code/data/eval/"
+
+filedouble = open(outputpath + "representation_test_single" + ".txt",'w')
+filedouble.write(" count: " + str(double_count) + "\n")
+filedouble.write(" prediction error: " + str(error)+"\n")
 	#print("Training Error = " + str(trainErr))
 
 	#print "test", test_count
