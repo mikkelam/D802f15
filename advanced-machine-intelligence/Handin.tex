@@ -1,4 +1,4 @@
-% Created 2015-03-25 ons 13:49
+% Created 2015-03-30 man 15:37
 \documentclass[colorlinks=true,linkcolor=blue]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -292,5 +292,32 @@ T & 0.9071 & 0.0929\\
 F & 0.1999 & 0.8001\\
 \end{tabular}
 \end{center}
+\section{Exercise 5}
+\label{sec-5}
+\subsection{Slide 19 example}
+\label{sec-5-1}
+
+The formula: $\gamma = 0.9$
+\begin{itemize}
+\item $U³(x,y) = R(x,y) + \gamma \cdot max_{a \in \{left,right,up,down\} } \sum_{s'\in S} P(s' \mid a,s) U^2(s')$
+\item U³(2,1) = -0.1 + 0.9 $\cdot$ max(0.7 $\cdot$ -0.63 + 0.1 $\cdot$ -5.17 + 0.1 $\cdot$ -0.19 + 0.1 $\cdot$ -0.19, 0.7 $\cdot$ -5.17 + 0.1 $\cdot$ -0.63 + 0.1 $\cdot$ -0.19 + 0.1 $\cdot$ -0.19, 0.7 $\cdot$ -0.19 + 0.1 $\cdot$ -0.63 + 0.1 $\cdot$ -5.17 + 0.1 $\cdot$ -0.19, 0.7 $\cdot$ -0.19 + 0.1 $\cdot$ -0.63 + 0.1 $\cdot$ -5.17 + 0.1 $\cdot$ -0.19)
+\item U³(2,1) = -0.1 + 0.9 $\cdot$ max(-0.996,-3.72,-0.732,-0.732)
+\item U³(2,1) = -0.7588
+\end{itemize}
+\begin{center}
+\begin{tabular}{r|r|r|r|}
+ & 1 & 2 & 3\\
+\hline
+1 & 3.42 & 6.23 & 10\\
+\hline
+2 & -0.76 & -1.07 & 5.24\\
+\hline
+3 & -0.35 & -0.77 & 2.79\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Policy iteration}
+\label{sec-5-2}
 % Emacs 24.4.1 (Org mode 8.2.10)
 \end{document}
