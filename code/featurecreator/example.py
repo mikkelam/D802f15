@@ -17,12 +17,11 @@ feature_types = [FeatureType.BLUE_TEAM_SINGLES,
                  FeatureType.RED_TEAM_SINGLES]
 feature_creator.set_feature_types(feature_types)
 wc = WekaConverter(outputpath)
-games_to_extract = 10
-
+games_to_extract = 50000
 for f in os.listdir(inputpath):
     if not f.endswith(".txt"):
         continue
-    with open(inputpath + f, 'r', encoding="UTF-8") as file:
+    with open(inputpath + f, 'r', encoding="latin-1") as file:
         for line in file:
             if games_to_extract <= 0:
                 break
@@ -31,7 +30,6 @@ for f in os.listdir(inputpath):
             except:
                 print("invalid json")
                 continue
-
             if not mf.passes(single_match):
                 continue
             feature_creator.set_match(single_match)
