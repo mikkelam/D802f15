@@ -144,12 +144,27 @@ Where $pval^{\overline{w}}(e,Y) = f(\sum_i w_i \times val(e,X_i))$.
 
 
 \subsection{Regularization}
-% regularization
+To combat the problem of overfitting, we can use a method called regularization.
+In regularization we penalize large weights, by adding the following term to the cost function.
+
+% insert two pictures that show how regularization solves the overfitting problem.
+
+$$\lambda \sum_{w_i \in \overline{w}} w_i^2$$
+
+Where the regularization constant $\lambda$ scales the penalty. 
+The new cost function looks like this.
+
+$$Error_E(\overline{w}) = \sum_{e \in E} (val(e,Y) - pval^{\overline{w}}(e,Y))^2 + \lambda \sum_{w_i \in \overline{w}} w_i^2$$
 
 
-\subsection{Large Datasets}
+\begin{flushright}
+\cite[online course]{courseraAI}
+\end{flushright}
+
+%\subsection{Large Datasets}
 % Large datasets
 
+% Stochastic regression
 
 
 
