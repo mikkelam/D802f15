@@ -1,5 +1,5 @@
 import json
-import os
+import io
 from prediction.matchfilter import MatchFilter
 from featurecreator import *
 from wekaconverter import *
@@ -21,7 +21,7 @@ games_to_extract = 50000
 for f in os.listdir(inputpath):
     if not f.endswith(".txt"):
         continue
-    with open(inputpath + f, 'r', encoding="latin-1") as file:
+    with io.open(inputpath + f, 'r', encoding="latin-1") as file:
         for line in file:
             if games_to_extract <= 0:
                 break
