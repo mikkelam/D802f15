@@ -32,14 +32,14 @@ class SparkFeatureTest:
 		
 		match = json.loads(line)
 		self.feature_creator.set_match(match)
-		for feature in features:
-			self.feature_creator.make_features(feature)
+		#for feature in features:
+		#	self.feature_creator.make_features(feature)
 		#feature_creator.make_features(FeatureType.RED_TEAM_SINGLES)
 		
 		#Sets the value of all present features to 1 
 		features = {}
-		for feature in self.feature_creator.current_match_features:
-			features[feature] = 1 
+		#for feature in self.feature_creator.current_match_features:
+		#	features[feature] = 1 
 		return LabeledPoint(int(self.feature_creator.label), SparseVector(30000, features)) 
 		
 		
@@ -62,6 +62,7 @@ class SparkFeatureTest:
 	def run(self, testname, testfeatures, sparkcontext):
 		data = sparkcontext.textFile(','.join(glob.glob(self.inputpath + '*.txt')))
 		self.feature_creator = FeatureCreator()
+		self.feature_creator.set_feature_types(testfeatures)
 		traning_data, eval_data1, eval_data2, eval_data3 = data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.1, 0.1, 0.1], 1)
 
 		#Maps all data to parsePoints 
