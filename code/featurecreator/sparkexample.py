@@ -20,37 +20,68 @@ def matchfilter(line):
 		return False
 
 # Load and parse the data
-def parsePoint(single_match):
+def parsePoint(single_match, testfeatures, feature_creator, redlabel=False):
 	#Generates the features of the game
-	feature_creator = FeatureCreator()
-	feature_creator.set_match(single_match)
-	feature_creator.make_features(FeatureType.FIRST_BLOOD)
-	feature_creator.make_features(FeatureType.RED_TEAM_SINGLES)
-	feature_creator.make_features(FeatureType.BLUE_TEAM_SINGLES)
-	feature_creator.make_features(FeatureType.RED_TEAM_PAIRS)
-	feature_creator.make_features(FeatureType.BLUE_TEAM_PAIRS)
+	match = json.loads(single_match)
+	feature_creator.set_match(match)
+	
+	for feature in testfeatures:
+		feature_creator.make_features(feature)
+	
 	#Creates the input to a sparce vector from the feature creator
 	features = {}
-	for feature in feature_creator.sparse_feature_list:
+	for feature in feature_creator.current_match_features:
 		features[feature] = 1 
 	
-	return LabeledPoint(int(feature_creator.label), SparseVector(feature_creator.feature_count, features)) 
+	label = feature_creator.label
+	if redlabel:
+		label = not label
+	return LabeledPoint(int(label), SparseVector(3000, features)) 
+	
+	# Load and parse the data
+
 	
 sc = SparkContext("local", "Simple App")
 data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/traning/*.txt')))
 
 traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.9, 0.1], 1)
 
-parsedData = traning_data.map(parsePoint)
+fc = FeatureCreator()
+blueparsedData = traning_data.map(lambda line: parsePoint(line, [FeatureType.BLUE_TEAM_SINGLES], fc))
+redparsedData = traning_data.map(lambda line: parsePoint(line, [FeatureType.RED_TEAM_SINGLES], fc, True))
+blueeval = eval_data.map(lambda line: parsePoint(line, [FeatureType.BLUE_TEAM_SINGLES], fc))
+redeval = eval_data.map(lambda line: parsePoint(line, [FeatureType.RED_TEAM_SINGLES], fc, True))
+doubleparsedData = blueparsedData.union(redparsedData)
+doubleeval = blueeval.union(redeval)
 
+#redparsedData
 # Build the model
+fc = FeatureCreator()
+parsedData = traning_data.map(lambda line: parsePoint(line, [FeatureType.BLUE_TEAM_SINGLES,FeatureType.RED_TEAM_SINGLES], fc))
+singleeval = eval_data.map(lambda line: parsePoint(line, [FeatureType.BLUE_TEAM_SINGLES,FeatureType.RED_TEAM_SINGLES], fc))
 
-model = LogisticRegressionWithSGD.train(parsedData)
+outputpath ="/Users/andreaseriksen/Desktop/Project F15/code/data/eval/"
 
 
-test_count = parsedData.count()
-#print float(eval_parsedData.count())
-print test_count
+doublemodel = LogisticRegressionWithSGD.train(doubleparsedData)
+singlemodel = LogisticRegressionWithSGD.train(parsedData)
+
+
+def __eval__(parsedData, model, name):
+	count = parsedData.count()
+	#print float(eval_parsedData.count())
+	prediction = parsedData.map(lambda p: (p.label,  model.predict(p.features)))
+	error = prediction.filter(lambda (v, p): v != p).count()
+	
+	outputpath ="/Users/andreaseriksen/Desktop/Project F15/code/data/eval/"
+
+	file = open(outputpath + name + ".txt",'w')
+	file.write("count: " + str(count) + "\n")
+	file.write("prediction error: " + str(error)+"\n")
+	file.close()
+	
+__eval__(singleeval, singlemodel, "singlepoint_test_eval")
+__eval__(doubleeval, doublemodel, "doublepoint_test_eval")
 	#print("Training Error = " + str(trainErr))
 
 	#print "test", test_count
