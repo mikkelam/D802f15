@@ -18,12 +18,12 @@ def duplicate_filter(match):
 	return True
 		
 sc = SparkContext("spark://node1:7077")
-data = sc.textFile('hdfs://node1:9000/user/hduser/mined-data/*')
+data = sc.textFile('hdfs://node1:9000/user/hduser/*.txt')
 
 
-filtered_data = data.filter(lambda line: json_filter(line))
 
-result = filtered_data.map(lambda line: json_filter(line)).reduceByKey(lambda a, b: a+b)
+
+result = data.map(lambda line: json_filter(line)).reduceByKey(lambda a, b: a+b)
 duplicates = result.filter(lambda (a, b): b > 1)
 #number_of_lines = filtered_data.count()
 print duplicates.collect()
