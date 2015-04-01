@@ -27,6 +27,9 @@ classdef HMM
         % Here we store the backward messages.
         backwardMessages;
         
+        % Here we store viterbi
+        viterbiMessages;
+        
         
     end
     
@@ -49,6 +52,7 @@ classdef HMM
             
             obj.forwardMessages = NaN;
             obj.backwardMessages = NaN;
+            obj.viterbiMessages = NaN;
         end
         
         
@@ -86,8 +90,16 @@ classdef HMM
             end
         end
         
-        
-            
+        function obj = viterbi(obj, data)
+            obj.forward(data);
+            obj.backward(data);
+           
+            J = obj.forwardMessages .* obj.backwardMessages(:, 1:end-1);
+            N = repmat(sum(J), obj.noHidden, 1);
+            obj.viterbiMessages = J ./ N
+           
+        end
+                    
         
     end
     
