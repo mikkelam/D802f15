@@ -83,6 +83,7 @@ class FeatureCreator:
                 ids.append(FeatureCreator.champion_ids.index(participant["championId"]))
         return ids
 
+    @staticmethod
     def get_champion_name(index):
         lol_champion_index = str(FeatureCreator.champion_ids[index])
         return FeatureCreator.champion_names[lol_champion_index]
