@@ -1,10 +1,10 @@
-\section{Classification}\label{sec:classification}
+\subsection{Classification}\label{sec:classification}
 
 % intro
 
 % features - target(class)
 
-\subsection{Linear Regression}\label{sec:linreg}
+\subsubsection{Linear Regression}\label{sec:linreg}
 % linear regression
 The goal of linear regression is to fit a linear function to a set of input-output pairs. 
 If the input features are $X_1,X_2 \dots, X_n$ and weights $\overline{w} = w_0, w_1, \dots, w_n$.
@@ -21,7 +21,7 @@ give us the predicted value for the target feature $Y$ for the training example 
 In order to avoid having a special case we assume a feature $X_0$ with $val(e,X_0)=1$.~\cite[p. 304]{AI2010}
 
 
-\subsection{Cost Function}\label{sec:costfun}
+\subsubsection{Cost Function}\label{sec:costfun}
 % cost function
 A cost function is a measure on how much it will ``cost'' if the prediction for a given example is wrong.
 Three basic cost functions exist: the absolute error, the sum-of-squares error and 
@@ -60,7 +60,7 @@ In the linear case these weights can be found analytically by taking the partial
 to each weight, setting it equal to zero and solving for the weight.
 However when using a more complex model or a large set of features, a more generel iterative solution is required.
 
-\subsubsection{Gradient descent}\label{sec:gradient}
+\paragraph{Gradient descent}
 
 Another way of finding the weights that minimise the cost function, is called gradient descent.
 This is an iterative approach that in each step takes the decreases of the weights in
@@ -82,14 +82,14 @@ Where $\delta = val(e,Y) - pval^{\overline{w}}(e,Y)$ and the constant 2 has been
 \cite[p. 305]{AI2010}
 \end{flushright}
 
-\subsection{Logistic Regression}\label{sec:logistic}
+\subsubsection{Logistic Regression}\label{sec:logistic}
 % logistic function
 
 For classification we use an activation function, whose purpose is to squash the result into the interval $(0,1)$.
 
 \[ f^{\overline{w}}(X_1, X_2, \dots X_n) = f(w_0 + w_1 \times X_1 + w_2 \times X_2 + \cdots + w_n \times X_n) \]
 
-\subsubsection{Activation Functions}
+\paragraph{Activation Functions}
 
 The most basic activation function is the so called step function defined as 
 
@@ -133,7 +133,7 @@ Where $pval^{\overline{w}}(e,Y) = f(\sum_i w_i \times val(e,X_i))$.
 \end{flushright}
 
 
-\subsection{Regularisation}\label{sec:regular}
+\subsubsection{Regularisation}\label{sec:regular}
 To combat the problem of overfitting, we can use a method called regularisation.
 In regularisation we penalise large weights, by adding the following term to the cost function.
 
