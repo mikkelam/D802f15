@@ -1,13 +1,18 @@
 \section{Setting up Hadoop and Apache Spark}
 \label{sec:hadoop}
-All machines in the cluster must be running Debian Wheezy 7.0 32-bit (linux) and connected in a switch with static ip setup. The following packages must be installed on all machines as well: openssh, openssh-server, openjdk-7-jre, openjdk-7-jdk. One machine must be chosen as the master.
-
-We first set up a new user for our cluster setup, this is considered good practice. The \emph{username} must be the same name across all machines.
+To set up a cluster with equal settings to ours, all the machines must be running Debian Wheezy 7.0 32-bit (linux) and connected via switch with static ip. In addiction, one machine must be chosen as the master and the following packages must be installed on all machines:
+\begin{itemize}
+\item openssh 
+\item openssh-server 
+\item openjdk-7-jre 
+\item openjdk-7-jdk 
+\end{itemize}
+Now set up a new user for the cluster setup, this is considered good practice. The \emph{username} must be the same name across all machines.
 \lstset{language=bash}
 \begin{lstlisting}
-  adduser ``username'' % Maybe rethink these quotes?
-\end{lstlisting}
-To easier work with the IP's of the machines we set up a \emph{hosts} file:
+  adduser ``username''
+\end{lstlisting} %Maybe rethink quotes in the listing
+To easier work with the IP's of the machines, set up a \emph{hosts} file:
 \begin{verbatim}
 127.0.0.1 localhost
 
@@ -16,7 +21,10 @@ ip node2
 ip node3
 ...
 \end{verbatim}
-Which is saved in hosts : \begin{verbatim}/etc/hosts\end{verbatim}
+Which is saved in hosts: 
+\begin{verbatim}
+/etc/hosts
+\end{verbatim}
 Following that, each machine needs ssh configured, where \emph{node-id} is the alias created in the \emph{hosts} file.
 \begin{lstlisting}
   ssh-keygen

@@ -1,0 +1,89 @@
+\section{Classification}\label{sec:classification}
+In this section we present alternative classification models that can be used instead of logistical regression.
+% intro
+
+% features - target(class)
+
+\subsection{Linear Regression}\label{sec:linreg}
+% linear regression
+The goal of linear regression is to fit a linear function to a set of input-output pairs. 
+If the input features are $X_1,X_2 \dots, X_n$ and weights $\overline{w} = w_0, w_1, \dots, w_n$.
+
+\[f^{\overline{w}}(X_1,X_2, \dots, X_n) = w_0 + w_1 X_1 + w_2 X_2 + \cdots + w_n X_n \]
+
+We will learn the function for each target feature $Y$ separately, so given a set $E$ of examples.
+The function $val(e,X_i)$ give us the value of the feature $X_i$ in example $e \in E$. The function 
+\begin{align*}
+pval^{\overline{w}}(e,Y) &= w_0 + w_1 \text{ val}(e,X_1) + w_2 \text{ val}(e,X_2) + \cdots + w_n \text{ val}(e,X_n) \\
+&= \sum^n_{i=0} w_i \text{ val}(e,X_i)
+\end{align*}
+give us the predicted value for the target feature $Y$ for the training example $e$.
+In order to avoid having a special case we assume a feature $X_0$ with $val(e,X_0)=1$.~\cite[p. 304]{AI2010}
+
+
+\subsection{Cost Function}\label{sec:costfun}
+% cost function
+A cost function is a measure on how much it will ``cost'' if the prediction for a given example is wrong.
+Three basic cost functions exist: the absolute error, the sum-of-squares error and 
+the worst-case error.
+
+The absolute error function provides the sum of all absolute errors on the examples in $E$.
+
+\[AbsErr = \sum_{e \in E}\sum_{Y \in T} |val(e,Y) - pval(e,Y)|\]
+
+This function is always non-negative and only zero when $Y$ is predicted correctly in all examples. 
+
+The sum-of-squares error function assigns a larger error the further a prediction is from the actual value.
+
+\[ SSErr = \sum_{e \in E}\sum_{Y \in T} (val(e,Y) - pval(e,Y))^2 \]
+
+The worst-case error function gives the maximum error predicted for all examples.
+
+\[ MaxErr = \max_{e \in E}\max_{Y \in T} | val(e,Y) - pval(e,Y) | \]
+
+\begin{flushright}
+\cite[p. 290-291]{AI2010}
+\end{flushright}
+
+Using the sum-of-squares error function we get the cost function.
+
+\begin{align*}
+Error_E(\overline{w}) &= \sum_{e \in E} \left(val(e,Y)-pval^{\overline{w}}(e,Y)\right)^2 \\
+&= \sum_{e \in E} \left(val(e,Y)-\sum_{i=0}^n w_i \times val(e,X_i)\right)^2
+\end{align*}
+
+The goal when learning a classification model, is to chose the weights that minimise the error.
+
+\[ \text{argmin}_{\overline{w}} \text{ Error}_E(\overline{w}) \]
+
+In the linear case these weights can be found analytically by taking the partial derivative of the cost function with respect 
+to each weight, setting it equal to zero and solving for the weight.
+However when using a more complex model or a large set of features, a more generel iterative solution is required.
+
+\subsubsection{Gradient descent}
+
+Another way of finding the weights that minimise the cost function, is called gradient descent.
+This is an iterative approach that in each step takes the decreases of the weights in
+proportion to their partial derivative.
+\[ w_i = w_i - \eta \times \frac{\partial \text{ Error}_E(\overline{w})}{\partial w_i} \]
+where $\eta$ is the learning rate.
+
+For the sum-of-squares error function we get
+
+\begin{align*}
+w_i &:= w_i - \eta \times \frac{\partial \sum_{e \in E}\left(val(e,Y) - pval^{\overline{w}}(e,Y)\right)^2}{\partial w_i} \\ %Kolon? //Funder
+&= w_i - \eta \times -2 \times \left(val(e,Y) - pval^{\overline{w}}(e,Y)\right) \times val(e,X_i) \\
+&= w_i + \eta \times \delta \times val(e,X_i)
+\end{align*}
+
+Where $\delta = val(e,Y) - pval^{\overline{w}}(e,Y)$ and the constant 2 has been absorbed into $\eta$.
+
+\begin{flushright}
+\cite[p. 305]{AI2010}
+\end{flushright}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
