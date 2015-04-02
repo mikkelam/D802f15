@@ -23,6 +23,7 @@ class SparkFeatureTest:
 			json_object = json.loads(line)
 			if self.matchfilter.passes(json_object):
 				return True
+			print self.matchfilter.last_discard_reason
 		except:
 			return False
 		return False
