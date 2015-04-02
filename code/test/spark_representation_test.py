@@ -71,7 +71,7 @@ def parsePoint(single_match, features, redlabel=False):
 
 	
 sc = SparkContext("local", "Simple App")
-data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/traning/*.txt')))
+data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/subset/*.txt')))
 
 traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.9, 0.1], 1)
 
