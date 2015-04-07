@@ -5,8 +5,12 @@ When training on 18,000 matches they could correctly predict the outcome of 69.8
 With 50,000 training samples, they almost reached 70 \% correct predictions. Only matches between players of similiar skill levels were considered.
 
 Konstantin Shvachko, et al.\, created Hadoop distributed file system (HDFS), to reliably handle very large data and to stream that data to user application at high bandwidth. They described the architecture and showed that it can successfully handle 25PB of Yahoo enterprice data~\cite{HDFS}.
+Avinash Lakshman and Prashant Malik created an alternative to Hadoop called Cassandra, which uses Amazon's Dynamo scheme~\cite{ApacheCassandra}.
+Vinod Kumar Vavilapalli et al.\ expanded on Hadoop with YARN, which decoupled the programming model from the resource management infrastructure, it also delegates many of the scheduling functions to per-application components~\cite{ApacheHadoopYARN}.
 
-Hadoop MapReduce and different variants have successfully been used for big data problems, by distributing the work load between many nodes in a cluster~\cite{DeanMapReduce}. 
+Hadoop MapReduce and different variants have successfully been used for big data problems, by distributing the work load between many node in a cluster~\cite{DeanMapReduce}. 
+
+
 Matei Zaharia, et al.\ have created Apache Spark and using this framework, the computation time is reduced if the data is being reused, in e.g.\ iterative machine learning or iterative data analysis tools~\cite{ApacheSpark}. 
 
 
