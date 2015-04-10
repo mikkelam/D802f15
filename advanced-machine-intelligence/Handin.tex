@@ -1,4 +1,4 @@
-% Created 2015-04-05 sø 22:05
+% Created 2015-04-10 fre 10:50
 \documentclass[colorlinks=true,linkcolor=blue]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -26,12 +26,12 @@
 \hypersetup{
   pdfkeywords={},
   pdfsubject={},
-  pdfcreator={Emacs 24.3.1 (Org mode 8.2.10)}}
+  pdfcreator={Emacs 24.4.1 (Org mode 8.2.10)}}
 \begin{document}
 
 \maketitle
 
-\section{Water tank}
+\section{Exercise 1}
 \label{sec-1}
 \subsection{Baysian network}
 \label{sec-1-1}
@@ -159,7 +159,7 @@ No flow & 0.93 & 0.06 & 0.05 & 0.02 & 0.02 & 0.02 & 0.02 & 0.02 & 0.02 & 0.02 & 
 \label{sec-1-3}
 We assume that only the controller has access to the water level sensor, and thus we can not manually read the water level through the sensor.
 
-\section{Matlab}
+\section{Exercise 2}
 \label{sec-2}
 \subsection{Forward-backward algorithm}
 \label{sec-2-1}
@@ -194,8 +194,7 @@ function obj = backward(obj, data)
     end
 end
 \end{verbatim}
-
-The result of running the our function on the given demo that forward was run on gives the following result:
+The final step of combining backward and forward has not been implemented at this given time but, the result of running the backwards function on the given demo that forward was run on gives the following result:
 
 \begin{center}
 \begin{tabular}{rrrrrr}
@@ -207,13 +206,15 @@ The result of running the our function on the given demo that forward was run on
 \subsection{HMM for exercise 1}
 \label{sec-2-2}
 \begin{verbatim}
-Trans = [ 0.8, 0.2; 
-	  0.2, 0.8 ];
+Trans = 
+[ 0.8, 0.2; 
+  0.2, 0.8 ];
 Prio = [ 0.6, 0.4 ]';
-Sens = [ 0.02, 0.21; 
-	 0.18, 0.49; 
-	 0.08, 0.09; 
-	 0.72, 0.21 ]';
+Sens = 
+[ 0.02, 0.21; 
+  0.18, 0.49; 
+  0.08, 0.09; 
+  0.72, 0.21 ]';
 
 % 1=yes+red, 2=yes+not red,  3=no+red, 4=no+not red
 Dat = [ 4, 2, 1 ];
@@ -320,22 +321,20 @@ $x = \frac{-1 \pm \sqrt{7}}{2 \cdot 1} =
               x = \frac{-1 - \sqrt{7}}{2 \cdot 1} = -1.823
 \end{cases}$
 
-
 \section{Exercise 4}
 \label{sec-4}
 \subsection{Incomplete observations}
 \label{sec-4-1}
 \begin{itemize}
-\item The starting values:
+\item The Initial values and information:
 \end{itemize}
-
-\begin{flalign*}
+\begin{align*}
   P(R_0) &= (0.5, 0.5)\\
   P(R_t \mid R_{t-1} = t) &= (0.7, 0.3)\\
   P(R_t \mid R_{t-1} = f) &= (0.3, 0,7)\\
   P(U_t \mid R_t = t) &= (0.9, 0.1)\\
   P(U_t \mid R_t = f) &= (0.2, 0.8)
-\end{flalign*}
+\end{align*}
 
 \begin{align*}
 S_1 &= (U, \neg U, U)\\
@@ -343,7 +342,7 @@ S_2 &= (U, \neg U, \neg U)
 \end{align*}
 
 \begin{itemize}
-\item Forward og backward hvor C er normaliseringskonstant:
+\item Forward and backward where C is the normalisation constant:
 \end{itemize}
 \begin{align*}
 P(R_0 = i\mid S) &= \alpha_i(i)\beta_i(i) \cdot C\\
@@ -352,7 +351,7 @@ P(R_0 \mid S_2) &= (0.4692, 0.0775) \cdot C\\
 P(R_0 \mid S) &= (0.9519, 0.1520) \cdot  C = (0.8623, 0.1377)
 \end{align*}
 
-Næste skridt
+Next step on the first observations S$_{\text{1}}$
 \begin{align*}
 P(R_{t-1}, R_t \mid S) &= \alpha(t-1) P(R_t \mid R_{t-1}) P(U_T \mid R_t) \beta(t)\\
 P(R_1, R_2 \mid S_1) &= \alpha(1)P(R_2 \mid R_1)P(U_2 \mid R_2)\beta(2)
@@ -374,7 +373,7 @@ forward_1 \cdot backward_2 \cdot Trans \cdot Sensor &= x\\
 0.8268 \cdot 0.3737 \cdot 0.7 \cdot 0.2 &= 0.0433 
 \end{align*}
 
-New trans model
+This gives us the new transition model:
 \begin{align*}
 P(R_t = T \mid R_{t-1} = T) &= 0.0212 + 0.0687 = 0.0899\\
 P(R_t = F \mid R_{t-1} = T) &= 0.0687 + 0.0039 = 0.1295\\
@@ -390,9 +389,7 @@ F & 0.1420 & 0.1075\\
 \end{tabular}
 \end{center}
 
-New Sensor model
-
-Umbrella is true:
+And new sensor model, where Umbrella is true:
 \begin{align*}
 P(R_1 \mid S_{1_{top}}) &= 0.8182 \cdot 0.5900 = 0.4827\\
 P(R_1 \mid S_{1_{bot}}) &= 0.1818 \cdot 0.4100 = 0.0745\\
@@ -402,13 +399,13 @@ P(R_1 \mid S_{2_{top}}) &= 0.8182 \cdot 0.5735 = 0.4692\\
 P(R_1 \mid S_{2_{bot}}) &= 0.1818 \cdot 0.4264 = 0.0775
 \end{align*}
 
-Summation of top and bottom respectively:
+Summation of top and bottom values respectively:
 \begin{align*}
 0.4827 + 0.4549 + 0.4692 &= 1.4068\\
 0.0745 + 0.2702 + 0.0775 &= 0.4222
 \end{align*}
 
-Umbrella is false:
+And where Umbrella is false:
 \begin{align*}
 P(R_2 \mid S_{1_{top}}) &= 0.1738 \cdot 0.3695 = 0.0642\\
 P(R_2 \mid S_{1_{bot}}) &= 0.8262 \cdot 0.6305 = 0.5209\\
@@ -418,13 +415,13 @@ P(R_3 \mid S_{2_{top}}) &= 0.0683 \cdot 0.3444 = 0.0235\\
 P(R_3 \mid S_{2_{bot}}) &= 0.9317 \cdot 0.6556 = 0.6108
 \end{align*}
 
-Summation of top and bottom respectively:
+Summation of top and bottom values respectively:
 \begin{align*}
 0.0642 + 0.0564 + 0.0235 &= 0.1441\\
 0.5209 + 0.5579 + 0.6108 &= 1.6896
 \end{align*}
 
-Normalisation of table:
+New table after values have been normalised:
 \begin{center}
 \begin{tabular}{l|rr}
  & T & F\\
@@ -467,5 +464,5 @@ U³(2,1) &= -0.7588
 
 \subsection{Policy iteration}
 \label{sec-5-2}
-% Emacs 24.3.1 (Org mode 8.2.10)
+% Emacs 24.4.1 (Org mode 8.2.10)
 \end{document}
