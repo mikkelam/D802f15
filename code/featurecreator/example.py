@@ -17,8 +17,8 @@ feature_types = [FeatureType.BLUE_TEAM_SINGLES,
                  FeatureType.RED_TEAM_SINGLES]
 feature_creator.set_feature_types(feature_types)
 wc = WekaConverter(outputpath)
-games_to_extract = 12000
-skips = 24000
+games_to_extract = 100
+skips = 0
 for f in os.listdir(inputpath):
     if not f.endswith(".txt"):
         continue
