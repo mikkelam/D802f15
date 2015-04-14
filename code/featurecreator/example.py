@@ -5,7 +5,7 @@ from featurecreator import *
 from wekaconverter import *
 
 inputpath = r"C:/Users/Kent/Desktop/D802f15/LoLMiner/LoLMiner/bin/mined-data/" #Path to input files
-outputpath = r"C:/Users/Kent/Desktop/testfiles/output.arff" #path to the output file
+outputpath = r"C:/Users/Kent/Desktop/testfiles/testset.arff" #path to the output file
 
 mf = MatchFilter({"matchMode": ["CLASSIC"],
                           "matchType": ["MATCHED_GAME"],
@@ -17,7 +17,8 @@ feature_types = [FeatureType.BLUE_TEAM_SINGLES,
                  FeatureType.RED_TEAM_SINGLES]
 feature_creator.set_feature_types(feature_types)
 wc = WekaConverter(outputpath)
-games_to_extract = 50000
+games_to_extract = 12000
+skips = 24000
 for f in os.listdir(inputpath):
     if not f.endswith(".txt"):
         continue
@@ -33,9 +34,12 @@ for f in os.listdir(inputpath):
             if not mf.passes(single_match):
                 continue
             feature_creator.set_match(single_match)
+            skips -= 1
+            if skips >= 0:
+                print("skips: " + str(skips))
+                continue
             wc.add(feature_creator.current_match_features, feature_creator.label)
             games_to_extract -= 1
-            print ("Label: " + str(feature_creator.label) + " Features: " + str(feature_creator.current_match_features))
             print ("Games to extract: " + str(games_to_extract))
 wc.set_feature_names(feature_creator.get_all_feature_names())
 wc.write()
