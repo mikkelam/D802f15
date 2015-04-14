@@ -35,7 +35,7 @@ class FeatureCreator:
             FeatureType.FIRST_INHIBITOR: lambda: self.__first_something("Inhibitor"),
             FeatureType.BEST_RANK: lambda: self.__best_rank(),
             FeatureType.PATCH_VERSION: lambda: self.__patch_version(),
-            FeatureType.PATCH_VERSION: lambda: self.__spell_champion_combo(), 
+            FeatureType.SPELL_CHAMPION_COMBO: lambda: self.__spell_champion_combo(), 
 
         }
         self.feature_init_functions = {
@@ -51,7 +51,7 @@ class FeatureCreator:
             FeatureType.FIRST_INHIBITOR: lambda: self.__init_something("Inhibitor"),
             FeatureType.BEST_RANK: lambda: self.__init_best_rank(),
             FeatureType.PATCH_VERSION: lambda: self.__init_patch_version(),
-            FeatureType.PATCH_VERSION: lambda: self.__init_spell_champion_combo(),   
+            FeatureType.SPELL_CHAMPION_COMBO: lambda: self.__init_spell_champion_combo(),   
         }
 
     def set_feature_types(self, feature_types):
