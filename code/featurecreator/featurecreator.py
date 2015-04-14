@@ -18,6 +18,8 @@ class FeatureCreator:
     champion_ids = [432, 266, 103, 84, 12, 32, 34, 1, 22, 268, 53, 63, 201, 51, 69, 31, 42, 122, 131, 36, 119, 60, 28, 81, 9, 114, 105, 3, 41, 86, 150, 79, 104, 120, 74, 39, 40, 59, 24, 126, 222, 429, 43, 30, 38, 55, 10, 85, 121, 96, 7, 64, 89, 127, 236, 117, 99, 54, 90, 57, 11, 21, 82, 25, 267, 75, 111, 76, 56, 20, 2, 61, 80, 78, 133, 33, 421, 58, 107, 92, 68, 13, 113, 35, 98, 102, 27, 14, 15, 72, 37, 16, 50, 134, 91, 44, 17, 412, 18, 48, 23, 4, 29, 77, 6, 110, 67, 45, 161, 254, 112, 8, 106, 19, 62, 101, 5, 157, 83, 154, 238, 115, 26, 143]
     champion_names = {"432": "Bard", "266":	"Aatrox", "103":	"Ahri", "84":	"Akali", "12":	"Alistar", "32":	"Amumu", "34":	"Anivia", "1":	"Annie", "22":	"Ashe", "268":	"Azir", "432":	"Bard", "53":	"Blitzcrank", "63":	"Brand", "201":	"Braum", "51":	"Caitlyn", "69":	"Cassiopeia", "31":	"ChoGath", "42":	"Corki", "122":	"Darius", "131":	"Diana", "36":	"DrMundo", "119":	"Draven", "60":	"Elise", "28":	"Evelynn", "81":	"Ezreal", "9":	"Fiddlesticks", "114":	"Fiora", "105":	"Fizz", "3":	"Galio", "41":	"Gangplank", "86":	"Garen", "150":	"Gnar", "79":	"Gragas", "104":	"Graves", "120":	"Hecarim", "74":	"Heimerdinger", "39":	"Irelia", "40":	"Janna", "59":	"JarvanIV", "24":	"Jax", "126":	"Jayce", "222":	"Jinx", "429":	"Kalista", "43":	"Karma", "30":	"Karthus", "38":	"Kassadin", "55":	"Katarina", "10":	"Kayle", "85":	"Kennen", "121":	"KhaZix", "96":	"KogMaw", "7":	"LeBlanc", "64":	"LeSin", "89":	"Leona", "127":	"Lissandra", "236":	"Lucian", "117":	"Lulu", "99":	"Lux", "54":	"Malphite", "90":	"Malzahar", "57":	"Maokai", "11":	"MasterYi", "21":	"MissFortune", "82":	"Mordekaiser", "25":	"Morgana", "267":	"Nami", "75":	"Nasus", "111":	"Nautilus", "76":	"Nidalee", "56":	"Nocturne", "20":	"Nunu", "2":	"Olaf", "61":	"Orianna", "80":	"Pantheon", "78":	"Poppy", "133":	"Quinn", "33":	"Rammus", "421":	"RekSai", "58":	"Renekton", "107":	"Rengar", "92":	"Riven", "68":	"Rumble", "13":	"Ryze", "113":	"Sejuani", "35":	"Shaco", "98":	"Shen", "102":	"Shyvana", "27":	"Singed", "14":	"Sion", "15":	"Sivir", "72":	"Skarner", "37":	"Sona", "16":	"Soraka", "50":	"Swain", "134":	"Syndra", "91":	"Talon", "44":	"Taric", "17":	"Teemo", "412":	"Thresh", "18":	"Tristana", "48":	"Trundle", "23":	"Tryndamere", "4":	"TwistedFate", "29":	"Twitch", "77":	"Udyr", "6":	"Urgot", "110":	"Varus", "67":	"Vayne", "45":	"Veigar", "161":	"VelKoz", "254":	"Vi", "112":	"Viktor", "8":	"Vladimir", "106":	"Volibear", "19":	"Warwick", "62":	"Wukong", "101":	"Xerath", "5":	"XinZhao", "157":	"Yasuo", "83":	"Yorick", "154":	"Zac", "238":	"Zed", "115":	"Ziggs", "26":	"Zilean", "143":	"Zyra"}
     champion_count = len(champion_ids)
+    summoner_spells = {1:'Cleanse', 2:'Clairvoyance', 3:'Exhaust', 4:'Flash', 6:'Ghost', 7:'Heal', 10:'Unknown', 11:'Smite', 12:'Teleport', 13:'Clarity', 14:'Ignite',17:'Garrison', 21:'Barrier',30:'To the King!',31:'SummonerPoroThrow'}
+
 
     def __init__(self):
         self.feature_to_index = dict()
@@ -34,6 +36,8 @@ class FeatureCreator:
             FeatureType.FIRST_INHIBITOR: lambda: self.__first_something("Inhibitor"),
             FeatureType.BEST_RANK: lambda: self.__best_rank(),
             FeatureType.PATCH_VERSION: lambda: self.__patch_version(),
+            FeatureType.PATCH_VERSION: lambda: self.__spell_champion_combo(), 
+
         }
         self.feature_init_functions = {
             FeatureType.BLUE_TEAM_SINGLES: lambda: self.__init_single_team_champions("BLUE"),
@@ -48,6 +52,7 @@ class FeatureCreator:
             FeatureType.FIRST_INHIBITOR: lambda: self.__init_something("Inhibitor"),
             FeatureType.BEST_RANK: lambda: self.__init_best_rank(),
             FeatureType.PATCH_VERSION: lambda: self.__init_patch_version(),
+            FeatureType.PATCH_VERSION: lambda: self.__init_spell_champion_combo(),   
         }
 
     def set_feature_types(self, feature_types):
@@ -127,7 +132,7 @@ class FeatureCreator:
             for c2 in range(0, FeatureCreator.champion_count):
                 c1_name = FeatureCreator.get_champion_name(c1)
                 c2_name = FeatureCreator.get_champion_name(c2)
-                feature_name = c1_name + "BLUE-VS-" + c2_name + "-RED"
+                feature_name = c1_name + "-BLUE-VS-" + c2_name + "-RED"
                 self.__init_feature(feature_name)
 
     def __make_cross_team_pairs(self, champion_list_blue, champion_list_red):
@@ -137,7 +142,7 @@ class FeatureCreator:
             for c2 in champion_list_red:
                 c1_name = FeatureCreator.get_champion_name(c1)
                 c2_name = FeatureCreator.get_champion_name(c2)
-                feature_name = c1_name + "BLUE-VS-" + c2_name + "-RED"
+                feature_name = c1_name + "-BLUE-VS-" + c2_name + "-RED"
                 self.__add_feature(feature_name)
 
     def __init_single_team_pairs(self, team_name):
@@ -204,6 +209,22 @@ class FeatureCreator:
         return self.__add_feature("PATCH-VERSION-" + self.match['matchVersion'])
 
 
+    def __init_spell_champion_combo(self):
+        #team?
+        for c in range(0, FeatureCreator.champion_count):
+            for _,spell1 in enumerate(self.summoner_spells):
+                for _,spell2 in enumerate(self.summoner_spells):
+                    c = FeatureCreator.get_champion_name(c)
+                    feature_name = c + '-SPELL1-' + spell1 + '-SPELL2-' + spell2
+                    self.__init_feature(feature_name)
 
+
+    def __spell_champion_combo(self):
+        for p in self.match['participants']:
+            c = FeatureCreator.get_champion_name(p['championId'])
+            spell1 = self.summoner_spells[p['spell1Id']]
+            spell2 = self.summoner_spells[p['spell2Id']]
+            feature_name = c + '-SPELL1-' + spell1 + '-SPELL2-' + spell2
+            self.__add_feature(feature_name)
 
         
