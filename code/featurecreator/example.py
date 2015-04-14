@@ -5,7 +5,7 @@ from featurecreator import *
 from wekaconverter import *
 
 inputpath = r"C:/Users/Kent/Desktop/D802f15/LoLMiner/LoLMiner/bin/mined-data/" #Path to input files
-outputpath = r"C:/Users/Kent/Desktop/testfiles/testset.arff" #path to the output file
+outputpath = r"C:/Users/Kent/Desktop/testfiles/lol.arff" #path to the output file
 
 mf = MatchFilter({"matchMode": ["CLASSIC"],
                           "matchType": ["MATCHED_GAME"],
