@@ -3,6 +3,7 @@ from pyspark import SparkContext
 from featurecreator.featurecreator import FeatureType
 from prediction.matchfilter import MatchFilter
 
+#team_test = [FeatureType.BLUE_TEAM, FeatureType.RED_TEAM]
 team_features = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES]
 combo_features = [FeatureType.BLUE_TEAM_PAIRS, FeatureType.RED_TEAM_PAIRS]
 team_combo = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES, FeatureType.BLUE_TEAM_PAIRS, FeatureType.RED_TEAM_PAIRS]
@@ -15,14 +16,14 @@ mf = MatchFilter({"matchMode": ["CLASSIC"],
 	                          "participants->*->timeline->xpPerMinDeltas->*": ["!0"]})
 
 	
-outputpath ="/Users/andreaseriksen/Desktop/Project F15/code/data/eval/"
-inputpath = "/Users/andreaseriksen/Downloads/test/"
+outputpath ="/Users/andreaseriksen/Desktop/Project F15/code/data/eval/sparkimp/"
+inputpath = "/Users/andreaseriksen/Desktop/Project F15/code/data/subset/"
 
 sc = SparkContext("local", "Simple App")
 
 sft = SparkFeatureTest(outputpath, inputpath, mf)
 
-sft.run("spark_single_team", team_features, sc)
+sft.run("sparkfeaturetestwithfeaturecreator_blue_red_team_singlses", team_features, sc)
 #sft.run("combos", combo_features, sc)
 #sft.run("teams_combos", team_combo, sc)
 #sft.run("team_combo_cross", team_combo_cross, sc)
