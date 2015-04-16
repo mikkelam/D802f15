@@ -1,0 +1,23 @@
+\section{Introduction}\label{sec:intro}
+
+Online multiplayer games have the possibility of generating a lot of data, this increases with the possible options for each individual player and the number of players. 
+League of Legends (LOL), created by Riot games, was the most played online game in the beginning of 2015~\cite{LoLmostplayed}, mustering 27 million people playing it daily in the beginning of 2014~\cite{LoL27mill}. 
+
+When playing, the players are divided into two teams of 5 players each, from a selection of more than 100 different champions, each with 4 unique abilities, each player picks a single one to control.
+
+Each team then start at their respective bases, either as the red team in the upper right corner or as the blue team in the lower left. 
+A base consist of a nexus, three towers and inhibitors, one tower and inhibitor at each entrance to the base. A tower is a defense mechanism that fires at approaching enemies. The inhibitor only makes a difference once destroyed, it will let the opposing team summon stronger minions. The nexus summons the minions that help the champions and when the team that loses their nexus, loses the match.
+
+There are three major paths connecting the two bases, with many minor intertwined paths. Each path has an additional 4 towers, two for each team, which also fires at the enemies.
+
+As the game advances, experience and money is earned depending on the performance of the players and the team as a whole. The experience is used to improve the skills of the champion while money is spend purchasing items that will help the player or the team. 
+
+The data Riot games gather from the game is extensive with many parameters~\cite{LoLparameters}, which gives many possibilities for interesting applications. 
+
+This paper will use this data to create a model capable of predicting the winning team based on the composition of champions, or even predicting which champion should be chosen to increase the probability of winning, given the opponents selection of champions. Since there are so many different champions and purchasable items, the variations of possible options the player can take is large, this means that we will require a great deal of data, more than can be stored optimally in any given database. We will require a cluster to handle this newly created big data problem and all its computations.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
