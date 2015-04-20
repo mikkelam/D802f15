@@ -48,19 +48,19 @@ def _get_combo_list(offset, team1, team2, number_of_champions, cross_team=False)
 def parsePoint(line):
 	line_data = json.loads(line)
 	team1, team2 = _get_teams(line_data)
-	offset_team1_combo, offset_team2_combo, offset_crossteam_combo, num_of_champs = (246, 7749, 15252, 123)
-	team1_combo_list = _get_combo_list(offset_team1_combo, team1, team1, num_of_champs, False) #list of the combos on team1
-	team2_combo_list = _get_combo_list(offset_team2_combo, team2, team2, num_of_champs, False) #list of the combos on team2
-	cross_team_combo_list = _get_combo_list(offset_crossteam_combo, team1, team2, num_of_champs, True) #list of the cross team combos
+	#offset_team1_combo, offset_team2_combo, offset_crossteam_combo, num_of_champs = (246, 7749, 15252, 123)
+	#team1_combo_list = _get_combo_list(offset_team1_combo, team1, team1, num_of_champs, False) #list of the combos on team1
+	#team2_combo_list = _get_combo_list(offset_team2_combo, team2, team2, num_of_champs, False) #list of the combos on team2
+	#cross_team_combo_list = _get_combo_list(offset_crossteam_combo, team1, team2, num_of_champs, True) #list of the cross team combos
 	game_result = 0.0
 	if line_data["teams"][0]["winner"]:
 		game_result = 1.0
-	values = team1+team2+team1_combo_list+team2_combo_list+cross_team_combo_list
+	values = team1+team2#+team1_combo_list+team2_combo_list+cross_team_combo_list
 	ones = [1.0]*(len(values))
 	features = {}
 	for value in values:
 		features[value] = 1
-	return LabeledPoint(game_result, SparseVector(30381, features)) #values in the feature vector are too large, 30381
+	return LabeledPoint(game_result, SparseVector(300, features)) #values in the feature vector are too large, 30381
 
 mf = MatchFilter({"matchMode": ["CLASSIC"],
 		                          "matchType": ["MATCHED_GAME"],
@@ -75,9 +75,9 @@ def matchfilter(x):
 		return False
 	return False
 	
-outputpath = "/Users/andreaseriksen/Desktop/Project F15/code/data/eval/"
-sc = SparkContext("local", "Simple App")
-data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/traning/*.txt')))
+outputpath = "/home/hduser/share/D802f15/code/test/"
+sc = SparkContext("spark://node1:7077")
+data = sc.textFile('hdfs://node1:9000/5000-5v5-json.txt')
 
 traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.7, 0.3], 1)
 parsedData = traning_data.map(parsePoint)
@@ -90,7 +90,7 @@ trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count()
 eval_count = eval_parsedData.count()
 test_count = parsedData.count()
 
-f = open(outputpath + 'oldtest.txt', 'w')
+f = open(outputpath + 'oldtest_simpledata.txt', 'w')
 #print float(eval_parsedData.count())
 f.write("Training Error = " + str(trainErr))
 f.write("Eval" + str(eval_count))

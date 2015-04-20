@@ -39,7 +39,10 @@ class SparkFeatureTest:
 		features = {}
 		for feature in self.feature_creator.current_match_features:
 			features[feature] = 1 
-		return LabeledPoint(int(self.feature_creator.label), SparseVector(total_features, features)) 
+		label = 0.0
+		if self.feature_creator.label:
+		    label = 1.0
+		return LabeledPoint(label, SparseVector(total_features, features)) 
 		
 		
 	def __evaluate__(self, model, parsedData, dataname, file):
@@ -59,16 +62,16 @@ class SparkFeatureTest:
 	
 	
 	def run(self, testname, testfeatures, sparkcontext):
-		data = sparkcontext.textFile(','.join(glob.glob(self.inputpath + '*.txt')))
+		data = sparkcontext.textFile(self.inputpath)
 		self.feature_creator = FeatureCreator()
 		self.feature_creator.set_feature_types(testfeatures)
-		traning_data, eval_data1, eval_data2, eval_data3 = data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.1, 0.1, 0.1], 1)
+		traning_data, eval_data1 = data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
 
 		#Maps all data to parsePoints 
 		parsedData = traning_data.map(lambda line: self.__parsePoint__(line))
 		parsedEval_1 = eval_data1.map(lambda line: self.__parsePoint__(line))
-		parsedEval_2 = eval_data2.map(lambda line: self.__parsePoint__(line))
-		parsedEval_3 = eval_data3.map(lambda line: self.__parsePoint__(line))
+		#parsedEval_2 = eval_data2.map(lambda line: self.__parsePoint__(line))
+		#parsedEval_3 = eval_data3.map(lambda line: self.__parsePoint__(line))
 
 		# Build the model
 		model = LogisticRegressionWithSGD.train(parsedData)
@@ -79,8 +82,8 @@ class SparkFeatureTest:
 		
 		self.__evaluate__(model, parsedData, "test", file)
 		self.__evaluate__(model, parsedEval_1, "eval1", file)
-		self.__evaluate__(model, parsedEval_2, "eval2", file)
-		self.__evaluate__(model, parsedEval_3, "eval3", file)
+		#self.__evaluate__(model, parsedEval_2, "eval2", file)
+		#self.__evaluate__(model, parsedEval_3, "eval3", file)
 		
 		file.close()
 		
