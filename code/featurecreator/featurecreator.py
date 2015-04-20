@@ -149,8 +149,10 @@ class FeatureCreator:
     def __make_single_team_pairs(self, champion_list, team_name):
         # 2-permutations of champions on a single team
         m = FeatureCreator.champion_count
-        for c1_name in champion_list:
-            for c2_name in champion_list:
+        for c1 in champion_list:
+            for c2 in champion_list:
+                c1_name = FeatureCreator.champion_names[c1]
+                c2_name = FeatureCreator.champion_names[c2]
                 if c1_name < c2_name:
                     feature_name = c1_name + "&" + c2_name + "-" + team_name
                     self.__add_feature(feature_name)
