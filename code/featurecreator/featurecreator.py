@@ -123,10 +123,8 @@ class FeatureCreator:
     def __init_cross_team_pairs(self):
         # makes features representing 2-combinations (including the pair of same champion on both teams)
         m = self.champion_count
-        for _,c1 in self.champion_names.items():
-            for _,c2 in self.champion_names.items():
-                c1_name = FeatureCreator.champion_names[c1]
-                c2_name = FeatureCreator.champion_names[c2]
+        for _,c1_name in self.champion_names.items():
+            for _,c2_name in self.champion_names.items():
 
                 feature_name = c1_name + "-BLUE-VS-" + c2_name + "-RED"
                 self.__init_feature(feature_name)
@@ -136,7 +134,6 @@ class FeatureCreator:
         m = self.champion_count
         for c1 in champion_list_blue:
             for c2 in champion_list_red:
-
                 c1_name = FeatureCreator.champion_names[c1]
                 c2_name = FeatureCreator.champion_names[c2]
                 feature_name = c1_name + "-BLUE-VS-" + c2_name + "-RED"
@@ -145,21 +142,17 @@ class FeatureCreator:
     def __init_single_team_pairs(self, team_name):
         # 2-permutations of champions on a single team
         m = FeatureCreator.champion_count
-        for _,c1 in self.champion_names.items():
-            for _,c2 in self.champion_names.items():
-                c1_name = FeatureCreator.champion_names[c1]
-                c2_name = FeatureCreator.champion_names[c2]
+        for _,c1_name in self.champion_names.items():
+            for _,c2_name in self.champion_names.items():
                 feature_name = c1_name + "&" + c2_name + "-" + team_name
                 self.__add_feature(feature_name)
 
     def __make_single_team_pairs(self, champion_list, team_name):
         # 2-permutations of champions on a single team
         m = FeatureCreator.champion_count
-        for c1 in champion_list:
-            for c2 in champion_list:
+        for c1_name in champion_list:
+            for c2_name in champion_list:
                 if c1 < c2:
-                    c1_name = FeatureCreator.champion_names[c1]
-                    c2_name = FeatureCreator.champion_names[c2]
                     feature_name = c1_name + "&" + c2_name + "-" + team_name
                     self.__add_feature(feature_name)
 
