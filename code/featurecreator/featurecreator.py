@@ -228,10 +228,11 @@ class FeatureCreator:
     def __init_lane_champion_combo(self):
         for _,c in FeatureCreator.champion_names.items():
             for id1,spell1 in enumerate(self.lane):
-                if id1 > id2:
-                    continue
-                feature_name = c + '-S1-' + spell1 + '-S2-' + spell2
-                self.__init_feature(feature_name)
+                for id2,spell2 in enumerate(self.lane):
+                    if id1 > id2:
+                        continue
+                    feature_name = c + '-S1-' + spell1 + '-S2-' + spell2
+                    self.__init_feature(feature_name)
         with open('f', 'w+') as f:
             f.write(str(self.feature_to_index))
 
