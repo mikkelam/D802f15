@@ -119,7 +119,7 @@
 \RequirePackage{listings} %Enable environment for code
 
 % Algorithms / pseudo code
-\RequirePackage{clrscode}
+%\RequirePackage{clrscode}
 
 % EPS support
 \RequirePackage{epstopdf}
