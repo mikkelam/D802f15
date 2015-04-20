@@ -40,9 +40,7 @@ class FeatureCreator:
             FeatureType.BEST_RANK: lambda: self.__best_rank(),
             FeatureType.PATCH_VERSION: lambda: self.__patch_version(),
             FeatureType.SPELL_CHAMPION_COMBO: lambda: self.__spell_champion_combo(), 
-            FeatureType.LANE_CHAMPION_COMBO: lambda: self.__lane_champion_combo(), 
-
-
+            FeatureType.LANE_CHAMPION_COMBO: lambda: self.__lane_champion_combo(),
         }
         self.feature_init_functions = {
             FeatureType.BLUE_TEAM_SINGLES: lambda: self.__init_single_team_champions("BLUE"),
@@ -142,10 +140,11 @@ class FeatureCreator:
     def __init_single_team_pairs(self, team_name):
         # 2-permutations of champions on a single team
         m = FeatureCreator.champion_count
-        for _,c1_name in self.champion_names.items():
-            for _,c2_name in self.champion_names.items():
-                feature_name = c1_name + "&" + c2_name + "-" + team_name
-                self.__add_feature(feature_name)
+        for c1_id, c1_name in self.champion_names.items():
+            for c2_id, c2_name in self.champion_names.items():
+                if c1_id < c2_id:
+                    feature_name = c1_name + "&" + c2_name + "-" + team_name
+                    self.__init_feature(feature_name)
 
     def __make_single_team_pairs(self, champion_list, team_name):
         # 2-permutations of champions on a single team
@@ -201,7 +200,7 @@ class FeatureCreator:
 
     def __init_spell_champion_combo(self):
         #team?
-        for _,c in self.champion_names.items():
+        for _,c in FeatureCreator.champion_names.items():
             for id1,spell1 in self.summoner_spells.items():
                 for id2,spell2 in self.summoner_spells.items():
                     if id1 > id2:
@@ -225,7 +224,7 @@ class FeatureCreator:
             self.__add_feature(feature_name)
 
     def __init_lane_champion_combo(self):
-        for _,c in self.champion_names.items():
+        for _,c in FeatureCreator.champion_names.items():
             for id1,spell1 in enumerate(self.lane):
                 if id1 > id2:
                     continue
