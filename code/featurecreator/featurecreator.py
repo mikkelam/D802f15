@@ -142,7 +142,7 @@ class FeatureCreator:
         m = FeatureCreator.champion_count
         for c1_id, c1_name in self.champion_names.items():
             for c2_id, c2_name in self.champion_names.items():
-                if c1_id < c2_id:
+                if c1_id < c2_id:  
                     feature_name = c1_name + "&" + c2_name + "-" + team_name
                     self.__init_feature(feature_name)
 
@@ -153,7 +153,7 @@ class FeatureCreator:
             for c2 in champion_list:
                 c1_name = FeatureCreator.champion_names[c1]
                 c2_name = FeatureCreator.champion_names[c2]
-                if c1_name < c2_name:
+                if c1 < c2:
                     feature_name = c1_name + "&" + c2_name + "-" + team_name
                     self.__add_feature(feature_name)
 
