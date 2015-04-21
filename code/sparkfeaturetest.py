@@ -17,13 +17,12 @@ class SparkFeatureTest:
 		self.matchfilter = matchfilter
 		
 		
-		
 	def __matchfilter__(self, line):
 		try: 
 			json_object = json.loads(line)
 			if self.matchfilter.passes(json_object):
 				return True
-			print self.matchfilter.last_discard_reason
+			#print self.matchfilter.last_discard_reason
 		except:
 			return False
 		return False
@@ -35,13 +34,14 @@ class SparkFeatureTest:
 		self.feature_creator.set_match(match)
 		
 		#Sets the value of all present features to 1 
-		total_features = self.feature_creator.number_of_features
+		total_features = 300#self.feature_creator.number_of_features
 		features = {}
 		for feature in self.feature_creator.current_match_features:
 			features[feature] = 1 
 		label = 0.0
 		if self.feature_creator.label:
-		    label = 1.0
+			label = 1.0 
+		#print int(self.feature_creator.label)
 		return LabeledPoint(label, SparseVector(total_features, features)) 
 		
 		
@@ -61,29 +61,33 @@ class SparkFeatureTest:
 		
 	
 	
-	def run(self, testname, testfeatures, sparkcontext):
-		data = sparkcontext.textFile(self.inputpath)
+
+	def run(self, testname, testfeatures, sparkcontext, samples):
+		data = sparkcontext.textFile(','.join(glob.glob(self.inputpath + '*.txt')))
 		self.feature_creator = FeatureCreator()
 		self.feature_creator.set_feature_types(testfeatures)
-		traning_data, eval_data1 = data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
+		traning_size = 1.0
+		for i in range(0, samples):
+			print traning_size
+			new_data, _ = data.randomSplit([traning_size, 1.0-traning_size], 1)
+			traning_data, eval_data1 = new_data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
 
-		#Maps all data to parsePoints 
-		parsedData = traning_data.map(lambda line: self.__parsePoint__(line))
-		parsedEval_1 = eval_data1.map(lambda line: self.__parsePoint__(line))
-		#parsedEval_2 = eval_data2.map(lambda line: self.__parsePoint__(line))
-		#parsedEval_3 = eval_data3.map(lambda line: self.__parsePoint__(line))
+		
+			#Maps all data to parsePoints 
+			parsedData = traning_data.map(lambda line: self.__parsePoint__(line))
+			parsedEval_1 = eval_data1.map(lambda line: self.__parsePoint__(line))
 
-		# Build the model
-		model = LogisticRegressionWithSGD.train(parsedData)
+			# Build the model
+			model = LogisticRegressionWithSGD.train(parsedData)
 		
-		self.__save_model__(model, testname)
-		#Evalueates the traning and saves all results
-		file = open(self.outputpath + testname + ".txt",'w')
+
+			self.__save_model__(model, testname)
+			#Evalueates the traning and saves all results
+			file = open(self.outputpath + testname + str(traning_size) + ".txt",'w')
 		
-		self.__evaluate__(model, parsedData, "test", file)
-		self.__evaluate__(model, parsedEval_1, "eval1", file)
-		#self.__evaluate__(model, parsedEval_2, "eval2", file)
-		#self.__evaluate__(model, parsedEval_3, "eval3", file)
+			self.__evaluate__(model, parsedData, "test", file)
+			self.__evaluate__(model, parsedEval_1, "eval1", file)
+			file.close()
+			traning_size = traning_size - 1.0/float(samples)
 		
-		file.close()
-		
+

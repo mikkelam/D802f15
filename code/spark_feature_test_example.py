@@ -3,6 +3,7 @@ from pyspark import SparkContext
 from featurecreator.featurecreator import FeatureType
 from prediction.matchfilter import MatchFilter
 
+#team_test = [FeatureType.BLUE_TEAM, FeatureType.RED_TEAM]
 team_features = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES]
 combo_features = [FeatureType.BLUE_TEAM_PAIRS, FeatureType.RED_TEAM_PAIRS]
 team_combo = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES, FeatureType.BLUE_TEAM_PAIRS, FeatureType.RED_TEAM_PAIRS]
@@ -23,12 +24,14 @@ mf = MatchFilter({"matchMode": ["CLASSIC"],
 	                          "participants->*->timeline->xpPerMinDeltas->*": ["!0"]})
 
 	
+
 outputpath = "/home/hduser/share/D802f15/code/test/"
 inputpath = 'hdfs://node1:9000/*.json'
 
 sc = SparkContext("spark://node1:7077")
 
 sft = SparkFeatureTest(outputpath, inputpath, mf)
+
 
 sft.run("single_team", team_features, sc)
 sft.run("combos", combo_features, sc)
@@ -41,4 +44,5 @@ sft.run("team_spell_champion", team_spell_champion, sc)
 sft.run("best_rank", best_rank, sc)
 sft.run("team_best_rank", team_best_rank, sc)
 sft.run("best_rank_team_spell_champion", best_rank_team_spell_champion, sc)
+
 

@@ -1,0 +1,42 @@
+To validated that the cluster gives us an improvement when working on big data, a list of tests will be explored. In this section these tests and their results will be presented and evaluated.
+
+\subsection{Speed up}
+This test is constructed to test what an increasing number of nodes does to the computation speed. As seen in \Cref{sec:clustersetup}, the cluster consists of 4 nodes, this means the test will be run with the master and either 1, 2 or 3 nodes. The data set will for this test be the same to make the results comparable. 
+
+\subsection{Implementation comparison}
+To test if PySparks implementation of logistic regression is working, the implementations were compared to Weka's and R's implementation. The dataset consisted of 5000 matches where Weka used the sparse version, R the dense and PySpark on a file with JSON elements. And as seen in \Cref{tab:impl_results}, the implementations are close to equal, confirming that Apache Sparks implementation is acceptable. 
+
+\begin{table}[!htb]
+  \centering
+  \begin{tabular}{|l|c|}
+\hline
+    Implementation  & Training error  \\
+\hline
+    Weka & 55\%  \\
+    R & 55\%\\
+    PySpark & 53\%\\ 
+\hline
+  \end{tabular}
+  \caption{Implementation comparison results}
+  \label{tab:impl_results}
+\end{table}
+\FloatBarrier
+\subsection{Feature tests}
+Finding the features that would give the best result.
+
+\subsection{Big data improvements}
+Using the same features but an increasing dataset to figure out if big data gives us a better classifier.
+
+\subsection{Best machine learning technique}
+Comparing different machine learning techniques to find the one that would give us the best result.
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:

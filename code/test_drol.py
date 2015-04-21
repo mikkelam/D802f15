@@ -11,7 +11,7 @@ from pyspark.mllib.linalg import SparseVector
 def _get_teams(match):
 	team1 = []
 	team2 = []
-	champions = [266, 103, 84, 12, 32, 34, 1, 22, 268, 53, 63, 201, 51, 69, 31, 42, 122, 131, 36, 119, 60, 28, 81, 9, 114, 105, 3, 41, 86, 150, 79, 104, 120, 74, 39, 40, 59, 24, 126, 222, 429, 43, 30, 38, 55, 10, 85, 121, 96, 7, 64, 89, 127, 236, 117, 99, 54, 90, 57, 11, 21, 82, 25, 267, 75, 111, 76, 56, 20, 2, 61, 80, 78, 133, 33, 421, 58, 107, 92, 68, 13, 113, 35, 98, 102, 27, 14, 15, 72, 37, 16, 50, 134, 91, 44, 17, 412, 18, 48, 23, 4, 29, 77, 6, 110, 67, 45, 161, 254, 112, 8, 106, 19, 62, 101, 5, 157, 83, 154, 238, 115, 26, 143]
+	champions = [432, 266, 103, 84, 12, 32, 34, 1, 22, 268, 53, 63, 201, 51, 69, 31, 42, 122, 131, 36, 119, 60, 28, 81, 9, 114, 105, 3, 41, 86, 150, 79, 104, 120, 74, 39, 40, 59, 24, 126, 222, 429, 43, 30, 38, 55, 10, 85, 121, 96, 7, 64, 89, 127, 236, 117, 99, 54, 90, 57, 11, 21, 82, 25, 267, 75, 111, 76, 56, 20, 2, 61, 80, 78, 133, 33, 421, 58, 107, 92, 68, 13, 113, 35, 98, 102, 27, 14, 15, 72, 37, 16, 50, 134, 91, 44, 17, 412, 18, 48, 23, 4, 29, 77, 6, 110, 67, 45, 161, 254, 112, 8, 106, 19, 62, 101, 5, 157, 83, 154, 238, 115, 26, 143]
 	team2_offset = len(champions)
 	for participant in match["participants"]:
 		champion_id = champions.index(participant["championId"])
@@ -75,11 +75,12 @@ def matchfilter(x):
 		return False
 	return False
 	
-outputpath = "/home/hduser/share/D802f15/code/test/"
-sc = SparkContext("spark://node1:7077")
-data = sc.textFile('hdfs://node1:9000/5000-5v5-json.txt')
 
-traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.7, 0.3], 1)
+outputpath = "/Users/andreaseriksen/Desktop/Project F15/code/data/eval/sparkimp/"
+sc = SparkContext("local", "Simple App")
+data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/subset/*.txt')))
+new_data, _ = data.randomSplit([1.0, 0.0], 1)
+traning_data, eval_data = new_data.filter(lambda line: matchfilter(line)).randomSplit([0.7, 0.3], 1)
 parsedData = traning_data.map(parsePoint)
 # Build the model
 model = LogisticRegressionWithSGD.train(parsedData)
@@ -90,7 +91,8 @@ trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count()
 eval_count = eval_parsedData.count()
 test_count = parsedData.count()
 
-f = open(outputpath + 'oldtest_simpledata.txt', 'w')
+
+f = open(outputpath + 'old_subset.txt', 'w')
 #print float(eval_parsedData.count())
 f.write("Training Error = " + str(trainErr))
 f.write("Eval" + str(eval_count))
@@ -99,5 +101,6 @@ f.close()
 print("Training Error = " + str(trainErr))
 print "eval", eval_count
 print "test", test_count
+
 
 
