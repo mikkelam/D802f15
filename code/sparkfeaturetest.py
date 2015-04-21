@@ -61,6 +61,7 @@ class SparkFeatureTest:
 		
 	
 	
+
 	def run(self, testname, testfeatures, sparkcontext, samples):
 		data = sparkcontext.textFile(','.join(glob.glob(self.inputpath + '*.json')))
 		self.feature_creator = FeatureCreator()
@@ -70,6 +71,7 @@ class SparkFeatureTest:
 			print traning_size
 			new_data, _ = data.randomSplit([traning_size, 1.0-traning_size], 1)
 			traning_data, eval_data1 = new_data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
+
 		
 
 			parsedData = traning_data.map(lambda line: self.__parsePoint__(line))
@@ -78,6 +80,7 @@ class SparkFeatureTest:
 
 			model = LogisticRegressionWithSGD.train(parsedData)
 		
+
 			self.__save_model__(model, testname)
 			#Evalueates the traning and saves all results
 			file = open(self.outputpath + testname + str(traning_size) + ".txt",'w')
@@ -87,3 +90,4 @@ class SparkFeatureTest:
 			file.close()
 			traning_size = traning_size - 1.0/float(samples)
 		
+

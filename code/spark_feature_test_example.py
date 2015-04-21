@@ -5,6 +5,14 @@ from prediction.matchfilter import MatchFilter
 
 #team_test = [FeatureType.BLUE_TEAM, FeatureType.RED_TEAM]
 
+spell_champion = [FeatureType.SPELL_CHAMPION_COMBO]
+team_spell_champion = spell_champion + team_combo_cross
+best_rank = [FeatureType.BEST_RANK]
+team_best_rank = best_rank + team_features
+best_rank_team_spell_champion = best_rank + team_spell_champion
+
+
+
 mf = MatchFilter({"matchMode": ["CLASSIC"],
 	                          "matchType": ["MATCHED_GAME"],
 	                          "queueType": ["RANKED_SOLO_5x5", "RANKED_PREMADE_5x5", "NORMAL_5x5_BLIND", "NORMAL_5x5_DRAFT"],
@@ -14,12 +22,15 @@ mf = MatchFilter({"matchMode": ["CLASSIC"],
 outputpath ="/Users/mikkel/Documents/output/"
 inputpath = "/Users/mikkel/Documents/input/"
 
-sc = SparkContext("local", "Simple App")
+
+sc = SparkContext("spark://node1:7077")
 
 sft = SparkFeatureTest(outputpath, inputpath, mf)
+
 
 sft.run("blue_red_team_singlses", [FeatureType.LANE_CHAMPION_COMBO], sc, 1)
 #sft.run("combos", combo_features, sc)
 #sft.run("teams_combos", team_combo, sc)
 #sft.run("team_combo_cross", team_combo_cross, sc)
 #sft.run("team_crossteam", team_crossteam, sc)
+
