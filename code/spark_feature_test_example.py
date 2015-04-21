@@ -3,13 +3,6 @@ from pyspark import SparkContext
 from featurecreator.featurecreator import FeatureType
 from prediction.matchfilter import MatchFilter
 
-#team_test = [FeatureType.BLUE_TEAM, FeatureType.RED_TEAM]
-
-spell_champion = [FeatureType.SPELL_CHAMPION_COMBO]
-team_spell_champion = spell_champion + team_combo_cross
-best_rank = [FeatureType.BEST_RANK]
-team_best_rank = best_rank + team_features
-best_rank_team_spell_champion = best_rank + team_spell_champion
 
 
 
@@ -23,7 +16,7 @@ outputpath ="/Users/mikkel/Documents/output/"
 inputpath = "/Users/mikkel/Documents/input/"
 
 
-sc = SparkContext("spark://node1:7077")
+sc = SparkContext("local")
 
 sft = SparkFeatureTest(outputpath, inputpath, mf)
 
