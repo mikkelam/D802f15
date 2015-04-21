@@ -1,0 +1,19 @@
+\subsection{Cluster Setup}
+
+The cluster used for this work consist of 4 nodes. 1 master and 3 worker nodes. The master is master both in terms of cluster management on Spark and storage manegement on the Hadoop filesystem. Because of the project length and small size of the cluster and dataset,  some of the common fault tolerance functionality of Hadoop and Spark has not been employed. Most significantly, only one replication of data exist across the Hadoop filesystem, which naturally put large parts of the data in risk of being lost. 
+
+The cluster consist of two unique system setups:
+
+\begin{itemize}
+\item 2 core intel e8400 3Ghz
+\item  1 220GB disk
+\item   4 GB RAM
+\end{itemize}
+
+\begin{itemize}
+\item 4 core q9400 2.66Ghz
+\item 1 220GB disk
+\item 4 GB RAM
+\end{itemize}
+
+Where the master and one worker node is a dual core and the last two worker nodes are 4 cores. The machines are linked together using a switch capable of 200Mbit full duplex, which sets a potential one-way bandwith of 12.5MBs. Naturally, when large amounts of data is being managed, it is necessary to manage the jobs, so that worker nodes strictly or dominantly work on local data only.
