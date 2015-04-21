@@ -17,13 +17,6 @@ inputpath = "/Users/mikkel/Documents/input/"
 
 
 sc = SparkContext("local")
-
 sft = SparkFeatureTest(outputpath, inputpath, mf)
 
-
 sft.run("blue_red_team_singlses", [FeatureType.LANE_CHAMPION_COMBO], sc, 1)
-#sft.run("combos", combo_features, sc)
-#sft.run("teams_combos", team_combo, sc)
-#sft.run("team_combo_cross", team_combo_cross, sc)
-#sft.run("team_crossteam", team_crossteam, sc)
-

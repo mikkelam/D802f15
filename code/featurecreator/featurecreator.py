@@ -22,7 +22,7 @@ class FeatureCreator:
     champion_names = {432: "Bard", 266:	"Aatrox", 103:	"Ahri", 84:	"Akali", 12:	"Alistar", 32:	"Amumu", 34:	"Anivia", 1:	"Annie", 22:	"Ashe", 268:	"Azir", 432:	"Bard", 53:	"Blitzcrank", 63:	"Brand", 201:	"Braum", 51:	"Caitlyn", 69:	"Cassiopeia", 31:	"ChoGath", 42:	"Corki", 122:	"Darius", 131:	"Diana", 36:	"DrMundo", 119:	"Draven", 60:	"Elise", 28:	"Evelynn", 81:	"Ezreal", 9:	"Fiddlesticks", 114:	"Fiora", 105:	"Fizz", 3:	"Galio", 41:	"Gangplank", 86:	"Garen", 150:	"Gnar", 79:	"Gragas", 104:	"Graves", 120:	"Hecarim", 74:	"Heimerdinger", 39:	"Irelia", 40:	"Janna", 59:	"JarvanIV", 24:	"Jax", 126:	"Jayce", 222:	"Jinx", 429:	"Kalista", 43:	"Karma", 30:	"Karthus", 38:	"Kassadin", 55:	"Katarina", 10:	"Kayle", 85:	"Kennen", 121:	"KhaZix", 96:	"KogMaw", 7:	"LeBlanc", 64:	"LeSin", 89:	"Leona", 127:	"Lissandra", 236:	"Lucian", 117:	"Lulu", 99:	"Lux", 54:	"Malphite", 90:	"Malzahar", 57:	"Maokai", 11:	"MasterYi", 21:	"MissFortune", 82:	"Mordekaiser", 25:	"Morgana", 267:	"Nami", 75:	"Nasus", 111:	"Nautilus", 76:	"Nidalee", 56:	"Nocturne", 20:	"Nunu", 2:	"Olaf", 61:	"Orianna", 80:	"Pantheon", 78:	"Poppy", 133:	"Quinn", 33:	"Rammus", 421:	"RekSai", 58:	"Renekton", 107:	"Rengar", 92:	"Riven", 68:	"Rumble", 13:	"Ryze", 113:	"Sejuani", 35:	"Shaco", 98:	"Shen", 102:	"Shyvana", 27:	"Singed", 14:	"Sion", 15:	"Sivir", 72:	"Skarner", 37:	"Sona", 16:	"Soraka", 50:	"Swain", 134:	"Syndra", 91:	"Talon", 44:	"Taric", 17:	"Teemo", 412:	"Thresh", 18:	"Tristana", 48:	"Trundle", 23:	"Tryndamere", 4:	"TwistedFate", 29:	"Twitch", 77:	"Udyr", 6:	"Urgot", 110:	"Varus", 67:	"Vayne", 45:	"Veigar", 161:	"VelKoz", 254:	"Vi", 112:	"Viktor", 8:	"Vladimir", 106:	"Volibear", 19:	"Warwick", 62:	"Wukong", 101:	"Xerath", 5:	"XinZhao", 157:	"Yasuo", 83:	"Yorick", 154:	"Zac", 238:	"Zed", 115:	"Ziggs", 26:	"Zilean", 143:	"Zyra"}
     champion_count = len(champion_names)
     summoner_spells = {1:'Cleanse', 2:'Clairvoyance', 3:'Exhaust', 4:'Flash', 6:'Ghost', 7:'Heal', 10:'Unknown', 11:'Smite', 12:'Teleport', 13:'Clarity', 14:'Ignite',17:'Garrison', 21:'Barrier',30:'To the King!',31:'SummonerPoroThrow'}
-    lane = ['TOP', 'MIDDLE', 'JUNGLE', 'BOTTOM']
+    lanes = ['TOP', 'MIDDLE', 'JUNGLE', 'BOTTOM']
     patches = ['5.6.0.190']
 
     def __init__(self):
@@ -228,25 +228,15 @@ class FeatureCreator:
 
     def __init_lane_champion_combo(self):
         for _,c in FeatureCreator.champion_names.items():
-            for id1,spell1 in enumerate(self.lane):
-                for id2,spell2 in enumerate(self.lane):
-                    if id1 > id2:
-                        continue
-                    feature_name = c + '-S1-' + spell1 + '-S2-' + spell2
-                    self.__init_feature(feature_name)
-        with open('f', 'w+') as f:
-            f.write(str(self.feature_to_index))
+            for lane in self.lanes:
+                feature_name = c + '-' + lane
+                self.__init_feature(feature_name)
 
 
     def __lane_champion_combo(self):
         for p in self.match['participants']:
             c = FeatureCreator.champion_names[p['championId']]
-            spell_id1 = p['spell1Id']
-            spell_id2 = p['spell2Id']
-            if spell_id1 > spell_id2:
-                spell_id1,spell_id2 = spell_id2, spell_id1
-            spell1 = self.summoner_spells[spell_id1]
-            spell2 = self.summoner_spells[spell_id2]
-            feature_name = c + '-S1-' + spell1 + '-S2-' + spell2
+            lane = p['timeline']['lane']
+            feature_name = c + '-' + lane
             self.__add_feature(feature_name)
         
