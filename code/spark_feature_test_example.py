@@ -4,11 +4,6 @@ from featurecreator.featurecreator import FeatureType
 from prediction.matchfilter import MatchFilter
 
 #team_test = [FeatureType.BLUE_TEAM, FeatureType.RED_TEAM]
-team_features = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES]
-combo_features = [FeatureType.BLUE_TEAM_PAIRS, FeatureType.RED_TEAM_PAIRS]
-team_combo = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES, FeatureType.BLUE_TEAM_PAIRS, FeatureType.RED_TEAM_PAIRS]
-team_combo_cross = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES, FeatureType.BLUE_TEAM_PAIRS, FeatureType.RED_TEAM_PAIRS, FeatureType.CROSS_TEAM_PAIRS]
-team_crossteam = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES, FeatureType.CROSS_TEAM_PAIRS]
 
 mf = MatchFilter({"matchMode": ["CLASSIC"],
 	                          "matchType": ["MATCHED_GAME"],
@@ -16,14 +11,14 @@ mf = MatchFilter({"matchMode": ["CLASSIC"],
 	                          "participants->*->timeline->xpPerMinDeltas->*": ["!0"]})
 
 	
-outputpath ="/Users/andreaseriksen/Desktop/Project F15/code/data/eval/sparkimp/new/"
-inputpath = "/Users/andreaseriksen/Desktop/Project F15/code/data/subset/"
+outputpath ="/Users/mikkel/Documents/output/"
+inputpath = "/Users/mikkel/Documents/input/"
 
 sc = SparkContext("local", "Simple App")
 
 sft = SparkFeatureTest(outputpath, inputpath, mf)
 
-sft.run("blue_red_team_singlses", team_features, sc, 2)
+sft.run("blue_red_team_singlses", [FeatureType.LANE_CHAMPION_COMBO], sc, 1)
 #sft.run("combos", combo_features, sc)
 #sft.run("teams_combos", team_combo, sc)
 #sft.run("team_combo_cross", team_combo_cross, sc)

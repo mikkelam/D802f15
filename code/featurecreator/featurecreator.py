@@ -23,6 +23,7 @@ class FeatureCreator:
     champion_count = len(champion_names)
     summoner_spells = {1:'Cleanse', 2:'Clairvoyance', 3:'Exhaust', 4:'Flash', 6:'Ghost', 7:'Heal', 10:'Unknown', 11:'Smite', 12:'Teleport', 13:'Clarity', 14:'Ignite',17:'Garrison', 21:'Barrier',30:'To the King!',31:'SummonerPoroThrow'}
     lane = ['TOP', 'MIDDLE', 'JUNGLE', 'BOTTOM']
+    patches = ['5.6.0.190']
 
     def __init__(self):
         self.feature_to_index = dict()
@@ -194,10 +195,10 @@ class FeatureCreator:
 
 
     def __init_patch_version(self):
-        raise Exception("Match version feature initializer has not been implemented in FeatureCreator")
-
+        for p in self.patches:
+            self.__init_feature('PATCH-' + p)
     def __patch_version(self):
-        return self.__add_feature("PATCH-VERSION-" + self.match['matchVersion'])
+        return self.__add_feature("PATCH-" + self.match['matchVersion'])
 
 
     def __init_spell_champion_combo(self):
