@@ -78,8 +78,8 @@ def matchfilter(x):
 outputpath = "/Users/andreaseriksen/Desktop/Project F15/code/data/eval/sparkimp/"
 sc = SparkContext("local", "Simple App")
 data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/subset/*.txt')))
-
-traning_data, eval_data = data.filter(lambda line: matchfilter(line)).randomSplit([0.7, 0.3], 1)
+new_data, _ = data.randomSplit([1.0, 0.0], 1)
+traning_data, eval_data = new_data.filter(lambda line: matchfilter(line)).randomSplit([0.7, 0.3], 1)
 parsedData = traning_data.map(parsePoint)
 # Build the model
 model = LogisticRegressionWithSGD.train(parsedData)
@@ -90,7 +90,7 @@ trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count()
 eval_count = eval_parsedData.count()
 test_count = parsedData.count()
 
-f = open(outputpath + 'old_small_set.txt', 'w')
+f = open(outputpath + 'old_subset.txt', 'w')
 #print float(eval_parsedData.count())
 f.write("Training Error = " + str(trainErr))
 f.write("Eval" + str(eval_count))

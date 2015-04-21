@@ -16,14 +16,14 @@ mf = MatchFilter({"matchMode": ["CLASSIC"],
 	                          "participants->*->timeline->xpPerMinDeltas->*": ["!0"]})
 
 	
-outputpath ="/Users/andreaseriksen/Desktop/Project F15/code/data/eval/sparkimp/"
+outputpath ="/Users/andreaseriksen/Desktop/Project F15/code/data/eval/sparkimp/new/"
 inputpath = "/Users/andreaseriksen/Desktop/Project F15/code/data/subset/"
 
 sc = SparkContext("local", "Simple App")
 
 sft = SparkFeatureTest(outputpath, inputpath, mf)
 
-sft.run("sparkfeaturetestwithfeaturecreator_blue_red_team_singlses", team_features, sc)
+sft.run("blue_red_team_singlses", team_features, sc, 2)
 #sft.run("combos", combo_features, sc)
 #sft.run("teams_combos", team_combo, sc)
 #sft.run("team_combo_cross", team_combo_cross, sc)
