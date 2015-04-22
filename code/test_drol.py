@@ -75,6 +75,7 @@ def matchfilter(x):
 		return False
 	return False
 	
+
 outputpath = "/Users/andreaseriksen/Desktop/Project F15/code/data/eval/sparkimp/"
 sc = SparkContext("local", "Simple App")
 data = sc.textFile(','.join(glob.glob('/Users/andreaseriksen/Desktop/Project F15/code/data/subset/*.txt')))
@@ -89,6 +90,7 @@ labelsAndPreds = eval_parsedData.map(lambda p: (p.label, model.predict(p.feature
 trainErr = labelsAndPreds.filter(lambda (v, p): v != p).count()
 eval_count = eval_parsedData.count()
 test_count = parsedData.count()
+
 
 f = open(outputpath + 'old_subset.txt', 'w')
 #print float(eval_parsedData.count())
