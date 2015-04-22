@@ -55,12 +55,10 @@ class SparkFeatureTest:
 		#Write the results to the file provided from run 
 		file.write(dataname + " count: " + str(count) + "\n")
 		file.write(dataname + " prediction error: " + str(error)+"\n")
-		
+		file.write(dataname + " prediction error %: " + str(error/float(count)+"\n"))
+
 	def __save_model__(self, model, testname):
 		pickle.dump(model, open(self.outputpath + testname +"model.p","wb"))
-		
-	
-	
 
 	def run(self, testname, testfeatures, sparkcontext, samples):
 		data = sparkcontext.textFile(','.join(glob.glob(self.inputpath + '*.json')))
@@ -70,17 +68,13 @@ class SparkFeatureTest:
 		for i in range(0, samples):
 			print traning_size
 			new_data, _ = data.randomSplit([traning_size, 1.0-traning_size], 1)
-			traning_data, eval_data1 = new_data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
-
-		
+			traning_data, eval_data1 = new_data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)	
 
 			parsedData = traning_data.map(lambda line: self.__parsePoint__(line))
 			parsedEval_1 = eval_data1.map(lambda line: self.__parsePoint__(line))
 
-
 			model = LogisticRegressionWithSGD.train(parsedData)
 		
-
 			self.__save_model__(model, testname)
 			#Evalueates the traning and saves all results
 			file = open(self.outputpath + testname + str(traning_size) + ".txt",'w')
