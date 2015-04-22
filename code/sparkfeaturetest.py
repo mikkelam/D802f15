@@ -58,8 +58,7 @@ class SparkFeatureTest:
 	def __save_model__(self, model, testname):
 		pickle.dump(model, open(self.outputpath + testname +"model.p","wb"))
 		
-	
-	
+
 
 	def run(self, testname, testfeatures, sparkcontext, samples,Model,training_size, local=True):
 		if local:
@@ -69,22 +68,26 @@ class SparkFeatureTest:
 
 		self.feature_creator = FeatureCreator()
 		self.feature_creator.set_feature_types(testfeatures)
+
+		traning_set, eval_data1 = data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
+		parsedEval_1 = eval_data1.map(lambda line: self.__parsePoint__(line))
 		for i in range(0, samples):
-			# new_data, _ = data.randomSplit([traning_size, 1.0-traning_size], 1)
-			traning_data, eval_data1 = data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
-
+			print training_size
+			traning_data, _ = traning_set.randomSplit([training_size, 1.0-training_size], 1)
+			
+			#Maps all data to parsePoints 
 			parsedData = traning_data.map(lambda line: self.__parsePoint__(line))
-			parsedEval_1 = eval_data1.map(lambda line: self.__parsePoint__(line))
 
+			# Build the model
 			model = Model.train(parsedData)
-
-			self.__save_model__(model, testname)
+		
+			self.__save_model__(model, testname+str(training_size))
 			#Evalueates the traning and saves all results
-			file = open(self.outputpath + testname + str(traning_size) + ".txt",'w')
+			file = open(self.outputpath + testname + str(training_size) + ".txt",'w')
 		
 			self.__evaluate__(model, parsedData, "train", file)
 			self.__evaluate__(model, parsedEval_1, "eval", file)
 			file.close()
-			traning_size = traning_size - 1.0/float(samples)
+			training_size = training_size - 1.0/float(samples)
 		
 
