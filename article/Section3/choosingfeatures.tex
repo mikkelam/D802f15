@@ -1,12 +1,11 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
-Throughout this article, $T = \{0, 1\}$ denotes the two teams \emph{blue} and \emph{purple} respectively, and $C = \{0, 1, \dots, m-1\}$ denotes the set of all champions. Depending on the context, $t$ may denote an element in $T$ and $c$ an element in $C$.
-
+Throughout this article, $T_\text{blue}$ and $T_\text{purple}\}$ denotes the two teams \emph{blue} and \emph{purple} respectively, $C = \{0, 1, \dots, m-1\}$ denotes the set of all champions. In that way, $T_i = {c_j | c_j \text{ is on team } i}$. $t$ and $c$ denotes a particular team and champion, respectively.
 Some champions may be better than other champions. To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
 We define a set of features $X_1 = \{x_1(t, c)\}$, where
 \[
 x_1(t, c) = 
 \begin{cases} 
-  1 & \text{if } c \text{ is present on team } t \\
+  1 & \text{if } c \in t \\
   0 & \text{otherwise} 
 \end{cases}
 \]
@@ -17,7 +16,7 @@ of champions on that team. We therefore define a set of features $X_2 = \{x_2(t,
 \[
 x_2(t, c_1, c_2) = 
 \begin{cases} 
-1 & \text{if both } c_1 \text{ and } c_2 \text{ are present on team } t \\
+1 & \text{if } c_1, c_2 \in t\\
 0 & \text{otherwise} 
 \end{cases}
 \]
@@ -31,7 +30,7 @@ To capture that one champion may counter another, we will for each champion on t
 For all $c_1, c_2 \in C$, we define a set of features $X_3= \{x_3(c_1, c_2) \}$, where
 \[x_3(c_1, c_2) = 
 \begin{cases} 
-1 & \text{if } c_1 \text{ is present on team blue and } c_2 \text{ is present on team purple+ } \\ 
+1 & \text{if } c_1 \in T_\text{blue}, c_2 \in T_\text{purple} \\ 
 0 & \text{otherwise} 
 \end{cases}\]
 

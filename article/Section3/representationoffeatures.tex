@@ -10,27 +10,35 @@ To simplify the provided examples, it is assumed that only a total of 7 champion
 All examples shows the transformation of a single match $m$ to one or more labeled feature vectors $x, y$, where $m$ consists of the blue team $\{c_1,c_2,c_3,c_4,c_5\}$ who won and purple team $\{c_1,c_2,c_3,c_6,c_7\}$ who lost.
 
 \subsubsection{Binary representation}
+\begin{center}
 $x, y = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true}$
-The first 7 elements in $x$ represent the champions on team blue, followed by 7 elements representing the champions on team purple.
+\end{center}
+The 7 first features in $x$ represent the champions on team blue, followed by 7 features representing the champions on team purple.
 The label is $\texttt{true}$ if and only if blue team won.
 This representation captures the champions on each team, as well as which side of the map each team spawn.
 
 \subsubsection{Mirrored binary representation}
-$x_1, y_1 = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true}$
+\begin{center}
+$x_1, y_1 = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true}$\\
 $x_2, y_2 = (1,1,1,0,0,1,1,1,1,1,1,1,0,0), \texttt{false}$
+\end{center}
 This representation is the same as the binary representation, expect that an additional training instance is generated for each match, by mirroring the teams and negating the class label.
 The idea for this representation is based on the assumption that any champion $c$ affects the team it is on in the same way, regardless of which team it is on.
 If this assumption holds, we may be able to produce reliable, unseen data using this method.
 
 \subsubsection{Compact binary representation}
-$x_1, y_1 = (1,1,1,1,1,0,0), \texttt{true}$
+\begin{center}
+$x_1, y_1 = (1,1,1,1,1,0,0), \texttt{true}$\\
 $x_2, y_2 = (1,1,1,0,0,1,1), \texttt{false}$
+\end{center}
 With this representation, we split a match into two labeled feature vectors, each representing a single team and a label indicating whether that team won or lost.
 This representation captures only the strength of a team, and not its strength compared to an opponent team.
 If it is too complex to learn a model that captures that one particular team is good against another particular team, this simple representation may be more favorable.
 
 \subsubsection{Ternary representation}
+\begin{center}
 $x, y = (0,0,0,1,1,-1,-1), \texttt{true}$
+\end{center}
 For each match, a single feature vector is created where the label is true if and only if team blue won, and
 \[
     x_i = 
