@@ -1,5 +1,5 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
-Throughout this article, $T = \{0, 1\}$ denotes the two teams \emph{blue} and \emph{red} respectively, and $C = \{0, 1, \dots, m-1\}$ denotes the set of all champions. When referring to features, $t$ denotes an element in $T$ and $c$ an element in $C$.
+Throughout this article, $T = \{0, 1\}$ denotes the two teams \emph{blue} and \emph{purple} respectively, and $C = \{0, 1, \dots, m-1\}$ denotes the set of all champions. Depending on the context, $t$ may denote an element in $T$ and $c$ an element in $C$.
 
 Some champions may be better than other champions. To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
 We define a set of features $X_1 = \{x_1(t, c)\}$, where
@@ -31,7 +31,7 @@ To capture that one champion may counter another, we will for each champion on t
 For all $c_1, c_2 \in C$, we define a set of features $X_3= \{x_3(c_1, c_2) \}$, where
 \[x_3(c_1, c_2) = 
 \begin{cases} 
-1 & \text{if } c_1 \text{ is present on team blue and } c_2 \text{ is present on team red} \\ 
+1 & \text{if } c_1 \text{ is present on team blue and } c_2 \text{ is present on team purple+ } \\ 
 0 & \text{otherwise} 
 \end{cases}\]
 
