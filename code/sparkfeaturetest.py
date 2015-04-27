@@ -54,7 +54,7 @@ class SparkFeatureTest:
 		#Write the results to the file provided from run 
 		file.write(dataname + " count: " + str(count) + "\n")
 		file.write(dataname + " prediction error: " + str(error)+"\n")
-		file.write(dataname + " prediction error %: " + str(error/float(count)+"\n"))
+		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
 		
 	def __save_model__(self, model, testname):
 		pickle.dump(model, open(self.outputpath + testname +"model.p","wb"))
