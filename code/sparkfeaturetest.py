@@ -33,7 +33,6 @@ class SparkFeatureTest:
 		
 	def __evaluate__(self, model, parsedData, dataname, file):
 		# Test count and test error count. 
-		count = parsedData.count()
 		# Evaluating the model on train data
 		prediction = parsedData.map(lambda p: (p.label,  model.predict(p.features)))
 		error = prediction.filter(lambda (v, p): v != p).count()
