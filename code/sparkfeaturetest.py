@@ -12,7 +12,7 @@ from pyspark import SparkContext
 
 
 class SparkFeatureTest:	
-	def __init__(self, outputpath, inputpath, local=True):
+	def __init__(self, outputpath, inputpath):
 		self.outputpath = outputpath
 		self.inputpath = inputpath
 		

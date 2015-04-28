@@ -30,7 +30,7 @@ mf = MatchFilter({"matchMode": ["CLASSIC"],
 	
 
 outputpath = "/home/hduser/share/fis/json"
-inputpath = 'hdfs://node1:9000/*.json'
+inputpath = 'hdfs://node1:9000/segmentaa.json'
 
 
 sc = SparkContext("spark://node1:7077", 'alt')
@@ -49,14 +49,14 @@ def __matchfilter__(line):
 data = sc.textFile(inputpath)
 
 training_data, eval_data = data.filter(lambda line: __matchfilter__(line)).randomSplit([0.7, 0.3], 1)
+data.unpersist()
+sft = SparkFeatureTest(outputpath, inputpath)
 
-sft = SparkFeatureTest(outputpath, inputpath,local=False)
 
-
-sft.run("lane", lane,LogisticRegressionWithSGD,training_data, eval_data)
+# sft.run("lane", lane,LogisticRegressionWithSGD,training_data, eval_data)
 sft.run("team_crossteam", team_crossteam,LogisticRegressionWithSGD,training_data, eval_data)
-sft.run("team_best_rank", team_best_rank,LogisticRegressionWithSGD,training_data, eval_data)
-sft.run("best_rank_team_spell_champion", best_rank_team_spell_champion,LogisticRegressionWithSGD,training_data, eval_data)
+# sft.run("team_best_rank", team_best_rank,LogisticRegressionWithSGD,training_data, eval_data)
+# sft.run("best_rank_team_spell_champion", best_rank_team_spell_champion,LogisticRegressionWithSGD,training_data, eval_data)
 
 sft.run("team", team,LogisticRegressionWithSGD,training_data, eval_data)
 sft.run("combo", combo,LogisticRegressionWithSGD,training_data, eval_data)
