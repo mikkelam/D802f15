@@ -1,8 +1,10 @@
 To validated that the cluster gives us an improvement when working on big data, a list of tests will be explored. In this section these tests and their results will be presented and evaluated.
 
 \subsection{Best machine learning technique}
-\usetikzlibrary{arrows,intersections}
-First the best machine learning technique needs to be identified. In this test five different methods were included, these were: naive bayes, hidden naive bayes, logistic regression, neural network and adaboost. All the different methods were tested with multiple parameter settings, however both of the bayes networks has no modifiable parameters. The features that were used in this test were on the form presented seen in Cref{sec:section-om-det-rette-setup} and 35000 matches. The data was split in a $\frac{2}{3}$ training and $\frac{1}{3}$ for testing. And as seen in \Cref{fig:besttech} Adaboost and Neural networks gave bad accuracy results after very few parameter configurations. Both of the bayes networks gave the same result across all tests due to their lack of adjustable parameters. Logistic regression were comparable to hidden bayes network, but had a strong peak around the 9$^{th}$ configuration.
+\usetikzlibrary{arrows,intersections,shapes.geometric,calc}
+First the best machine learning technique needs to be identified. In this test five different methods are included, these are: naive bayes, hidden naive bayes, logistic regression, neural network and adaboost. All the different methods are tested with multiple parameter settings, however both of the bayes networks has no modifiable parameters. The features that are used for this test are on the form presented seen in Cref{sec:section-om-det-rette-setup}, and 35000 matches are used. The data will be split, using $\frac{2}{3}$ for training and $\frac{1}{3}$ for testing. 
+
+As seen in \Cref{fig:besttech}, Adaboost and Neural networks gives bad accuracy results after very few parameter configurations. Both of the bayes networks gave the same result across all tests due to the lack of adjustable parameters. Logistic regression were comparable to hidden bayes network, but had a peak around the 9$^{th}$ configuration giving it a slight edge over hidden bayes network.
 
 \begin{figure}[!htb]
   \begin{tikzpicture}
@@ -99,7 +101,7 @@ First the best machine learning technique needs to be identified. In this test f
 \end{figure}
 
 \subsection{Implementation comparison}
-To test if Apache Sparks PySpark implementation of logistic regression is implemented properly, it was compared to Weka's and R's implementation equivalent implementation. The dataset consisted of 5000 matches where Weka used the sparse version, R the dense and PySpark on a file with JSON elements. And as seen in \Cref{tab:impl_results}, the implementations are close to equal, the minor differences could be caused by differences in the parameter settings. However these results confirm that Apache Sparks implementation is acceptable. 
+To test if Apache Sparks PySpark implementation of logistic regression is implemented properly, it is compared to the equivalent implementations in Weka and R. The data consists of 5000 matches where Weka uses a sparse presentation, while R uses a dense and PySpark the raw file with JSON elements. As seen in \Cref{tab:impl_results}, the implementations are close to equal, the minor differences could be caused by differences in the parameter settings. However these results confirm that all implementations are acceptable and further testing can be performed in any of the environments.
 
 \begin{table}[!htb]
   \centering
@@ -116,9 +118,8 @@ To test if Apache Sparks PySpark implementation of logistic regression is implem
   \label{tab:impl_results}
 \end{table}
 
-\FloatBarrier
 \subsection{Feature representation test}
-To find the best way to represent the features we tested the methods presented in \Cref{sec:representationoffeatures}. This test was done on an increasing number of matches with all the different methods so that. As the result, shown in \Cref{fig:feat-rep}, indicated, method 1 and 4 are close, but method 1 being slightly above method 4 majority of the time, which is the reason for us choosing method 1.
+Features can be presented in many different ways and this test is constructed to finding the best way to that. The representations that will be tested are the methods presented in \Cref{sec:representationoffeatures}. The test was done on an increasing number of matches with all the different methods to check how they hold up with much data. As the result, shown in \Cref{fig:feat-rep}, indicates, method 1 and 4 are very close, but method 1 being slightly above method 4 majority of the time, which is the reason for us choosing method 1.
 
 \begin{figure}[!htb]
   \centering
@@ -218,10 +219,12 @@ To find the best way to represent the features we tested the methods presented i
   \caption{Test for representation of features}\label{fig:feat-rep}
 \end{figure}
 
-
-
 \subsection{Feature tests}
-Finding the features that would give the best result.
+Some features might be more expressive than others, and finding the set of features that will yield the best result is imperative.
+
+
+\subsection{Big data improvements}
+To test if big data gives an improvement when predicting the outcome of a match, the same features and method where used on an increasing sized data starting from 1000 matches. After the model was made, it was tested on the training data, as a $\frac{2}{3}$-split and finally cross-validation. And as seen on \Cref{fig:bigdata} ... %Udfyld når vi har flere tal fra clusteren. //Funder
 
 \begin{figure}[!htb]
   \centering
@@ -283,24 +286,25 @@ Finding the features that would give the best result.
       \legend{Training Data, $\frac{2}{3}$-split, 10-fold cross-validation}
     \end{axis} 
   \end{tikzpicture}
-  \caption{Test for representation of features}\label{fig:feat-rep}
+  \caption{Test for representation of features}\label{fig:bigdata}
 \end{figure}
 
-
-\subsection{Big data improvements}
-Using the same features but an increasing dataset to figure out if big data gives us a better classifier.
-
 \subsection{Speed up}
-This test is constructed to test what an increasing number of nodes does to the computation speed. As seen in \Cref{sec:clustersetup}, the cluster consists of 4 nodes, this means the test will be run with the master and either 1, 2 or 3 nodes. The data set will for this test be the same to make the results comparable.
+This test is constructed to show that an increasing number of nodes increases the computation speed. As seen in \Cref{sec:clustersetup}, the cluster consists of 4 nodes, this means the test will be run with the master and either 1, 2 or 3 nodes. The data for this test be the same to make the results comparable.
 
-
-
-
-
-
-
-
-
+\begin{table}[!htb]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    Number of nodes & Time taken\\
+    \hline
+    1 & 42.1 \\
+    2 & 42.2 \\
+    3 & 42.3 \\
+    \hline
+  \end{tabular}
+  \caption{Speed up test results}\label{tab:speedup}
+\end{table}
 
 %%% Local Variables:
 %%% mode: latex
