@@ -1,7 +1,6 @@
 To validated that the cluster gives us an improvement when working on big data, a list of tests will be explored. In this section these tests and their results will be presented and evaluated.
 
 \subsection{Best machine learning technique}
-\usetikzlibrary{arrows,intersections,shapes.geometric,calc}
 First the best machine learning technique needs to be identified. In this test five different methods are included, these are: naive bayes, hidden naive bayes, logistic regression, neural network and adaboost. All the different methods are tested with multiple parameter settings, however both of the bayes networks has no modifiable parameters. The features that are used for this test are on the form presented seen in Cref{sec:section-om-det-rette-setup}, and 35000 matches are used. The data will be split, using $\frac{2}{3}$ for training and $\frac{1}{3}$ for testing. 
 
 As seen in \Cref{fig:besttech}, Adaboost and Neural networks gives bad accuracy results after very few parameter configurations. Both of the bayes networks gave the same result across all tests due to the lack of adjustable parameters. Logistic regression were comparable to hidden bayes network, but had a peak around the 9$^{th}$ configuration giving it a slight edge over hidden bayes network.
