@@ -12,22 +12,9 @@ from pyspark import SparkContext
 
 
 class SparkFeatureTest:	
-	def __init__(self, outputpath, inputpath, matchfilter):
+	def __init__(self, outputpath, inputpath):
 		self.outputpath = outputpath
 		self.inputpath = inputpath
-		self.matchfilter = matchfilter
-		
-		
-	def __matchfilter__(self, line):
-		try: 
-			json_object = json.loads(line)
-			if self.matchfilter.passes(json_object):
-				return True
-			#print self.matchfilter.last_discard_reason
-		except:
-			return False
-		return False
-		
 		
 	def __parsePoint__(self, line):
 		match = json.loads(line)
@@ -46,8 +33,8 @@ class SparkFeatureTest:
 		
 	def __evaluate__(self, model, parsedData, dataname, file):
 		# Test count and test error count. 
-		count = parsedData.count()
 		# Evaluating the model on train data
+		count = parsedData.count()
 		prediction = parsedData.map(lambda p: (p.label,  model.predict(p.features)))
 		error = prediction.filter(lambda (v, p): v != p).count()
 		
@@ -61,34 +48,22 @@ class SparkFeatureTest:
 		
 
 
-	def run(self, testname, testfeatures, sparkcontext, samples,Model,training_size, local=True):
-		if local:
-			data = sparkcontext.textFile(','.join(glob.glob(self.inputpath)))
-		else:
-			data = sparkcontext.textFile(self.inputpath)
-
+	def run(self, testname, testfeatures,Model, training_data,eval_data):
 		self.feature_creator = FeatureCreator()
 		self.feature_creator.set_feature_types(testfeatures)
 
-		traning_set, eval_data1 = data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
-		parsedEval_1 = eval_data1.map(lambda line: self.__parsePoint__(line))
-		for i in range(0, samples):
-			print training_size
-			traning_data, _ = traning_set.randomSplit([training_size, 1.0-training_size], 1)
-			
-			#Maps all data to parsePoints 
-			parsedData = traning_data.map(lambda line: self.__parsePoint__(line))
-
-			# Build the model
-			model = Model.train(parsedData)
+		parsed_train = training_data.map(lambda line: self.__parsePoint__(line))
+		parsed_eval = eval_data.map(lambda line: self.__parsePoint__(line))
 		
-			self.__save_model__(model, testname+str(training_size))
-			#Evalueates the traning and saves all results
-			file = open(self.outputpath + testname + str(training_size) + ".txt",'w')
+		model = Model.train(parsed_train)
+		self.__save_model__(model, testname)
 		
-			self.__evaluate__(model, parsedData, "train", file)
-			self.__evaluate__(model, parsedEval_1, "eval", file)
-			file.close()
-			training_size = training_size - 1.0/float(samples)
+		file = open(self.outputpath + testname + ".txt",'w')
+	
+		self.__evaluate__(model, parsed_train, "train", file)
+		self.__evaluate__(model, parsed_eval, "eval", file)
+		file.close()
+		parsed_train
+		
 		
 
