@@ -7,7 +7,11 @@ class MatchFilter:
                  filter={}):
         self.last_discard_reason = ''
         self.filter = filter
+        self.min_avg_rank = 0
 
+    def set_min_avg_rank(self, val):
+        # input: a val between 0 and 1, where
+        self.min_avg_rank = val
 
     def __smart_filter(self, filter, json_object):
         """
@@ -23,7 +27,38 @@ class MatchFilter:
         for key_value_pair in filter:
             if not self.__smart_filter_check_path(key_value_pair, filter[key_value_pair], json_object):
                 return False
-        return True
+
+        if self.min_avg_rank > 0:
+            return self.__passes_min_avr_rank(json_object)
+        else:
+            return True
+
+    def __passes_min_avr_rank(self, json_object):
+        if not "participants" in json_object:
+            return False
+        sum_ranks = 0
+        for participant in json_object["participants"]:
+            if "highestAchievedSeasonTier" not in participant:
+                return False
+            else:
+                rank = participant["highestAchievedSeasonTier"]
+                if rank == "UNRANKED": # treat as bronze
+                    continue # treat as 0
+                elif rank == "BRONZE":
+                    continue # treat as 0
+                elif rank == "SILVER":
+                    sum_ranks += 1
+                elif rank == "GOLD":
+                    sum_ranks += 2
+                elif rank == "PLATINUM":
+                    sum_ranks += 3
+                elif rank == "DIAMOND":
+                    sum_ranks += 4
+                elif rank == "CHALLENGER":
+                    sum_ranks += 5
+        avg_rank = sum_ranks / (len(participant) * 5.0) # normalization
+        return avg_rank >= self.min_avg_rank
+
 
     def __smart_filter_check_path(self, path, allowed_values, json_object):
         """
