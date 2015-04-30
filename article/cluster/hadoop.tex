@@ -1,14 +1,13 @@
-\subsection{Profiling resource usage}
+\subsection{Profiling resource usage}\label{sec:profile}
 
-Avoiding resource bottlenecks is naturally a concern when working on a big data problem. 
+Avoiding resource bottlenecks is a concern when working on a big data problem. 
 The cluster setup used for this work has much less resources than what is generally found in normal cluster. 
-Initially, using only one disk pr cluster node, limits the read/write speed to between 50 and 80MB/s. 
-Depending on which part of the disk that is being read from. 
-It is easy to imagine that our cluster will be bottlenecked by the disk, when doing computationally simple tasks like a word count. 
-However when we introduce a computationally demanding task, like training a logistic regression model, the limited read/write speed of the disk might not be as problematic bottleneck anymore. 
+Initially, using only one disk pr cluster node, limits the read/write speed to between 50 and 80MB/s, depending on which part of the disk that is being read from. 
+When doing computationally simple tasks like a word count, it is possible to imagine that the cluster will hit a bottleneck due to the disk read/write speed. 
+However when a computationally demanding task is introduced, like training a logistic regression model, the limited read/write speed of the disk might not be as problematic bottleneck anymore. %Vi skal have et bedre argument for dette //Funder 
 Naturally one would want to have a balanced pool of resources for the task at hand. 
-In case no changes can be made to the cluster's hardware, it is possible to utilize data compression to circumvent a disk-based bottleneck. 
-Running a compression algorithm will naturally decrease the read time from disk, at the cost of more computation time, doing the compression and deflation procedures.
+In case no changes can be made to the cluster's hardware, it is possible to utilise data compression to circumvent a disk-based bottleneck. 
+Running a compression algorithm will naturally decrease the read time from disk, at the cost of more computation time to do the compression and deflation procedures.
 
 To understand whether our cluster is significantly bottlenecked, we profile the resource usage of the two unique cluster node setups, while training a logistic regression model:
 
