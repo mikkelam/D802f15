@@ -24,6 +24,7 @@ class FeatureCreator:
     champion_count = len(champion_names)
     summoner_spells = {1:'Cleanse', 2:'Clairvoyance', 3:'Exhaust', 4:'Flash', 6:'Ghost', 7:'Heal', 10:'Unknown', 11:'Smite', 12:'Teleport', 13:'Clarity', 14:'Ignite',17:'Garrison', 21:'Barrier',30:'To the King!',31:'SummonerPoroThrow'}
     lanes = ['TOP', 'MIDDLE', 'JUNGLE', 'BOTTOM']
+    ranks = ["UNRANKED", "BRONZE", "SILVER", "GOLD", "PLATINUM", "DIAMOND", "MASTER", "CHALLENGER"]
     patches = ['5.6.0.190']
 
     def __init__(self):
@@ -164,7 +165,7 @@ class FeatureCreator:
     def __init_champion_ranks(self):
         for team in ["BLUE", "PURPLE"]:
             for c in ["C1", "C2", "C3", "C4", "C5"]:
-                for rank in ["UNRANKED", "BRONZE", "SILVER", "GOLD", "PLATINUM", "DIAMOND", "CHALLENGER"]:
+                for rank in self.ranks:
                     self.__init_feature("RANK-"+team+"-"+c+"-"+rank)
 
     def __champion_ranks(self):
@@ -190,12 +191,11 @@ class FeatureCreator:
 
     def __best_rank(self):
         feature_type_count = 1
-        ranks = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'CHALLENGER']
         t1sum,t2sum = 0,0
         for idx, p in enumerate(self.match["participants"]):
             if p['highestAchievedSeasonTier'] == 'UNRANKED':
                 continue
-            rank = ranks.index(p['highestAchievedSeasonTier'])
+            rank = self.ranks.index(p['highestAchievedSeasonTier'])
             if p["teamId"] == 100:
                 t1sum += rank
             else: # team 2

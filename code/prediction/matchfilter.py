@@ -37,14 +37,16 @@ class MatchFilter:
         if not "participants" in json_object:
             return False
         sum_ranks = 0
+        unranked = 0
         for participant in json_object["participants"]:
             if "highestAchievedSeasonTier" not in participant:
                 return False
             else:
                 rank = participant["highestAchievedSeasonTier"]
                 if rank == "UNRANKED": # treat as bronze
-                    continue # treat as 0
-                elif rank == "BRONZE":
+                    unranked += 1
+                    continue # treat as mean of all ranked players
+                if rank == "BRONZE":
                     continue # treat as 0
                 elif rank == "SILVER":
                     sum_ranks += 1
@@ -54,9 +56,15 @@ class MatchFilter:
                     sum_ranks += 3
                 elif rank == "DIAMOND":
                     sum_ranks += 4
-                elif rank == "CHALLENGER":
+                elif rank == "MASTER":
                     sum_ranks += 5
-        avg_rank = sum_ranks / (len(participant) * 5.0) # normalization
+                elif rank == "CHALLENGER":
+                    sum_ranks += 6
+        if unranked > 5: # we don't want to include games with more than half being unranked
+            return 0
+        avg_of_ranked = sum_ranks / len(json_object["participants"])
+        sum_ranks += avg_of_ranked * unranked # treat unranked as mean of all ranked players
+        avg_rank = sum_ranks / (len(participant) * 6.0) # normalization
         return avg_rank >= self.min_avg_rank
 
 
