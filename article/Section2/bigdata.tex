@@ -15,5 +15,19 @@ MapReduce is comprised of a \emph{map} procedure and a \emph{reduce} procedure, 
     \item[Map] This procedure takes as input a key-value pair and ``sets-up'' the data, by e.g. filtering or sorting. The resulting output is an intermediate key-value pair used for input to the reduce function.
     \item[Reduce] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result
 \end{description}
-
 %src: http://static.googleusercontent.com/media/research.google.com/da//archive/mapreduce-osdi04.pdf
+
+\subsubsection{Complications of distributed computing}
+
+Outline of this section:
+- Similarity with parallel programming
+    - Shared memory vs. network message passing
+- Pre-compute feature name/index map
+- Transforming/referencing RDD can only happen one at a time
+- HDFS data is immutable
+- 
+
+
+
+
+
