@@ -11,8 +11,8 @@ class FeatureType:
     FIRST_BARON = 8,
     FIRST_INHIBITOR = 9,
     FIRST_TOWER = 10,
-    BEST_RANK = 11,
-    AVG_RANK = 12,
+    BEST_RANKED_TEAM = 11,
+    PLAYER_RANKS = 12,
     PATCH_VERSION = 13,
     SPELL_CHAMPION_COMBO = 14,
     LANE_CHAMPION_COMBO = 15
@@ -40,8 +40,8 @@ class FeatureCreator:
             FeatureType.FIRST_BARON: lambda: self.__first_something("Baron"),
             FeatureType.FIRST_TOWER: lambda: self.__first_something("Tower"),
             FeatureType.FIRST_INHIBITOR: lambda: self.__first_something("Inhibitor"),
-            FeatureType.BEST_RANK: lambda: self.__best_rank(),
-            FeatureType.AVG_RANK: lambda: self.__champion_ranks(),
+            FeatureType.BEST_RANKED_TEAM: lambda: self.__best_rank(),
+            FeatureType.PLAYER_RANKS: lambda: self.__player_ranks(),
             FeatureType.PATCH_VERSION: lambda: self.__patch_version(),
             FeatureType.SPELL_CHAMPION_COMBO: lambda: self.__spell_champion_combo(), 
             FeatureType.LANE_CHAMPION_COMBO: lambda: self.__lane_champion_combo(),
@@ -57,8 +57,8 @@ class FeatureCreator:
             FeatureType.FIRST_BARON: lambda: self.__init_something("Baron"),
             FeatureType.FIRST_TOWER: lambda: self.__init_something("Tower"),
             FeatureType.FIRST_INHIBITOR: lambda: self.__init_something("Inhibitor"),
-            FeatureType.BEST_RANK: lambda: self.__init_best_rank(),
-            FeatureType.AVG_RANK: lambda: self.__init_champion_ranks(),
+            FeatureType.BEST_RANKED_TEAM: lambda: self.__init_best_rank(),
+            FeatureType.PLAYER_RANKS: lambda: self.__init_player_ranks(),
             FeatureType.PATCH_VERSION: lambda: self.__init_patch_version(),
             FeatureType.SPELL_CHAMPION_COMBO: lambda: self.__init_spell_champion_combo(),
             FeatureType.LANE_CHAMPION_COMBO: lambda: self.__init_lane_champion_combo(),    
@@ -162,13 +162,13 @@ class FeatureCreator:
                     feature_name = c1_name + "&" + c2_name + "-" + team_name
                     self.__add_feature(feature_name)
 
-    def __init_champion_ranks(self):
+    def __init_player_ranks(self):
         for team in ["BLUE", "PURPLE"]:
             for c in ["C1", "C2", "C3", "C4", "C5"]:
                 for rank in self.ranks:
                     self.__init_feature("RANK-"+team+"-"+c+"-"+rank)
 
-    def __champion_ranks(self):
+    def __player_ranks(self):
         blue_num = 0
         purple_num = 0
         for participant in self.match["participants"]:
