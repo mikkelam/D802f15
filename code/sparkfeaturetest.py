@@ -6,6 +6,7 @@ import time
 import operator
 
 
+
 from pyspark.mllib.regression import LabeledPoint
 from pyspark.mllib.linalg import SparseVector
 from featurecreator.featurecreator import FeatureType, FeatureCreator
@@ -16,6 +17,7 @@ class SparkFeatureTest:
 	def __init__(self, outputpath, inputpath):
 		self.outputpath = outputpath
 		self.inputpath = inputpath
+		self.timestamp = time.time()
 		
 	def __parsePoint(self, line):
 		match = json.loads(line)
@@ -41,7 +43,7 @@ class SparkFeatureTest:
 		file.write(dataname + " count: " + str(count) + "\n")
 		file.write(dataname + " prediction error: " + str(error)+"\n")
 		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
-		self.__pprint_weights(file, model)
+		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
 
 
 	def __pprint_weights(self, file, model):
@@ -50,7 +52,7 @@ class SparkFeatureTest:
 		for idx,feature in enumerate(self.feature_creator.get_all_feature_names()):
 			featureweights[feature] = model.weights[idx]
 
-		for feature,weight in sorted(featureweights.items(), key=operator.itemgetter(1)):
+		for feature,weight sorted(x.items(), key=operator.itemgetter(1))
    			file.write('%s: %s\n' % (feature, weight))
 
 
@@ -73,6 +75,9 @@ class SparkFeatureTest:
 	
 		self.__evaluate(model, parsed_train, "train", file)
 		self.__evaluate(model, parsed_eval, "eval", file)
+		file.write("\ntimestamp: %s\n" % (time.time()-self.timestamp))
+
+		self.__pprint_weights(file, model)
 		file.close()
 		parsed_train
 		
