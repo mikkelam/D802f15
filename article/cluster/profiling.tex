@@ -1,6 +1,77 @@
 \subsection{Hadoop Filesystem}
 
-Hadoop filesystem (HDFS) is a distributed filesystem that seeks to increase fault tolerance on very large datasystems. The filesystem is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS is run on a cluster, where one machine exist as a name node, which is a central node that manages the location of file blocks. Blocks are used as a means to split large files, replicate and distribute them across the cluster’s data nodes. Naturally, ensuring file coherency could become very complicated in such a system, which is why Hadoop implements a simple “write once read many” model. Commonly the file sizes used with Hadoop is in the Gigabyte-Terabyte range.
-Looking at \cref{hadoop}, the name node can be seen as the root of a HDFS cluster. An application access data by first requesting the locations of a file’s blocks from the name node and then use those locations to read directly from data nodes. As described earlier the cluster used for for the work in this article, consists of the centreal name node and three data nodes.~\cite{hadoopIntro} 
+Hadoop filesystem (HDFS) is a distributed filesystem that seeks to increase fault tolerance on very large datasystems. The filesystem is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS is run on a cluster, where one machine exist as a \emph{name node}, which is a central node that manages the location of file blocks. Blocks are used as a means to split large files, replicate and distribute them across the cluster’s \emph{data nodes}. Ensuring file coherency could become very complicated in such a system, which is why Hadoop implements a simple “write once, read many” model. It is common that the files used with Hadoop is of the Gigabyte-Terabyte size.
+As seen in \Cref{fig:hadoop}, the name node can be seen as the root of a HDFS cluster. An application access data by first requesting the locations of a file’s blocks from the name node and then use those locations to read directly from data nodes. As described earlier the cluster used for this project, consists of the central name node and three data nodes~\cite{hadoopIntro}. 
 
-\includegraphics[scale=1]{cluster/images/hadoopoverview.png} \label{hadoop} 
+\begin{figure}[!htb]
+  \centering
+  \scalebox{0.75}{
+    \begin{tikzpicture}[->,>=stealth',bend angle=45,auto]
+      % Disks
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=-5cm] (D1) {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=-2cm] (D2) {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=2cm] (D3) {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=5cm] (D4)  {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=5cm,yshift=5cm] (D5) {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=-5cm,yshift=5cm] (D6) {Disk};
+
+      % Data nodes
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=-5cm,yshift=0.3cm,label={[yshift=-0.65cm]Data node}] (DN1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=-2cm,yshift=0.3cm,label={[yshift=-0.65cm]Data node}] (DN2) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=2cm,yshift=0.3cm,label={[yshift=-0.65cm]Data node}] (DN3) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=5cm,yshift=0.3cm,label={[yshift=-0.65cm]Data node}] (DN4) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=-5cm,yshift=5.3cm,label={[yshift=-0.65cm]Data node}] (DN5) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=5cm,yshift=5.3cm,label={[yshift=-0.65cm]Data node}] (DN6) {};
+
+      % Name nodes
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=-2cm,yshift=5.3cm,label={[yshift=-0.65cm]Name node}] (NN1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=2cm,yshift=5.3cm,label={[yshift=-0.65cm]Name node}] (NN2) {};
+
+      % Server
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2.5cm, minimum height=3.5cm,xshift=-5cm,yshift=0.6cm,label={[yshift=-0.65cm]Server}] (S1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2.5cm, minimum height=3.5cm,xshift=-2cm,yshift=0.6cm,label={[yshift=-0.65cm,xshift=-0.5cm]Server}] (S2) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2.5cm, minimum height=3.5cm,xshift=5cm,yshift=0.6cm,label={[yshift=-0.65cm]Server}] (S3) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2.5cm, minimum height=3.5cm,xshift=2cm,yshift=0.6cm,label={[yshift=-0.65cm,xshift=0.5cm]Server}] (S4) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=5.5cm, minimum height=3.5cm,xshift=-3.5cm,yshift=5.6cm,label={[yshift=-0.65cm]Server}] (S5) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=5.5cm, minimum height=3.5cm,xshift=3.5cm,yshift=5.6cm,label={[yshift=-0.65cm]Server}] (S6) {};
+
+      % Cluster
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=6cm, minimum height=9.5cm,xshift=-3.5cm,yshift=3.4cm,label={[yshift=-0.65cm]HDFS Cluster}] (C1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=6cm, minimum height=9.5cm,xshift=3.5cm,yshift=3.4cm,label={[yshift=-0.65cm]HDFS Cluster}] (C2) {};
+
+      % Stuff
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.5cm,xshift=-2cm,yshift=9cm,label={[yshift=-0.6cm]Router}] (M1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.5cm,xshift=2cm,yshift=9cm,label={[yshift=-0.6cm]Router}] (M2) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.5cm,xshift=0cm,yshift=10cm,label={[yshift=-0.5cm]Router}] (M3) {};
+
+      % Arrows
+      \path (M3) edge (M1)
+      (M3) edge (M2)
+      (M1) edge (M3)
+      (M2) edge (M3)
+      (M1) edge (NN1)
+          (NN1) edge (M1)
+          (M2) edge (NN2)
+          (NN2) edge (M2)
+          (NN1) edge (DN1)
+          (DN1) edge (NN1)
+          ([xshift=0.5cm]NN1.south) edge ([xshift=0.5cm]DN2.north)
+          ([xshift=0.5cm]DN2.north) edge ([xshift=0.5cm]NN1.south)
+          (NN1) edge (DN5)
+          (DN5) edge (NN1)
+          ([xshift=-0.5cm]NN2.south) edge ([xshift=-0.5cm]DN3.north)
+          ([xshift=-0.5cm]DN3.north) edge ([xshift=-0.5cm]NN2.south)
+          (NN2) edge (DN4)
+          (DN4) edge (NN2)
+          (NN2) edge (DN6)
+          (DN6) edge (NN2);
+        \end{tikzpicture}
+      }
+      \caption{Hadoop cluster overview}\label{fig:hadoop}
+\end{figure} 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:

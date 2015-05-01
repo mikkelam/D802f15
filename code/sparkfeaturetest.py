@@ -3,6 +3,8 @@ import os
 import glob 
 import pickle
 import time
+import operator
+
 
 
 from pyspark.mllib.regression import LabeledPoint
@@ -12,24 +14,12 @@ from pyspark import SparkContext
 
 
 class SparkFeatureTest:	
-	def __init__(self, outputpath, inputpath, matchfilter):
+	def __init__(self, outputpath, inputpath):
 		self.outputpath = outputpath
 		self.inputpath = inputpath
-		self.matchfilter = matchfilter
+		self.timestamp = time.time()
 		
-		
-	def __matchfilter__(self, line):
-		try: 
-			json_object = json.loads(line)
-			if self.matchfilter.passes(json_object):
-				return True
-			#print self.matchfilter.last_discard_reason
-		except:
-			return False
-		return False
-		
-		
-	def __parsePoint__(self, line):
+	def __parsePoint(self, line):
 		match = json.loads(line)
 		self.feature_creator.set_match(match)
 		
@@ -44,10 +34,8 @@ class SparkFeatureTest:
 		return LabeledPoint(label, SparseVector(total_features, features)) 
 		
 		
-	def __evaluate__(self, model, parsedData, dataname, file):
-		# Test count and test error count. 
+	def __evaluate(self, model, parsedData, dataname, file):	
 		count = parsedData.count()
-		# Evaluating the model on train data
 		prediction = parsedData.map(lambda p: (p.label,  model.predict(p.features)))
 		error = prediction.filter(lambda (v, p): v != p).count()
 		
@@ -55,12 +43,30 @@ class SparkFeatureTest:
 		file.write(dataname + " count: " + str(count) + "\n")
 		file.write(dataname + " prediction error: " + str(error)+"\n")
 		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
+<<<<<<< HEAD
 		
 	def __save_model__(self, model, testname):
+=======
+		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
+
+
+	def __pprint_weights(self, file, model):
+		file.write('\n')
+		featureweights = {}
+		for idx,feature in enumerate(self.feature_creator.get_all_feature_names()):
+			featureweights[feature] = model.weights[idx]
+
+		for feature,weight sorted(x.items(), key=operator.itemgetter(1))
+   			file.write('%s: %s\n' % (feature, weight))
+
+
+	def __save_model(self, model, testname):
+>>>>>>> d4f9a13439b2db367d55eb32f2937c2d37bebf07
 		pickle.dump(model, open(self.outputpath + testname +"model.p","wb"))
 		
 
 
+<<<<<<< HEAD
 	def run(self, testname, testfeatures, sparkcontext,Model,training_size, samples = 1, local=True):
 		if local:
 			data = sparkcontext.textFile(','.join(glob.glob(self.inputpath)))
@@ -89,4 +95,27 @@ class SparkFeatureTest:
 			self.__evaluate__(model, parsedEval_1, "eval", file)
 			file.close()
 				
+=======
+	def run(self, testname, testfeatures,Model, training_data,eval_data):
+		self.feature_creator = FeatureCreator()
+		self.feature_creator.set_feature_types(testfeatures)
+
+		parsed_train = training_data.map(lambda line: self.__parsePoint(line))
+		parsed_eval = eval_data.map(lambda line: self.__parsePoint(line))
+		
+		model = Model.train(parsed_train)
+		self.__save_model(model, testname)
+
+		file = open(self.outputpath + testname + ".txt",'w')
+	
+		self.__evaluate(model, parsed_train, "train", file)
+		self.__evaluate(model, parsed_eval, "eval", file)
+		file.write("\ntimestamp: %s\n" % (time.time()-self.timestamp))
+
+		self.__pprint_weights(file, model)
+		file.close()
+		parsed_train
+		
+		
+>>>>>>> d4f9a13439b2db367d55eb32f2937c2d37bebf07
 

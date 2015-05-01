@@ -1,70 +1,53 @@
 
 \subsection{Representation of features}
 \label{sec:representationoffeatures}
-From the definition of features in \Cref{sec:choosingfeatures}, we can calculate that
+For supervised learning, each match must be converted to one or more labeled vectors of features.
+There are different ways to represent the same feature. In the following,
+4 different ways of representing the $X_1$ features (defined in \Cref{sec:choosingfeatures}) are presented.
+Even though all features can be represented in these 4 ways, only examples and tests using the $X_1$ features is provided.
 
-\begin{align}
-|X_1| &= |T| \cdot m \\ 
-|X_2| &= |T| \cdot \frac{m(m-1)}{2} \\ 
-|X_3| &= m^2  
-\end{align}
+To simplify the provided examples, it is assumed that only a total of 7 champions exists, such that $C = \{c_1, c_2, \cdots, c_7\}$.
+All examples shows the transformation of a single match $m$ to one or more labeled feature vectors $x, y$, where $m$ consists of the blue team $\{c_1,c_2,c_3,c_4,c_5\}$ who won and purple team $\{c_1,c_2,c_3,c_6,c_7\}$ who lost.
 
-where $m = |C|$ is the total number of champions. With 123 total champions, we have that for each match:
-\begin{itemize}
-\item $2 \cdot 5 = 10$ $X_1$ features are present out of 246 possible
-\item $2 \cdot (5 \cdot 4)/2 = 20$ $X_2$ features are present out of 15006 possible
-\item $5 \cdot 5 = 25$ $X_3$ features are present out of 15129 possible
-\end{itemize}
-
-By present, we mean the features which value is 1.
-It is clear that only a sparse number of features are present in each game. 
-For optimising the machine learning methods used, we will for each match only represent the features that are present in that game. 
-Before applying a machine learning method, each of the features introduced in \Cref{sec:choosingfeatures} are assigned a unique id.
-For each match in the training data, the machine learning method is then given the ids of the features present in that match.
-We will now show how each feature in $X_1$, $X_2$, and $X_3$ is assigned a unique id:
-
+\subsubsection{Binary representation}
 \begin{center}
-Every feature $x_1(t, c) \in X_1$ is given the id:
-\[ c + t \frac{|X_1|}{|T|} \]
+$x, y = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true}$
 \end{center}
+The 7 first features in $x$ represent the champions on team blue, followed by 7 features representing the champions on team purple.
+The label is $\texttt{true}$ if and only if blue team won.
+This representation captures the champions on each team, as well as which side of the map each team spawn.
 
-It is easy to see that this assign unique ids to all features in $X_1$.
-Assigning unique IDs to features in $X_2$ is a bit more tricky since we are dealing with combinations and thus have the restriction $c_1 < c_2$.
-If we enumerate all features $x_2(t, c_1, c_2) \in X_2$ for a single $t$ by $(c_1, c_2)$, we get the following enumeration:
-\begin{align*}
-(0, 1), (0, 2), (0, 3),& \dots, (0, m-1)\\
-        (1, 2), (1, 3),& \dots, (1, m-1)\\
-                        & \vdots    \\
-                         &      (m-2, m-1)\\                   
-\end{align*}
-If using row and column indecies starting at $0$, we see that row $0$ contains $m-1$ elements, row $1$ contains $m-2$ elements, and so on.
-That is, any row $i$ contains $m-1-i$ elements.
-It is clear that the combination $(c_1, c_2)$ lies in row $c_1$ as element $c_2 - 1 - c_1$.
-Thus, any combination $(c_1, c_2)$ is preceded by all elements in row $0$ through $c_1 - 1$, as well as $c_2 - 1 - c_1$ elements in its own row.
-The number of elements in row $0$ through $c_1 - 1$ is an arithmetic series, and we can calculate the total number of elements
-using the formula $\frac{n(a_0 + a_{n-1})}{2}$, where $n$ is the number of rows and $a_i$ is the number of elements in row $i$.
-Since we have $m-1$ elements in row $0$ and $m - 1 - (c_1 - 1)$ elements in row $c_1 - 1$,
-we get that 
-\[\frac{c_1(m-1 + m-1-(c_1-1))}{2} = \frac{c_1(2m-1-c_1)}{2}\] 
-elements are contained in the rows $0$ through $c_1 - 1$.
-By adding the number of elements preceding $(c_1, c_2)$ in its own row, we get that $(c_1, c_2)$ is preceded by a total of
-$\frac{c_1(2m-1-c_1)}{2} + c_2-1-c_1 = \frac{c_1(2m-3-c_1)}{2} + c_2-1$ elements.
-We can now use the number of elements that precede $(c_1, c_2)$ as the id for the feature $x_3(t, c_1, c_2)$. However, we must remember to add the offset $2m$, to not clash with the $x_t(c)$ features, and we must also add the offset $t \cdot \frac{m(m-1)}{2}$ since we for each $t \in T$ have $\frac{m(m-1)}{2}$ of the $x_3(t, c_1, c_2)$ features.
-We finally get that:
-
+\subsubsection{Mirrored binary representation}
 \begin{center}
-Every feature $x_2(t, c_1, c_2) \in X_2$, is given the id:
-\[ |X_1| + t \cdot \frac{|X_2|}{|T|} + \frac{c_1(2m-3-c_1)}{2} + c_2-1\]
+$x_1, y_1 = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true}$\\
+$x_2, y_2 = (1,1,1,0,0,1,1,1,1,1,1,1,0,0), \texttt{false}$
 \end{center}
+This representation is the same as the binary representation, expect that an additional training instance is generated for each match, by mirroring the teams and negating the class label.
+The idea for this representation is based on the assumption that any champion $c$ affects the team it is on in the same way, regardless of which team it is on.
+If this assumption holds, we may be able to produce reliable, unseen data using this method.
 
-Assigning an id to the features in $X_3$ is simple since we are dealing with permutations. If we start enumerating all those features in the same way we did for the $X_2$ features, we will quickly see that the feature $x_3(c_1, c_2)$ appears as element number $c_1m+c_2$' in the enumeration.
-Now, we only need to add the correct offset of $|X_1| + |X_2| + |X_3|$, to get that:
+\subsubsection{Compact binary representation}
 \begin{center}
-Every feature $x_3(c_1, c_2) \in X_4$ is given the id:
-\[|X_1| + |X_2| + c_1m+c_2\]
+$x_1, y_1 = (1,1,1,1,1,0,0), \texttt{true}$\\
+$x_2, y_2 = (1,1,1,0,0,1,1), \texttt{false}$
 \end{center}
+With this representation, we split a match into two labeled feature vectors, each representing a single team and a label indicating whether that team won or lost.
+This representation captures only the strength of a team, and not its strength compared to an opponent team.
+If it is too complex to learn a model that captures that one particular team is good against another particular team, this simple representation may be more favorable.
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../main"
-%%% End:
+\subsubsection{Ternary representation}
+\begin{center}
+$x, y = (0,0,0,1,1,-1,-1), \texttt{true}$
+\end{center}
+For each match, a single feature vector is created where the label is true if and only if team blue won, and
+\[
+    x_i = 
+\begin{cases}
+    1 				 & \text{if } c_x \in T_\text{blue}, c_x \not\in T_\text{purple}\\
+    -1,              & \text{if } c_x \not\in T_\text{blue}, c_x \in T_\text{purple}\\
+    0,              & \text{otherwise}
+\end{cases}
+\]
+This representation captures the same as the binary representation, using less features but with a ternary domain of each feature.
+
+

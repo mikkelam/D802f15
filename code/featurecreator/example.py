@@ -5,22 +5,22 @@ from featurecreator import *
 from wekaconverter import *
 
 inputpath = r"C:/Users/Kent/Desktop/D802f15/LoLMiner/LoLMiner/bin/mined-data/" #Path to input files
-outputpath = r"C:/Users/Kent/Desktop/testfiles/lol.arff" #path to the output file
+outputpath = r"C:/Users/Kent/Desktop/testfiles/ranks/0.arff" #path to the output file
 
 mf = MatchFilter({"matchMode": ["CLASSIC"],
                           "matchType": ["MATCHED_GAME"],
                           "queueType": ["RANKED_SOLO_5x5", "RANKED_PREMADE_5x5", "NORMAL_5x5_BLIND", "NORMAL_5x5_DRAFT"],
                           "participants->*->timeline->xpPerMinDeltas->*": ["!0"]})
+mf.set_min_avg_rank(0) # [0.0-1.0] - 0 is pure bronze, 1.0 is pure challengers. unranked = bronze
 
 feature_creator = FeatureCreator()
-feature_types = [FeatureType.BLUE_TEAM_SINGLES,
-                 FeatureType.RED_TEAM_SINGLES]
+feature_types = [FeatureType.AVG_RANK]
 feature_creator.set_feature_types(feature_types)
 wc = WekaConverter(outputpath)
 games_to_extract = 100
 skips = 0
 for f in os.listdir(inputpath):
-    if not f.endswith(".txt"):
+    if not f.endswith(".json"):
         continue
     with io.open(inputpath + f, 'r', encoding="latin-1") as file:
         for line in file:
