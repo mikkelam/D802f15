@@ -11,8 +11,8 @@ class FeatureType:
     FIRST_BARON = 8,
     FIRST_INHIBITOR = 9,
     FIRST_TOWER = 10,
-    BEST_RANK = 11,
-    AVG_RANK = 12,
+    BEST_RANKED_TEAM = 11,
+    PLAYER_RANKS = 12,
     PATCH_VERSION = 13,
     SPELL_CHAMPION_COMBO = 14,
     LANE_CHAMPION_COMBO = 15
@@ -26,6 +26,7 @@ class FeatureCreator:
 
     summoner_spells = {1:'Cleanse', 2:'Clairvoyance', 3:'Exhaust', 4:'Flash', 6:'Ghost', 7:'Heal', 11:'Smite', 12:'Teleport', 13:'Clarity', 14:'Ignite', 17:'Garrison', 21:'Barrier',30:'To the King!', 31:'SummonerPoroThrow'}
     lanes = ['TOP', 'MIDDLE', 'JUNGLE', 'BOTTOM']
+    ranks = ["UNRANKED", "BRONZE", "SILVER", "GOLD", "PLATINUM", "DIAMOND", "MASTER", "CHALLENGER"]
     patches = ['5.6.0.190']
 
     def __init__(self):
@@ -41,8 +42,8 @@ class FeatureCreator:
             FeatureType.FIRST_BARON: lambda: self.__first_something("Baron"),
             FeatureType.FIRST_TOWER: lambda: self.__first_something("Tower"),
             FeatureType.FIRST_INHIBITOR: lambda: self.__first_something("Inhibitor"),
-            FeatureType.BEST_RANK: lambda: self.__best_rank(),
-            FeatureType.AVG_RANK: lambda: self.__champion_ranks(),
+            FeatureType.BEST_RANKED_TEAM: lambda: self.__best_rank(),
+            FeatureType.PLAYER_RANKS: lambda: self.__player_ranks(),
             FeatureType.PATCH_VERSION: lambda: self.__patch_version(),
             FeatureType.SPELL_CHAMPION_COMBO: lambda: self.__spell_champion_combo(), 
             FeatureType.LANE_CHAMPION_COMBO: lambda: self.__lane_champion_combo(),
@@ -58,8 +59,8 @@ class FeatureCreator:
             FeatureType.FIRST_BARON: lambda: self.__init_something("Baron"),
             FeatureType.FIRST_TOWER: lambda: self.__init_something("Tower"),
             FeatureType.FIRST_INHIBITOR: lambda: self.__init_something("Inhibitor"),
-            FeatureType.BEST_RANK: lambda: self.__init_best_rank(),
-            FeatureType.AVG_RANK: lambda: self.__init_champion_ranks(),
+            FeatureType.BEST_RANKED_TEAM: lambda: self.__init_best_rank(),
+            FeatureType.PLAYER_RANKS: lambda: self.__init_player_ranks(),
             FeatureType.PATCH_VERSION: lambda: self.__init_patch_version(),
             FeatureType.SPELL_CHAMPION_COMBO: lambda: self.__init_spell_champion_combo(),
             FeatureType.LANE_CHAMPION_COMBO: lambda: self.__init_lane_champion_combo(),    
@@ -163,13 +164,13 @@ class FeatureCreator:
                     feature_name = c1_name + "&" + c2_name + "-" + team_name
                     self.__add_feature(feature_name)
 
-    def __init_champion_ranks(self):
+    def __init_player_ranks(self):
         for team in ["BLUE", "PURPLE"]:
             for c in ["C1", "C2", "C3", "C4", "C5"]:
-                for rank in ["UNRANKED", "BRONZE", "SILVER", "GOLD", "PLATINUM", "DIAMOND", "CHALLENGER"]:
+                for rank in self.ranks:
                     self.__init_feature("RANK-"+team+"-"+c+"-"+rank)
 
-    def __champion_ranks(self):
+    def __player_ranks(self):
         blue_num = 0
         purple_num = 0
         for participant in self.match["participants"]:
@@ -192,12 +193,11 @@ class FeatureCreator:
 
     def __best_rank(self):
         feature_type_count = 1
-        ranks = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'CHALLENGER']
         t1sum,t2sum = 0,0
         for idx, p in enumerate(self.match["participants"]):
             if p['highestAchievedSeasonTier'] == 'UNRANKED':
                 continue
-            rank = ranks.index(p['highestAchievedSeasonTier'])
+            rank = self.ranks.index(p['highestAchievedSeasonTier'])
             if p["teamId"] == 100:
                 t1sum += rank
             else: # team 2

@@ -56,7 +56,7 @@ class SparkFeatureTest:
 		for idx,feature in enumerate(self.feature_creator.get_all_feature_names()):
 			featureweights[feature] = model.weights[idx]
 
-		for feature,weight sorted(x.items(), key=operator.itemgetter(1))
+		for feature,weight in sorted(featureweights.items(), key=operator.itemgetter(1)):
    			file.write('%s: %s\n' % (feature, weight))
 
 
