@@ -3,21 +3,17 @@
 Online multiplayer games have the possibility of generating a lot of data, this increases with the possible options for each individual player and the number of players. 
 League of Legends (LoL), created by Riot games, was the most played online game in the beginning of 2015~\cite{LoLmostplayed}, mustering 27 million people playing it daily in the beginning of 2014~\cite{LoL27mill}. 
 
-When playing, the players are divided into two teams of 5 players each, from a selection of more than 100 different champions, each with 4 unique abilities, each player picks a single one to control.
+When playing, the players are divided into 2 competing teams (blue, purple) of 5 players each. In a classic match, each player will pick a champion(character) from a pool of 124 champions, each champion with 4 unique abilities. An ability is a magic spell, which does wildly different things, such as throwing a fireball at an opponent.
+\\
 
-Each team then start at their respective bases, either as the red team in the upper right corner or as the blue team in the lower left. 
-A base consist of a nexus, three towers and inhibitors, one tower and inhibitor at each entrance to the base. A tower is a defense mechanism that fires at approaching enemies. The inhibitor only makes a difference once destroyed, it will let the opposing team summon stronger minions. The nexus summons the minions that help the champions and when the team that loses their nexus, loses the match.
+\begin{wrapfigure}{r}{{0.5\textwidth}}
+  \centering
+    \includegraphics[width=0.5\textwidth]{Section1/lolmap.png}
+  \caption{League of legends map}
+\end{wrapfigure}\label{lolmap}
+The map consists of three lanes(top, middle, bottom) as shown with arrows, connecting the two bases. In front of each lane in each base are two structures, an inhibitor and a turret defending the inhibtor. In the middle of the base is the nexus, which when destroyed ends the game, making the enemy team the winner. In each lane, the inhibitors spawn creeps(small monsters with low damage and health) which walks toward the opposing base on the lane it was spawned, the effect is that the two team's monsters meet in the middle, which is where the teams will fight, killing each others creeps. Furthermore, each lane has two extra turrets outside the base. A turret is a defensive structure fires at approaching enemies. When the inhibitor is destroyed, it makes the opposing team summon stronger minions. Lastly note that there is a "jungle", which consists of stronger monsters which award gold, and experience.
+\\
+Experience and money is earned through out the game for the individual players, when killing monsters or opposing players. The experience is used to improve the skills of the champion while money is spend purchasing items that will make the player stronger. This sums up the most important aspects of the game, and it is already quite clear how statespace the game hosts. This makes it extremely complex, and very interesting to analyse what one can do to improve ones gameplay. 
+\\\\
+The game combines strategy, individual player skill, communication and team play. It is a massive skill showcase, but how important is strategy? In this paper we will investigate how much of an advantage one can get by making good strategic decisions, based on a large dataset of matches played.
 
-There are three major paths connecting the two bases, with many minor intertwined paths. Each path has an additional 4 towers, two for each team, which also fires at the enemies.
-
-As the game advances, experience and money is earned depending on the performance of the players and the team as a whole. The experience is used to improve the skills of the champion while money is spend purchasing items that will help the player or the team. 
-
-The data Riot games gather from the game is extensive with many parameters~\cite{LoLparameters}, which gives many possibilities for interesting applications. 
-
-This paper will use this data to create a model capable of predicting the winning team based on the composition of champions, or even predicting which champion should be chosen to increase the probability of winning, given the opponents selection of champions. Since there are so many different champions and purchasable items, the variations of possible options the player can take is large, this means that we will require a great deal of data, more than can be stored optimally in any given database. We will require a cluster to handle this newly created big data problem and all its computations.
-
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../main"
-%%% End:
