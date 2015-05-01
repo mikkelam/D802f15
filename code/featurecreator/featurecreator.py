@@ -235,8 +235,6 @@ class FeatureCreator:
                         continue
                     feature_name = c + '-S1-' + spell1 + '-S2-' + spell2
                     self.__init_feature(feature_name)
-        with open('f', 'w+') as f:
-            f.write(str(self.feature_to_index))
 
 
     def __spell_champion_combo(self):

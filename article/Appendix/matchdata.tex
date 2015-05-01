@@ -1,0 +1,363 @@
+\section{League of Legends Match Data}
+
+\subsection{Match Detail}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[!h]
+\tiny
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}         & \textbf{Data Type}            & \textbf{Description}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    \\ \hline
+mapId                 & int                           & Match map ID                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \\ \hline
+matchCreation         & long                          & Match creation time. Designates when the team select lobby is created and/or the match is made through match making, not when the game actually starts.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 \\ \hline
+matchDuration         & long                          & Match duration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          \\ \hline
+matchId               & long                          & ID of the match                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         \\ \hline
+matchMode             & string                        & Match mode (Legal values: CLASSIC, ODIN, ARAM, TUTORIAL, ONEFORALL, ASCENSION, FIRSTBLOOD, KINGPORO)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    \\ \hline
+matchType             & string                        & Match type (Legal values: CUSTOM\_GAME, MATCHED\_GAME, TUTORIAL\_GAME)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  \\ \hline
+matchVersion          & string                        & Match version                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\ \hline
+participantIdentities & List{[}ParticipantIdentity{]} & Participant identity information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
+participants          & List{[}Participant{]}         & Participant information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 \\ \hline
+platformId            & string                        & Platform ID of the match                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                \\ \hline
+queueType             & string                        & Match queue type (Legal values: CUSTOM, NORMAL\_5x5\_BLIND, RANKED\_SOLO\_5x5, RANKED\_PREMADE\_5x5, BOT\_5x5, NORMAL\_3x3, RANKED\_PREMADE\_3x3, NORMAL\_5x5\_DRAFT, ODIN\_5x5\_BLIND, ODIN\_5x5\_DRAFT, BOT\_ODIN\_5x5, BOT\_5x5\_INTRO, BOT\_5x5\_BEGINNER, BOT\_5x5\_INTERMEDIATE, RANKED\_TEAM\_3x3, RANKED\_TEAM\_5x5, BOT\_TT\_3x3, GROUP\_FINDER\_5x5, ARAM\_5x5, ONEFORALL\_5x5, FIRSTBLOOD\_1x1, FIRSTBLOOD\_2x2, SR\_6x6, URF\_5x5, ONEFORALL\_MIRRORMODE\_5x5, BOT\_URF\_5x5, NIGHTMARE\_BOT\_5x5\_RANK1, NIGHTMARE\_BOT\_5x5\_RANK2, NIGHTMARE\_BOT\_5x5\_RANK5, ASCENSION\_5x5, HEXAKILL, KING\_PORO\_5x5, COUNTER\_PICK) \\ \hline
+region                & string                        & Region where the match was played                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \\ \hline
+season                & string                        & Season match was played (Legal values: PRESEASON3, SEASON3, PRESEASON2014, SEASON2014, PRESEASON2015, SEASON2015)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \\ \hline
+teams                 & List{[}Team{]}                & Team information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
+timeline              & Timeline                      & Match timeline data (not included by default)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\ \hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Participant}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}             & \textbf{Data Type}  & \textbf{Description}                                                                                                                                                                                                                                     \\ \hline
+championId                & int                 & Champion ID                                                                                                                                                                                                                                              \\ \hline
+highestAchievedSeasonTier & string              & Highest ranked tier achieved for the previous season, if any, otherwise null. Used to display border in game loading screen. (Legal values: CHALLENGER, MASTER, DIAMOND, PLATINUM, GOLD, SILVER, BRONZE, UNRANKED)                                       \\ \hline
+masteries                 & List{[}Mastery{]}   & List of mastery information                                                                                                                                                                                                                              \\ \hline
+participantId             & int                 & Participant ID                                                                                                                                                                                                                                           \\ \hline
+runes                     & List{[}Rune{]}      & List of rune information                                                                                                                                                                                                                                 \\ \hline
+spell1Id                  & int                 & First summoner spell ID                                                                                                                                                                                                                                  \\ \hline
+spell2Id                  & int                 & Second summoner spell ID                                                                                                                                                                                                                                 \\ \hline
+stats                     & ParticipantStats    & Participant statistics                                                                                                                                                                                                                                   \\ \hline
+teamId                    & int                 & Team ID                                                                                                                                                                                                                                                  \\ \hline
+timeline                  & ParticipantTimeline & Timeline data. Delta fields refer to values for the specified period (e.g., the gold per minute over the first 10 minutes of the game versus the second 20 minutes of the game. Diffs fields refer to the deltas versus the calculated lane opponent(s). \\ \hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Participant Identity}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name} & \textbf{Data Type} & \textbf{Description} \\ \hline
+participantId & int & Participant ID \\ \hline
+player & Player & Player information \\ \hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Team}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}        & \textbf{Data Type}       & \textbf{Description}                                                                       \\ \hline
+bans                 & List{[}BannedChampion{]} & If game was draft mode, contains banned champion data, otherwise null                      \\ \hline
+baronKills           & int                      & Number of times the team killed baron                                                      \\ \hline
+dominionVictoryScore & long                     & If game was a dominion game, specifies the points the team had at game end, otherwise null \\ \hline
+dragonKills          & int                      & Number of times the team killed dragon                                                     \\ \hline
+firstBaron           & boolean                  & Flag indicating whether or not the team got the first baron kill                           \\ \hline
+firstBlood           & boolean                  & Flag indicating whether or not the team got first blood                                    \\ \hline
+firstDragon          & boolean                  & Flag indicating whether or not the team got the first dragon kill                          \\ \hline
+firstInhibitor       & boolean                  & Flag indicating whether or not the team destroyed the first inhibitor                      \\ \hline
+firstTower           & boolean                  & Flag indicating whether or not the team destroyed the first tower                          \\ \hline
+inhibitorKills       & int                      & Number of inhibitors the team destroyed                                                    \\ \hline
+teamId               & int                      & Team ID                                                                                    \\ \hline
+towerKills           & int                      & Number of towers the team destroyed                                                        \\ \hline
+vilemawKills         & int                      & Number of times the team killed vilemaw                                                    \\ \hline
+winner               & boolean                  & Flag indicating whether or not the team won                                                \\ \hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Timeline}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name} & \textbf{Data Type} & \textbf{Description}                              \\ \hline
+frameInterval & long               & Time between each returned frame in milliseconds. \\ \hline
+frames        & List{[}Frame{]}    & List of timeline frames for the game.             \\ \hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Mastery}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name} & \textbf{Data Type} & \textbf{Description} \\ \hline
+masteryId & long & Mastery ID \\ \hline
+rank & long & Mastery rank \\ \hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Participant Stats}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[!h]
+\tiny
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}                   & \textbf{Data Type} & \textbf{Description}                                                            \\ \hline
+assists                         & long               & Number of assists                                                               \\ \hline
+champLevel                      & long               & Champion level achieved                                                         \\ \hline
+combatPlayerScore               & long               & If game was a dominion game, player's combat score, otherwise 0                 \\ \hline
+deaths                          & long               & Number of deaths                                                                \\ \hline
+doubleKills                     & long               & Number of double kills                                                          \\ \hline
+firstBloodAssist                & boolean            & Flag indicating if participant got an assist on first blood                     \\ \hline
+firstBloodKill                  & boolean            & Flag indicating if participant got first blood                                  \\ \hline
+firstInhibitorAssist            & boolean            & Flag indicating if participant got an assist on the first inhibitor             \\ \hline
+firstInhibitorKill              & boolean            & Flag indicating if participant destroyed the first inhibitor                    \\ \hline
+firstTowerAssist                & boolean            & Flag indicating if participant got an assist on the first tower                 \\ \hline
+firstTowerKill                  & boolean            & Flag indicating if participant destroyed the first tower                        \\ \hline
+goldEarned                      & long               & Gold earned                                                                     \\ \hline
+goldSpent                       & long               & Gold spent                                                                      \\ \hline
+inhibitorKills                  & long               & Number of inhibitor kills                                                       \\ \hline
+item0                           & long               & First item ID                                                                   \\ \hline
+item1                           & long               & Second item ID                                                                  \\ \hline
+item2                           & long               & Third item ID                                                                   \\ \hline
+item3                           & long               & Fourth item ID                                                                  \\ \hline
+item4                           & long               & Fifth item ID                                                                   \\ \hline
+item5                           & long               & Sixth item ID                                                                   \\ \hline
+item6                           & long               & Seventh item ID                                                                 \\ \hline
+killingSprees                   & long               & Number of killing sprees                                                        \\ \hline
+kills                           & long               & Number of kills                                                                 \\ \hline
+largestCriticalStrike           & long               & Largest critical strike                                                         \\ \hline
+largestKillingSpree             & long               & Largest killing spree                                                           \\ \hline
+largestMultiKill                & long               & Largest multi kill                                                              \\ \hline
+magicDamageDealt                & long               & Magical damage dealt                                                            \\ \hline
+magicDamageDealtToChampions     & long               & Magical damage dealt to champions                                               \\ \hline
+magicDamageTaken                & long               & Magic damage taken                                                              \\ \hline
+minionsKilled                   & long               & Minions killed                                                                  \\ \hline
+neutralMinionsKilled            & long               & Neutral minions killed                                                          \\ \hline
+neutralMinionsKilledEnemyJungle & long               & Neutral jungle minions killed in the enemy team's jungle                        \\ \hline
+neutralMinionsKilledTeamJungle  & long               & Neutral jungle minions killed in your team's jungle                             \\ \hline
+nodeCapture                     & long               & If game was a dominion game, number of node captures                            \\ \hline
+nodeCaptureAssist               & long               & If game was a dominion game, number of node capture assists                     \\ \hline
+nodeNeutralize                  & long               & If game was a dominion game, number of node neutralizations                     \\ \hline
+nodeNeutralizeAssist            & long               & If game was a dominion game, number of node neutralization assists              \\ \hline
+objectivePlayerScore            & long               & If game was a dominion game, player's objectives score, otherwise 0             \\ \hline
+pentaKills                      & long               & Number of penta kills                                                           \\ \hline
+physicalDamageDealt             & long               & Physical damage dealt                                                           \\ \hline
+physicalDamageDealtToChampions  & long               & Physical damage dealt to champions                                              \\ \hline
+physicalDamageTaken             & long               & Physical damage taken                                                           \\ \hline
+quadraKills                     & long               & Number of quadra kills                                                          \\ \hline
+sightWardsBoughtInGame          & long               & Sight wards purchased                                                           \\ \hline
+teamObjective                   & long               & If game was a dominion game, number of completed team objectives (i.e., quests) \\ \hline
+totalDamageDealt                & long               & Total damage dealt                                                              \\ \hline
+totalDamageDealtToChampions     & long               & Total damage dealt to champions                                                 \\ \hline
+totalDamageTaken                & long               & Total damage taken                                                              \\ \hline
+totalHeal                       & long               & Total heal amount                                                               \\ \hline
+totalPlayerScore                & long               & If game was a dominion game, player's total score, otherwise 0                  \\ \hline
+totalScoreRank                  & long               & If game was a dominion game, team rank of the player's total score (e.g., 1-5)  \\ \hline
+totalTimeCrowdControlDealt      & long               & Total dealt crowd control time                                                  \\ \hline
+totalUnitsHealed                & long               & Total units healed                                                              \\ \hline
+towerKills                      & long               & Number of tower kills                                                           \\ \hline
+tripleKills                     & long               & Number of triple kills                                                          \\ \hline
+trueDamageDealt                 & long               & True damage dealt                                                               \\ \hline
+trueDamageDealtToChampions      & long               & True damage dealt to champions                                                  \\ \hline
+trueDamageTaken                 & long               & True damage taken                                                               \\ \hline
+unrealKills                     & long               & Number of unreal kills                                                          \\ \hline
+visionWardsBoughtInGame         & long               & Vision wards purchased                                                          \\ \hline
+wardsKilled                     & long               & Number of wards killed                                                          \\ \hline
+wardsPlaced                     & long               & Number of wards placed                                                          \\ \hline
+winner                          & boolean            & Flag indicating whether or not the participant won                              \\ \hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\subsection{Participant Timeline}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}                   & \textbf{Data Type}      & \textbf{Description}                                                         \\ \hline
+ancientGolemAssistsPerMinCounts & ParticipantTimelineData & Ancient golem assists per minute timeline counts                             \\ \hline
+ancientGolemKillsPerMinCounts   & ParticipantTimelineData & Ancient golem kills per minute timeline counts                               \\ \hline
+assistedLaneDeathsPerMinDeltas  & ParticipantTimelineData & Assisted lane deaths per minute timeline data                                \\ \hline
+assistedLaneKillsPerMinDeltas   & ParticipantTimelineData & Assisted lane kills per minute timeline data                                 \\ \hline
+baronAssistsPerMinCounts        & ParticipantTimelineData & Baron assists per minute timeline counts                                     \\ \hline
+baronKillsPerMinCounts          & ParticipantTimelineData & Baron kills per minute timeline counts                                       \\ \hline
+creepsPerMinDeltas              & ParticipantTimelineData & Creeps per minute timeline data                                              \\ \hline
+csDiffPerMinDeltas              & ParticipantTimelineData & Creep score difference per minute timeline data                              \\ \hline
+damageTakenDiffPerMinDeltas     & ParticipantTimelineData & Damage taken difference per minute timeline data                             \\ \hline
+damageTakenPerMinDeltas         & ParticipantTimelineData & Damage taken per minute timeline data                                        \\ \hline
+dragonAssistsPerMinCounts       & ParticipantTimelineData & Dragon assists per minute timeline counts                                    \\ \hline
+dragonKillsPerMinCounts         & ParticipantTimelineData & Dragon kills per minute timeline counts                                      \\ \hline
+elderLizardAssistsPerMinCounts  & ParticipantTimelineData & Elder lizard assists per minute timeline counts                              \\ \hline
+elderLizardKillsPerMinCounts    & ParticipantTimelineData & Elder lizard kills per minute timeline counts                                \\ \hline
+goldPerMinDeltas                & ParticipantTimelineData & Gold per minute timeline data                                                \\ \hline
+inhibitorAssistsPerMinCounts    & ParticipantTimelineData & Inhibitor assists per minute timeline counts                                 \\ \hline
+inhibitorKillsPerMinCounts      & ParticipantTimelineData & Inhibitor kills per minute timeline counts                                   \\ \hline
+lane                            & string                  & Participant's lane (Legal values: MID, MIDDLE, TOP, JUNGLE, BOT, BOTTOM)     \\ \hline
+role                            & string                  & Participant's role (Legal values: DUO, NONE, SOLO, DUO\_CARRY, DUO\_SUPPORT) \\ \hline
+towerAssistsPerMinCounts        & ParticipantTimelineData & Tower assists per minute timeline counts                                     \\ \hline
+towerKillsPerMinCounts          & ParticipantTimelineData & Tower kills per minute timeline counts                                       \\ \hline
+towerKillsPerMinDeltas          & ParticipantTimelineData & Tower kills per minute timeline data                                         \\ \hline
+vilemawAssistsPerMinCounts      & ParticipantTimelineData & Vilemaw assists per minute timeline counts                                   \\ \hline
+vilemawKillsPerMinCounts        & ParticipantTimelineData & Vilemaw kills per minute timeline counts                                     \\ \hline
+wardsPerMinDeltas               & ParticipantTimelineData & Wards placed per minute timeline data                                        \\ \hline
+xpDiffPerMinDeltas              & ParticipantTimelineData & Experience difference per minute timeline data                               \\ \hline
+xpPerMinDeltas                  & ParticipantTimelineData & Experience per minute timeline data                                          \\ \hline
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier
+\subsection{Rune}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name} & \textbf{Data Type} & \textbf{Description} \\ \hline
+rank          & long               & Rune rank            \\ \hline
+runeId        & long               & Rune ID              \\ \hline
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier
+\subsection{Player}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}   & \textbf{Data Type} & \textbf{Description} \\ \hline
+matchHistoryUri & string             & Match history URI    \\ \hline
+profileIcon     & int                & Profile icon ID      \\ \hline
+summonerId      & long               & Summoner ID          \\ \hline
+summonerName    & string             & Summoner name        \\ \hline
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier
+\subsection{Banned Champion}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name} & \textbf{Data Type} & \textbf{Description}                      \\ \hline
+championId    & int                & Banned champion ID                        \\ \hline
+pickTurn      & int                & Turn during which the champion was banned \\ \hline
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier
+\subsection{Frame}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}     & \textbf{Data Type}                & \textbf{Description}                                                       \\ \hline
+events            & List{[}Event{]}                   & List of events for this frame.                                             \\ \hline
+participantFrames & Map{[}string, ParticipantFrame{]} & Map of each participant ID to the participant's information for the frame. \\ \hline
+timestamp         & long                              & Represents how many milliseconds into the game the frame occurred.         \\ \hline
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier
+\subsection{Participant Timeline Data}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+Name           & Data Type & Description                                               \\ \hline
+tenToTwenty    & double    & Value per minute from 10 min to 20 min                    \\ \hline
+thirtyToEnd    & double    & Value per minute from 30 min to the end of the game       \\ \hline
+twentyToThirty & double    & Value per minute from 20 min to 30 min                    \\ \hline
+zeroToTen      & double    & Value per minute from the beginning of the game to 10 min \\ \hline
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier
+\subsection{Event}
+\begin{table}[!h]
+\tiny
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}           & \textbf{Data Type} & \textbf{Description}                                                                                                                                                                                                                        \\ \hline
+ascendedType            & string             & The ascended type of the event. Only present if relevant. Note that CLEAR\_ASCENDED refers to when a participants kills the ascended player. (Legal values: CHAMPION\_ASCENDED, CLEAR\_ASCENDED, MINION\_ASCENDED)                          \\ \hline
+assistingParticipantIds & List{[}int{]}      & The assisting participant IDs of the event. Only present if relevant.                                                                                                                                                                       \\ \hline
+buildingType            & string             & The building type of the event. Only present if relevant. (Legal values: INHIBITOR\_BUILDING, TOWER\_BUILDING)                                                                                                                              \\ \hline
+creatorId               & int                & The creator ID of the event. Only present if relevant.                                                                                                                                                                                      \\ \hline
+eventType               & string             & Event type. (Legal values: ASCENDED\_EVENT, BUILDING\_KILL, CAPTURE\_POINT, CHAMPION\_KILL, ELITE\_MONSTER\_KILL, ITEM\_DESTROYED, ITEM\_PURCHASED, ITEM\_SOLD, ITEM\_UNDO, PORO\_KING\_SUMMON, SKILL\_LEVEL\_UP, WARD\_KILL, WARD\_PLACED) \\ \hline
+itemAfter               & int                & The ending item ID of the event. Only present if relevant.                                                                                                                                                                                  \\ \hline
+itemBefore              & int                & The starting item ID of the event. Only present if relevant.                                                                                                                                                                                \\ \hline
+itemId                  & int                & The item ID of the event. Only present if relevant.                                                                                                                                                                                         \\ \hline
+killerId                & int                & The killer ID of the event. Only present if relevant. Killer ID 0 indicates a minion.                                                                                                                                                       \\ \hline
+laneType                & string             & The lane type of the event. Only present if relevant. (Legal values: BOT\_LANE, MID\_LANE, TOP\_LANE)                                                                                                                                       \\ \hline
+levelUpType             & string             & The level up type of the event. Only present if relevant. (Legal values: EVOLVE, NORMAL)                                                                                                                                                    \\ \hline
+monsterType             & string             & The monster type of the event. Only present if relevant. (Legal values: BARON\_NASHOR, BLUE\_GOLEM, DRAGON, RED\_LIZARD, VILEMAW)                                                                                                           \\ \hline
+participantId           & int                & The participant ID of the event. Only present if relevant.                                                                                                                                                                                  \\ \hline
+pointCaptured           & string             & The point captured in the event. Only present if relevant. (Legal values: POINT\_A, POINT\_B, POINT\_C, POINT\_D, POINT\_E)                                                                                                                 \\ \hline
+position                & Position           & The position of the event. Only present if relevant.                                                                                                                                                                                        \\ \hline
+skillSlot               & int                & The skill slot of the event. Only present if relevant.                                                                                                                                                                                      \\ \hline
+teamId                  & int                & The team ID of the event. Only present if relevant.                                                                                                                                                                                         \\ \hline
+timestamp               & long               & Represents how many milliseconds into the game the event occurred.                                                                                                                                                                          \\ \hline
+towerType               & string             & The tower type of the event. Only present if relevant. (Legal values: BASE\_TURRET, FOUNTAIN\_TURRET, INNER\_TURRET, NEXUS\_TURRET, OUTER\_TURRET, UNDEFINED\_TURRET)                                                                       \\ \hline
+victimId                & int                & The victim ID of the event. Only present if relevant.                                                                                                                                                                                       \\ \hline
+wardType                & string             & The ward type of the event. Only present if relevant. (Legal values: SIGHT\_WARD, TEEMO\_MUSHROOM, UNDEFINED, VISION\_WARD, YELLOW\_TRINKET, YELLOW\_TRINKET\_UPGRADE)                                                                      \\ \hline
+\end{tabular}
+\end{table}
+
+
+\FloatBarrier
+\subsection{Participant Frame}
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name}       & \textbf{Data Type} & \textbf{Description}                           \\ \hline
+currentGold         & int                & Participant's current gold                     \\ \hline
+dominionScore       & int                & Dominion score of the participant              \\ \hline
+jungleMinionsKilled & int                & Number of jungle minions killed by participant \\ \hline
+level               & int                & Participant's current level                    \\ \hline
+minionsKilled       & int                & Number of minions killed by participant        \\ \hline
+participantId       & int                & Participant ID                                 \\ \hline
+position            & Position           & Participant's position                         \\ \hline
+teamScore           & int                & Team score of the participant                  \\ \hline
+totalGold           & int                & Participant's total gold                       \\ \hline
+xp                  & int                & Experience earned by participant               \\ \hline
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\begin{table}[!h]
+\footnotesize
+\centering
+\begin{tabular}{llp{5cm}}
+\textbf{Name} & \textbf{Data Type} & \textbf{Description} \\ \hline
+x             & int                &                      \\ \hline
+y             & int                &                      \\ \hline
+\end{tabular}
+\end{table}
