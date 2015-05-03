@@ -1,6 +1,6 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
-Throughout this article, $T_\text{blue}$ and $T_\text{purple}\}$ denotes the two teams \emph{blue} and \emph{purple} respectively, $C = \{0, 1, \dots, m-1\}$ denotes the set of all champions. In that way, $T_i = {c_j | c_j \text{ is on team } i}$. $t$ and $c$ denotes a particular team and champion, respectively.
-Some champions may be better than other champions. To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
+Throughout this article, $T_\text{blue}$ and $T_\text{purple}$ denotes the two teams \emph{blue} and \emph{purple} respectively, $C = \{0, 1, \dots, m-1\}$ denotes the set of all champions. In that way, $T_i = \{ c_j \mid c_j \text{ is on team } i \}$. $t$ and $c$ denotes a particular team and champion, respectively.
+Some champions may be better than other champions, to capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
 We define a set of features $X_1 = \{x_1(t, c)\}$, where
 \[
 x_1(t, c) = 
@@ -16,12 +16,12 @@ of champions on that team. We therefore define a set of features $X_2 = \{x_2(t,
 \[
 x_2(t, c_1, c_2) = 
 \begin{cases} 
-1 & \text{if } c_1, c_2 \in t\\
-0 & \text{otherwise} 
+  1 & \text{if } c_1, c_2 \in t\\
+  0 & \text{otherwise} 
 \end{cases}
 \]
 
-We make the restriction $c_1 < c_2$, because we want to ignore permutations. This is because the two features $x_2(t, c_1, c_2)$ and $x_2(t, c_2, c_1)$ represent the same thing, namely that the two champions $c_1$ and $c_2$ both are present on team $t$.
+We make the restriction $c_1 < c_2$, because we want to ignore permutations. This is because the two features $x_2(t, c_1, c_2)$ and $x_2(t, c_2, c_1)$ are the same, namely that the two champions $c_1$ and $c_2$ both are present on team $t$.
 
 Some champions may have an advantage when fighting against a particular opposing champion.
 For instance, a champion that is good at dodging ranged attacks is good against an enemy that only has ranged attacks.

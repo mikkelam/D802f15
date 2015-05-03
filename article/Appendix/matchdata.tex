@@ -1,14 +1,16 @@
-\section{League of Legends Match Data}
+\section{League of Legends Match Data}\label{sec:matchdata}
 
-\subsection{Match Detail}
+\subsection{Match}
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
-\begin{table}[!h]
+\begin{table}[!htb]
 \tiny
 \centering
-\begin{tabular}{llp{5cm}}
-\textbf{Name}         & \textbf{Data Type}            & \textbf{Description}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    \\ \hline
-mapId                 & int                           & Match map ID                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \\ \hline
+\begin{tabular}{|llp{5cm}|}
+\hline
+\textbf{Name}         & \textbf{Data Type}& \textbf{Description} \\ 
+\hline
+  mapId                 & int              & Match map ID                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \\ \hline
 matchCreation         & long                          & Match creation time. Designates when the team select lobby is created and/or the match is made through match making, not when the game actually starts.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 \\ \hline
 matchDuration         & long                          & Match duration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          \\ \hline
 matchId               & long                          & ID of the match                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         \\ \hline
@@ -24,16 +26,18 @@ season                & string                        & Season match was played 
 teams                 & List{[}Team{]}                & Team information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
 timeline              & Timeline                      & Match timeline data (not included by default)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\ \hline
 \end{tabular}
+\caption{Match details}\label{tab:match}
 \end{table}
 
 \FloatBarrier
 \subsection{Participant}
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name}             & \textbf{Data Type}  & \textbf{Description}                                                                                                                                                                                                                                     \\ \hline
 championId                & int                 & Champion ID                                                                                                                                                                                                                                              \\ \hline
 highestAchievedSeasonTier & string              & Highest ranked tier achieved for the previous season, if any, otherwise null. Used to display border in game loading screen. (Legal values: CHALLENGER, MASTER, DIAMOND, PLATINUM, GOLD, SILVER, BRONZE, UNRANKED)                                       \\ \hline
@@ -46,30 +50,34 @@ stats                     & ParticipantStats    & Participant statistics        
 teamId                    & int                 & Team ID                                                                                                                                                                                                                                                  \\ \hline
 timeline                  & ParticipantTimeline & Timeline data. Delta fields refer to values for the specified period (e.g., the gold per minute over the first 10 minutes of the game versus the second 20 minutes of the game. Diffs fields refer to the deltas versus the calculated lane opponent(s). \\ \hline
 \end{tabular}
+\caption{Participant details}\label{tab:participant}
 \end{table}
 
 \FloatBarrier
 \subsection{Participant Identity}
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name} & \textbf{Data Type} & \textbf{Description} \\ \hline
 participantId & int & Participant ID \\ \hline
 player & Player & Player information \\ \hline
 \end{tabular}
+\caption{Participant identity details}\label{tab:part-ident}
 \end{table}
 
 \FloatBarrier
 \subsection{Team}
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name}        & \textbf{Data Type}       & \textbf{Description}                                                                       \\ \hline
 bans                 & List{[}BannedChampion{]} & If game was draft mode, contains banned champion data, otherwise null                      \\ \hline
 baronKills           & int                      & Number of times the team killed baron                                                      \\ \hline
@@ -86,44 +94,50 @@ towerKills           & int                      & Number of towers the team dest
 vilemawKills         & int                      & Number of times the team killed vilemaw                                                    \\ \hline
 winner               & boolean                  & Flag indicating whether or not the team won                                                \\ \hline
 \end{tabular}
+\caption{Team details}\label{tab:team}
 \end{table}
 
 \FloatBarrier
 \subsection{Timeline}
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name} & \textbf{Data Type} & \textbf{Description}                              \\ \hline
 frameInterval & long               & Time between each returned frame in milliseconds. \\ \hline
 frames        & List{[}Frame{]}    & List of timeline frames for the game.             \\ \hline
 \end{tabular}
+\caption{Timeline details}\label{tab:time}
 \end{table}
 
 \FloatBarrier
 \subsection{Mastery}
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name} & \textbf{Data Type} & \textbf{Description} \\ \hline
 masteryId & long & Mastery ID \\ \hline
 rank & long & Mastery rank \\ \hline
 \end{tabular}
+\caption{Mastery details}\label{tab:mastery}
 \end{table}
 
 \FloatBarrier
 \subsection{Participant Stats}
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
-\begin{table}[!h]
+\begin{table}[!htb]
 \tiny
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name}                   & \textbf{Data Type} & \textbf{Description}                                                            \\ \hline
 assists                         & long               & Number of assists                                                               \\ \hline
 champLevel                      & long               & Champion level achieved                                                         \\ \hline
@@ -189,14 +203,16 @@ wardsKilled                     & long               & Number of wards killed   
 wardsPlaced                     & long               & Number of wards placed                                                          \\ \hline
 winner                          & boolean            & Flag indicating whether or not the participant won                              \\ \hline
 \end{tabular}
+\caption{Participant stats details}\label{tab:part-stats}
 \end{table}
 
 \FloatBarrier
 \subsection{Participant Timeline}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name}                   & \textbf{Data Type}      & \textbf{Description}                                                         \\ \hline
 ancientGolemAssistsPerMinCounts & ParticipantTimelineData & Ancient golem assists per minute timeline counts                             \\ \hline
 ancientGolemKillsPerMinCounts   & ParticipantTimelineData & Ancient golem kills per minute timeline counts                               \\ \hline
@@ -226,85 +242,97 @@ wardsPerMinDeltas               & ParticipantTimelineData & Wards placed per min
 xpDiffPerMinDeltas              & ParticipantTimelineData & Experience difference per minute timeline data                               \\ \hline
 xpPerMinDeltas                  & ParticipantTimelineData & Experience per minute timeline data                                          \\ \hline
 \end{tabular}
+\caption{Participant timeline details}\label{tab:part-time}
 \end{table}
 
 
 \FloatBarrier
 \subsection{Rune}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name} & \textbf{Data Type} & \textbf{Description} \\ \hline
 rank          & long               & Rune rank            \\ \hline
 runeId        & long               & Rune ID              \\ \hline
 \end{tabular}
+\caption{Rune details}\label{tab:rune}
 \end{table}
 
 
 \FloatBarrier
 \subsection{Player}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name}   & \textbf{Data Type} & \textbf{Description} \\ \hline
 matchHistoryUri & string             & Match history URI    \\ \hline
 profileIcon     & int                & Profile icon ID      \\ \hline
 summonerId      & long               & Summoner ID          \\ \hline
 summonerName    & string             & Summoner name        \\ \hline
 \end{tabular}
+\caption{Player details}\label{tab:player}
 \end{table}
 
 
 \FloatBarrier
 \subsection{Banned Champion}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name} & \textbf{Data Type} & \textbf{Description}                      \\ \hline
 championId    & int                & Banned champion ID                        \\ \hline
 pickTurn      & int                & Turn during which the champion was banned \\ \hline
 \end{tabular}
+\caption{Banned champion details}\label{tab:banned}
 \end{table}
 
 
 \FloatBarrier
 \subsection{Frame}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name}     & \textbf{Data Type}                & \textbf{Description}                                                       \\ \hline
 events            & List{[}Event{]}                   & List of events for this frame.                                             \\ \hline
 participantFrames & Map{[}string, ParticipantFrame{]} & Map of each participant ID to the participant's information for the frame. \\ \hline
 timestamp         & long                              & Represents how many milliseconds into the game the frame occurred.         \\ \hline
 \end{tabular}
+\caption{Frame details}\label{tab:frame}
 \end{table}
 
 
 \FloatBarrier
 \subsection{Participant Timeline Data}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 Name           & Data Type & Description                                               \\ \hline
 tenToTwenty    & double    & Value per minute from 10 min to 20 min                    \\ \hline
 thirtyToEnd    & double    & Value per minute from 30 min to the end of the game       \\ \hline
 twentyToThirty & double    & Value per minute from 20 min to 30 min                    \\ \hline
 zeroToTen      & double    & Value per minute from the beginning of the game to 10 min \\ \hline
 \end{tabular}
+\caption{Participant timeline data details}\label{tab:part-time-data}
 \end{table}
 
 
 \FloatBarrier
 \subsection{Event}
-\begin{table}[!h]
+\begin{table}[!htb]
 \tiny
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name}           & \textbf{Data Type} & \textbf{Description}                                                                                                                                                                                                                        \\ \hline
 ascendedType            & string             & The ascended type of the event. Only present if relevant. Note that CLEAR\_ASCENDED refers to when a participants kills the ascended player. (Legal values: CHAMPION\_ASCENDED, CLEAR\_ASCENDED, MINION\_ASCENDED)                          \\ \hline
 assistingParticipantIds & List{[}int{]}      & The assisting participant IDs of the event. Only present if relevant.                                                                                                                                                                       \\ \hline
@@ -328,15 +356,17 @@ towerType               & string             & The tower type of the event. Only
 victimId                & int                & The victim ID of the event. Only present if relevant.                                                                                                                                                                                       \\ \hline
 wardType                & string             & The ward type of the event. Only present if relevant. (Legal values: SIGHT\_WARD, TEEMO\_MUSHROOM, UNDEFINED, VISION\_WARD, YELLOW\_TRINKET, YELLOW\_TRINKET\_UPGRADE)                                                                      \\ \hline
 \end{tabular}
+\caption{Event details}\label{tab:event}
 \end{table}
 
 
 \FloatBarrier
 \subsection{Participant Frame}
-\begin{table}[!h]
+\begin{table}[!htb]
 \footnotesize
 \centering
-\begin{tabular}{llp{5cm}}
+\begin{tabular}{|llp{5cm}|}
+\hline
 \textbf{Name}       & \textbf{Data Type} & \textbf{Description}                           \\ \hline
 currentGold         & int                & Participant's current gold                     \\ \hline
 dominionScore       & int                & Dominion score of the participant              \\ \hline
@@ -349,6 +379,7 @@ teamScore           & int                & Team score of the participant        
 totalGold           & int                & Participant's total gold                       \\ \hline
 xp                  & int                & Experience earned by participant               \\ \hline
 \end{tabular}
+\caption{Participant frame details}\label{tab:part-frame}
 \end{table}
 
 \FloatBarrier
@@ -361,3 +392,8 @@ x             & int                &                      \\ \hline
 y             & int                &                      \\ \hline
 \end{tabular}
 \end{table}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:

@@ -1,44 +1,37 @@
-
 \subsection{Representation of features}
 \label{sec:representationoffeatures}
 For supervised learning, each match must be converted to one or more labeled vectors of features.
 There are different ways to represent the same feature. In the following,
-4 different ways of representing the $X_1$ features (defined in \Cref{sec:choosingfeatures}) are presented.
-Even though all features can be represented in these 4 ways, only examples and tests using the $X_1$ features is provided.
+4 different ways of representing $X_1$, as seen in \Cref{sec:choosingfeatures}, are presented.
+Even though all features can be represented in these 4 ways, only examples and tests using $X_1$ is provided.
 
 To simplify the provided examples, it is assumed that only a total of 7 champions exists, such that $C = \{c_1, c_2, \cdots, c_7\}$.
-All examples shows the transformation of a single match $m$ to one or more labeled feature vectors $x, y$, where $m$ consists of the blue team $\{c_1,c_2,c_3,c_4,c_5\}$ who won and purple team $\{c_1,c_2,c_3,c_6,c_7\}$ who lost.
+All examples shows the transformation of a single match $m$ to one or more labeled feature vectors $x, y$, where $m$ consists of the blue team $\{c_1,c_2,c_3,c_4,c_5\}$ who won and purple team $\{c_1,c_2,c_3,c_6,c_7\}$ who lost. %Skulle der ikke stå "where x is?" //Funder
 
 \subsubsection{Binary representation}
-\begin{center}
-$x, y = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true}$
-\end{center}
-The 7 first features in $x$ represent the champions on team blue, followed by 7 features representing the champions on team purple.
-The label is $\texttt{true}$ if and only if blue team won.
+The 7 first features in $x$ represent the champions on team blue, followed by 7 features representing the champions on team purple. The label is $\texttt{true}$ if and only if blue team won.
+\[ x, y = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true} \]
 This representation captures the champions on each team, as well as which side of the map each team spawn.
 
 \subsubsection{Mirrored binary representation}
-\begin{center}
-$x_1, y_1 = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true}$\\
-$x_2, y_2 = (1,1,1,0,0,1,1,1,1,1,1,1,0,0), \texttt{false}$
-\end{center}
 This representation is the same as the binary representation, expect that an additional training instance is generated for each match, by mirroring the teams and negating the class label.
+\begin{align*}
+  x_1, y_1 &= (1,1,1,1,1,0,0,1,1,1,0,0,1,1), \texttt{true}\\
+  x_2, y_2 &= (1,1,1,0,0,1,1,1,1,1,1,1,0,0), \texttt{false}
+\end{align*}
 The idea for this representation is based on the assumption that any champion $c$ affects the team it is on in the same way, regardless of which team it is on.
 If this assumption holds, we may be able to produce reliable, unseen data using this method.
 
 \subsubsection{Compact binary representation}
-\begin{center}
-$x_1, y_1 = (1,1,1,1,1,0,0), \texttt{true}$\\
-$x_2, y_2 = (1,1,1,0,0,1,1), \texttt{false}$
-\end{center}
-With this representation, we split a match into two labeled feature vectors, each representing a single team and a label indicating whether that team won or lost.
+With compact binary representation, we split a match into two labeled feature vectors, each representing a single team and a label indicating whether that team won or lost.
+\begin{align*}
+  x_1, y_1 &= (1,1,1,1,1,0,0), \texttt{true} \\
+  x_2, y_2 &= (1,1,1,0,0,1,1), \texttt{false}
+\end{align*}
 This representation captures only the strength of a team, and not its strength compared to an opponent team.
 If it is too complex to learn a model that captures that one particular team is good against another particular team, this simple representation may be more favorable.
 
 \subsubsection{Ternary representation}
-\begin{center}
-$x, y = (0,0,0,1,1,-1,-1), \texttt{true}$
-\end{center}
 For each match, a single feature vector is created where the label is true if and only if team blue won, and
 \[
     x_i = 
@@ -48,6 +41,14 @@ For each match, a single feature vector is created where the label is true if an
     0,              & \text{otherwise}
 \end{cases}
 \]
+
 This representation captures the same as the binary representation, using less features but with a ternary domain of each feature.
 
+\[x, y = (0,0,0,1,1,-1,-1), \texttt{true}\]
 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
