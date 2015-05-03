@@ -1,7 +1,7 @@
 \section{Prediction and cluster test results}\label{sec:testing}
-To validated that the cluster gives us an improvement when working on big data, a list of tests will be explored. In this section these tests and their results will be presented and evaluated.
+To validated that the cluster gives us an improvement when working on big data, a list of tests will be explored. The first initial tests that will be performed, seen in \Cref{sec:initialtest}, will be run to find the settings the cluster should run with. In \Cref{sec:clustertest}, the tests run on the cluster and the results will be presented.
 
-\subsection{Initial testing}
+\subsection{Initial testing}\label{sec:initialtest}
 In this section several tests will be performed which does not require the cluster. These tests will be run to find the settings the cluster should be run with when the final cluster tests will be performed.
 
 \subsubsection{Best machine learning technique}
@@ -226,7 +226,7 @@ Features can be presented in many different ways and this test is constructed to
 Some features might be more expressive than others, and finding the set of features that will yield the best result is imperative.
 
 
-\subsection{Cluster tests}
+\subsection{Cluster tests}\label{sec:clustertest}
 In this section the tests that requires the cluster. This is due to the size of the tests, and the expected time frame.
 \subsubsection{Big data improvements}
 To test if big data gives an improvement when predicting the outcome of a match, the same features and method where used on an increasing sized data starting from 1000 matches. After the model was made, it was tested on the training data, as a $\frac{2}{3}$-split and finally cross-validation. And as seen on \Cref{fig:bigdata} ... %Udfyld når vi har flere tal fra clusteren. //Funder

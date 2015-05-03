@@ -3,10 +3,7 @@
 \subsection{Match}
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
-\begin{table}[!htb]
-\tiny
-\centering
-\begin{tabular}{|llp{5cm}|}
+\begin{longtable}{|llp{5cm}|}
 \hline
 \textbf{Name}         & \textbf{Data Type}& \textbf{Description} \\ 
 \hline
@@ -25,9 +22,8 @@ region                & string                        & Region where the match w
 season                & string                        & Season match was played (Legal values: PRESEASON3, SEASON3, PRESEASON2014, SEASON2014, PRESEASON2015, SEASON2015)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       \\ \hline
 teams                 & List{[}Team{]}                & Team information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
 timeline              & Timeline                      & Match timeline data (not included by default)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\ \hline
-\end{tabular}
 \caption{Match details}\label{tab:match}
-\end{table}
+\end{longtable}
 
 \FloatBarrier
 \subsection{Participant}
