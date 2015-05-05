@@ -5,103 +5,159 @@ To validated that the cluster gives us an improvement when working on big data, 
 In this section several tests will be performed which does not require the cluster. These tests will be run to find the settings the cluster should be run with when the final cluster tests will be performed.
 
 \subsubsection{Best machine learning technique}
-First the best machine learning technique needs to be identified. In this test five different methods are included, these are: naive bayes, hidden naive bayes, logistic regression, neural network and adaboost. All the different methods are tested with multiple parameter settings, however both of the bayes networks has no modifiable parameters. The features that are used for this test are on the form presented seen in Cref{sec:section-om-det-rette-setup}, and 35000 matches are used. The data will be split, using $\frac{2}{3}$ for training and $\frac{1}{3}$ for testing. 
+First the best machine learning technique needs to be identified. In this test six different methods are included, these are: naive bayes, hidden naive bayes, logistic regression, neural network, support vector machines(SVM) and adaboost. All the different methods are tested with multiple parameter settings to find the configuration that yields the best result. The feature representation used for this test is binary representation, presented in \Cref{sec:representationoffeatures}, and 35000 matches are used. The data will be split, using $\frac{2}{3}$ for training and $\frac{1}{3}$ for testing. 
 
-As seen in \Cref{fig:besttech}, Adaboost and Neural networks gives bad accuracy results after very few parameter configurations. Both of the bayes networks gave the same result across all tests due to the lack of adjustable parameters. Logistic regression were comparable to hidden bayes network, but had a peak around the 9$^{th}$ configuration giving it a slight edge over hidden bayes network.
+The best accuracy of all the machine learning technique can be seen in \Cref{fig:besttech}. As seen, SVM and Neural networks has the worst accuracy, even after testing different parameter configurations. Naive bayes, adaboost and Hidden naive bayes all have comparable results around 56.5\%, but logistic regression has the best accuracy almost hitting 57\%, which will be the technique mainly used throughout these tests.  
+
+% \begin{figure}[!htb]
+%   \begin{tikzpicture}
+%     \begin{axis}[
+%       x tick label style={/pgf/number format/1000 sep=},
+%       ylabel=Accuracy,
+%       xlabel=Parameter configuration,
+%       enlargelimits=0.05,
+%       legend style={at={(0.5,1.1)},
+%         anchor=north,legend columns=-1},
+%       ybar interval=0.7,
+%       width=.75\textwidth,
+%       ymin=56, ymax=57,
+%       ]
+%       \addplot[fill=red] coordinates {(13,56.5462) 
+%         (12,56.6218) 
+%         (11,56.8403) 
+%         (10,56.8319) 
+%         (9,56.916) 
+%         (8,56.8487) 
+%         (7,56.8655) 
+%         (6,56.6471) 
+%         (5,56.6471) 
+%         (4,56.605) 
+%         (3,56.605) 
+%         (2,56.5882) 
+%         (1,56.5798) 
+%         (0,2)
+%       };
+%       \addplot[fill=blue] coordinates {(13,56.4454) 
+%         (12,56.4454) 
+%         (11,56.4454) 
+%         (10,56.4454) 
+%         (9,56.4454) 
+%         (8,56.4454) 
+%         (7,56.4454) 
+%         (6,56.4454) 
+%         (5,56.4454) 
+%         (4,56.4454) 
+%         (3,56.4454) 
+%         (2,56.4454) 
+%         (1,56.4454) 
+%         (0,56.4454)
+%       };
+%       \addplot[fill=green] coordinates {(13,56.6807) 
+%         (12,56.6807) 
+%         (11,56.6807) 
+%         (10,56.6807) 
+%         (9,56.6807) 
+%         (8,56.6807) 
+%         (7,56.6807) 
+%         (6,56.6807) 
+%         (5,56.6807) 
+%         (4,56.6807) 
+%         (3,56.6807) 
+%         (2,56.6807) 
+%         (1,56.6807) 
+%         (0,56.6807)
+%       };
+%       \addplot[fill=orange] coordinates {(13,0) 
+%         (12,0) 
+%         (11,0) 
+%         (10,0) 
+%         (9,0) 
+%         (8,49.87) 
+%         (7,56.2269) 
+%         (6,56.479) 
+%         (5,56.1261) 
+%         (4,55.5126) 
+%         (3,54.7899) 
+%         (2,54.5378) 
+%         (1,53.7983) 
+%         (0,2)
+%       };
+%       \addplot[fill=black] coordinates {(13,0) 
+%         (12,0) 
+%         (11,0) 
+%         (10,0) 
+%         (9,0) 
+%         (8,0) 
+%         (7,0) 
+%         (6,0) 
+%         (5,50.1) 
+%         (4,55.6555) 
+%         (3,52.7311) 
+%         (2,55.5126) 
+%         (1,50.2101) 
+%         (0,0)
+%       };
+%       \addplot[fill=purple] coordinates {(13,0)
+%         (12,0)
+%         (11,0)
+%         (10,0)
+%         (9,0)
+%         (8,0)
+%         (7,0)
+%         (6,0)
+%         (5,0)
+%         (4,55.3193)
+%         (3,55.63)
+%         (2,51.521)
+%         (1,55.5714)
+%         (0,0)
+%       };
+%       \legend{Logistic Regression,Naive Bayes,Hidden Naive Bayes,Adaboost,Neural Network,SVM}
+%     \end{axis}
+%   \end{tikzpicture}
+%   \caption{Test of best machine learning technique}\label{fig:besttech}
+% \end{figure}
 
 \begin{figure}[!htb]
   \begin{tikzpicture}
     \begin{axis}[
-      x tick label style={/pgf/number format/1000 sep=},
+      %x tick label style={/pgf/number format/1000 sep=},
+      xticklabel=\empty,
       ylabel=Accuracy,
-      xlabel=Parameter configuration,
+      xlabel=Machine learning technique,
       enlargelimits=0.05,
-      legend style={at={(0.5,1.1)},
-        anchor=north,legend columns=-1},
+      legend style={at={(1.4,1.0)},
+        anchor=north,legend columns=1},
       ybar interval=0.7,
-      width=.75\textwidth,
-      ymin=50, ymax=57,
+      width=.50\textwidth,
+      ymin=55.5, ymax=57,
+      reverse legend,
       ]
-      \addplot[fill=red] coordinates {(13,56.5462) 
-        (12,56.6218) 
-        (11,56.8403) 
-        (10,56.8319) 
-        (9,56.916) 
-        (8,56.8487) 
-        (7,56.8655) 
-        (6,56.6471) 
-        (5,56.6471) 
-        (4,56.605) 
-        (3,56.605) 
-        (2,56.5882) 
-        (1,56.5798) 
+      \addplot[fill=red] coordinates {(1,56.916) 
         (0,2)
       };
-      \addplot[fill=blue] coordinates {(13,56.4454) 
-        (12,56.4454) 
-        (11,56.4454) 
-        (10,56.4454) 
-        (9,56.4454) 
-        (8,56.4454) 
-        (7,56.4454) 
-        (6,56.4454) 
-        (5,56.4454) 
-        (4,56.4454) 
-        (3,56.4454) 
-        (2,56.4454) 
-        (1,56.4454) 
-        (0,56.4454)
-      };
-      \addplot[fill=green] coordinates {(13,56.6807) 
-        (12,56.6807) 
-        (11,56.6807) 
-        (10,56.6807) 
-        (9,56.6807) 
-        (8,56.6807) 
-        (7,56.6807) 
-        (6,56.6807) 
-        (5,56.6807) 
-        (4,56.6807) 
-        (3,56.6807) 
-        (2,56.6807) 
-        (1,56.6807) 
+      \addplot[fill=black] coordinates {(1,56.6807) 
         (0,56.6807)
       };
-      \addplot[fill=orange] coordinates {(13,0) 
-        (12,0) 
-        (11,0) 
-        (10,0) 
-        (9,0) 
-        (8,49.87) 
-        (7,56.2269) 
-        (6,56.479) 
-        (5,56.1261) 
-        (4,55.5126) 
-        (3,54.7899) 
-        (2,54.5378) 
-        (1,53.7983) 
+      \addplot[fill=yellow] coordinates {(1,56.479) 
         (0,2)
       };
-      \addplot[fill=black] coordinates {(13,0) 
-        (12,0) 
-        (11,0) 
-        (10,0) 
-        (9,0) 
-        (8,0) 
-        (7,0) 
-        (6,0) 
-        (5,50.1) 
-        (4,55.6555) 
-        (3,52.7311) 
-        (2,55.5126) 
-        (1,50.2101) 
+      \addplot[fill=blue] coordinates {(1,56.4454) 
+        (0,56.4454)
+      };
+      \addplot[fill=purple] coordinates {(1,55.6555) 
         (0,0)
       };
-      \legend{Logistic Regression,Naive Bayes,Hidden Naive Bayes,Adaboost,Neural Network}
-    \end{axis}
+      \addplot[fill=green] coordinates {(1,55.63)
+        (0,0)
+      };
+      \legend{Logistic Regression,Hidden Naive Bayes,Adaboost,Naive Bayes,Neural Network,SVM}
+    \end{axis} 
   \end{tikzpicture}
   \caption{Test of best machine learning technique}\label{fig:besttech}
 \end{figure}
+
+
 
 \subsubsection{Implementation comparison}
 To test if Apache Sparks PySpark implementation of logistic regression is implemented properly, it is compared to the equivalent implementations in Weka and R. The data consists of 5000 matches where Weka uses a sparse presentation, while R uses a dense and PySpark the raw file with JSON elements. As seen in \Cref{tab:impl_results}, the implementations are close to equal, the minor differences could be caused by differences in the parameter settings. However these results confirm that all implementations are acceptable and further testing can be performed in any of the environments.
@@ -134,9 +190,9 @@ Features can be presented in many different ways and this test is constructed to
       xticklabel style={rotate=45,anchor=near xticklabel},
       scaled x ticks=false,
       x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
-      legend style={at={(0.5,1.15)},
-        anchor=north,legend columns=-1},] 
-      \addplot[color=blue] coordinates { 
+      legend style={at={(1.25,1.005)},
+        anchor=north,legend columns=1},] 
+      \addplot[color=red,mark=x] coordinates { 
         (7500, 55.55)
         (10000, 55.46)
         (12500, 55.36)
@@ -156,7 +212,7 @@ Features can be presented in many different ways and this test is constructed to
         (47500, 56.59)
         (50901, 56.54)
       };
-      \addplot[color=red] coordinates { 
+      \addplot[color=blue,mark=o] coordinates { 
         (7500, 55.51)  
         (10000, 55.49)
         (12500, 55.38)
@@ -176,7 +232,7 @@ Features can be presented in many different ways and this test is constructed to
         (47500, 56.24)
         (50901, 56.18)
       };
-      \addplot[color=green] coordinates { 
+      \addplot[color=green,mark=triangle] coordinates { 
         (7500, 52.395)  
         (10000, 53.005)
         (12500, 53.80)
@@ -196,7 +252,7 @@ Features can be presented in many different ways and this test is constructed to
         (47500, 54.175)
         (50901, 54.135)
       };
-      \addplot[color=orange] coordinates {
+      \addplot[color=black,mark=square] coordinates {
         (7500, 55.22)  
         (10000, 55.03)
         (12500, 55.22)
@@ -223,13 +279,121 @@ Features can be presented in many different ways and this test is constructed to
 \end{figure}
 
 \subsubsection{Feature tests}\label{sec:feattest}
-Some features might be more expressive than others, and finding the set of features that will yield the best result is imperative.
+Some features might be more expressive than others, and finding the set of features that will yield the best result is imperative. Some more text about \Cref{fig:best-feat}.
 
+\begin{figure}[!htb]
+  \centering
+  \begin{tikzpicture}[] 
+    \begin{axis}[
+      xlabel=Number of matches, 
+      ylabel=Accuracy,
+      xtick={1000,10000,20000,30000,40000,50000},
+      xticklabel style={rotate=45,anchor=near xticklabel},
+      scaled x ticks=false,
+      x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+      legend style={at={(1.4,1.001)},
+        anchor=north,legend columns=1},] 
+      \addplot[color=brown] coordinates { 
+        (1000,51.24)
+        (5000,51.24)
+        (10000,51.24)
+        (15000,51.24)
+        (20000,51.24)
+        (25000,51.24)
+        (30000,51.24)
+        (35000,51.24)
+        (40000,51.24)
+        (45000,51.24)
+        (50000,51.24)
+      };
+      \addplot[color=red,mark=o] coordinates { 
+        (1000,52.17)
+        (5000,54.8)
+        (10000,55.34)
+        (15000,55.87)
+        (20000,55.97)
+        (25000,56.44)
+        (30000,56.56)
+        (35000,56.93)
+        (40000,57.08)
+        (45000,56.77)
+        (50000,57.01)
+      };
+      \addplot[color=YellowOrange,mark=*] coordinates { 
+        (1000,55.26)
+        (5000,55.26)
+        (10000,55.26)
+        (15000,55.26)
+        (20000,55.26)
+        (25000,55.26)
+        (30000,55.26)
+        (35000,55.26)
+        (40000,55.26)
+        (45000,55.26)
+        (50000,55.26)
+      };
+      \addplot[color=purple,mark=square] coordinates { 
+        (1000,53.24)
+        (5000,53.1)
+        (10000,53.97)
+        (15000,53.7)
+        (20000,53.86)
+        (25000,54.26)
+        (30000,53.59)
+        (35000,53.57)
+        (40000,53.71)
+        (45000,53.95)
+        (50000,54.24)
+      };
+      \addplot[color=green,mark=triangle] coordinates { 
+        (1000,52.26)
+        (5000,55.67)
+        (10000,56.71)
+        (15000,57.02)
+        (20000,57.31)
+        (25000,57.27)
+        (30000,57.74)
+        (35000,57.4)
+        (40000,57.67)
+        (45000,57.9)
+        (50000,57.64)
+      };
+      \addplot[color=black,mark=x] coordinates { 
+        (1000,53.18)
+        (5000,55.64)
+        (10000,56.4)
+        (15000,57.39)
+        (20000,57.52)
+        (25000,57.28)
+        (30000,57.35)
+        (35000,57.5)
+        (40000,57.48)
+        (45000,57.73)
+        (50000,58.09)
+      };
+      \addplot[color=blue,mark=pentagon] coordinates { 
+        (1000,52.31)
+        (5000,55.75)
+        (10000,56.76)
+        (15000,57.2)
+        (20000,57.02)
+        (25000,57.66)
+        (30000,57.57)
+        (35000,57.64)
+        (40000,57.77)
+        (45000,58.06)
+        (50000,58.02)
+      };
+      \legend{No features,Single,BestRanked,PlayerRanks,BestRanked+Single,PlayerRanks+Single,All}
+    \end{axis} 
+  \end{tikzpicture}
+  \caption{Accuracy of features}\label{fig:best-feat}
+\end{figure}
 
 \subsection{Cluster tests}\label{sec:clustertest}
 In this section the tests that requires the cluster. This is due to the size of the tests, and the expected time frame.
 \subsubsection{Big data improvements}
-To test if big data gives an improvement when predicting the outcome of a match, the same features and method where used on an increasing sized data starting from 1000 matches. After the model was made, it was tested on the training data, as a $\frac{2}{3}$-split and finally cross-validation. And as seen on \Cref{fig:bigdata} ... %Udfyld når vi har flere tal fra clusteren. //Funder
+To test if big data gives an improvement when predicting the outcome of a match, the same features and method where used on an increasing sized data starting from 1000 matches. After the model was made, it was tested on the training data, as a $\frac{2}{3}$-split and finally cross-validation. And as seen on \Cref{fig:bigdata} there will be more information once more tests has been run!
 
 \begin{figure}[!htb]
   \centering
@@ -241,9 +405,9 @@ To test if big data gives an improvement when predicting the outcome of a match,
       xticklabel style={rotate=45,anchor=near xticklabel},
       scaled x ticks=false,
       x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
-      legend style={at={(0.5,1.15)},
-        anchor=north,legend columns=-1},] 
-      \addplot[color=blue] coordinates {
+      legend style={at={(1.4,1.0)},
+        anchor=north,legend columns=1},] 
+      \addplot[color=blue,mark=*] coordinates {
         (1000, 73.3)   	
         (2500,65.28)  	
         (3750,62.7367)	
@@ -258,7 +422,7 @@ To test if big data gives an improvement when predicting the outcome of a match,
         (30000,58.3267)
         (35000,57.8229)
       };
-      \addplot[color=red] coordinates {
+      \addplot[color=red,mark=square] coordinates {
         (1000,52.6471)
         (2500,52)
         (3750,50.902)
@@ -273,7 +437,7 @@ To test if big data gives an improvement when predicting the outcome of a match,
         (30000,56.4608)
         (35000,56.916)
       };
-      \addplot[color=green] coordinates {
+      \addplot[color=green,mark=triangle] coordinates {
         (1000,53)
         (2500,53.16)
         (3750,54.0944)
