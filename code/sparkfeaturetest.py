@@ -14,9 +14,8 @@ from pyspark import SparkContext
 
 
 class SparkFeatureTest:	
-	def __init__(self, outputpath, inputpath):
+	def __init__(self, outputpath):
 		self.outputpath = outputpath
-		self.inputpath = inputpath
 		self.timestamp = time.time()
 		
 	def __parsePoint(self, line):
@@ -43,7 +42,7 @@ class SparkFeatureTest:
 		file.write(dataname + " count: " + str(count) + "\n")
 		file.write(dataname + " prediction error: " + str(error)+"\n")
 		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
-		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
+
 
 
 	def __pprint_weights(self, file, model):
@@ -79,7 +78,6 @@ class SparkFeatureTest:
 
 		self.__pprint_weights(file, model)
 		file.close()
-		parsed_train
 		
-		
+
 
