@@ -1,4 +1,46 @@
 \subsection{Logistic Regression}\label{sec:logistic}
+
+To predict the outcome of a match, we use a linear classification model.
+The model consists of a hypothesis function that is linear in the parameters.
+
+$$\hat{y} = w_0 + \sum_{j=1}^{M-1} w_j \phi_j(x)$$
+
+Where $w_j$ represents the impact of of $\phi_j(x)$ on the hypothesis,
+$w_0$ is the intercept and $\phi_j$ is a basis function that
+performs a transformation on the input features. 
+
+In order to classify the result of the hypothesis function into wins and losses. 
+We use the so called logistic or sigmoid function.
+
+%$$\sigma(\textbf{x}) = ln(1 + e^{-y_n(w \phi(\textbf{x}_n))})$$
+
+$$\sigma(\textbf{x}) = \frac{1}{1+e^{- \textbf{x}}}$$
+
+The sigmoid function squashes the result of the hypothesis function into an inverval between one and zero.
+
+
+
+
+
+
+ 
+
+\subsubsection{Batch Gradient Descent}
+
+\subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
+
+% Non convergence of stochastic gradient descent
+
+
+
+\begin{flushright}
+\cite{Bishop2006}[p. ??]
+\end{flushright}
+
+% ###################################################################
+
+%\subsection{Logistic Regression}\label{sec:logistic}
+\subsection{Logistic Regression (old)}
 % logistic function
 
 For classification we use an activation function, whose purpose is to squash the result into the interval $(0,1)$.
