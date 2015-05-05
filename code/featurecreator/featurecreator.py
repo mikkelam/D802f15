@@ -370,8 +370,7 @@ class FeatureCreator:
                     self.__add_feature(feature_name)
                 range = self.__get_range(rank)
                 feature_rank = c + '-masteries-' + range + "-" + team_color
-                #self.__add_feature(feature_rank)
-                print "GRGG", feature_rank
+                self.__add_feature(feature_rank)
             except:
                 no_masteries = c + "-NOMASTERIES-" + team_color
                 self.__add_feature(no_masteries)
