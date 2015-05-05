@@ -1,6 +1,8 @@
 \subsection{Big Data Problem}
 A problem can be described as a big data problem if the problem is thoroughly complex, such that conventional data processing cannot be applied. There is no direct line definition of when something is complex is enough, it is up to the individual solving the problem, if one wishes to apply big data techniques to solve it. However, there are three main variables which contribute to the complexity, namely: Volume, velocity, variety. Volume is the amount of storage the data occupies, velocity is identified as the rate at which the data grows and lastly variety is seen as the complexity or how much it varies of the data. 
-Every problem is thus a combination of these three variables. One might naively think that big data problems are not that different from any other problem, ``just more data!''. The problem is that traditional data processing tools do not scale well for these kinds of problems. Instead one usually distributes the data across multiple machines using various distributed systems. It is important to recognize that solving a big data problem, introduces new challenges both in terms of storage and complexity. This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel. We will briefly look at one technique for solving big data problems in the next section.
+Every problem is thus a combination of these three variables. One might naively think that big data problems are not that different from any other problem, ``just more data!''. The problem which we are concerned with in this project, it is mostly the volume which is large. 
+
+In big data problems traditional data processing tools do not scale well. Instead one usually distributes the data across multiple machines using various distributed systems. It is important to recognize that solving a big data problem, introduces new challenges both in terms of storage and complexity. This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel.  We will briefly look at one technique for solving big data problems in the next section.
 %http://www.computer.org/csdl/mags/ic/2012/03/mic2012030004.pdf    %From Databases to Big Data
 
 \subsubsection{MapReduce} % (fold)
@@ -15,5 +17,19 @@ MapReduce is comprised of a \emph{map} procedure and a \emph{reduce} procedure, 
     \item[Map] This procedure takes as input a key-value pair and ``sets-up'' the data, by e.g. filtering or sorting. The resulting output is an intermediate key-value pair used for input to the reduce function.
     \item[Reduce] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result
 \end{description}
-
 %src: http://static.googleusercontent.com/media/research.google.com/da//archive/mapreduce-osdi04.pdf
+
+\subsubsection{Complications of distributed computing}
+
+Outline of this section:
+- Similarity with parallel programming
+    - Shared memory vs. network message passing
+- Pre-compute feature name/index map
+- Transforming/referencing RDD can only happen one at a time
+- HDFS data is immutable
+- 
+
+
+
+
+

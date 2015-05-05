@@ -1,6 +1,6 @@
 \subsection{Related Work}\label{sec:relatedwork}
 
-K.\ Conley and D.\ Perry have trained a classifier to predict the winning team of a Dota 2 match~\cite{dota2article}, by only considering the heroes chosen at the beginning of the game. Dota 2 is game very similar to LOL.\@
+K.\ Conley and D.\ Perry have trained a classifier to predict the winning team of a Dota 2 match~\cite{dota2article}, by only considering the heroes chosen at the beginning of the game. Dota 2 is game very similar to LoL.\@
 Each feature used, represents the presence or absence of a particular hero on one of the teams.
 When training on 18,000 matches they could correctly predict the outcome of 69.8 \% of the 5,669 matches in their test set.
 With 50,000 training samples, they almost reached 70 \% correct predictions. Only matches between high skilled players were considered.
@@ -10,11 +10,27 @@ With 50,000 training samples, they almost reached 70 \% correct predictions. Onl
 %They did not consider that some combinations of heroes are stronger when fighting together compared to other combinations.
 %We believe these synergies are important to consider, which are discussed further in \Cref{sec:choosingfeatures}.
 
-%As of patch 5.3.0.291, LOL included 123 different champions. If we want to take account for synergies between that amount of champions, we might have to train on a huge amount of data, in order to have all combinations of champions represented an adequately number of times in the training samples. We will therefore approach this problem as a big data problem.
+%As of patch 5.3.0.291, LoL included 123 different champions. If we want to take account for synergies between that amount of champions, we might have to train on a huge amount of data, in order to have all combinations of champions represented an adequately number of times in the training samples. We will therefore approach this problem as a big data problem.
 
 Hadoop MapReduce and different variants have successfully been used for big data problems, by distributing the work load between many nodes in a cluster~\cite{ApacheSpark}.
 In cases where it is only necessary to read from data, the Apache Spark framework seems to be much faster.
 For iterative machine learning jobs, it outperforms MapReduce by a factor of 10.
+
+%Det jeg skrev tidligere som af en eller anden årsag forsvandt. //Funder
+\subsection{Alternative related work}
+K.\ Conley and D.\ Perry have trained a classifier to predict the winning team of a Dota 2 match~\cite{dota2article}, by only considering the heroes chosen at the beginning of the game. Dota 2 is game very similar to LOL.\@
+Each feature used, represents the presence or absence of a particular hero on one of the teams.
+When training on 18,000 matches they could correctly predict the outcome of 69.8 \% of the 5,669 matches in their test set.
+With 50,000 training samples, they almost reached 70 \% correct predictions. Only matches between players of similiar skill levels were considered.
+
+Konstantin Shvachko, et al.\, created Hadoop distributed file system (HDFS), to reliably handle very large data and to stream that data to user application at high bandwidth. They described the architecture and showed that it can successfully handle 25PB of Yahoo enterprice data~\cite{HDFS}.
+Avinash Lakshman and Prashant Malik created an alternative to Hadoop called Cassandra, which uses Amazon's Dynamo scheme~\cite{ApacheCassandra}.
+Vinod Kumar Vavilapalli et al.\ expanded on Hadoop with YARN, which decoupled the programming model from the resource management infrastructure, it also delegates many of the scheduling functions to per-application components~\cite{ApacheHadoopYARN}.
+
+Hadoop MapReduce and different variants have successfully been used for big data problems, by distributing the work load between many node in a cluster~\cite{DeanMapReduce}. 
+
+Matei Zaharia, et al.\ have created Apache Spark and using this framework, the computation time is reduced if the data is being reused, in e.g.\ iterative machine learning or iterative data analysis tools~\cite{ApacheSpark}.
+
 
 %%% Local Variables:
 %%% mode: latex

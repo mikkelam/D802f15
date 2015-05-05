@@ -3,17 +3,17 @@
 %\usepackage[top=1in,bottom=1in,left=1.2in,right=1.2in]{geometry}
 
 %\usepackage{stmaryrd} % For those delicious brackets
-
+\usepackage{wrapfig}
 % Title
-\title{Big Data Problem with Machine Intelligence Stuff}
+\title{Predicting League of Legends Match Outcomes using Various Machine Learning Techniques on Big Data}
 \date{}
 
-\author[1]{Anders Roland Nielsen}
-\author[1]{Andreas Berre Eriksen}
+\author[1]{Mathias Meldgaard Andersen}
 \author[1]{Kent Munthe Caspersen}
-\author[1]{Mathias Melgaard Andersen}
-\author[1]{Mikkel Alexander Madsen}
+\author[1]{Andreas Berre Eriksen}
 \author[1]{Sander Jespersen}
+\author[1]{Mikkel Alexander Madsen}
+\author[1]{Anders Roland Nielsen}
 
 \affil[1]{Department of Computer Science, Aalborg University}
 
@@ -48,20 +48,22 @@
 \input{Section1/relatedwork}
 
 \section{Preliminaries}\label{sec:prelim}
+In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:bigdata}, the idea behind big data will be introduced along with the concept of MapReduce which is widely used for computing on big data. In \Cref{sec:logistic}, logistic regression is explained as it is the primary prediction method used in this paper.
 \input{Section2/bigdata}
 \input{Section2/classification}
 
 \section{Data and Prediction Setup}\label{sec:features}
+In this section, how the features are chosen is explained in \Cref{sec:choosingfeatures}, followed by possible representations of those features in \Cref{sec:representationoffeatures}. 
 \input{Section3/choosingfeatures}
 \input{Section3/representationoffeatures}
 
 \section{Cluster}\label{sec:cluster}
+In this section the cluster that will be doing the computations will be outlined. In \Cref{sec:clustersetup} the setup of the cluster and the available resources is listed, followed by a profile of the resource usage in \Cref{sec:profile}. Then a short overview of Spark and the Hadoop file system can be seen in \Cref{sec:spark,sec:hadoopfilesystem}.
 \input{cluster/setup}
 \input{cluster/hadoop}
 \input{cluster/spark}
 \input{cluster/profiling}
 
-\section{Prediction and cluster test results}\label{sec:testing}
 \input{section5/test}
 
 \section{Conclusion}
