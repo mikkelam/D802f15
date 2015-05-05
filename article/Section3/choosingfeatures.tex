@@ -1,47 +1,73 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
-Throughout this article, $T_\text{blue}$ and $T_\text{purple}$ denotes the two teams \emph{blue} and \emph{purple} respectively, $C = \{0, 1, \dots, m-1\}$ denotes the set of all champions. In that way, $T_i = \{ c_j \mid c_j \text{ is on team } i \}$. $t$ and $c$ denotes a particular team and champion, respectively.
+We first introduce some convenient notations that mathematically describes the concept of a game.
+$C = \{1, 2, \dots, m\}$ is the set of all champions, where each champion is represented by an id.
+$P = \{p_1; p_2, \dots\}$ denotes the set of all players.
+$T = \{T_\text{blue}$, $T_\text{purple}\}$ is a set containing the two teams \emph{blue} and \emph{purple} respectively.
+$T_i = \{ (p_j, c_j) \in P \times C \mid c_j \text{ is controlled by } p_j \text{ on team } i \}$.
+
 Some champions may be better than other champions, to capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
-We define a set of features $X_1 = \{x_1(t, c)\}$, where
+We define a feature $x_\text{SINGLE}$, such that $\forall t \in T, \forall c \in C:$
 \[
-x_1(t, c) = 
+x_\text{SINGLE}(t, c) = 
 \begin{cases} 
-  1 & \text{if } c \in t \\
+  1 & \text{if } (c, p) \in t \text{ for some } p \\
   0 & \text{otherwise} 
 \end{cases}
 \]
 
 Some champions are considered damage dealers, they deal very high damage, but die easily. Other champions deal very little damage, but can be almost impossible to kill, these are considered tanks. These two types of champions are weak when alone, but when they team up, they can pose a serious threat. The tank can be used by the damage dealer as a living shield, allowing him to stay alive for much longer, thus deal more damage.
 To capture the synergy between two champions on the same team, we will for each team need a feature that represents the presence or absence of every 2-combination %Skal muligvis ændres hvis vi har mere end 2kombinationer senere //Funder 
-of champions on that team. We therefore define a set of features $X_2 = \{x_2(t, c_1, c_2)\}$, where $c_1 < c_2$, and
+of champions on that team. Therefore, we define a feature $x_\text{PAIR}(t, c_1, c_2)$ such that $\forall t \in T, \forall c_1, c_2 \in C$ where $c_1 < c_2$:
 \[
-x_2(t, c_1, c_2) = 
+x_\text{PAIR}(t, c_1, c_2) = 
 \begin{cases} 
-  1 & \text{if } c_1, c_2 \in t\\
+  1 & \text{if } (c_1, p_1), (c_2, p_2) \in t for some p_1, p_2\\
   0 & \text{otherwise} 
 \end{cases}
 \]
 
-We make the restriction $c_1 < c_2$, because we want to ignore permutations. This is because the two features $x_2(t, c_1, c_2)$ and $x_2(t, c_2, c_1)$ are the same, namely that the two champions $c_1$ and $c_2$ both are present on team $t$.
+We make the restriction $c_1 < c_2$, because we want to ignore permutations. This is because the two features $x_\text{PAIR}(t, c_1, c_2)$ and $x_\text{PAIR}(t, c_2, c_1)$ are the same, since they both capture that the two champions $c_1$ and $c_2$ are present on team $t$.
 
-Some champions may have an advantage when fighting against a particular opposing champion.
+Some champions may have an advantage when fighting against a particular opponent.
 For instance, a champion that is good at dodging ranged attacks is good against an enemy that only has ranged attacks.
 We say that the better suited champion \emph{counters} the other.
 To capture that one champion may counter another, we will for each champion on team $t$ need a feature that represents the presence or absence of every possible champion on the other team.
-For all $c_1, c_2 \in C$, we define a set of features $X_3= \{x_3(c_1, c_2) \}$, where
-\[x_3(c_1, c_2) = 
+We define a feature $x_\text{COUNTER}(c_1, c_2)$ such that $\forall c_1, c_2 \in C:$
+\[x_\text{COUNTER}(c_1, c_2) = 
 \begin{cases} 
-1 & \text{if } c_1 \in T_\text{blue}, c_2 \in T_\text{purple} \\ 
+1 & \text{if } (c_1, p_1) \in T_\text{blue} \text{ and } (c_2, p_2) \in T_\text{purple} \text{ for some } p_1, p_2 \\ 
 0 & \text{otherwise} 
 \end{cases}\]
 
-In this case, we do not have the restriction $c_1, c_2$ thus consider permutations instead of combinations.
+In this case, we do not have the restriction $c_1, c_2$ and thus consider permutations instead of combinations.
 To understand why, consider that $c_1$ counters $c_2$.
-In this case, the feature $x_3(c_1, c_2) = 1$ is favorable to the blue team, while $x_3(c_2, c_1) = 1$ is favorable to the red team.
-Note that in some game modes, $x_3(c_1, c_2) = x_3(c_2, c_1) = 1$ is allowed. That is, the same champions may appear on both teams.
-For this type of feature, we may also have that $c_1 = c_2$.
+In this case, the feature $x_\text{COUNTER}(c_1, c_2) = 1$ is favorable to the blue team, while $x_\text{COUNTER}(c_2, c_1) = 1$ is favorable to the red team.
+Note that in some game modes, $x_\text{COUNTER}(c_1, c_2) = x_3(c_2, c_1) = 1$ is allowed. That is, the same champions may appear on both teams.
+For a such game mode, we may also have that $c_1 = c_2$.
 In that way we can capture if a champion can counter itself due to some asymmetries in the map layout.
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../main"
-%%% End:
+In LoL, players can compete in ranked games, where they are placed in one of 7 tiers. Better players achieve higher tiers.
+Before a match starts, we have access to data about the highest tier each player has achieved in a ranked game, which we will refer to as the rank of a player. We also know if a player has not competed in ranked games, in which case we say that he is unranked.
+A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{gold}, \textit{platinum}, \textit{diamond}, \textit{master}, \textit{challenger} (mentioned in increasing order of skills required to achieve the rank).
+We define a score function $\varphi : P \rightarrow \mathcal{N}$, where $\varphi(p) = 0$ if $p$ is unranked, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
+We define the rank of a team to be the average rank of all players on that team who is not unranked:
+\[
+\eta(t) = \frac{\sum\limits_{(p, c) \in t} \varphi(c)}{|\{(p, c) \in t \mid \varphi(p) > 0\}|}
+\]
+which we use to define a single feature
+\[
+x_\text{BEST-RANK} = 
+\begin{cases} 
+  1 & \text{if } \eta(T_\text{blue}) > \eta(T_\text{purple})\\
+  -1 & \text{if } \eta(T_\text{blue}) < \eta(T_\text{blue})\\
+  0 & \text{otherwise} 
+\end{cases}
+\]
+
+The assumption that each tier can be mapped to a score on a linear scale may not be entirely on spot.
+Therefore, another type of feature is introduced that captures the exact rank of each player.
+$\forall(p, c) \in T_\text{blue} \cup T_\text{purple}$, we define a feature
+\[
+x_\text{PLAYER-RANK
+}(p) = S(p)
+\]
