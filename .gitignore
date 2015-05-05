@@ -9,3 +9,5 @@
 *.out
 Article/main.pdf
 *.swp
+code/spark_feature_test_example.py
+
