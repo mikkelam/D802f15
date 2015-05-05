@@ -14,9 +14,8 @@ from pyspark import SparkContext
 
 
 class SparkFeatureTest:	
-	def __init__(self, outputpath, inputpath):
+	def __init__(self, outputpath):
 		self.outputpath = outputpath
-		self.inputpath = inputpath
 		self.timestamp = time.time()
 		
 	def __parsePoint(self, line):
@@ -43,11 +42,7 @@ class SparkFeatureTest:
 		file.write(dataname + " count: " + str(count) + "\n")
 		file.write(dataname + " prediction error: " + str(error)+"\n")
 		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
-<<<<<<< HEAD
-		
-	def __save_model__(self, model, testname):
-=======
-		file.write(dataname + " prediction error %: " + str(error/float(count))+"\n")
+
 
 
 	def __pprint_weights(self, file, model):
@@ -61,41 +56,10 @@ class SparkFeatureTest:
 
 
 	def __save_model(self, model, testname):
->>>>>>> d4f9a13439b2db367d55eb32f2937c2d37bebf07
 		pickle.dump(model, open(self.outputpath + testname +"model.p","wb"))
 		
 
 
-<<<<<<< HEAD
-	def run(self, testname, testfeatures, sparkcontext,Model,training_size, samples = 1, local=True):
-		if local:
-			data = sparkcontext.textFile(','.join(glob.glob(self.inputpath)))
-		else:
-			data = sparkcontext.textFile(self.inputpath)
-
-		self.feature_creator = FeatureCreator()
-		self.feature_creator.set_feature_types(testfeatures)
-
-		traning_set, eval_data1 = data.filter(lambda line: self.__matchfilter__(line)).randomSplit([0.7, 0.3], 1)
-		parsedEval_1 = eval_data1.map(lambda line: self.__parsePoint__(line))
-		for i in range(0, samples):
-			traning_data, _ = traning_set.randomSplit([training_size/(2**i), 1.0-training_size/(2**i)], 1) 
-			
-			#Maps all data to parsePoints 
-			parsedData = traning_data.map(lambda line: self.__parsePoint__(line))
-
-			# Build the model
-			model = Model.train(parsedData)
-		
-			self.__save_model__(model, testname+str(i))
-			#Evalueates the traning and saves all results
-			file = open(self.outputpath + testname + str(i) + ".txt",'w')
-		
-			self.__evaluate__(model, parsedData, "train", file)
-			self.__evaluate__(model, parsedEval_1, "eval", file)
-			file.close()
-				
-=======
 	def run(self, testname, testfeatures,Model, training_data,eval_data):
 		self.feature_creator = FeatureCreator()
 		self.feature_creator.set_feature_types(testfeatures)
@@ -114,8 +78,6 @@ class SparkFeatureTest:
 
 		self.__pprint_weights(file, model)
 		file.close()
-		parsed_train
 		
-		
->>>>>>> d4f9a13439b2db367d55eb32f2937c2d37bebf07
+
 
