@@ -49,7 +49,7 @@ The new cost function looks like this.
 Since we are using a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
 Therefore we use an iterative approach called batch gradient descent.
 
-In gradient descent we iteratively update the weights by the partial derivative of the cost function with respect to the weight, multiplied by a learning rate $\eta$  
+In gradient descent we iteratively update the weights by the gradient of the cost function, multiplied by a learning rate $\eta$  
 \[ w_j \leftarrow w_j - \eta \nabla_w E(\textbf{w}) \]
 
 \subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
