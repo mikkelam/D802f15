@@ -1,5 +1,5 @@
 \subsection{Spark}\label{sec:spark}
-Apache Spark is a general purpose cluster-computing system, that offers a high level programming language API as well as a set of high-level tools, for SQL data, machine learning and graph processing~\cite{sparkintro}.
+Apache Spark is a general purpose cluster-computing system, that offers a high level programming API as well as a set of high-level tools, for SQL data, machine learning and graph processing~\cite{sparkintro}.
 
 A Spark application is a user-application that is run by the \emph{Driver Program}, seen in \Cref{fig:spark}, in which a \emph{SparkContext} object is defined. The SparkContext can connect to several \emph{Cluster managers}; e.g.\ but not limited to Spark Standalone, Yarn or Mesos. For the purpose of this project, the default standalone manager is sufficient. When connected, the SparkContext gathers the \emph{Executors}, which are running processes on the \emph{Worker nodes}. The worker nodes are also Hadoop data nodes, as to not limit the computation from slow network transfer speeds. Each driver program gets has it's own set of executors which isolate the programs from each others. If programs need to share data, it is done through an external storage system like e.g.\ HDFS.\@
 
