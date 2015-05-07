@@ -60,14 +60,14 @@ class SparkFeatureTest:
 		
 
 
-	def run(self, testname, testfeatures,Model, training_data,eval_data):
+	def run(self, testname, testfeatures,Model, training_data,eval_data,kwargs):
 		self.feature_creator = FeatureCreator()
 		self.feature_creator.set_feature_types(testfeatures)
 
 		parsed_train = training_data.map(lambda line: self.__parsePoint(line))
 		parsed_eval = eval_data.map(lambda line: self.__parsePoint(line))
 		
-		model = Model.train(parsed_train)
+		model = Model.train(parsed_train,**kwargs)
 		self.__save_model(model, testname)
 
 		file = open(self.outputpath + testname + ".txt",'w')
