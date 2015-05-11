@@ -5,7 +5,7 @@ from featurecreator import *
 from wekaconverter import *
 
 inputpath = r"C:/Users/Kent/Desktop/D802f15/LoLMiner/LoLMiner/bin/mined-data/" #Path to input files
-outputpath = r"C:/Users/Kent/Desktop/testfiles/bestrank/all.arff" #path to the output file
+outputpath = r"C:/Users/Kent/Desktop/testfiles/singles-playerranks/all.arff" #path to the output file
 
 mf = MatchFilter({"matchMode": ["CLASSIC"],
                           "matchType": ["MATCHED_GAME"],
@@ -14,7 +14,7 @@ mf = MatchFilter({"matchMode": ["CLASSIC"],
 #mf.set_min_avg_rank(0.175) # [0.0-1.0] - 0 extracts all, 1.0 only pure challengers. unranked = bronze
 
 feature_creator = FeatureCreator()
-feature_types = [FeatureType.BEST_RANK]
+feature_types = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES, FeatureType.PLAYER_RANKS]
 feature_creator.set_feature_types(feature_types)
 wc = WekaConverter(outputpath)
 games_to_extract = 60000
