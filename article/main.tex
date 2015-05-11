@@ -36,30 +36,30 @@
 \input{abstract}
 
 % CONTENT
-\input{Section1/intro}
-\input{Section1/relatedwork}
-\input{Section1/bigdata}
+\input{introduction/intro}
+\input{introduction/relatedwork}
+\input{introduction/bigdata}
 
 \section{Preliminaries}\label{sec:prelim}
 In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:bigdata}, the idea behind big data will be introduced along with the concept of MapReduce which is widely used for computing on big data. In \Cref{sec:logistic}, logistic regression is explained as it is the primary prediction method used in this paper.
 
-\input{Section2/classification}
-\input{Section2/hadoop}
-\input{Section2/spark}
+\input{preliminaries/classification}
+\input{preliminaries/hadoop}
+\input{preliminaries/spark}
 
 \section{Data and Prediction Setup}\label{sec:features}
 In this section, how the features are chosen is explained in \Cref{sec:choosingfeatures}, followed by possible representations of those features in \Cref{sec:representationoffeatures}. 
-\input{Section3/matchdata}
-\input{Section3/choosingfeatures}
-\input{Section3/representationoffeatures}
+\input{prediction/matchdata}
+\input{prediction/choosingfeatures}
+\input{prediction/representationoffeatures}
 
 \section{Cluster}\label{sec:cluster}
 In this section the cluster that will be doing the computations will be outlined. In \Cref{sec:clustersetup} the setup of the cluster and the available resources are listed, followed by a profile of the resource usage in \Cref{sec:profile}. Then a short overview of Spark and the Hadoop file system can be seen in \Cref{sec:spark,sec:hadoopfilesystem}.
 \input{cluster/setup}
 \input{cluster/profiling}
 
-\input{section5/test}
-\input{section5/weights}
+\input{test/test}
+\input{test/weights}
 
 
 \section{Conclusion}
