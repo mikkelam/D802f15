@@ -9,29 +9,36 @@ To simplify the provided examples, it is assumed that only a total of 7 champion
 All examples shows the transformation of a single match between the two teams $t_\text{blue} = \{c_1,c_2,c_3,c_4,c_5\}$ and $t_\text{purple} = \{c_1,c_2,c_3,c_6,c_7\}$ won by $t_\text{blue}$. The match is transformed to one or more labeled feature vectors $(X, y)$, where $X$ is a feature vector and $y \in \{\text{true}, \text{false}\}$ is a label indicating whether $t_\text{blue}$ won or lost.
 
 \subsubsection{Binary representation}
-The 7 first features in $x$ represent the champions on team blue, followed by 7 features representing the champions on team purple. The label is $\texttt{true}$ if and only if blue team won.
+
 \[ x = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y = \texttt{true} \]
+
+The 7 first features in $x$ represent the champions on team blue, followed by 7 features representing the champions on team purple. The label is $\texttt{true}$ if and only if blue team won.
 This representation captures the champions on each team, as well as which side of the map each team spawn.
 
 \subsubsection{Mirrored binary representation}
-This representation is the same as the binary representation, expect that an additional training instance is generated for each match, by mirroring the teams and negating the class label.
+
 \begin{align*}
   x_1 &= (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y_1 = \texttt{true}\\
   x_2 &= (1,1,1,0,0,1,1,1,1,1,1,1,0,0), y_2 = \texttt{false}
 \end{align*}
+
+This representation is the same as the binary representation, expect that an additional training instance is generated for each match, by mirroring the teams and negating the class label.
 The idea for this representation is based on the assumption that any champion $c$ affects the team it is on in the same way, regardless of which team it is on.
 If this assumption holds, we may be able to produce reliable, unseen data using this method.
 
 \subsubsection{Compact binary representation}
-With compact binary representation, we split a match into two labeled feature vectors, each representing a single team and a label indicating whether that team won or lost.
 \begin{align*}
   x_1 &= (1,1,1,1,1,0,0), y_1 = \texttt{true} \\
   x_2 &= (1,1,1,0,0,1,1), y_2 =\texttt{false}
 \end{align*}
+With compact binary representation, we split a match into two labeled feature vectors, each representing a single team and a label indicating whether that team won or lost.
 This representation captures only the strength of a team, and not its strength compared to an opponent team.
 If it is too complex to learn a model that captures that one particular team is good against another particular team, this simple representation may be more favorable.
 
 \subsubsection{Ternary representation}
+
+\[x = (0,0,0,1,1,-1,-1), y = \texttt{true}\]
+
 For each match, a single feature vector is created where the label is true if and only if team blue won, and
 \[
     x_i = 
@@ -43,12 +50,3 @@ For each match, a single feature vector is created where the label is true if an
 \]
 
 This representation captures the same as the binary representation, using less features but with a ternary domain of each feature.
-
-\[x = (0,0,0,1,1,-1,-1), y = \texttt{true}\]
-
-
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../main"
-%%% End:
