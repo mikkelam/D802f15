@@ -6,3 +6,15 @@ The most important information here is which team who won the match, as we need 
 Before a game begins it is known which champions that have been selected, as well as the player’s selected \textit{masteries}, \textit{runes}, \textit{summoner spells} and \textit{rank}. Champions are the playable characters (124). All champions have a pre-defined set of abilities (4), as well as masteries (57), runes (297) and summoner spells (14), which are supplementary choices the player can make to boost attribute points and add abilities.\\\\
 \textbf{Mid-game}
 As the match begins the main body of the match information is recorded. Many significant events of the match are recorded in 1 minute intervals, called timeline data, such as champion kills, deaths, level up, selection of champion skills, taking down towers and so on. At the same 1 minute interval some information about the champion’s state is also recorded, such as earned XP, gold, creep kills, player position and so on. Another piece of mid-game information is which lane on the map a champion plays. Although this is not pre-game information and therefore not absolutely certain before game start, we still assume to know the champions positions. The reasoning behind this is that champions have abilities and attributes that make them relatively better suited for different positions on the map, which higher-ranked players will know how to utilize. It should be noted that this paper does not present a solution to the problem of predicting lane selection, given a set of champions.\\
+
+
+The dataset which we are going to use, is a dataset of matches played from 23rd of March 2015 to 27th of March 2015. It includes match details for matches played across the world, and it takes up 456GB of space. The dataset includes matches from all types of games, including games against AI players, which we are not interested in. Among the filtered interesting games, are 1925980 matches which we will be training on.
+
+
+
+
+
+
+
+
+
