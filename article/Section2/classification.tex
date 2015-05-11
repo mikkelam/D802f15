@@ -1,12 +1,18 @@
 \subsection{Supervised Classification with Big Data}
+% The problem of supervised classification bla bla bla...
+% when dealing with a large amount of labelled data ect.
 
 \subsubsection{Supervised learning}
 Supervised learning is the process of learning the parameters of a linear model using a corpus of labelled data.
-Given the data
- 
+Given data
+
+% overfitting vs. underfitting
+% regresssion vs. classification 
+
 
 \subsection{Logistic Regression}\label{sec:logistic}
 
+% write: problem with logistic regression.
 To predict the outcome of a match, we use a linear classification model.
 The model consists of a hypothesis function that is linear in the parameters.
 
@@ -15,6 +21,8 @@ The model consists of a hypothesis function that is linear in the parameters.
 Where $w_j$ represents the impact of of $\phi_j(x)$ on the hypothesis,
 $w_0$ is the intercept and $\phi_j$ is a basis function that
 performs a transformation on the input features. 
+
+% write: typical feature transformations -ref. bo slides.
 
 In order to classify the result of the hypothesis function into wins and losses. 
 We use the so called logistic or sigmoid function.
@@ -33,6 +41,10 @@ In order to find the weights that produce the most accurate classification.
 We minimise the squared error function.
 
 \[ E_D = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 \] 
+
+% squared error with logistic regression becomes a non-convex cost function.
+% write: alternative surrogate cost function.
+
 
 \subsubsection{Regularisation}
 To combat the problem of overfitting, we can use a method called L2-Regularisation.
@@ -65,9 +77,6 @@ When dealing with large data sets calculating the sum in the cost function becom
  
 
 % Non convergence of stochastic gradient descent
-
-
-
 
 
 \begin{flushright}
