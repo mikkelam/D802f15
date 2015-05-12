@@ -1,0 +1,49 @@
+\subsection{Motivation}\label{sec:motivation}
+As seen in \Cref{sec:mlandonlinevideogames}, a lot of work has been done on machine learning for other video games. LoL is however a rather unexplored game, which is the game this paper will focus on. We wish to help players make strategically good decisions about their champions and summoners. These decisions will analytically be determined by analysing a large quantity of complicated match data. The sheer volume and complexity alone means traditional data processing methods can not effectively be applied, this means we have a \emph{big data problem}. 
+
+A big data problem consists of 3 factors, volume, velocity, and variety. Of the three we have great volume as we have more than 400GB of data, the variety is not an issue as we get all the data from the same source which makes. This ensures that comparing the data input is relatively easy. The final is velocity, we do not take this into consideration as we gather the data one time. If the system should go live, it needs to update as matches are played and patches applied. Then velocity could play a role due to the great number of players and thereby matches being played every day. Every big data problem considers these three variables, but our concern is mainly with volume.
+
+To solve a big data problem, a distributed system of machines must be used, as traditional data processing tools rarely scale well. 
+
+\subsection{Big Data Problem}
+A problem can be described as a big data problem if the problem is thoroughly complex, such that conventional data processing cannot be applied. There is no direct definiteion of when something is complex is enough, it is up to the individual solving the problem, if one wishes to apply big data techniques to solve it. However, there are three main variables which contribute to the complexity, namely: Volume, velocity, variety. Volume is the amount of storage the data occupies, velocity is identified as the rate at which the data grows and lastly variety is seen as the complexity or how much variety there is in the data. 
+Every problem is thus a combination of these three variables. One might naively think that big data problems are not that different from any other problem, ``just more data!''. The variable which we are concerned with in this project, is mostly the volume. 
+
+In big data problems traditional data processing tools do not scale well. Instead one usually distributes the data across multiple machines using various distributed systems. It is important to recognize that solving a big data problem, introduces new challenges both in terms of storage and complexity. This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel.  We will briefly look at one technique for solving big data problems in the next section.
+%http://www.computer.org/csdl/mags/ic/2012/03/mic2012030004.pdf    %From Databases to Big Data
+
+\subsubsection{MapReduce} % (fold)
+\label{sec:mapreduce_programming_model}
+
+MapReduce is a programming model which is especially used in the context of ``Big Data''. The model is useful in the context of processing large amounts of data, utilizing parallelization. The main reason for the success of the MapReduce model, is mostly because it is easy for the programmer to parallelize, and its low-cost, high-compute property. MapReduce is well-suited in a distributed computing setting, handling data large enough to not fit into a single disk.
+
+MapReduce is comprised of a \emph{map} procedure and a \emph{reduce} procedure, which is where the name comes from. The two procedures are split into the following actions:
+
+
+\begin{description}
+    \item[Map] This procedure takes as input a key-value pair and ``sets-up'' the data, by e.g.\ filtering or sorting. The resulting output is an intermediate key-value pair used for input to the reduce function.
+    \item[Reduce] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result
+\end{description}
+%src: http://static.googleusercontent.com/media/research.google.com/da//archive/mapreduce-osdi04.pdf
+
+\subsubsection{Complications of distributed computing}
+
+Outline of this section:
+- Similarity with parallel programming
+    - Shared memory vs. network message passing
+- Pre-compute feature name/index map
+- Transforming/referencing RDD can only happen one at a time
+- HDFS data is immutable
+- 
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
