@@ -1,0 +1,138 @@
+\subsection{Computing Distributed Systems}
+In this section we will introduce distributed systems, which we are going to use. These systems will help us distribute the data across multiple machines, as well as distributed parallel computations. 
+
+
+\subsubsection{Hadoop Filesystem}\label{sec:hadoopfilesystem}
+
+Hadoop filesystem (HDFS) is a distributed filesystem that seeks to increase fault tolerance on very large datasystems. The filesystem is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS is run on a cluster, where one machine exist as a \emph{namenode}, which is a central node that manages the location of file blocks. Blocks are used as a means to split large files, replicate and distribute them across the cluster’s \emph{data nodes}. Ensuring file coherency could become very complicated in such a system, which is why Hadoop implements a simple “write once, read many” model. It is common that the files used with Hadoop is of the Gigabyte-Terabyte size.
+As seen in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS cluster. An application access data by first requesting the locations of a file’s blocks from the namenode and then use those locations to read directly from data nodes. As described earlier the cluster used for this project, consists of the central namenode and three data nodes~\cite{hadoopIntro}. 
+
+\begin{figure}[!htb]
+  \centering
+  \scalebox{0.75}{
+    \begin{tikzpicture}[->,>=stealth',bend angle=45,auto]
+      % Disks
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=-5cm] (D1) {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=-2cm] (D2) {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=2cm] (D3) {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=5cm] (D4)  {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=5cm,yshift=5cm] (D5) {Disk};
+      \node[cylinder,draw=black,thick,aspect=0.3,minimum height=1.3cm,minimum width=1cm,shape border rotate=90,cylinder uses custom fill,xshift=-5cm,yshift=5cm] (D6) {Disk};
+
+      % Data nodes
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=-5cm,yshift=0.3cm,label={[yshift=-0.65cm]Data node}] (DN1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=-2cm,yshift=0.3cm,label={[yshift=-0.65cm]Data node}] (DN2) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=2cm,yshift=0.3cm,label={[yshift=-0.65cm]Data node}] (DN3) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=5cm,yshift=0.3cm,label={[yshift=-0.65cm]Data node}] (DN4) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=-5cm,yshift=5.3cm,label={[yshift=-0.65cm]Data node}] (DN5) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=5cm,yshift=5.3cm,label={[yshift=-0.65cm]Data node}] (DN6) {};
+
+      % Namenodes
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=-2cm,yshift=5.3cm,label={[yshift=-0.65cm]Namenode}] (NN1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2cm, minimum height=2.5cm,xshift=2cm,yshift=5.3cm,label={[yshift=-0.65cm]Namenode}] (NN2) {};
+
+      % Server
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2.5cm, minimum height=3.5cm,xshift=-5cm,yshift=0.6cm,label={[yshift=-0.65cm]Server}] (S1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2.5cm, minimum height=3.5cm,xshift=-2cm,yshift=0.6cm,label={[yshift=-0.65cm,xshift=-0.5cm]Server}] (S2) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2.5cm, minimum height=3.5cm,xshift=5cm,yshift=0.6cm,label={[yshift=-0.65cm]Server}] (S3) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=2.5cm, minimum height=3.5cm,xshift=2cm,yshift=0.6cm,label={[yshift=-0.65cm,xshift=0.5cm]Server}] (S4) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=5.5cm, minimum height=3.5cm,xshift=-3.5cm,yshift=5.6cm,label={[yshift=-0.65cm]Server}] (S5) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=5.5cm, minimum height=3.5cm,xshift=3.5cm,yshift=5.6cm,label={[yshift=-0.65cm]Server}] (S6) {};
+
+      % Cluster
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=6cm, minimum height=9.5cm,xshift=-3.5cm,yshift=3.4cm,label={[yshift=-0.65cm]HDFS Cluster}] (C1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=6cm, minimum height=9.5cm,xshift=3.5cm,yshift=3.4cm,label={[yshift=-0.65cm]HDFS Cluster}] (C2) {};
+
+      % Stuff
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.5cm,xshift=-2cm,yshift=9cm,label={[yshift=-0.6cm]Router}] (M1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.5cm,xshift=2cm,yshift=9cm,label={[yshift=-0.6cm]Router}] (M2) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.5cm,xshift=0cm,yshift=10cm,label={[yshift=-0.5cm]Router}] (M3) {};
+
+      % Arrows
+      \path (M3) edge (M1)
+      (M3) edge (M2)
+      (M1) edge (M3)
+      (M2) edge (M3)
+      (M1) edge (NN1)
+          (NN1) edge (M1)
+          (M2) edge (NN2)
+          (NN2) edge (M2)
+          (NN1) edge (DN1)
+          (DN1) edge (NN1)
+          ([xshift=0.5cm]NN1.south) edge ([xshift=0.5cm]DN2.north)
+          ([xshift=0.5cm]DN2.north) edge ([xshift=0.5cm]NN1.south)
+          (NN1) edge (DN5)
+          (DN5) edge (NN1)
+          ([xshift=-0.5cm]NN2.south) edge ([xshift=-0.5cm]DN3.north)
+          ([xshift=-0.5cm]DN3.north) edge ([xshift=-0.5cm]NN2.south)
+          (NN2) edge (DN4)
+          (DN4) edge (NN2)
+          (NN2) edge (DN6)
+          (DN6) edge (NN2);
+        \end{tikzpicture}
+      }
+      \caption{Hadoop cluster overview}\label{fig:hadoop}
+\end{figure} 
+
+
+\subsubsection{Apache Spark}\label{sec:spark}
+Apache Spark is a general purpose cluster-computing system, that offers a high level programming API as well as a set of high-level tools, for SQL data, machine learning and graph processing~\cite{sparkintro}.
+
+A Spark application is a user-application that is run by the \emph{Driver Program}, seen in \Cref{fig:spark}, in which a \emph{SparkContext} object is defined. The SparkContext can connect to several \emph{Cluster managers}; e.g.\ but not limited to Spark Standalone, Yarn or Mesos. For the purpose of this project, the default standalone manager is sufficient. When connected, the SparkContext gathers the \emph{Executors}, which are running processes on the \emph{Worker nodes}. The worker nodes are also Hadoop data nodes, as to not limit the computation from slow network transfer speeds. Each driver program gets has it's own set of executors which isolate the programs from each others. If programs need to share data, it is done through an external storage system like e.g.\ HDFS.\@
+
+By default the standalone cluster manager handles worker node failure, but as the manager uses a single-node master for work scheduling, the manager has a single-point of failure by default. External services such as Apache ZooKeeper can be used to address this problem, by distributing and coordination the scheduling. For the purpose of this project the cluster is set up much like HDFS.\@ One node acts as a central node, running the driver program and cluster manager, the remaining three nodes are worker nodes. The worker nodes and data nodes are set up on the same machines, as to avoid unnecessary load on the network~\cite{sparkcluster}. The cluster manager interfaces with Hadoop and assign work to be done as close to the data as possible. In the general case, this means that the executors will only access data from the worker nodes own disk. %??-no source for last statement.
+
+\begin{figure}[!htb]
+  \centering
+  \scalebox{0.75}{
+    \begin{tikzpicture}[->,>=stealth',bend angle=45,auto]
+      % Tasks
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=0cm,yshift=0cm,label={[yshift=-0.65cm]Task}] (T1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=0cm,label={[yshift=-0.65cm]Task}] (T2) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=0cm,yshift=4cm,label={[yshift=-0.65cm]Task}] (T3) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=4cm,label={[yshift=-0.65cm]Task}] (T4) {};
+
+      % Caches
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=1cm,label={[yshift=-0.65cm]Cache}] (C1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=5cm,label={[yshift=-0.65cm]Cache}] (C2) {};
+
+      % Executor
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.75cm, minimum height=2.15cm,xshift=1cm,yshift=0.5cm,label={[yshift=-0.85cm,xshift=-1cm]Executor}] (E1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.75cm, minimum height=2.15cm,xshift=1cm,yshift=4.5cm,label={[yshift=-0.85cm,xshift=-1cm]Executor}] (E2) {};
+
+      % Worker
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.95cm, minimum height=3cm,xshift=1cm,yshift=0.75cm,label={[yshift=-0.55cm,xshift=-0.8cm]Worker node}] (W1) {};
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.95cm, minimum height=3cm,xshift=1cm,yshift=4.75cm,label={[yshift=-0.55cm,xshift=-0.8cm]Worker node}] (W2) {};
+
+      % Cluster Manager
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.5cm, minimum height=2cm,xshift=-4cm,yshift=2.75cm,label={[yshift=-1.25cm]Cluster manager}] (CM) {};
+
+      % SparkContent
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.25cm, minimum height=1cm,xshift=-9cm,yshift=2.5cm,label={[yshift=-0.80cm]SparkContent}] (SC) {};
+
+      % Driver Program
+      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.5cm, minimum height=2cm,xshift=-9cm,yshift=2.75cm,label={[yshift=-0.65cm]Driver Program}] (DP) {};
+
+      % Edges
+      \path ([xshift=1cm]E1.north) edge ([xshift=1cm]E2.south)
+      ([xshift=1cm]E2.south) edge ([xshift=1cm]E1.north)
+      (CM) edge (W1)
+      (CM) edge (W2)
+      (W1) edge (CM)
+      (W2) edge (CM)
+      (SC) edge ([yshift=-0.25cm]CM.west)
+      ([yshift=-0.25cm]CM.west) edge (SC)
+      (SC.south east) edge [bend right] (E1.west)
+      (E2.west) edge [bend right] (SC.north east)
+      (SC.north east) edge [bend left] (E2.west)
+      (E1.west) edge [bend left] (SC.south east);
+
+    \end{tikzpicture}
+  }
+  \caption{Spark setup overview}\label{fig:spark}
+\end{figure} 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
