@@ -1,9 +1,17 @@
 \subsection{Complications of distributed computing}
 
-Outline of this section:
+\subsubsection{Immutability of data}
+Withing HDFS, all data is immutable. Although appending to a file is slightly supported, there is no way to delete or modify the content of a file.
+When parsing the matches as JSON objects, we want to discard some of the matches, either because they contain indvalid JSON, or because they have a different patch version or match type than what we are looking for. Since data from multiple matches are stored in the same file, we are not able remove those matches within HDFS.
+
+\subsubsection{Precomputing feature mapping}
+The labeled data that Spark uses for training must be a labeled vector of features, where each feature is represented by an index.
+It is important, that all nodes represent the same feature with the same index. Therefore, before any features are extracted from a match, all nodes create identical maps, that map all possible features to a unique index. The disadvantage is that the size of the mapping may be larger than the size of the features we actually meet.
+Another solution would be to use a \textit{shared} map function, where entries are created on the fly as features are found in the data.
+However, the \textit{broadcast} variables in Hadoop are read-only, and can thus not be updated on the fly.
+Therefore, a shared map function has to be precomputed, but having a shared map function increases the need for the much slower communication between nodes.
+
+More outline of this section:
 - Similarity with parallel programming
     - Shared memory vs. network message passing
-- Pre-compute feature name/index map
 - Transforming/referencing RDD can only happen one at a time
-- HDFS data is immutable
-- 
