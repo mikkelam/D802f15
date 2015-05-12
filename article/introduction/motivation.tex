@@ -11,14 +11,13 @@ The sheer volume of this data means that traditional data processing methods can
 \subsubsection{Big Data Problem} % (fold)
 \label{sec:big_data_problem}
 
-A big data problem characterized by at least one of the 3 factors, volume, velocity, and variety. We have downloaded more than 400GB of data using the Riot Games API, so we definitely have a great volume of data. The variety of data is low as we get it all from the same source and in the same format (JSON). Since patches that alter the game play are regularly released for LoL, one may want to keep the model up to date by training on new data as soon as it arrives. As new match data arrives continuously at a rate of 40GB per day, one may see that as a high velocity problem. We will however turn our look away from real time data and merely focus on finding out to which extend the outcome of a match can be predicted. Therefore, our only big data concern is related to volume.
+A big data problem is characterized by at least one of the 3 factors, volume, velocity, and variety. We have downloaded more than 400GB of data using the Riot Games API, so we definitely have a great volume of data. The variety of data is low as we get it all from the same source and in the same format (JSON). Since patches that alter the game play are regularly released for LoL, one may want to keep the model up to date by training on new data as soon as it arrives. As new match data arrives continuously at a rate of 40GB per day (in Western Europe), one may see that as a high velocity problem. We will however look away from real time data and merely focus on finding out, to which extend the outcome of a match can be predicted. Therefore, our only big data concern is related to volume~\cite{madden2012databases}.
 
-A high volume of data poses a number of problem on a standalone system. One problem may be that the data is too be stored on a single system.
+A high volume of data poses a number of problem on a standalone system. One problem may be that the data is too big be stored on a single system.
 This can of course be solved by buying additional storage units. But that does not solve another problem, that the number of CPU's are limited on a single system, and depending on the application, either calculations or transfer of data may be a bottleneck.
 By having several processing units (called nodes), that each have their own storage, the data can be split and distributed across multiple nodes. By assigning every node to process the data stored at its own storage, the slow movement of data between nodes can be reduced.
 A single node is chosen as the \textit{master}, which schedules tasks at the other nodes called \textit{slaves}. A such setup is called a \textit{cluster}, and is greatly scaleable for a wide range of applications, namely those applications that can be parallelized.
 This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel. We will briefly look at one technique for solving big data problems in the next section.
-%http://www.computer.org/csdl/mags/ic/2012/03/mic2012030004.pdf    %From Databases to Big Data
 
 \subsubsection{MapReduce} % (fold)
 \label{sec:mapreduce_programming_model}
