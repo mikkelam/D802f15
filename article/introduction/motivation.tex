@@ -1,24 +1,29 @@
 \subsection{Motivation}\label{sec:motivation}
-As seen in \Cref{sec:mlandonlinevideogames}, a lot of work has been done on machine learning for other video games. LoL is however a rather unexplored game, which is the game this paper will focus on. We wish to help players make strategically good decisions about their champions and summoners. These decisions will analytically be determined by analysing a large quantity of complicated match data. The sheer volume and complexity alone means traditional data processing methods can not effectively be applied, this means we have a \emph{big data problem}. 
 
-A big data problem consists of 3 factors, volume, velocity, and variety. Of the three we have great volume as we have more than 400GB of data, the variety is not an issue as we get all the data from the same source which makes. This ensures that comparing the data input is relatively easy. The final is velocity, we do not take this into consideration as we gather the data one time. If the system should go live, it needs to update as matches are played and patches applied. Then velocity could play a role due to the great number of players and thereby matches being played every day. Every big data problem considers these three variables, but our concern is mainly with volume.
+\subsubsection{Problem to Solve} % (fold)
+\label{sec:problem_to_solve}
+As seen in \Cref{sec:mlandonlinevideogames}, a lot of work has been done on machine learning for other video games. LoL is however a rather unexplored game, which is the game this paper will focus on. We wish to help players make strategically good decisions about which champions to select at the beginning of the game.
+These decisions will be based on a model learned using a large quantity of data from previously played matches. Before the game starts, one can input data about the two teams into the model, and as output get en estimated probability of each of team being the winner.
+Riot Games provides an enormous amount of data from previous matches, which can be accessed for free using the Riot Games API.
+The sheer volume of this data means that traditional data processing methods can not effectively be applied - we have a \emph{big data problem}. 
 
-To solve a big data problem, a distributed system of machines must be used, as traditional data processing tools rarely scale well. 
 
-\subsection{Big Data Problem}
-A problem can be described as a big data problem if the problem is thoroughly complex, such that conventional data processing cannot be applied. There is no direct definiteion of when something is complex is enough, it is up to the individual solving the problem, if one wishes to apply big data techniques to solve it. However, there are three main variables which contribute to the complexity, namely: Volume, velocity, variety. Volume is the amount of storage the data occupies, velocity is identified as the rate at which the data grows and lastly variety is seen as the complexity or how much variety there is in the data. 
-Every problem is thus a combination of these three variables. One might naively think that big data problems are not that different from any other problem, ``just more data!''. The variable which we are concerned with in this project, is mostly the volume. 
+\subsubsection{Big Data Problem} % (fold)
+\label{sec:big_data_problem}
 
-In big data problems traditional data processing tools do not scale well. Instead one usually distributes the data across multiple machines using various distributed systems. It is important to recognize that solving a big data problem, introduces new challenges both in terms of storage and complexity. This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel.  We will briefly look at one technique for solving big data problems in the next section.
+A big data problem characterized by at least one of the 3 factors, volume, velocity, and variety. We have downloaded more than 400GB of data using the Riot Games API, so we definitely have a great volume of data. The variety of data is low as we get it all from the same source and in the same format (JSON). Since patches that alter the game play are regularly released for LoL, one may want to keep the model up to date by training on new data as soon as it arrives. As new match data arrives continuously at a rate of 40GB per day, one may see that as a high velocity problem. We will however turn our look away from real time data and merely focus on finding out to which extend the outcome of a match can be predicted. Therefore, our only big data concern is related to volume.
+
+A high volume of data poses a number of problem on a standalone system. One problem may be that the data is too be stored on a single system.
+This can of course be solved by buying additional storage units. But that does not solve another problem, that the number of CPU's are limited on a single system, and depending on the application, either calculations or transfer of data may be a bottleneck.
+By having several processing units (called nodes), that each have their own storage, the data can be split and distributed across multiple nodes. By assigning every node to process the data stored at its own storage, the slow movement of data between nodes can be reduced.
+A single node is chosen as the \textit{master}, which schedules tasks at the other nodes called \textit{slaves}. A such setup is called a \textit{cluster}, and is greatly scaleable for a wide range of applications, namely those applications that can be parallelized.
+This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel. We will briefly look at one technique for solving big data problems in the next section.
 %http://www.computer.org/csdl/mags/ic/2012/03/mic2012030004.pdf    %From Databases to Big Data
 
 \subsubsection{MapReduce} % (fold)
 \label{sec:mapreduce_programming_model}
-
 MapReduce is a programming model which is especially used in the context of ``Big Data''. The model is useful in the context of processing large amounts of data, utilizing parallelization. The main reason for the success of the MapReduce model, is mostly because it is easy for the programmer to parallelize, and its low-cost, high-compute property. MapReduce is well-suited in a distributed computing setting, handling data large enough to not fit into a single disk.
-
-MapReduce is comprised of a \emph{map} procedure and a \emph{reduce} procedure, which is where the name comes from. The two procedures are split into the following actions:
-
+MapReduce is comprised of a \emph{map} procedure and a \emph{reduce} procedure. The two procedures are split into the following actions:
 
 \begin{description}
     \item[Map] This procedure takes as input a key-value pair and ``sets-up'' the data, by e.g.\ filtering or sorting. The resulting output is an intermediate key-value pair used for input to the reduce function.
@@ -26,15 +31,6 @@ MapReduce is comprised of a \emph{map} procedure and a \emph{reduce} procedure, 
 \end{description}
 %src: http://static.googleusercontent.com/media/research.google.com/da//archive/mapreduce-osdi04.pdf
 
-\subsubsection{Complications of distributed computing}
-
-Outline of this section:
-- Similarity with parallel programming
-    - Shared memory vs. network message passing
-- Pre-compute feature name/index map
-- Transforming/referencing RDD can only happen one at a time
-- HDFS data is immutable
-- 
 
 
 
