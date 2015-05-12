@@ -76,61 +76,83 @@ As seen in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS clu
 
 
 \subsubsection{Apache Spark}\label{sec:spark}
-Apache Spark is a general purpose cluster-computing system, that offers a high level programming API as well as a set of high-level tools, for SQL data, machine learning and graph processing~\cite{sparkintro}.
+Apache Spark is a general purpose cluster-computing system, that offers a high level programming API as well as a set of high-level tools, for SQL data, machine learning and graph processing~\cite{sparkintro}. The main advantage of Spark compared to the mapreduce offered by hadoop is when working with iterative processes across the same data. Simply by keeping data cleverly in memory using Directed Acyclic Graphs, spark performs iterative processes much faster. An example iterative task is when computing the gradient for a logistic regression classification, the gradient for the separating hyperplane is found iteratively~\cite{ApacheSpark}.
 
-A Spark application is a user-application that is run by the \emph{Driver Program}, seen in \Cref{fig:spark}, in which a \emph{SparkContext} object is defined. The SparkContext can connect to several \emph{Cluster managers}; e.g.\ but not limited to Spark Standalone, Yarn or Mesos. For the purpose of this project, the default standalone manager is sufficient. When connected, the SparkContext gathers the \emph{Executors}, which are running processes on the \emph{Worker nodes}. The worker nodes are also Hadoop data nodes, as to not limit the computation from slow network transfer speeds. Each driver program gets has it's own set of executors which isolate the programs from each others. If programs need to share data, it is done through an external storage system like e.g.\ HDFS.\@
+A Spark application is a user-application that is run by the \emph{Driver Program}, seen in \Cref{fig:spark} the driver program handles the high-level control flow of an application and distributes various operations across the cluster. Spark comprises of two important abstractions for distributed parallel computation: \emph{resilient distributed datasets}(RDD) and \emph{parallel operations} on these datasets. furthermore, Spark also supports two types of shared variables that can be used in functions running on the cluster.
 
-By default the standalone cluster manager handles worker node failure, but as the manager uses a single-node master for work scheduling, the manager has a single-point of failure by default. External services such as Apache ZooKeeper can be used to address this problem, by distributing and coordination the scheduling. For the purpose of this project the cluster is set up much like HDFS.\@ One node acts as a central node, running the driver program and cluster manager, the remaining three nodes are worker nodes. The worker nodes and data nodes are set up on the same machines, as to avoid unnecessary load on the network~\cite{sparkcluster}. The cluster manager interfaces with Hadoop and assign work to be done as close to the data as possible. In the general case, this means that the executors will only access data from the worker nodes own disk. %??-no source for last statement.
+The RDD is a read-only collection of objects which is distributed across the machines in the cluster. RDD's are similar to a list structure when working with them. RDDs can live both in-memory and on physical structure and are fault-tolerant in the sense that they can be rebuilt because they contain information about how they were built.
 
-\begin{figure}[!htb]
-  \centering
-  \scalebox{0.75}{
-    \begin{tikzpicture}[->,>=stealth',bend angle=45,auto]
-      % Tasks
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=0cm,yshift=0cm,label={[yshift=-0.65cm]Task}] (T1) {};
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=0cm,label={[yshift=-0.65cm]Task}] (T2) {};
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=0cm,yshift=4cm,label={[yshift=-0.65cm]Task}] (T3) {};
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=4cm,label={[yshift=-0.65cm]Task}] (T4) {};
+The parallel operations which are incorporated into spark are the following: 
+\begin{itemize}
+  \item [reduce] Similar to the reduce action in mapreduce 
+  \item [collect] All elements are sent to the driver program, as a list
+  \item [foreach] Call a function on each element in the RDD
+\end{itemize}
 
-      % Caches
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=1cm,label={[yshift=-0.65cm]Cache}] (C1) {};
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=5cm,label={[yshift=-0.65cm]Cache}] (C2) {};
+This is a sample spark application for counting words on a hadoop file system and output it into standard output.
 
-      % Executor
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.75cm, minimum height=2.15cm,xshift=1cm,yshift=0.5cm,label={[yshift=-0.85cm,xshift=-1cm]Executor}] (E1) {};
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.75cm, minimum height=2.15cm,xshift=1cm,yshift=4.5cm,label={[yshift=-0.85cm,xshift=-1cm]Executor}] (E2) {};
+% Python style for highlighting
+\begin{lstlisting}
+from pyspark import SparkContext
+sc = SparkContext("spark://node1:7077")
+text_file = sc.textFile("hdfs://node1:9000/dictionary.txt")
+counts = text_file.flatMap(lambda line: line.split(" ")) \
+                  .map(lambda word: (word, 1)) \
+                  .reduceByKey(lambda a, b: a + b)
+print counts.collect()
+\end{lstlisting} 
+The above code can be run by invoking pyspark, which is similar to the python interpreter. When invoked, the application is submitted to the spark running at \texttt{spark://node1:9000} through the sparkcontext. \texttt{text\_file} is an RDD with references to each line in the file on the hadoop file system. We then split each line on blank space, into arrays, which are flattened out by using flatmap. Each word is then sent a (key,value) pair and reduced by key, counting up the occurrences of the word. Lastly we use collect to print out words and their occurences.
 
-      % Worker
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.95cm, minimum height=3cm,xshift=1cm,yshift=0.75cm,label={[yshift=-0.55cm,xshift=-0.8cm]Worker node}] (W1) {};
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.95cm, minimum height=3cm,xshift=1cm,yshift=4.75cm,label={[yshift=-0.55cm,xshift=-0.8cm]Worker node}] (W2) {};
 
-      % Cluster Manager
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.5cm, minimum height=2cm,xshift=-4cm,yshift=2.75cm,label={[yshift=-1.25cm]Cluster manager}] (CM) {};
+% \begin{figure}[!htb]
+%   \centering
+%   \scalebox{0.75}{
+%     \begin{tikzpicture}[->,>=stealth',bend angle=45,auto]
+%       % Tasks
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=0cm,yshift=0cm,label={[yshift=-0.65cm]Task}] (T1) {};
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=0cm,label={[yshift=-0.65cm]Task}] (T2) {};
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=0cm,yshift=4cm,label={[yshift=-0.65cm]Task}] (T3) {};
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=4cm,label={[yshift=-0.65cm]Task}] (T4) {};
 
-      % SparkContent
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.25cm, minimum height=1cm,xshift=-9cm,yshift=2.5cm,label={[yshift=-0.80cm]SparkContent}] (SC) {};
+%       % Caches
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=1cm,label={[yshift=-0.65cm]Cache}] (C1) {};
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=1.5cm, minimum height=0.8cm,xshift=2cm,yshift=5cm,label={[yshift=-0.65cm]Cache}] (C2) {};
 
-      % Driver Program
-      \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.5cm, minimum height=2cm,xshift=-9cm,yshift=2.75cm,label={[yshift=-0.65cm]Driver Program}] (DP) {};
+%       % Executor
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.75cm, minimum height=2.15cm,xshift=1cm,yshift=0.5cm,label={[yshift=-0.85cm,xshift=-1cm]Executor}] (E1) {};
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.75cm, minimum height=2.15cm,xshift=1cm,yshift=4.5cm,label={[yshift=-0.85cm,xshift=-1cm]Executor}] (E2) {};
 
-      % Edges
-      \path ([xshift=1cm]E1.north) edge ([xshift=1cm]E2.south)
-      ([xshift=1cm]E2.south) edge ([xshift=1cm]E1.north)
-      (CM) edge (W1)
-      (CM) edge (W2)
-      (W1) edge (CM)
-      (W2) edge (CM)
-      (SC) edge ([yshift=-0.25cm]CM.west)
-      ([yshift=-0.25cm]CM.west) edge (SC)
-      (SC.south east) edge [bend right] (E1.west)
-      (E2.west) edge [bend right] (SC.north east)
-      (SC.north east) edge [bend left] (E2.west)
-      (E1.west) edge [bend left] (SC.south east);
+%       % Worker
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.95cm, minimum height=3cm,xshift=1cm,yshift=0.75cm,label={[yshift=-0.55cm,xshift=-0.8cm]Worker node}] (W1) {};
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.95cm, minimum height=3cm,xshift=1cm,yshift=4.75cm,label={[yshift=-0.55cm,xshift=-0.8cm]Worker node}] (W2) {};
 
-    \end{tikzpicture}
-  }
-  \caption{Spark setup overview}\label{fig:spark}
-\end{figure} 
+%       % Cluster Manager
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.5cm, minimum height=2cm,xshift=-4cm,yshift=2.75cm,label={[yshift=-1.25cm]Cluster manager}] (CM) {};
+
+%       % SparkContent
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.25cm, minimum height=1cm,xshift=-9cm,yshift=2.5cm,label={[yshift=-0.80cm]SparkContent}] (SC) {};
+
+%       % Driver Program
+%       \path node at (0,0) [draw,shape=rectangle, style=rounded corners, minimum width=3.5cm, minimum height=2cm,xshift=-9cm,yshift=2.75cm,label={[yshift=-0.65cm]Driver Program}] (DP) {};
+
+%       % Edges
+%       \path ([xshift=1cm]E1.north) edge ([xshift=1cm]E2.south)
+%       ([xshift=1cm]E2.south) edge ([xshift=1cm]E1.north)
+%       (CM) edge (W1)
+%       (CM) edge (W2)
+%       (W1) edge (CM)
+%       (W2) edge (CM)
+%       (SC) edge ([yshift=-0.25cm]CM.west)
+%       ([yshift=-0.25cm]CM.west) edge (SC)
+%       (SC.south east) edge [bend right] (E1.west)
+%       (E2.west) edge [bend right] (SC.north east)
+%       (SC.north east) edge [bend left] (E2.west)
+%       (E1.west) edge [bend left] (SC.south east);
+
+%     \end{tikzpicture}
+%   }
+%   \caption{Spark setup overview}\label{fig:spark}
+% \end{figure} 
 
 %%% Local Variables:
 %%% mode: latex
