@@ -8,14 +8,14 @@
 \title{Predicting League of Legends Match Outcomes using Various Machine Learning Techniques on Big Data}
 \date{}
 
-\author[1]{Mathias Meldgaard Andersen}
-\author[1]{Kent Munthe Caspersen}
-\author[1]{Andreas Berre Eriksen}
-\author[1]{Sander Jespersen}
-\author[1]{Mikkel Alexander Madsen}
-\author[1]{Anders Roland Nielsen}
+\author{Mathias Meldgaard Andersen}
+\author{Kent Munthe Caspersen}
+\author{Andreas Berre Eriksen}
+\author{Sander Jespersen}
+\author{Mikkel Alexander Madsen}
+\author{Anders Roland Nielsen}
 
-\affil[1]{Department of Computer Science, Aalborg University}
+\affil{Department of Computer Science, Aalborg University}
 
 % CLEVEREF
 %\crefname{tempDef}{Definition}{Definitions}
@@ -26,6 +26,28 @@
 
 % Gordon
 \input{displays}
+
+%Defined python listings
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\lstset{
+  language=Python,
+  basicstyle=\ttm,
+  otherkeywords={self},             % Add keywords here
+  keywordstyle=\ttb\color{deepblue},
+  emph={MyClass,__init__},          % Custom highlighting
+  emphstyle=\ttb\color{deepred},    % Custom highlighting style
+  stringstyle=\color{deepgreen},
+  frame=tb,                         % Any extra options here
+  showstringspaces=false            % 
+}
+
 
 % document
 \begin{document}
@@ -46,6 +68,7 @@
 In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:bigdata}, the idea behind big data will be introduced along with the concept of MapReduce which is widely used for computing on big data. In \Cref{sec:logistic}, logistic regression is explained as it is the primary prediction method used in this paper.
 
 \input{preliminaries/classification}
+\input{preliminaries/distcompute}
 
 \section{Data and Prediction Setup}\label{sec:features}
 In this section, how the features are chosen is explained in \Cref{sec:choosingfeatures}, followed by possible representations of those features in \Cref{sec:representationoffeatures}. 
@@ -58,7 +81,9 @@ In this section the cluster that will be doing the computations will be outlined
 \input{cluster/setup}
 \input{cluster/profiling}
 \input{cluster/complications}
+\input{cluster/speedup}
 \input{cluster/benchmark}
+
 
 \input{test/test}
 \input{test/weights}
@@ -74,8 +99,8 @@ In this section the cluster that will be doing the computations will be outlined
 \newpage
 \appendix
 \input{Appendix/HadoopSpark}
-\input{Appendix/prediction}
-\input{Appendix/matchdata}
+%\input{Appendix/prediction}
+%\input{Appendix/matchdata}
 
 \end{document}
 
