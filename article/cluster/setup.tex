@@ -1,7 +1,6 @@
 \subsection{Cluster Setup}\label{sec:clustersetup}
 
-The cluster used for this work consist of four nodes, one master and three worker nodes. The master is master both in terms of cluster management on Spark and storage manegement on the Hadoop filesystem. Because of the limited resources for the project and small size of the cluster and dataset, some of the common fault tolerance functionality of Hadoop and Spark has not been employed. Most significantly, only one replication of data exist across the Hadoop filesystem, which naturally put large parts of the data in risk of being lost. There are two unique setups the cluster consist of which only differs on the CPU:
-
+The cluster used for this work consist of four nodes, one master and three worker nodes. The master is master both in terms of cluster management on Spark and storage manegement on the Hadoop filesystem. Because of the limited resources for the project and small size of the cluster and dataset, some of the common fault tolerance functionality of Hadoop and Spark has not been employed. Most significantly, only one replication of data exist across the Hadoop filesystem, which naturally put large parts of the data in risk of being lost. There are two unique setups the cluster consist of which only differs on the CPU:\@
 \begin{description}
 \item[CPU:] Dual core intel e8400 3Ghz or Quad core q9400 2.66Ghz
 \item[Storage:] 220 GB
