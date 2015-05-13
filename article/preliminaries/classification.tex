@@ -26,29 +26,28 @@ Overfitting means that the model is too closely fitted to the training data.
 It will therefore provide good results on the training data but do increasingly poor on real world data.
 % insert image of a model that overfits the data. 
 
-\subparagraph{Dealing with overfitting}
+\paragraph{Dealing with overfitting}
 % dividing data into test, training and validation sets.
-% crossvalidation
+% cross validation
 
-One way of avoiding overfitting is by dividing the training data into two seperate sets.
-And use one for training and the other to test for overfitting. 
-This way it becomes possible to detect when the model begins to overfit the training data.
+One way of avoiding overfitting is by using a technique called cross validation.
+With cross validation the data is divided into two seperate sets.
+Where one is used for training and the other to test for overfitting. 
+This way it becomes possible to detect when the model starts to overfit the training data.
 A typical way to do this is by using a 60-30 split thereby using 60\% for training and 30\% for testing.
 If the dataset is small, 30\% may be too much of a sacrifice.
 
 % K-Fold cross validation
-Another possibility is to use a technique called Crossvalidation.
-In Crossvalidation the dataset is divided into a number of 'folds'.
-When training the model,  
-
-
-
-
-
-
-
+Another possibility is to use k-fold cross validation.
+When applying this method the dataset is partitioned into a number of 'folds'.
+The model is then trained for $k$ iterations.
+In each iteration a different fold is used as the test set and the rest as the training data.
+Thereby it becomes possible to use all of the data as both training and test set.
 
 % Source: AI pool, macworth, p. 324
+\begin{flushright}
+\cite[p. 324]{AI2010}
+\end{flushright}
 
 \subsubsection{Logistic Regression}\label{sec:logistic}
 % write: problem with logistic regression.
@@ -87,12 +86,13 @@ When using the hypothesis for logistic regression, we are no longer able to use 
 
 \[ E_D = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 \] 
 
-The problem with this  
+The problem with this % ???? 
 
 
 
 
 \subsubsection{Regularisation}
+% Write about L1 regularization, restructure subsubsection to be more general and present both types of regularization as equals.
 To combat the problem of overfitting, we can use a method called L2-Regularisation.
 In regularisation we penalise large weights, by adding the following term to the cost function.
 
