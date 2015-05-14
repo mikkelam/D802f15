@@ -26,7 +26,7 @@ Overfitting means that the model is too closely fitted to the training data.
 It will therefore provide good results on the training data but do increasingly poor on real world data.
 % insert image of a model that overfits the data. 
 
-\paragraph{Dealing with overfitting}
+\paragraph{Dealing with Overfitting}
 % dividing data into test, training and validation sets.
 % cross validation
 
@@ -43,7 +43,6 @@ When applying this method the dataset is partitioned into a number of 'folds'.
 The model is then trained for $k$ iterations.
 In each iteration a different fold is used as the test set and the rest as the training data.
 Thereby it becomes possible to use all of the data as both training and test set.
-
 % Source: AI pool, macworth, p. 324
 \begin{flushright}
 \cite[p. 324]{AI2010}
@@ -74,7 +73,7 @@ Furthermore the sigmoid function has a simple derivative that makes it easy to w
 
 \[ \sigma'(x) = \sigma(x) \times (1-\sigma(x)) \] 
 
-\subsubsection{Cost Function}
+%\subsubsection{Cost Function}
 
 %In order to find the weights that produce the most accurate classification.
 %We minimise the squared error function.
@@ -82,11 +81,11 @@ Furthermore the sigmoid function has a simple derivative that makes it easy to w
 % squared error with logistic regression becomes a non-convex cost function.
 % write: alternative surrogate cost function.
 
-When using the hypothesis for logistic regression, we are no longer able to use the squared error function.
+%When using the hypothesis for logistic regression, we are no longer able to use the squared error function.
 
-\[ E_D = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 \] 
+%\[ E_D = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 \] 
 
-The problem with this % ???? 
+%The problem with this % ???? 
 
 
 
