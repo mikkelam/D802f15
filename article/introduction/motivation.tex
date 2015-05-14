@@ -1,36 +1,27 @@
 \subsection{Motivation}\label{sec:motivation}%\subsubsection{Problem to Solve}\label{sec:problem_to_solve}
-As seen in \Cref{sec:mlandonlinevideogames}, a lot of work has been done on machine learning for other video games. LoL is however a rather unexplored game, which is the game this paper will focus on. We wish to help players make strategically good decisions about which champions to select at the beginning of the game.
+As seen in \Cref{sec:mlandonlinevideogames}, a lot of work has been done on machine learning for other video games than LoL, which is a rather unexplored game. The focus of this paper will be to develop a method for LoL, that helps players make strategically good decisions about which champions to select.
 These decisions will be based on a model learned using a large quantity of data from previously played matches. Before the game starts, one can input data about the two teams into the model, and as output get en estimated probability of each of team being the winner.
-Riot Games provides an enormous amount of data from previous matches, which can be accessed for free using the Riot Games API.\@
-The sheer volume of this data means that traditional data processing methods can not effectively be applied, we have a \emph{big data problem}. 
+Riot Games provides an enormous amount of data from previously played matches, which can be accessed for free using the Riot Games API.\@
+The sheer volume of this data means that traditional data processing methods can not effectively be applied, and that we have a \emph{big data problem}. 
 
 
 \subsubsection{Big Data Problem}\label{sec:big_data_problem}
-A big data problem is characterised by at least one of the three factors, \emph{volume}, \emph{velocity}, and \emph{variety}. We have downloaded more than 400GB of data using the Riot Games API, so we have a great volume of data. The variety of data is low as we get it all from the same source and in the same format. Since patches that alter the game play are regularly released for LoL, one may want to keep the model up to date by training on new data as soon as it is generated. 
-New match data is, in Western Europe, continuously generated at a rate of 40GB per day, one may define that as a high velocity problem. We will however look away from real time data and merely focus on finding out, to which extend the outcome of a match can be predicted. Therefore, our only big data concern is related to volume~\cite{madden2012databases}.
+A big data problem is characterised by at least one of the three factors, \emph{volume}, \emph{velocity}, and \emph{variety}. We have downloaded more than 400GB of data using the Riot Games API, so we have a great volume of data. The variety of data is low as we get it all from the same source and in the same format. Since patches that alter the game are regularly released, one may want to keep the model up to date by training on new data as soon as it is available. 
+In Western Europe new match data is continuously generated at a rate of 40GB per day, one may define that as a high velocity problem. We will however look away from real time data and merely focus on finding out, to which extend the outcome of a match can be predicted. Therefore, our only big data concern is related to volume~\cite{madden2012databases}.
 
 A high volume of data poses a number of problem on a standalone system. One problem may be that the data is too big be stored on a single system.
-This can of course be solved by buying additional storage units. But that does not solve another problem, that the number of CPU's are limited on a single system, and depending on the application, either calculations or transfer of data may be a bottleneck.
-By having several units for processing, that each have their own storage, the data can be split and distributed across multiple machines. By assigning every machine to process the data stored at its own storage.
+This can be solved by buying additional storage units. But that does not solve another problem, that the number of CPUs are limited on a single system, and depending on the application, either calculations or transfer of data may be a bottleneck.
+The data can be split and distributed across multiple machines, which means having several units for processing with their own storage. By assigning every machine to process the data stored at its own storage the computation time can be decreased.
 %A single node is chosen as the \textit{master}, which schedules tasks at the other nodes called \textit{slaves}. A such setup is called a \textit{cluster}, and is greatly scaleable for a wide range of applications, namely those applications that can be parallelized.
-This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel. We will briefly look at one technique for solving big data problems in the next section.
+This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel. 
 
 \subsubsection{MapReduce}\label{sec:mapreduce_programming_model}
-MapReduce is a programming model which was developed by J. Dean et al.~\cite{DeanMapReduce}, and is especially used in the context of \emph{big data}. The model is useful in the context of processing large amounts of data, utilising parallelism. The main reason for the success of the MapReduce model, is mostly because it is easy for the programmer to parallelise, and its low-cost, high-compute property. MapReduce is well-suited in a distributed computing setting, handling data large enough to not fit into a single disk.
-MapReduce is comprised of a \emph{map} procedure and a \emph{reduce} procedure. The two procedures are split into the following actions:
-
+MapReduce is a programming model which was developed by J.\@ Dean et al.~\cite{DeanMapReduce}, and is designed to be used in the context of \emph{big data}. The model is useful in the context of processing large amounts of data, utilising parallelism. The main reason for the success of the MapReduce model, is mostly because it is easy for the programmer to parallelise, and its low-cost, high-compute property. MapReduce is well-suited in a distributed computing setting, handling data large enough to not fit into a single disk.
+MapReduce is comprised of a \emph{map} and \emph{reduce} procedure. The two procedures are split into the following actions:
 \begin{description}
-    \item[Map] This procedure takes as input a key-value pair and ``sets-up'' the data, by e.g.\ filtering or sorting. The resulting output is an intermediate key-value pair used for input to the reduce function.
-    \item[Reduce] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result
+    \item[Map:] This procedure takes a key-value pair as input and preprocesses the data, by e.g.\ filtering or sorting it. The resulting output is an intermediate key-value pair used as input to the reduce function.
+    \item[Reduce:] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result.
 \end{description}
-
-
-
-
-
-
-
-
 
 %%% Local Variables:
 %%% mode: latex
