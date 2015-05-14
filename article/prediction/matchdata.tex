@@ -1,20 +1,21 @@
-\subsection{League of Legends Match Information}
-Riot records large amounts of information about played matches as well as the players. Much, if not all, of this data is publicly available through an online API, where we have focused on the match data only. A full rundown of the information for a given match can be seen in~\cite{matchinfo}. We categorize the information into three categories; basic, pre-game and mid-game. Basic information is general and summary information about the match and each player, such as who won, how much gold a player earned totally and so on. As we want to predict the outcome of a match, before game start, we mainly want to use the pre-game information. A description of the used information follows:\\\\
-\textbf{Basic information}
-The most important information here is which team who won the match, as we need this when training and evaluating. Another important detail is what game mode the match is. For instance the \textit{BOT\_5x5\_BEGINNER} game mode is unwanted, as bots probably do not act like real humans, which in turn makes the prediction of human performance harder. The most common game modes are of the 5x5 type, which can be ranked, unranked(hidden rank), where the player can queue alone (solo), with friends (premade) or as a full 5 man team (team). Any combination of these three parameters is used. Other custom modes exist as well, but are too diverse to be use for predicting normal games. Finally the match’s patch-version should be taken into account as well. For instance if a champion is weakened or made stronger with an update, the trained model will decrease in predictive power.\\\\
-\textbf{Pre-game}
-Before a game begins it is known which champions that have been selected, as well as the player’s selected \textit{masteries}, \textit{runes}, \textit{summoner spells} and \textit{rank}. Champions are the playable characters (124). All champions have a pre-defined set of abilities (4), as well as masteries (57), runes (297) and summoner spells (14), which are supplementary choices the player can make to boost attribute points and add abilities.\\\\
-\textbf{Mid-game}
-As the match begins the main body of the match information is recorded. Many significant events of the match are recorded in 1 minute intervals, called timeline data, such as champion kills, deaths, level up, selection of champion skills, taking down towers and so on. At the same 1 minute interval some information about the champion’s state is also recorded, such as earned XP, gold, creep kills, player position and so on. Another piece of mid-game information is which lane on the map a champion plays. Although this is not pre-game information and therefore not absolutely certain before game start, we still assume to know the champions positions. The reasoning behind this is that champions have abilities and attributes that make them relatively better suited for different positions on the map, which higher-ranked players will know how to utilize. It should be noted that this paper does not present a solution to the problem of predicting lane selection, given a set of champions.\\
+\subsection{League of Legends Match Information}\label{sec:matchdata}
+Riot Games records large amounts of information about played matches as well as the players~\cite{matchinfo}. Much, if not all, of this data is publicly available through their online API. In this paper the focus will be on the match data only. The information is divided into three categories; \emph{basic information}, \emph{pregame}, and \emph{midgame}. Basic information is general and summarised information about the match and each player, such as who won, how much gold a player earned totally, etc.. As the goal is to predict the outcome of a match, before the game starts, the pregame information is the most important. A description of the used information follows:
+\begin{description}
+\item[Basic information] 
+The most important information here is, which team who won the match, as we need this when training and evaluating. Another important detail is what game mode the match is. For instance the \texttt{BOT\_5x5\_BEGINNER} game mode is unwanted, as bots do not act like humans, which in turn makes the prediction of human performance harder. The most common game modes are of the 5x5 type, which is 5 versus 5. These can be \emph{ranked}, \emph{unranked} where the rank is hidden, \emph{solo} where the player queues alone, \emph{premade} is with friends, or as \emph{team} which is a full 5 man team. 
+Any combination of these three parameters is used. %Hvilke 3 parameters? //Funder
+Other custom modes exist as well, but are too diverse to be used for predicting normal games. Finally the matches patch version should be taken into account as well. For instance if a champion is changed with an update, the trained model will decrease in predictive power.
+\item[Pregame]
+Before a game begins, it is known which champions that have been selected, as well as the players selected \textit{masteries}, \emph{runes}, \emph{summoner spells}, and \emph{rank}. %Champions are the playable characters (124). All champions have a pre-defined set of abilities (4), 
+%as well as masteries (57), runes (297) and summoner spells (14), which are supplementary choices the player can make to boost attribute points and add abilities.
+%Dette skal op i introduktionen //Funder
+\item[Midgame]
+As the match begins, the main body of the match information is recorded. Many significant events of the match are recorded in 1 minute intervals, called timeline data, such as champion kills, deaths, level up, selection of champion skills, taking down towers and etc.. At the same 1 minute interval some information about the champion's state is also recorded, such as earned experience, gold, creep kills, player position and etc.. Another piece of midgame information is which lane on the map a champion plays. Although this is not pregame information and therefore not absolutely certain before game start, we still assume to know the champions positions. The reasoning behind this is that champions have abilities and attributes that make them relatively better suited for different positions on the map, which high ranked players will know how to utilise. It should be noted that this paper does not present a solution to the problem of predicting lane selection, given a set of champions.
+\end{description}
 
+The dataset which we are going to use, is a dataset of matches played from $23^{\text{rd}}$ of March 2015 to $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. The dataset includes matches from all types of games, including games against bots, which we are not interested in. Among the filtered interesting games, are 1925980 matches which we will be training on.
 
-The dataset which we are going to use, is a dataset of matches played from 23rd of March 2015 to 27th of March 2015. It includes match details for matches played across the world, and it takes up 456GB of space. The dataset includes matches from all types of games, including games against AI players, which we are not interested in. Among the filtered interesting games, are 1925980 matches which we will be training on.
-
-
-
-
-
-
-
-
-
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
