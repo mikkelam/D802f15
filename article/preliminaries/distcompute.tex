@@ -1,10 +1,10 @@
 \subsection{Computing Distributed Systems}\label{sec:distributed}
 In this section we will introduce distributed systems, which we are going to use. These systems will help us distribute the data across multiple machines, as well as distributed parallel computations. 
 
-
 \subsubsection{Hadoop Filesystem}\label{sec:hadoopfilesystem}
-Hadoop filesystem (HDFS) is a distributed filesystem that seeks to increase fault tolerance on very large datasystems. The filesystem is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS is run on a cluster, where one machine exist as a \emph{master} which runs the \emph{namenode}, which is a central node that manages the location of file blocks and distributes assigned work. Blocks are used as a means to split large files, replicate and distribute them across the clusters \emph{data nodes}. Ensuring file coherency could become very complicated in such a system, which is why Hadoop implements a simple \emph{write once, read many} model. It is common that the files used with Hadoop is of the Gigabyte-Terabyte size.
-As seen in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS cluster. An application access data by first requesting the locations of a file’s blocks from the namenode and then use those locations to read directly from data nodes~\cite{hadoopIntro}. 
+HDFS is a distributed filesystem that seeks to increase fault tolerance on very large data systems. It is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS is run on a cluster, where one machine exist as a \emph{master} which runs the \emph{namenode}. As shown in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS cluster.
+This is therefore a central node that manages the location of file blocks, which are used as a means to split, replicate and distribute large files across the \emph{data nodes}. Ensuring file coherency could become very complicated in such a system, which is why it uses a simple \emph{write once, read many} model. It is common that the files used with Hadoop is of the gigabyte or terabyte size. 
+An application accesses data by first requesting the list of locations of the files distributed blocks from the namenode and then uses those locations to read directly from the data nodes~\cite{hadoopIntro}. 
 
 \begin{figure}[!htb]
   \centering
@@ -74,19 +74,19 @@ As seen in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS clu
 \end{figure} 
 
 \subsubsection{Apache Spark}\label{sec:spark}
-Apache Spark is a general purpose cluster-computing system, that offers a high level programming API as well as a set of high-level tools, for SQL data, machine learning and graph processing~\cite{sparkintro}. The main advantage of Spark compared to the MapReduce offered by Hadoop is when working with iterative processes across the same data. Simply by keeping data cleverly in memory using Directed Acyclic Graphs, spark performs iterative processes much faster. An example iterative task is when computing the gradient for a logistic regression classification, the gradient for the separating hyperplane is found iteratively~\cite{ApacheSpark}.
+Apache Spark is a general purpose cluster-computing system, that offers a high level programming API, as well as a set of high level tools for SQL data, machine learning and graph processing~\cite{sparkintro}. The main advantage of Spark compared to the MapReduce offered by Hadoop, is when working with iterative processes across the same data. Simply by keeping data cleverly in memory using Directed Acyclic Graphs, Spark performs iterative processes much faster. An example of a iterative task, is when computing the gradient for a logistic regression classification, the gradient for the separating hyperplane is found iteratively~\cite{ApacheSpark}.
 
-A Spark application is a user-application that is run by the \emph{Driver Program}, the driver program handles the high-level control flow of an application and distributes various operations across the cluster. Spark comprises of two important abstractions for distributed parallel computation: \emph{resilient distributed datasets}(RDD) and \emph{parallel operations} on these datasets. Furthermore, Spark also supports two types of shared variables that can be used in functions running on the cluster.
+A Spark application is a user application that is run by the a driver program, which handles the high level control flow of an application and distributes various operations across the cluster. Spark comprises of two important abstractions for distributed parallel computation: \emph{resilient distributed datasets}(RDD) and \emph{parallel operations} on these datasets. Furthermore, Spark also supports two types of shared variables that can be used in functions running on the cluster.
 
-The RDD is a read-only collection of objects which is distributed across the machines in the cluster. RDD's are similar to a list structure when working with them. RDDs can live both in-memory and on physical structure and are fault-tolerant in the sense that they can be rebuilt because they contain information about how they were built. The parallel operations which are incorporated into spark are: 
+The RDD is a read-only collection of objects which is distributed across the machines in the cluster. RDDs are similar to a list structure when working with them. RDDs can live both in memory and on physical structure, and are fault-tolerant in the sense that they can be rebuilt because they contain information about how they were built. The parallel operations which are incorporated into Spark are: 
 \begin{description}
   \item[Reduce:] Similar to the reduce action in MapReduce 
-  \item[Collect:] All elements are sent to the driver program, as a list
-  \item[Foreach:] Call a function on each element in the RDD
+  \item[Collect:] All elements are sent to the driver program
+  \item[Foreach:] Calls a function on each element in the RDD
 \end{description}
-This is a sample spark application for counting words on a hadoop file system and output it into standard output.
+\Cref{lst:wordcount} shows an example of a Spark application for counting words on a HDFS and output it into standard output.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Wordcount in Spark on HDFS},label={lst:wordcount},belowcaptionskip=4pt]
 from pyspark import SparkContext
 sc = SparkContext("spark://node1:7077")
 text_file = sc.textFile("hdfs://node1:9000/dictionary.txt")
@@ -95,7 +95,7 @@ counts = text_file.flatMap(lambda line: line.split(" ")) \
                   .reduceByKey(lambda a, b: a + b)
 print counts.collect()
 \end{lstlisting} 
-The above code can be run by invoking pyspark, which is similar to the python interpreter. When invoked, the application is submitted to the spark running at \texttt{spark://node1:7077} through the sparkcontext. \texttt{text\_file} is an RDD with references to each line in the file on the HDFS. We then split each line on blank space, into arrays, which are flattened out by using flatmap. Each word is then sent a (key,value) pair and reduced by key, counting up the occurrences of the word. Lastly we use collect to print out words and their occurrences.
+The code can be run by invoking pyspark, which is similar to the python interpreter. When invoked, the application is submitted to Spark on \texttt{spark://node1:7077} through the sparkcontext. \texttt{text\_file} is an RDD with references to each line in the file on the HDFS. We then split each line on blank space, into arrays, which are flattened out by using flatmap. Each word is then sent a key-value pair and reduced by key, counting up the occurrences of the word. Lastly we use collect to print out words and their occurrences.
 
 
 % \begin{figure}[!htb]
