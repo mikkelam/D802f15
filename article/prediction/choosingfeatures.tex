@@ -6,9 +6,9 @@ $T = \{T_\text{blue}$, $T_\text{purple}\}$ is a set containing the two teams \em
 $T_i = \{ (p_j, c_j) \in P \times C \mid c_j \text{ is controlled by } p_j \text{ on team } i \}$.
 
 Some champions may be better than other champions, to capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
-We define a feature $x_\text{SINGLE}$, such that $\forall t \in T, \forall c \in C:$
+We define a feature $x_{\text{SINGLE}}$, such that $\forall t \in T, \forall c \in C:$
 \[
-x_\text{SINGLE}(t, c) = 
+x_{\text{SINGLE}}(t, c) = 
 \begin{cases} 
   1 & \text{if } (c, p) \in t \text{ for some } p \\
   0 & \text{otherwise} 
@@ -16,8 +16,7 @@ x_\text{SINGLE}(t, c) =
 \]
 
 Some champions are considered damage dealers, they deal very high damage, but die easily. Other champions deal very little damage, but can be almost impossible to kill, these are considered tanks. These two types of champions are weak when alone, but when they team up, they can pose a serious threat. The tank can be used by the damage dealer as a living shield, allowing him to stay alive for much longer, thus deal more damage.
-To capture the synergy between two champions on the same team, we will for each team need a feature that represents the presence or absence of every 2-combination %Skal muligvis ændres hvis vi har mere end 2kombinationer senere //Funder 
-of champions on that team. Therefore, we define a feature $x_\text{PAIR}(t, c_1, c_2)$ such that $\forall t \in T, \forall c_1, c_2 \in C$ where $c_1 < c_2$:
+To capture the synergy between two champions on the same team, we will for each team need a feature that represents the presence or absence of every 2-combination of champions on that team. Therefore, we define a feature $x_\text{PAIR}(t, c_1, c_2)$ such that $\forall t \in T, \forall c_1, c_2 \in C$ where $c_1 < c_2$:
 \[
 x_\text{PAIR}(t, c_1, c_2) = 
 \begin{cases} 
@@ -71,3 +70,8 @@ $\forall(p, c) \in T_\text{blue} \cup T_\text{purple}$, we define a feature
 x_\text{PLAYER-RANK
 }(p) = S(p)
 \]
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:

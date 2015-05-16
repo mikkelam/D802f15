@@ -8,14 +8,14 @@
 \title{Predicting League of Legends Match Outcomes using Various Machine Learning Techniques on Big Data}
 \date{}
 
-\author[1]{Mathias Meldgaard Andersen}
-\author[1]{Kent Munthe Caspersen}
-\author[1]{Andreas Berre Eriksen}
-\author[1]{Sander Jespersen}
-\author[1]{Mikkel Alexander Madsen}
-\author[1]{Anders Roland Nielsen}
+\author{Mathias Meld'ern Andersen}
+\author{Kent Mynte Caspersen}
+\author{Andreas Bear Eriksen}
+\author{Sander SwaggitySwooty Jespersen}
+\author{Mikkel Awesome Madsen}
+\author{Anders Roulade Nielsen}
 
-\affil[1]{Department of Computer Science, Aalborg University}
+\affil{Department of Computer Science, Aalborg University}
 
 % CLEVEREF
 %\crefname{tempDef}{Definition}{Definitions}
@@ -26,6 +26,29 @@
 
 % Gordon
 \input{displays}
+
+%Defined python listings
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\lstset{
+  language=Python,
+  basicstyle=\ttm,
+  otherkeywords={self},             % Add keywords here
+  keywordstyle=\ttb\color{deepblue},
+  captionpos=b,                     % Position of caption
+  emph={MyClass,__init__},          % Custom highlighting
+  emphstyle=\ttb\color{deepred},    % Custom highlighting style
+  stringstyle=\color{deepgreen},
+  frame=tb,                         % Any extra options here
+  showstringspaces=false            % 
+}
+
 
 % document
 \begin{document}
@@ -43,21 +66,25 @@
 
 
 \section{Preliminaries}\label{sec:prelim}
-In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:bigdata}, the idea behind big data will be introduced along with the concept of MapReduce which is widely used for computing on big data. In \Cref{sec:logistic}, logistic regression is explained as it is the primary prediction method used in this paper.
+In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:supervised learning}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, Hadoop filesystem (HDFS) is briefly outlined followed by an introduction to Apache spark which is the cluster computing system mainly used throughout this paper.
 
 \input{preliminaries/classification}
+\input{preliminaries/distcompute}
 
 \section{Data and Prediction Setup}\label{sec:features}
-In this section, how the features are chosen is explained in \Cref{sec:choosingfeatures}, followed by possible representations of those features in \Cref{sec:representationoffeatures}. 
+In this section, information and details about the data that will be used for this paper is explored which can be seen in \Cref{sec:matchdata}. This is followed by an explanation of how the features are chosen in \Cref{sec:choosingfeatures}. Finally in  \Cref{sec:representationoffeatures} possible representations of those features are defined and explained. 
 \input{prediction/matchdata}
 \input{prediction/choosingfeatures}
 \input{prediction/representationoffeatures}
 
 \section{Cluster}\label{sec:cluster}
-In this section the cluster that will be doing the computations will be outlined. In \Cref{sec:clustersetup} the setup of the cluster and the available resources are listed, followed by a profile of the resource usage in \Cref{sec:profile}. Then a short overview of Spark and the Hadoop file system can be seen in \Cref{sec:spark,sec:hadoopfilesystem}.
+In this section the cluster that will be doing the computations will be outlined. In \Cref{sec:clustersetup} the setup of the cluster and the available resources are listed, followed by a profile of the resource usage in \Cref{sec:profile}.
 \input{cluster/setup}
 \input{cluster/profiling}
 \input{cluster/complications}
+\input{cluster/speedup}
+\input{cluster/benchmark}
+
 
 \input{test/test}
 \input{test/weights}
@@ -73,8 +100,8 @@ In this section the cluster that will be doing the computations will be outlined
 \newpage
 \appendix
 \input{Appendix/HadoopSpark}
-\input{Appendix/prediction}
-\input{Appendix/matchdata}
+%\input{Appendix/prediction}
+%\input{Appendix/matchdata}
 
 \end{document}
 
