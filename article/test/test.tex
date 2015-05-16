@@ -294,36 +294,31 @@ The feature sets tested are:
 For each set of features the total possibilities of features is given, as well as the amount of features extracted from a single game. Along with the numbers is given a reasoning for testing the features.  
 \\\\
 \textbf{Blue team, red team} \\
-As mentioned in each team picks 5 champions, from a pool of 124 champions, depending on the game mode this results in a total of 248 or 243 features, of which 10 is picked. The feature representation is chosen since it is the simples features we have representing a game. \\\\
+As mentioned in \Cref{sec:onlinevideogames} each team picks 5 champions, from a pool of 124 champions, this results in a total of 248 features, of which 10 is picked. The feature representation to test the importance of the individual champions. \\\\
 \textbf{Blue combos, red combos} \\
-As mentioned in there might be some synergy between combinations of champions. The total number combos for each team is calculated as $n \times (n-1)/2$. Depending on the game mode the total amount of features is calculated as:  
+As mentioned in  \Cref{sec:choosingfeatures} there might be some synergy between combinations of champions. The total number combos for each team is calculated as $n \times (n-1)/2$. The total amount of features is calculated as:  
 \begin{itemize}
 \item $124 \times (124-1)/2 + 124 \times (124-1)/2 = 15252$
-\item $124 \times (124-1)/2 + 119 \times (119-1)/2 = 14647$
 \end{itemize}
 From the possible features $20$ is represented for each match. \\\\
 \textbf{Blue team, red team, blue combos, red combos} \\
-This feature test is added to test how well the extension from team to combos works with the individual players. The total features again depends on the game mode and is either: 
+This feature test is added to test how well the extension from team to combos works with the individual players. The total features are: 
 \begin{itemize}
 \item $248 + 15252 = 15500$
-\item $243 + 14647 = 14890$
 \end{itemize}
 The total features pick for each game is 30.\\\\
 \textbf{Blue team, red team, blue combos, red combos, cross team combos}\\
-The cross team combos is calculated as mentioned in, the reasoning behind this feature is that some champions might have special skills which counters the skills on another champion. 
-Depending on the game mode the total amount of features for cross team combos is: 
+The cross team combos is calculated as $n^2$, the purpose of this feature is to capture champions which have special skills which counters the skills on another champion. The total features for cross team combos is: 
 \begin{itemize}
 \item $15500+124\times124 = 30876$
-\item $14890+119\times119 = 29051$
 \end{itemize}
-From this pool of features 80 is represented in each match.\\\\
+From this pool of features 55 is represented in each match.\\\\
 \textbf{Blue team, red team, blue combos, red combos, cross team combos, champion ranks}\\
 For each player their best achieved rank in the previous season is known there are 8 possible ranks. The total features for this test is: 
 \begin{itemize}
-\item $30876 + 248\times8 = 32860$
-\item $29051 + 248\times8 = 31035$
+\item $30876 + 124\times8 = 31868$
 \end{itemize}
-From this pool of features 90 is represented in each match. \\\\
+From this pool of features 65 is represented in each match. \\\\
 \textbf{All pre-match features}\\
 All pre-match features is a combination of, blue team, red team, blue combos, red combos, cross team combos, champion ranks, champions lanes, best team rank, champion queue type, champion runes, champion masteries and champion spell combo.  
 
@@ -357,7 +352,7 @@ Champion lanes describe which lane a given champion is played on e.g. a champion
 \end{tikzpicture}
    \caption{Accuracy of features}\label{fig:cluster-feat}
 \end{figure}
-The feature evaluation results shows two interesting results, by looking at each individual test case we see the we have almost no over fitting. The largest difference is blue combos, red combos with a difference of 3.610-3 percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
+The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual test case we see the we have almost no over fitting. The largest difference is blue combos, red combos with a difference of 3.610-3 percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
 \begin{figure}[!htb]
   \centering
   \begin{tikzpicture}[] 
