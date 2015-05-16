@@ -352,6 +352,7 @@ Champion lanes describe which lane a given champion is played on e.g. a champion
 \end{tikzpicture}
    \caption{Accuracy of features}\label{fig:cluster-feat}
 \end{figure}
+
 The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual test case we see the we have almost no over fitting. The largest difference is blue combos, red combos with a difference of 3.610-3 percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
 \begin{figure}[!htb]
   \centering
@@ -465,7 +466,7 @@ The feature evaluation results from \Cref{fig:cluster-feat} shows two interestin
 \subsection{Cluster tests}\label{sec:clustertest}
 In this section the tests that requires the cluster. This is due to the size of the tests, and the expected time frame.
 \subsubsection{Big data on the cluster}
-One of the key points of this project was working on big data, to test the improvement of the classifier as the training size increases. A experiments using only a percentage of the 1348428 games used in REF FEATURE TEST is used to for training and 577552 games are used for evaluation. The features uses is all pre-match features. The classifier used in this test is logistic regression with stochastic gradient descent with L2 regularization and a ridge value of 0.01. The size of the training set used are as follows: 
+One of the key points of this project was working on big data, to test the improvement of the classifier as the training size increases. A experiments using only a percentage of the 1348428 games used in \Cref{sec:feattest} is used to for training and 577552 games are used for evaluation. The features uses is all pre-match features. The classifier used in this test is logistic regression with stochastic gradient descent with L2 regularization and a ridge value of 0.01. The size of the training set used are as follows: 
 \begin{enumerate}
 \item 84529 matches
 \item 168431 matches 
@@ -502,8 +503,9 @@ One of the key points of this project was working on big data, to test the impro
 \end{tikzpicture}
   \caption{Test for representation of features}\label{fig:clusterbigdata}
 \end{figure}
-The results of the experiment shows that as we get more data the prediction error on the test set decreases a little bit the total change from 84529 matches to 134828 matchs is $-0.54\%$
-The results also shows the as the size of the training data increases overfitting becomes less of a problem the difference between the training set and test set moves from $2.2\times 10^{-2}$ for $84529$ matches to $2.2\times10^{-3}$ for $1348428$. The result shows that the model do not improve a whole lot at the amount of data increases .     
+The results from \Cref{fig:clusterbigdata} shows that as more data is used to train the model the prediction accuracy on the test set increases the total change from 84529 matches to 134828 matches is $3.86\times10^{-1}\%$
+
+The results also shows the as the size of the training data increases overfitting decreases. The difference in accuracy between the training set and test set moves from $3.79\%$ for $84529$ matches to $3.79\times10^{-1} \%$ for $1348428$ matches. The result shows that the model do not improve a lot as the amount of data increases. The test shows that as the amount of data used for training increases overfitting decreases.      
 \subsubsection{Big data improvements}
 To test if big data gives an improvement when predicting the outcome of a match, the same features and method where used on an increasing sized data starting from 1000 matches. After the model was made, it was tested on the training data, as a $\frac{2}{3}$-split and finally cross-validation. And as seen on \Cref{fig:bigdata} there will be more information once more tests has been run!
 
