@@ -282,14 +282,14 @@ Features can be presented in many different ways and this test is constructed to
 Some features might be more expressive than others, and finding the set of features that will yield the best result is imperative. The test on the cluster is performed with logistic regression using stochastic gradient descent and L2 regularization with a ridge value of 0.01. 
 For each feature test 1348428 games is used for training and 577552 games are used for evaluation. 
 The feature sets tested are:
-\begin{itemize}
+\begin{enumerate}
 \item blue team, red team 
 \item blue combos, red combos
 \item blue team, red team, blue combos, red combos
 \item blue team, red team, blue combos, red combos, cross team combos
 \item blue team, red team, blue combos, red combos, cross team combos, champion ranks
-\item all pregame features 
-\end{itemize}
+\item all pre-match features 
+\end{enumerate}
 
 For each set of features the total possibilities of features is given, as well as the amount of features extracted from a single game. Along with the numbers is given a reasoning for testing the features.  
 \\\\
@@ -327,7 +327,37 @@ From this pool of features 90 is represented in each match. \\\\
 \textbf{All pre-match features}\\
 All pre-match features is a combination of, blue team, red team, blue combos, red combos, cross team combos, champion ranks, champions lanes, best team rank, champion queue type, champion runes, champion masteries and champion spell combo.  
 
-Champion lanes describe which lane a given champion is played on e.g. a champion might perform better if played in the middle lane instead of the top lane. Best team rank is a measure of how skilled the two teams are. Champion queue type combines the champion picked by a player with the game mode being played. Champion runes combines the champion picked with the runes of the player who picked the champion (runes are used to boot certain skills of a champion, e.g. give a champion higher starting health).
+Champion lanes describe which lane a given champion is played on e.g. a champion might perform better if played in the middle lane instead of the top lane. Best team rank is a measure of how skilled the two teams are. Champion queue type combines the champion picked by a player with the game mode being played. Champion runes combines the champion picked with the runes of the player who picked the champion (runes are used to boot certain skills of a champion, e.g. give a champion higher starting health). Champion masteries, masteries have the same purpose as runes. Champion spell combo is a combination of the champion picked and the summoner spells picked by the player. The total possible features of this test is 189.183. The amount of features represented in each game varies a lot e.g. some players might have 30 different runes resulting in 30 features for that player another player might not have any runes resulting in only 1 feature.
+\begin{figure}[!htb]
+  \centering
+  % Graph for feature tests. 
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    ylabel = Accuracy,
+    xlabel = Feature set,
+    tick label style={font=\small},
+    tickpos=left,
+    xticklabels={1, 2, 3, 4, 5, 6}, 
+    xtick={1,2,3,4,5, 6},
+    ymin=53,
+    legend entries={Traning,Test},
+    legend style={at={(1.3,1.0)},
+        anchor=north,legend columns=1
+    },
+    legend image code/.code={%
+      \draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);
+    }   
+    ]   
+    \addplot +[bar shift=-.2cm] coordinates {(1,55.12) (2,55.34) (3,55.31)  (4,55.58)     (5,56.08)  (6, 58.73)};
+
+    \addplot  +[bar shift=.2cm]coordinates {(1,55.01) (2,54.98) (3,55.22) (4,  55.46) (5,55.92) (6, 58.50)};
+
+\end{axis}
+\end{tikzpicture}
+   \caption{Accuracy of features}\label{fig:cluster-feat}
+\end{figure}
+The feature evaluation results shows two interesting results, by looking at each individual test case we see the we have almost no over fitting. The largest difference is blue combos, red combos with a difference of 3.610-3 percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
 \begin{figure}[!htb]
   \centering
   \begin{tikzpicture}[] 
@@ -439,6 +469,46 @@ Champion lanes describe which lane a given champion is played on e.g. a champion
 
 \subsection{Cluster tests}\label{sec:clustertest}
 In this section the tests that requires the cluster. This is due to the size of the tests, and the expected time frame.
+\subsubsection{Big data on the cluster}
+One of the key points of this project was working on big data, to test the improvement of the classifier as the training size increases. A experiments using only a percentage of the 1348428 games used in REF FEATURE TEST is used to for training and 577552 games are used for evaluation. The features uses is all pre-match features. The classifier used in this test is logistic regression with stochastic gradient descent with L2 regularization and a ridge value of 0.01. The size of the training set used are as follows: 
+\begin{enumerate}
+\item 84529 matches
+\item 168431 matches 
+\item 337146 matches 
+\item 674438 matches
+\item 1348428 matches 
+\end{enumerate}
+% Graph for big data testing. 
+\begin{figure}[!htb]
+  \centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    ylabel = Accuracy,
+    xlabel = Traning size,
+    tick label style={font=\small},
+    tickpos=left,
+    xticklabels={6\%, 12\%, 25\%, 50\%, 100\%}, 
+    xtick={1,2,3,4,5, 6},
+    ymin=56,
+    legend entries={Traning,Test},
+    legend style={at={(1.3,1.0)},
+        anchor=north,legend columns=1
+    },
+    legend image code/.code={%
+      \draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);
+    }   
+    ]   
+    \addplot +[bar shift=-.2cm] coordinates {(1,60.49) (2,59.66) (3,59.06)  (4,58.85)     (5,58.73)  };
+
+    \addplot  +[bar shift=.2cm]coordinates {(1,58.28) (2,58.36) (3,58.38) (4,  58.46) (5,58.50) };
+
+\end{axis}
+\end{tikzpicture}
+  \caption{Test for representation of features}\label{fig:clusterbigdata}
+\end{figure}
+The results of the experiment shows that as we get more data the prediction error on the test set decreases a little bit the total change from 84529 matches to 134828 matchs is $-0.54\%$
+The results also shows the as the size of the training data increases overfitting becomes less of a problem the difference between the training set and test set moves from $2.2\times 10^{-2}$ for $84529$ matches to $2.2\times10^{-3}$ for $1348428$. The result shows that the model do not improve a whole lot at the amount of data increases .     
 \subsubsection{Big data improvements}
 To test if big data gives an improvement when predicting the outcome of a match, the same features and method where used on an increasing sized data starting from 1000 matches. After the model was made, it was tested on the training data, as a $\frac{2}{3}$-split and finally cross-validation. And as seen on \Cref{fig:bigdata} there will be more information once more tests has been run!
 
