@@ -336,7 +336,7 @@ Champion lanes describe which lane a given champion is played on e.g. a champion
     xticklabels={1, 2, 3, 4, 5, 6}, 
     xtick={1,2,3,4,5, 6},
     ymin=53,
-    legend entries={Traning,Test},
+    legend entries={Training,Test},
     legend style={at={(1.3,1.0)},
         anchor=north,legend columns=1
     },
@@ -353,7 +353,7 @@ Champion lanes describe which lane a given champion is played on e.g. a champion
    \caption{Accuracy of features}\label{fig:cluster-feat}
 \end{figure}
 
-The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual test case we see the we have almost no over fitting. The largest difference is blue combos, red combos with a difference of 3.610-3 percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
+The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual test case we see the we have almost no over fitting. The largest difference is blue combos, red combos with a difference of 3.610^{-3} percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
 \begin{figure}[!htb]
   \centering
   \begin{tikzpicture}[] 
@@ -481,13 +481,13 @@ One of the key points of this project was working on big data, to test the impro
 \begin{axis}[
     ybar,
     ylabel = Accuracy,
-    xlabel = Traning size,
+    xlabel = Training size,
     tick label style={font=\small},
     tickpos=left,
     xticklabels={6\%, 12\%, 25\%, 50\%, 100\%}, 
     xtick={1,2,3,4,5, 6},
     ymin=56,
-    legend entries={Traning,Test},
+    legend entries={Training,Test},
     legend style={at={(1.3,1.0)},
         anchor=north,legend columns=1
     },
