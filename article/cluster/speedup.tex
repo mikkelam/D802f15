@@ -1,7 +1,7 @@
 \subsection{Cluster speedup}\label{sec:speedup}
 In this section we measure the speedup when adding additional computing nodes to the cluster.
 
-To test the speedup 50GB match data were used to train a logistic regression model using stochastic gradient descent and L2 regularization with a ridge value of 0.01 the features used were all pre-match features \Cref{sec:feattest}. The following is the time taken by 1,2 and 3 node(s) respectively:
+To test the speedup 50GB match data were used to train a logistic regression model using stochastic gradient descent and L2 regularization with a ridge value of 0.01 the features used were all pre-match features described in  \Cref{sec:feattest}. The following is the time taken by 1 master controling 1, 2 and 3 worker(s) respectively:
 
 \begin{enumerate}
     \item 43m34s (2614s)
@@ -14,10 +14,10 @@ To test the speedup 50GB match data were used to train a logistic regression mod
   \centering
   \begin{tikzpicture}[] 
     \begin{axis}[
-      xlabel=Number of nodes, 
+      xlabel=Workers, 
       ylabel=Time,
       xtick={1,2,3},
-      xticklabel style={rotate=45,anchor=near xticklabel},
+      xticklabel style={anchor=near xticklabel},
       scaled x ticks=false,
       x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
       legend style={at={(1.4,1.001)},
@@ -32,7 +32,7 @@ To test the speedup 50GB match data were used to train a logistic regression mod
 \end{tikzpicture}
    \caption{Cluster speed up}\label{fig:cluster-speedup}
 \end{figure}
-The reason these numbers are irregular is because one node only has 2 cores, while the other two nodes has 4 cores. We can measure the speedup using Amdahl's law:
+The results of test is shown in \Cref{fig:cluster-speedup} the reason these numbers are irregular is because one node only has 2 cores, while the other two nodes has 4 cores. We can measure the speedup using Amdahl's law:
 
 \[S(N) = \frac{1}{(1-P)+\frac{P}{N}}\]
 
