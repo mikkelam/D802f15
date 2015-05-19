@@ -2,18 +2,52 @@
 % The problem of supervised classification bla bla bla...
 % when dealing with a large amount of labelled data ect.
 
+% write motivation for using supervised learning (DATA!!!) 
+
 \subsubsection{Supervised learning}
-Supervised learning is the process of learning the parameters of a linear model using a corpus of labelled data.
-Given data in the form of a set of features and the value of their corresponding 'correct' class variable.  
-Supervised learning uses machine learning algorithms to determine the features that together predict the value of the class variable.  
+Supervised learning is the process of learning the parameters of a linear model using a corpus of labeled data.
+In supervised learning the data consists of objects with labels of the form 
+$(\textbf{x}_1,y),(\textbf{x}_2,y), \text{ ... } (\textbf{x}_n,y)$.
+Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the datapoint.
+The goal of supervised learning is to produce a model that is able to predict a label from the inputs alone.
+When the domain of the label is continuous this is called a regression model and if it is discrete it is called a classification model.
 
-\subsubsection{Linear Models}
-% regresssion vs. classification 
+\paragraph{Feature Representation}\label{sec:phi}
+It is possible to design alot of features for the model by combining and transforming the original inputs.
 
-Linear models assign weights to the input features and computes the value of the class variable as a linear combination of the weights and the input features.
-When the value of the class variable is continuous it is called a regression model and when it is discrete it is called a classification model.
+\begin{align*}
+x &\rightarrow \phi(x) \\
+&\rightarrow (\phi_1(x), \phi_2(x), \phi_3(x), \phi_4(x)) \\
+&\rightarrow (1, x_1, x_1^2, \phi_2(x)\phi_3(x))
+\end{align*} 
+
+\paragraph{Classification Function}
+
+% classification function
+
+% classification process: features -> phi(x) -> f(phi(x)) -> {+,-}
+
+
+
+
+
+
+
+
+ 
+\subsubsection{Linear Classification Models}
+
+%Linear models assign weights to the input features and computes the value of the class variable as a linear combination of the weights and the input features.
+%When the value of the class variable is continuous it is called a regression model and when it is discrete it is called a classification model.
 
 % insert image showing a line and some data points.
+
+A Linear model uses a se
+
+
+
+
+
 
 \paragraph{Overfitting and Underfitting}
 % overfitting vs. underfitting
