@@ -91,7 +91,7 @@
 
 % New floats and captions
 \RequirePackage{newfloat}
-\RequirePackage{caption}
+\RequirePackage[font={small,it}]{caption}
 
 % Tables
 \RequirePackage{longtable} %Enable tables to span multiple sides

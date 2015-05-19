@@ -60,6 +60,7 @@
 
 % CONTENT
 \section{Introduction}\label{sec:intro}
+Intro stuff
 \input{introduction/online-video-games}
 \input{introduction/ml-and-online-video-games}
 \input{introduction/motivation}
@@ -72,7 +73,9 @@ In this section, theory or knowledge that is imperative for the understanding of
 \input{preliminaries/distcompute}
 
 \section{Data and Prediction Setup}\label{sec:features}
-In this section, information and details about the data that will be used for this paper is explored which can be seen in \Cref{sec:matchdata}. This is followed by an explanation of how the features are chosen in \Cref{sec:choosingfeatures}. Finally in  \Cref{sec:representationoffeatures} possible representations of those features are defined and explained. 
+In \Cref{sec:matchdata} we investigate the match data made available by the Riot Games API, which covers almost any detail of a given LoL match.
+\Cref{sec:choosingfeatures} identifies a number of features that can be extracted from match data, which we think are most important when it comes to prediction of the winning team. The choice is based on our intuition as more or less experience LoL players. The size of each type of feature's domain is calculated in \Cref{sec:featuresparsity}, as well as the sparsity with regards how many features that appear in each match.
+In \Cref{sec:representationoffeatures}, a possible feature symmetry is investigated which raises a number of concerns as to how the extracted features should be represented. 
 \input{prediction/matchdata}
 \input{prediction/choosingfeatures}
 \input{prediction/representationoffeatures}
