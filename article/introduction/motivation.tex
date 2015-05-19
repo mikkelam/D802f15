@@ -15,14 +15,6 @@ The data can be split and distributed across multiple machines, which means havi
 %A single node is chosen as the \textit{master}, which schedules tasks at the other nodes called \textit{slaves}. A such setup is called a \textit{cluster}, and is greatly scaleable for a wide range of applications, namely those applications that can be parallelized.
 This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel. 
 
-\subsubsection{MapReduce}\label{sec:mapreduce_programming_model}
-MapReduce is a programming model which was developed by J.\@ Dean et al.~\cite{DeanMapReduce}, and is designed to be used in the context of \emph{big data}. The model is useful in the context of processing large amounts of data, utilising parallelism. The main reason for the success of the MapReduce model, is mostly because it is easy for the programmer to parallelise, and its low-cost, high-compute property. MapReduce is well-suited in a distributed computing setting, handling data large enough to not fit into a single disk.
-MapReduce is comprised of a \emph{map} and \emph{reduce} procedure. The two procedures are split into the following actions:
-\begin{description}
-    \item[Map:] This procedure takes a key-value pair as input and preprocesses the data, by e.g.\ filtering or sorting it. The resulting output is an intermediate key-value pair used as input to the reduce function.
-    \item[Reduce:] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result.
-\end{description}
-
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../main"
