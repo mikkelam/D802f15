@@ -1,4 +1,4 @@
-\subsection{Representation of features}
+\subsection{Feature symmetry}
 \label{sec:representationoffeatures}
 In supervised learning, a set of labeled feature vectors are used for training.
 The labels and feature vectors are generated from match data, where the label is a boolean value denoting whether the blue team wins or not.
@@ -6,24 +6,24 @@ The features are constructed according to \Cref{sec:choosingfeatures}.
 How the features should be represented raises some interesting questions due to (to some extend) a symmetry of the map layout as well as the champions that both teams can choose. Assume that the map is completely symmetrical such that neither team has an advantage, and that team $T_\text{BLUE}$ has won a fraction $i$ of those matches where $c \in T_\text{BLUE}$.
 Now, due to the assumed symmetry, one may expect to see the same fraction $i$ of matches won by team $T_\text{PURPLE}$, where $c \in T_\text{PURPLE}$.
 However, $i$ is obviously not the exact same fraction for the two teams. The question is now whether such a symmetry should be enforced in the representation of features.
-In the following, 4 different ways of representing the $X_\text{SINGLE}$ feature type (defined in \Cref{sec:choosingfeatures}) are presented.
-Even though more types of features can be represented in these 4 ways, we only provide examples and tests for the $X_\text{SINGLE}$ features.
+In the following, 4 different ways of representing the $\phi_\text{SINGLE}$ feature type (defined in \Cref{sec:choosingfeatures}) are presented.
+Even though more types of features can be represented in these 4 ways, we only provide examples and tests for the $\phi_\text{SINGLE}$ features.
 
 To simplify the provided examples, it is assumed that only a total of 7 champions exists, such that $C = \{c_1, c_2, \cdots, c_7\}$.
-All examples shows the transformation of a single match between the two teams $t_\text{blue} = \{c_1,c_2,c_3,c_4,c_5\}$ and $t_\text{purple} = \{c_1,c_2,c_3,c_6,c_7\}$ won by $t_\text{blue}$. The match is transformed to one or more labeled feature vectors $(X, y)$, where $X$ is a feature vector and $y \in \{\text{true}, \text{false}\}$ is a label indicating whether $t_\text{blue}$ won or lost.
+All examples shows the transformation of a single match between the two teams $t_\text{blue} = \{c_1,c_2,c_3,c_4,c_5\}$ and $t_\text{purple} = \{c_1,c_2,c_3,c_6,c_7\}$ won by $t_\text{blue}$. The match is transformed to one or more labeled feature vectors $(\phi, y)$, where $\phi$ is a feature vector and $y \in \{\text{true}, \text{false}\}$ is a label indicating whether $t_\text{blue}$ won or lost.
 
 \subsubsection{Binary representation}
 
-\[ x = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y = \texttt{true} \]
+\[ \phi = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y = \texttt{true} \]
 
-The 7 first features in $x$ represent the champions on team blue, followed by 7 features representing the champions on team purple. The label is $\texttt{true}$ if and only if blue team won.
+The 7 first features in $\phi$ represent the champions on team blue, followed by 7 features representing the champions on team purple. The label is $\texttt{true}$ if and only if blue team won.
 This representation captures the champions on each team, as well as which side of the map each team spawn.
 
 \subsubsection{Mirrored binary representation}
 
 \begin{align*}
-  x_1 &= (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y_1 = \texttt{true}\\
-  x_2 &= (1,1,1,0,0,1,1,1,1,1,1,1,0,0), y_2 = \texttt{false}
+  \phi_1 &= (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y_1 = \texttt{true}\\
+  \phi_2 &= (1,1,1,0,0,1,1,1,1,1,1,1,0,0), y_2 = \texttt{false}
 \end{align*}
 
 This representation is the same as the binary representation, expect that an additional training instance is generated for each match, by mirroring the teams and negating the class label.
@@ -32,8 +32,8 @@ If this assumption holds, we may be able to produce reliable, unseen data using 
 
 \subsubsection{Compact binary representation}
 \begin{align*}
-  x_1 &= (1,1,1,1,1,0,0), y_1 = \texttt{true} \\
-  x_2 &= (1,1,1,0,0,1,1), y_2 =\texttt{false}
+  \phi_1 &= (1,1,1,1,1,0,0), y_1 = \texttt{true} \\
+  \phi_2 &= (1,1,1,0,0,1,1), y_2 =\texttt{false}
 \end{align*}
 With compact binary representation, we split a match into two labeled feature vectors, each representing a single team and a label indicating whether that team won or lost.
 This representation captures only the strength of a team, and not its strength compared to an opponent team.
@@ -41,14 +41,14 @@ If it is too complex to learn a model that captures that one particular team is 
 
 \subsubsection{Ternary representation}
 
-\[x = (0,0,0,1,1,-1,-1), y = \texttt{true}\]
+\[\phi = (0,0,0,1,1,-1,-1), y = \texttt{true}\]
 
 For each match, a single feature vector is created where the label is true if and only if team blue won, and
 \[
-    x_i = 
+    \phi_i = 
 \begin{cases}
-    1 				 & \text{if } c_x \in T_\text{blue}, c_x \not\in T_\text{purple}\\
-    -1,              & \text{if } c_x \not\in T_\text{blue}, c_x \in T_\text{purple}\\
+    1 				 & \text{if } c_i \in T_\text{blue}, c_i \not\in T_\text{purple}\\
+    -1,              & \text{if } c_i \not\in T_\text{blue}, c_i \in T_\text{purple}\\
     0,              & \text{otherwise}
 \end{cases}
 \]
