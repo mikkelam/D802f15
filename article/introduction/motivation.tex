@@ -1,13 +1,24 @@
-\subsection{Motivation}\label{sec:motivation}%\subsubsection{Problem to Solve}\label{sec:problem_to_solve}
-As seen in \Cref{sec:mlandonlinevideogames}, a lot of work has been done on machine learning for other video games than LoL, which is a rather unexplored game. The focus of this paper will be to develop a method for LoL, that helps players make strategically good decisions about which champions to select.
-These decisions will be based on a model learned using a large quantity of data from previously played matches. Before the game starts, one can input data about the two teams into the model, and as output get en estimated probability of each of team being the winner.
-Riot Games provides an enormous amount of data from previously played matches, which can be accessed for free using the Riot Games API.\@
-The sheer volume of this data means that traditional data processing methods can not effectively be applied, and that we have a \emph{big data problem}. 
+\FloatBarrier
+\subsection{Motivation}\label{sec:motivation}
+As seen in \Cref{sec:mlandonlinevideogames}, a lot of work has been done using machine learning for video games, however LoL is a rather unexplored game. 
+In this paper, we will attempt to develop a method for LoL, which will help players pick champions that give their team the greatest probability of winning. In \Cref{sec:onlinevideogames}, LoL is described and it is clear that the number of decisions each player can make is large. Due to this large number of decisions each player can make, a large quantity of match data is required to get a proper representation. 
 
+The data is provided by Riot Games who, through their public API, grants access to an enormous amount of data, including match data.
+The large quantity of data means that we will have a \emph{big data problem}, which means the traditional data processing methods can not effectively be applied. Storage of big data and finding a machine learning method that scales with large data are some of the things that will be explored in this paper.
+
+%===old===
+%The focus of this paper will be to develop a method for LoL, that helps players make strategically good decisions about which champions to select. 
+%This will be done using knowledge of the opposing teams chosen champions. 
+%This will result in a suggestion for a team that has the highest probability of winning. 
+%These decisions will be based on a model learned using a large quantity of data from previously played matches. 
+%Before the game starts, one can input data about the two teams into the model, %and as output gets an estimated probability of each of team being the winner.
+
+%Riot Games provides an enormous amount of data from played matches, which can be accessed for free using the Riot Games API.\@
+%The sheer volume of this data means that traditional data processing methods can not effectively be applied, and that we have a \emph{big data problem}. 
+%======
 
 \subsubsection{Big Data Problem}\label{sec:big_data_problem}
-A big data problem is characterised by at least one of the three factors, \emph{volume}, \emph{velocity}, and \emph{variety}. We have downloaded more than 400GB of data using the Riot Games API, so we have a great volume of data. The variety of data is low as we get it all from the same source and in the same format. Since patches that alter the game are regularly released, one may want to keep the model up to date by training on new data as soon as it is available. 
-In Western Europe new match data is continuously generated at a rate of 40GB per day, one may define that as a high velocity problem. We will however look away from real time data and merely focus on finding out, to which extend the outcome of a match can be predicted. Therefore, our only big data concern is related to volume~\cite{madden2012databases}.
+A big data problem is characterised by at least one of the three factors: \emph{volume}, \emph{velocity}, and \emph{variety}. As we have gained access to more than 400GB of match data, we have a great volume of data. The variety of the data is on the other hand low as it is on the same format and get it all from the same source. Velocity is not an issue either as the data was download once and use. It could however be expanded to a velocity problem as well. Because patches that alter the game are occasionally applied to the game. Patches can change how champions work or even add new ones. If the model is then to be kept up to date, new data will have to be downloaded as a replacement for the old. The training will also have to done again. Between patches, if one wishes to continuously download new data to get the newest matches included in the model. This could be considered a velocity problem as Riot generates 40GB of new match data per day, in Western Europe alone. We will however look away from real time data and merely focus on finding out, to which extend the outcome of a match can be predicted. Therefore, our only big data concern is related to volume~\cite{madden2012databases}.
 
 A high volume of data poses a number of problem on a standalone system. One problem may be that the data is too big be stored on a single system.
 This can be solved by buying additional storage units. But that does not solve another problem, that the number of CPUs are limited on a single system, and depending on the application, either calculations or transfer of data may be a bottleneck.
@@ -15,13 +26,13 @@ The data can be split and distributed across multiple machines, which means havi
 %A single node is chosen as the \textit{master}, which schedules tasks at the other nodes called \textit{slaves}. A such setup is called a \textit{cluster}, and is greatly scaleable for a wide range of applications, namely those applications that can be parallelized.
 This means that certain machine learning algorithms are more applicable, since the problem will have to be split up and computed in parallel. 
 
-\subsubsection{MapReduce}\label{sec:mapreduce_programming_model}
-MapReduce is a programming model which was developed by J.\@ Dean et al.~\cite{DeanMapReduce}, and is designed to be used in the context of \emph{big data}. The model is useful in the context of processing large amounts of data, utilising parallelism. The main reason for the success of the MapReduce model, is mostly because it is easy for the programmer to parallelise, and its low-cost, high-compute property. MapReduce is well-suited in a distributed computing setting, handling data large enough to not fit into a single disk.
-MapReduce is comprised of a \emph{map} and \emph{reduce} procedure. The two procedures are split into the following actions:
-\begin{description}
-    \item[Map:] This procedure takes a key-value pair as input and preprocesses the data, by e.g.\ filtering or sorting it. The resulting output is an intermediate key-value pair used as input to the reduce function.
-    \item[Reduce:] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result.
-\end{description}
+%\subsubsection{MapReduce}\label{sec:mapreduce_programming_model}
+%MapReduce is a programming model which was developed by J.\@ Dean et al.~\cite{DeanMapReduce}, and is designed to be used in the context of \emph{big data}. The model is useful in the context of processing large amounts of data, utilising parallelism. The main reason for the success of the MapReduce model, is mostly because it is easy for the programmer to parallelise, and its low-cost, high-compute property. MapReduce is well-suited in a distributed computing setting, handling data large enough to not fit into a single disk.
+%MapReduce is comprised of a \emph{map} and \emph{reduce} procedure. The two procedures are split into the following actions:
+%\begin{description}
+   % \item[Map:] This procedure takes a key-value pair as input and preprocesses the data, by e.g.\ filtering or sorting it. The resulting output is an intermediate key-value pair used as input to the reduce function.
+   % \item[Reduce:] This procedure takes an intermediate key and a set of values for that key, it then reduces by merging these values into a result.
+%\end{description}
 
 %%% Local Variables:
 %%% mode: latex

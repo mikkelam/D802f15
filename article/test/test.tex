@@ -272,7 +272,7 @@ Features can be presented in many different ways and this test is constructed to
         (47500, 56.66)
         (50901, 56.63)
       };
-      \legend{Binary, Mirrored, Compact, Tenary}
+      \legend{Binary, Mirrored, Compact, Ternary}
     \end{axis} 
   \end{tikzpicture}
   \caption{Test for representation of features}\label{fig:feat-rep}
@@ -283,46 +283,46 @@ Some features might be more expressive than others, and finding the set of featu
 For each feature test 1348428 games is used for training and 577552 games are used for evaluation. 
 The feature sets tested are:
 \begin{enumerate}
-\item blue team, red team 
-\item blue combos, red combos
-\item blue team, red team, blue combos, red combos
-\item blue team, red team, blue combos, red combos, cross team combos
-\item blue team, red team, blue combos, red combos, cross team combos, champion ranks
+\item blue team, purple team 
+\item blue pairs, purple pairs
+\item blue team, purple team, blue pairs, purple pairs
+\item blue team, purple team, blue pairs, purple pairs, counter pairs
+\item blue team, purple team, blue pairs, purple pairs, counter pairs, champion ranks
 \item all pre-match features 
 \end{enumerate}
 
 For each set of features the total possibilities of features is given, as well as the amount of features extracted from a single game. Along with the numbers is given a reasoning for testing the features.  
 \\\\
-\textbf{Blue team, red team} \\
+\textbf{Blue team, purple team} \\
 As mentioned in \Cref{sec:onlinevideogames} each team picks 5 champions, from a pool of 124 champions, this results in a total of 248 features, of which 10 is picked. The feature representation to test the importance of the individual champions. \\\\
-\textbf{Blue combos, red combos} \\
-As mentioned in  \Cref{sec:choosingfeatures} there might be some synergy between combinations of champions. The total number combos for each team is calculated as $n \times (n-1)/2$. The total amount of features is calculated as:  
+\textbf{Blue pairs, purple pairs} \\
+As mentioned in  \Cref{sec:choosingfeatures} there might be some synergy between combinations of champions. The total number pairs for each team is calculated as $n \times (n-1)/2$. The total amount of features is calculated as:  
 \begin{itemize}
 \item $124 \times (124-1)/2 + 124 \times (124-1)/2 = 15252$
 \end{itemize}
 From the possible features $20$ is represented for each match. \\\\
-\textbf{Blue team, red team, blue combos, red combos} \\
-This feature test is added to test how well the extension from team to combos works with the individual players. The total features are: 
+\textbf{Blue team, purple team, blue pairs, purple pairs} \\
+This feature test is added to test how well the extension from team to pairs works with the individual players. The total features are: 
 \begin{itemize}
 \item $248 + 15252 = 15500$
 \end{itemize}
 The total features pick for each game is 30.\\\\
-\textbf{Blue team, red team, blue combos, red combos, cross team combos}\\
-The cross team combos is calculated as $n^2$, the purpose of this feature is to capture champions which have special skills which counters the skills on another champion. The total features for cross team combos is: 
+\textbf{Blue team, purple team, blue pairs, purple pairs, counter pairs}\\
+The counter pairs is calculated as $n^2$, the purpose of this feature is to capture champions which have special skills which counters the skills on another champion. The total features for counter pairs is: 
 \begin{itemize}
 \item $15500+124\times124 = 30876$
 \end{itemize}
 From this pool of features 55 is represented in each match.\\\\
-\textbf{Blue team, red team, blue combos, red combos, cross team combos, champion ranks}\\
+\textbf{Blue team, purple team, blue pairs, purple pairs, counter pairs, champion ranks}\\
 For each player their best achieved rank in the previous season is known there are 8 possible ranks. The total features for this test is: 
 \begin{itemize}
 \item $30876 + 124\times8 = 31868$
 \end{itemize}
 From this pool of features 65 is represented in each match. \\\\
 \textbf{All pre-match features}\\
-All pre-match features is a combination of, blue team, red team, blue combos, red combos, cross team combos, champion ranks, champions lanes, best team rank, champion queue type, champion runes, champion masteries and champion spell combo.  
+All pre-match features is a combination of, blue team, purple team, blue pairs, purple pairs, counter pairs, champion ranks, champions lanes, best team rank, champion queue type, champion runes, champion masteries and champion spell pair.  
 
-Champion lanes describe which lane a given champion is played on e.g. a champion might perform better if played in the middle lane instead of the top lane. Best team rank is a measure of how skilled the two teams are. Champion queue type combines the champion picked by a player with the game mode being played. Champion runes combines the champion picked with the runes of the player who picked the champion (runes are used to boot certain skills of a champion, e.g. give a champion higher starting health). Champion masteries, masteries have the same purpose as runes. Champion spell combo is a combination of the champion picked and the summoner spells picked by the player. The total possible features of this test is 189.183. The amount of features represented in each game varies a lot e.g. some players might have 30 different runes resulting in 30 features for that player another player might not have any runes resulting in only 1 feature.
+Champion lanes describe which lane a given champion is played on e.g. a champion might perform better if played in the middle lane instead of the top lane. Best team rank is a measure of how skilled the two teams are. Champion queue type combines the champion picked by a player with the game mode being played. Champion runes combines the champion picked with the runes of the player who picked the champion (runes are used to boot certain skills of a champion, e.g. give a champion higher starting health). Champion masteries, masteries have the same purpose as runes. Champion spell pair is a combination of the champion picked and the summoner spells picked by the player. The total possible features of this test is 189.183. The amount of features represented in each game varies a lot e.g. some players might have 30 different runes resulting in 30 features for that player another player might not have any runes resulting in only 1 feature.
 \begin{figure}[!htb]
   \centering
   % Graph for feature tests. 
@@ -353,7 +353,7 @@ Champion lanes describe which lane a given champion is played on e.g. a champion
    \caption{Accuracy of features}\label{fig:cluster-feat}
 \end{figure}
 
-The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual test case we see the we have almost no over fitting. The largest difference is blue combos, red combos with a difference of $3.610^{-3}$ percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
+The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual test case we see the we have almost no over fitting. The largest difference is blue pairs, purple pairs with a difference of $3.610^{-3}$ percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
 \begin{figure}[!htb]
   \centering
   \begin{tikzpicture}[] 
