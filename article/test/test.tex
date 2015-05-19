@@ -313,14 +313,14 @@ The counter pairs is calculated as $n^2$, the purpose of this feature is to capt
 \item $15500+124\times124 = 30876$
 \end{itemize}
 From this pool of features 55 is represented in each match.\\\\
-\textbf{Blue team, purple team, blue pairs, purple pairs, cross team pairs, champion ranks}\\
+\textbf{Blue team, purple team, blue pairs, purple pairs, counter pairs, champion ranks}\\
 For each player their best achieved rank in the previous season is known there are 8 possible ranks. The total features for this test is: 
 \begin{itemize}
 \item $30876 + 124\times8 = 31868$
 \end{itemize}
 From this pool of features 65 is represented in each match. \\\\
 \textbf{All pre-match features}\\
-All pre-match features is a combination of, blue team, purple team, blue pairs, purple pairs, cross team pairs, champion ranks, champions lanes, best team rank, champion queue type, champion runes, champion masteries and champion spell pair.  
+All pre-match features is a combination of, blue team, purple team, blue pairs, purple pairs, counter pairs, champion ranks, champions lanes, best team rank, champion queue type, champion runes, champion masteries and champion spell pair.  
 
 Champion lanes describe which lane a given champion is played on e.g. a champion might perform better if played in the middle lane instead of the top lane. Best team rank is a measure of how skilled the two teams are. Champion queue type combines the champion picked by a player with the game mode being played. Champion runes combines the champion picked with the runes of the player who picked the champion (runes are used to boot certain skills of a champion, e.g. give a champion higher starting health). Champion masteries, masteries have the same purpose as runes. Champion spell pair is a combination of the champion picked and the summoner spells picked by the player. The total possible features of this test is 189.183. The amount of features represented in each game varies a lot e.g. some players might have 30 different runes resulting in 30 features for that player another player might not have any runes resulting in only 1 feature.
 \begin{figure}[!htb]
