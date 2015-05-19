@@ -1,14 +1,17 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
-We first introduce some convenient notations that mathematically describes the concept of a game.
-$C = \{1, 2, \dots, m\}$ is the set of all champions, where each champion is represented by an id. $m = 124$ for the data used in this project.
-$P = \{p_1; p_2, \dots\}$ denotes the set of all players.
+In the following, we aim to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
+We define 5 different types of features and argue argue why each type is a good candidates for predicting the winning team.
+The different types of features are each extracted by a mapping function, that maps a LoL match (in some cases with additional parameters) to a value. 
+Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a game.
+$C = \{1, 2, \dots, m\}$ is the set of all champions, where each champion is represented by an id. $m = 124$ for the patch version of LoL used in this project.
+$P = \{p_1, p_2, \dots\}$ denotes the set of all players.
 $T = \{T_\text{blue}$, $T_\text{purple}\}$ is a set containing the two teams \emph{blue} and \emph{purple} respectively.
 $T_i = \{ (p_j, c_j) \in P \times C \mid c_j \text{ is controlled by } p_j \text{ on team } i \}$.
 
-Some champions may be better than other champions, to capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
-We define a feature $x_{\text{SINGLE}}$, such that $\forall t \in T, \forall c \in C:$
+Some champions may be better than other champions. To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
+We define a feature $\phi_{\text{SINGLE}, t, c}(x)$, such that $\forall t \in T, \forall c \in C:$
 \[
-x_{\text{SINGLE}}(t, c) = 
+\phi_{\text{SINGLE}, t, c}(x) = 
 \begin{cases} 
   1 & \text{if } (c, p) \in t \text{ for some } p \\
   0 & \text{otherwise} 
@@ -16,9 +19,9 @@ x_{\text{SINGLE}}(t, c) =
 \]
 
 Some champions are considered damage dealers, they deal very high damage, but die easily. Other champions deal very little damage, but can be almost impossible to kill, these are considered tanks. These two types of champions are weak when alone, but when they team up, they can pose a serious threat. The tank can be used by the damage dealer as a living shield, allowing him to stay alive for much longer, thus deal more damage.
-To capture the synergy between two champions on the same team, we will for each team need a feature that represents the presence or absence of every 2-combination of champions on that team. Therefore, we define a feature $x_\text{PAIR}(t, c_1, c_2)$ such that $\forall t \in T, \forall c_1, c_2 \in C$ where $c_1 < c_2$:
+To capture the synergy between two champions on the same team, we will for each team need a feature that represents the presence or absence of every 2-combination of champions on that team. Therefore, we define a feature $\phi_{\text{PAIR},t, c_1, c_2}(x)$ such that $\forall t \in T, \forall c_1, c_2 \in C$ where $c_1 < c_2$:
 \[
-x_\text{PAIR}(t, c_1, c_2) =
+\phi_{\text{PAIR}, t, c_1, c_2}(x) =
 \begin{cases}
   1 & \text{if } (c_1, p_1), (c_2, p_2) \in t \text{ for some }p_1, p_2\\
   0 & \text{otherwise}
@@ -31,8 +34,8 @@ Some champions may have an advantage when fighting against a particular opponent
 For instance, a champion that is good at dodging ranged attacks is good against an enemy that only has ranged attacks.
 We say that the better suited champion \emph{counters} the other.
 To capture that one champion may counter another, we will for each champion on team $t$ need a feature that represents the presence or absence of every possible champion on the other team.
-We define a feature $x_\text{COUNTER}(c_1, c_2)$ such that $\forall c_1, c_2 \in C:$
-\[x_\text{COUNTER}(c_1, c_2) = 
+We define a feature $\phi_{\text{COUNTER},c_1,c_2}(x)$ such that $\forall c_1, c_2 \in C:$
+\[\phi_{\text{COUNTER},c_1,c_2}(x) = 
 \begin{cases} 
 1 & \text{if } (c_1, p_1) \in T_\text{blue} \text{ and } (c_2, p_2) \in T_\text{purple} \text{ for some } p_1, p_2 \\ 
 0 & \text{otherwise} 
@@ -40,8 +43,8 @@ We define a feature $x_\text{COUNTER}(c_1, c_2)$ such that $\forall c_1, c_2 \in
 
 In this case, we do not have the restriction $c_1 < c_2$ and thus consider permutations instead of combinations.
 To understand why, consider that $c_1$ counters $c_2$.
-In this case, the feature $x_\text{COUNTER}(c_1, c_2) = 1$ is favorable to the blue team, while $x_\text{COUNTER}(c_2, c_1) = 1$ is favorable to the purple team.
-Note that in some game modes, $x_\text{COUNTER}(c_1, c_2) = 1$, where $c_1 = c_2$ is allowed. That is, the same champion may appear on both teams.
+In this case, the feature $\phi_{\text{COUNTER},c_1,c_2}(x) = 1$ is favorable to the blue team, while $\phi_{\text{COUNTER},c_2,c_1}(x) = 1$ is favorable to the red team.
+Note that in some game modes, $\phi_{\text{COUNTER},c_1,c_2}(x) = 1$, is allowed for $c_1 = c_2$. That is, the same champion may appear on both teams.
 In that way we can capture if a champion can counter itself due to some asymmetries in the map layout.
 
 In LoL, players can compete in ranked games, where they are placed in one of 7 tiers. Better players achieve higher tiers.
@@ -54,7 +57,7 @@ We define the rank of a team to be the average rank of all players on that team 
 \]
 which we use to define a single feature
 \[
-x_\text{BEST-RANK} = 
+\phi_\text{BEST-RANK}(x) = 
 \begin{cases} 
   1 & \text{if } \eta(T_\text{blue}) > \eta(T_\text{purple})\\
   -1 & \text{if } \eta(T_\text{blue}) < \eta(T_\text{blue})\\
@@ -62,22 +65,37 @@ x_\text{BEST-RANK} =
 \end{cases}
 \]
 
-The assumption that each tier can be mapped to a score on a linear scale may not be entirely on spot.
+The $\phi_\text{BEST-RANK}$ feature may have some shortcomings. The assumption that the rank of each player can be mapped to a score on a linear scale may not be entirely on spot.
+Also, it may be easier to predict one team to be a winner, if the average rank of the two teams are considerably different. That is, if the players on one of the team have much greater ranks in average. The difference between the average rank of each team is not captured by the $\phi_\text{BEST-RANK}$ feature.
 Therefore, another type of feature is introduced that captures the exact rank of each player.
 $\forall(p, c) \in T_\text{blue} \cup T_\text{purple}$, we define a feature
 \[
-x_\text{PLAYER-RANK
-}(p) = S(p)
+\phi_{\text{PLAYER-RANK},p}(x) = S(p)
 \]
 
 
 \subsection{Feature sparsity}\label{sec:featuresparsity}
-The size of $x_{\text{SINGLE}}$ is $|T| \cdot |C| = 2 \cdot 124 = 248$. In each match, only $2 \cdot 5 = 10$ of those features appear.
-The size of $x_{\text{PAIR}}$ is $|T| \cdot |C| \cdot (|C|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252$. In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
-The size of $x_{\text{COUNTER}}$ is $|C|^2 = 124^2 = 15376$. In each match, only $\cdot 5 \cdot 5 = 25$ of those features appear.
-The size of $x_{\text{BEST-RANK}}$ is 3. In each match, only $1$ of those features appear.
-The size of $x_{\text{PLAYER-RANK}}$ can be calculated as follows. Each feature in $x_{\text{BEST-RANK}}$ represents a mean of $5$ values between $0$ and $7$ (both included). All possible means can be listed in increasing order as $\frac{0}{1}, \frac{6}{5}, \cdots, \frac{35}{5}$, in total $36$ features, whereas only $1$ appear in each match.
+The size of $\phi_{\text{SINGLE}}$ is $|T| \cdot |C| = 2 \cdot 124 = 248$. In each match, only $2 \cdot 5 = 10$ of those features appear.\\
+The size of $\phi_{\text{PAIR}}$ is $|T| \cdot |C| \cdot (|C|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252$. In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.\\
+The size of $\phi_{\text{COUNTER}}$ is $|C|^2 = 124^2 = 15376$. In each match, only $5 \cdot 5 = 25$ of those features appear.\\
+The size of $\phi_{\text{BEST-RANK}}$ is 3 by definition. In each match, only $1$ of those features appear.\\
+The size of $\phi_{\text{PLAYER-RANK}}$ is $2 \cdot 5 \cdot 7 = 70$, since each of the $2$ teams have $5$ players, that each can have $1$ of $7$ ranks. In each match, only $10$ features appear, because each player has only $1$ rank.\\
+The figures can be seen in \Cref{tab:featuresparsity}.
 
+\begin{center}
+\begin{table}[h]
+\begin{tabular}{|c|c|c|}
+\hline
+Feature type                & Domain size & Represented in a match \\ \hline
+$\phi_{\text{SINGLE}}$      & 248         & 10                     \\ \hline
+$\phi_{\text{PAIR}}$        & 15252       & 20                     \\ \hline
+$\phi_{\text{COUNTER}}$     & 15376       & 25                     \\ \hline
+$\phi_{\text{BEST-RANK}}$   & 3           & 1                      \\ \hline
+$\phi_{\text{PLAYER-RANK}}$ & 70          & 10                     \\ \hline
+\end{tabular}
+\caption{The sparsity of each type of feature}\label{tab:featuresparsity}
+\end{table}
+\end{center}
 
 %%% Local Variables:
 %%% mode: latex
