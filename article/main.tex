@@ -4,16 +4,17 @@
 
 %\usepackage{stmaryrd} % For those delicious brackets
 \usepackage{wrapfig}
+\newcommand\todo[1]{\textcolor{red}{#1}}
 % Title
 \title{Predicting League of Legends Match Outcomes using Various Machine Learning Techniques on Big Data}
 \date{}
 
-\author{Mathias Meld'ern Andersen}
-\author{Kent Mynte Caspersen}
-\author{Andreas Bear Eriksen}
-\author{Sander SwaggitySwooty Jespersen}
-\author{Mikkel Awesome Madsen}
-\author{Anders Roulade Nielsen}
+\author{Mathias Melgaard Andersen}
+\author{Kent Munthe Caspersen}
+\author{Andreas Berre Eriksen}
+\author{Sander Jespersen}
+\author{Mikkel Alexander Madsen}
+\author{Anders Roland Nielsen}
 
 \affil{Department of Computer Science, Aalborg University}
 
@@ -52,6 +53,7 @@
 
 % document
 \begin{document}
+
 \usetikzlibrary{arrows,intersections,shapes.geometric,calc}
 \maketitle
 
@@ -59,6 +61,10 @@
 \input{abstract}
 
 % CONTENT
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=1\textwidth]{img/kent.jpg}
+\end{figure}
 \section{Introduction}\label{sec:intro}
 Intro stuff
 \input{introduction/online-video-games}
@@ -88,8 +94,11 @@ In this section the cluster that will be doing the computations will be outlined
 \input{cluster/speedup}
 \input{cluster/benchmark}
 
-
-\input{test/test}
+\section{Prediction and cluster test results}\label{sec:testing}
+To validated that the cluster gives us an improvement when working on big data, a list of tests will be explored. The first initial tests that will be performed, seen in \Cref{sec:initialtest}, will be run to find the settings the cluster should run with. In \Cref{sec:clustertest}, the tests run on the cluster and the results will be presented.
+\input{test/convergence}
+\input{test/kenttest}
+\input{test/clustertests}
 \input{test/weights}
 
 

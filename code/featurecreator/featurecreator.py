@@ -19,9 +19,8 @@ class FeatureType:
     CHAMPION_RANK = 16,
     CHAMPION_MASTERIES = 17,
     CHAMPION_RUNE = 18,
-    CHAMPION_QUEUE = 19
-
-    
+    CHAMPION_QUEUE = 19,
+    LANE_RANK_VS_RANK = 20
 
 class FeatureCreator:
     masteries = {
@@ -60,6 +59,7 @@ class FeatureCreator:
             FeatureType.CHAMPION_MASTERIES: lambda: self.__champion_masteries(),
             FeatureType.CHAMPION_RUNE: lambda: self.__champion_runes(),   
             FeatureType.CHAMPION_QUEUE: lambda: self.__champion_queue(),
+            FeatureType.LANE_RANK_VS_RANK: lambda: self.__lane_rank_vs_rank()
         }
         self.feature_init_functions = {
             FeatureType.BLUE_TEAM_SINGLES: lambda: self.__init_single_team_champions("BLUE"),
@@ -81,6 +81,7 @@ class FeatureCreator:
             FeatureType.CHAMPION_MASTERIES: lambda: self.__init_champion_masteries(),
             FeatureType.CHAMPION_RUNE: lambda: self.__init_champion_runes(),   
             FeatureType.CHAMPION_QUEUE: lambda: self.__init_champion_queue(),
+            FeatureType.LANE_RANK_VS_RANK: lambda: self.__init_lane_rank_vs_rank()
         }
 
     def set_feature_types(self, feature_types):
@@ -117,11 +118,13 @@ class FeatureCreator:
         return sorted(self.feature_to_index, key=self.feature_to_index.get)
 
     def __add_feature(self, name):
+        name = name.replace(" ", "")
         if name not in self.feature_to_index:
             raise Exception("Feature '" + str(name) + "' has not been initialized, so it does not map to any ID.")
         self.current_match_features.append(self.feature_to_index[name])
 
     def __init_feature(self, name):
+        name = name.replace(" ", "")
         if (name in self.feature_to_index):
             raise Exception("Feature '" + str(name) + "' has already been initialized.")
         self.feature_to_index[name] = len(self.feature_to_index)
@@ -284,6 +287,111 @@ class FeatureCreator:
                 feature_name = c + '-' + lane + "-RED"
                 self.__init_feature(feature_name)
 
+    def __init_lane_rank_vs_rank(self):
+        for lane in self.lanes:
+            #manyVSmany
+            feature_name = "Lane-"+lane+"-BLUERANK-many-PURPLERANK-many"
+            self.__init_feature(feature_name)
+            #noneVSnone
+            feature_name = "Lane-"+lane+"-BLUERANK-none-PURPLERANK-none"
+            self.__init_feature(feature_name)
+            #manyVSnone
+            feature_name = "Lane-"+lane+"-BLUERANK-many-PURPLERANK-none"
+            self.__init_feature(feature_name)
+            #noneVSmany
+            feature_name = "Lane-"+lane+"-BLUERANK-none-PURPLERANK-many"
+            self.__init_feature(feature_name)
+
+            # 1vs1
+            for rank1 in self.ranks:
+
+                #1vsMany
+                feature_name = "Lane-"+lane+"-BLUERANK-"+rank1+"-PURPLERANK-many"
+                self.__init_feature(feature_name)
+                #1vsNone
+                feature_name = "Lane-"+lane+"-BLUERANK-"+rank1+"-PURPLERANK-none"
+                self.__init_feature(feature_name)
+
+                #manyVS1
+                feature_name = "Lane-"+lane+"-BLUERANK-many-PURPLERANK-"+rank1
+                self.__init_feature(feature_name)
+                #noneVS1
+                feature_name = "Lane-"+lane+"-BLUERANK-none-PURPLERANK-"+rank1
+                self.__init_feature(feature_name)
+
+                for rank2 in self.ranks:
+                    #1vs1
+                    feature_name = "Lane-"+lane+"-BLUERANK-"+rank1+"-PURPLERANK-"+rank2
+                    self.__init_feature(feature_name)
+
+                    #2vsMany
+                    feature_name = "Lane-"+lane+"-BLUERANK-"+rank1+"-"+rank2+"-PURPLERANK-many"
+                    self.__init_feature(feature_name)
+                    #2vsNone
+                    feature_name = "Lane-"+lane+"-BLUERANK-"+rank1+"-"+rank2+"-PURPLERANK-none"
+                    self.__init_feature(feature_name)
+
+                    #manyVS2
+                    feature_name = "Lane-"+lane+"-BLUERANK-many-PURPLERANK-"+rank1+"-"+rank2
+                    self.__init_feature(feature_name)
+                    #noneVS2
+                    feature_name = "Lane-"+lane+"-BLUERANK-none-PURPLERANK-"+rank1+"-"+rank2
+                    self.__init_feature(feature_name)
+
+                    for rank3 in self.ranks:
+                        #2vs1
+                        feature_name = "Lane-"+lane+"-BLUERANK-"+rank1+"-"+rank2+"-PURPLERANK-"+rank3
+                        self.__init_feature(feature_name)
+
+                        #1vs2
+                        feature_name = "Lane-"+lane+"-BLUERANK-"+rank1+"-PURPLERANK-"+rank2+"-"+rank3
+                        self.__init_feature(feature_name)
+
+                        #2vs2
+                        for rank4 in self.ranks:
+                            feature_name = "Lane-"+lane+"-BLUERANK-"+rank1+"-"+rank2+"-PURPLERANK-"+rank3+"-"+rank4
+                            self.__init_feature(feature_name)
+
+    def __lane_rank_vs_rank(self):
+        lanes = {
+            "TOP": [[],[]],
+            "MIDDLE": [[],[]],
+            "JUNGLE": [[],[]],
+            "BOTTOM": [[],[]]
+        }
+        #Sort according to name
+
+        for p in self.match['participants']:
+            c = FeatureCreator.champion_names[p['championId']]
+            lane = p['timeline']['lane']
+            rank = p['highestAchievedSeasonTier']
+            if p['teamId'] == 100: # blue team
+                lanes[lane][0].append(rank)
+            else:
+                lanes[lane][1].append(rank)
+
+        for lane in lanes:
+            lanes[lane][0].sort()
+            lanes[lane][1].sort()
+
+        for lane in lanes:
+            feature_name = "Lane-"+lane+"-BLUERANK-"
+            if len(lanes[lane][0]) == 0:
+                feature_name += "none-"
+            elif len(lanes[lane][0]) > 2:
+                feature_name += "many-"
+            else:
+                for rank in lanes[lane][0]:
+                    feature_name += rank+"-"
+            feature_name += "PURPLERANK"
+            if len(lanes[lane][1]) == 0:
+                feature_name += "-none"
+            elif len(lanes[lane][1]) > 2:
+                feature_name += "-many"
+            else:
+                for rank in lanes[lane][1]:
+                    feature_name += "-"+rank
+            self.__add_feature(feature_name)
 
     def __lane_champion_combo(self):
         for p in self.match['participants']:
@@ -379,15 +487,15 @@ class FeatureCreator:
     def __init_champion_runes(self):
         ranges = ["0-5", "6-10", "11-15", "16-20", "21-25", "26-30"]
         for _, c in FeatureCreator.champion_names.items():
-            no_runes_blue = c + "-NORUNES-BLUE"  
-            no_runes_red = c + "-NORUNES-RED"  
+            no_runes_blue = c + "-NORUNES-BLUE"
+            no_runes_red = c + "-NORUNES-RED"
             self.__init_feature(no_runes_blue)
             self.__init_feature(no_runes_red)
-            for _, rune in FeatureCreator.runes.items():
-                blue_rune_name = c + "-" + rune + "-BLUE"
-                red_rune_name = c + "-" + rune + "-RED"
-                self.__init_feature(blue_rune_name)
-                self.__init_feature(red_rune_name)
+            #for _, rune in FeatureCreator.runes.items():
+            #    blue_rune_name = c + "-" + rune + "-BLUE"
+            #    red_rune_name = c + "-" + rune + "-RED"
+            #    self.__init_feature(blue_rune_name)
+            #    self.__init_feature(red_rune_name)
             for range in ranges:
                 blue_feature_name = c + '-runes-' + range + "-BLUE"
                 red_feature_name = c + '-runes-' + range + "-RED"
@@ -406,8 +514,8 @@ class FeatureCreator:
                 for rune in p["runes"]:
                     rune_name = FeatureCreator.runes[rune["runeId"]]
                     rank += int(rune["rank"])
-                    feature_name = c + '-' + rune_name + '-' + team_color
-                    self.__add_feature(feature_name)
+                    #feature_name = c + '-' + rune_name + '-' + team_color
+                    #self.__add_feature(feature_name)
                 range = self.__get_range(rank)
                 feature_rank = c + '-runes-' + range + "-" + team_color
                 self.__add_feature(feature_rank)
@@ -423,7 +531,6 @@ class FeatureCreator:
                 red_feature_name = c + '-' + queue + "-RED"
                 self.__init_feature(blue_feature_name)
                 self.__init_feature(red_feature_name)
-
 
     def __champion_queue(self):
         queueType = self.match['queueType']
