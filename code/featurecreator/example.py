@@ -5,7 +5,7 @@ from featurecreator import *
 from wekaconverter import *
 
 inputpath = r"C:/Users/Kent/Desktop/D802f15/LoLMiner/LoLMiner/bin/mined-data/" #Path to input files
-outputpath = r"C:/Users/Kent/Desktop/testfiles/singles-playerranks/all.arff" #path to the output file
+outputpath1 = r"C:/Users/Kent/Desktop/testfiles/LANE_RANK_VS_RANK/all.arff" #path to the output file
 
 mf = MatchFilter({"matchMode": ["CLASSIC"],
                           "matchType": ["MATCHED_GAME"],
@@ -13,10 +13,9 @@ mf = MatchFilter({"matchMode": ["CLASSIC"],
                           "participants->*->timeline->xpPerMinDeltas->*": ["!0"]})
 #mf.set_min_avg_rank(0.175) # [0.0-1.0] - 0 extracts all, 1.0 only pure challengers. unranked = bronze
 
-feature_creator = FeatureCreator()
-feature_types = [FeatureType.BLUE_TEAM_SINGLES, FeatureType.RED_TEAM_SINGLES, FeatureType.PLAYER_RANKS]
-feature_creator.set_feature_types(feature_types)
-wc = WekaConverter(outputpath)
+feature_creator1 = FeatureCreator()
+feature_creator1.set_feature_types([FeatureType.LANE_RANK_VS_RANK])
+wc1 = WekaConverter(outputpath1)
 games_to_extract = 60000
 for f in os.listdir(inputpath):
     if not f.endswith(".json"):
@@ -32,9 +31,9 @@ for f in os.listdir(inputpath):
                 continue
             if not mf.passes(single_match):
                 continue
-            feature_creator.set_match(single_match)
-            wc.add(feature_creator.current_match_features, feature_creator.label)
+            feature_creator1.set_match(single_match)
+            wc1.add(feature_creator1.current_match_features, feature_creator1.label)
             games_to_extract -= 1
             print ("Games to extract: " + str(games_to_extract))
-wc.set_feature_names(feature_creator.get_all_feature_names())
-wc.write()
+wc1.set_feature_names(feature_creator1.get_all_feature_names())
+wc1.write()

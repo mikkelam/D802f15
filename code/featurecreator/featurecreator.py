@@ -19,9 +19,8 @@ class FeatureType:
     CHAMPION_RANK = 16,
     CHAMPION_MASTERIES = 17,
     CHAMPION_RUNE = 18,
-    CHAMPION_QUEUE = 19
-
-    
+    CHAMPION_QUEUE = 19,
+    LANE_RANK_VS_RANK = 20
 
 class FeatureCreator:
     masteries = {
@@ -60,6 +59,7 @@ class FeatureCreator:
             FeatureType.CHAMPION_MASTERIES: lambda: self.__champion_masteries(),
             FeatureType.CHAMPION_RUNE: lambda: self.__champion_runes(),   
             FeatureType.CHAMPION_QUEUE: lambda: self.__champion_queue(),
+            FeatureType.LANE_RANK_VS_RANK: lambda: self.__lane_rank_vs_rank()
         }
         self.feature_init_functions = {
             FeatureType.BLUE_TEAM_SINGLES: lambda: self.__init_single_team_champions("BLUE"),
@@ -81,6 +81,7 @@ class FeatureCreator:
             FeatureType.CHAMPION_MASTERIES: lambda: self.__init_champion_masteries(),
             FeatureType.CHAMPION_RUNE: lambda: self.__init_champion_runes(),   
             FeatureType.CHAMPION_QUEUE: lambda: self.__init_champion_queue(),
+            FeatureType.LANE_RANK_VS_RANK: lambda: self.__init_lane_rank_vs_rank()
         }
 
     def set_feature_types(self, feature_types):
@@ -284,6 +285,29 @@ class FeatureCreator:
                 feature_name = c + '-' + lane + "-RED"
                 self.__init_feature(feature_name)
 
+    def __init_lane_rank_vs_rank(self):
+        for lane in self.lanes:
+            for rank_blue in self.ranks:
+                for rank_purple in self.ranks:
+                    feature_name = "Lane-"+lane+"-BLUERANK-"+rank_blue+"-PURPLERANK-"+rank_purple
+                    self.__init_feature(feature_name)
+
+    def __lane_rank_vs_rank(self):
+        blue_lane_ranks = dict()
+        for p in self.match['participants']:
+            c = FeatureCreator.champion_names[p['championId']]
+            if p['teamId'] == 100: # blue team
+                lane = p['timeline']['lane']
+                rank = p['highestAchievedSeasonTier']
+                blue_lane_ranks[lane] = rank
+        for p in self.match['participants']:
+            c = FeatureCreator.champion_names[p['championId']]
+            if p['teamId'] == 200: # purple team
+                lane = p['timeline']['lane']
+                rank = p['highestAchievedSeasonTier']
+                if lane in blue_lane_ranks:
+                    feature_name = "Lane-"+lane+"-BLUERANK-"+blue_lane_ranks[lane]+"-PURPLERANK-"+rank
+                    self.__add_feature(feature_name)
 
     def __lane_champion_combo(self):
         for p in self.match['participants']:
