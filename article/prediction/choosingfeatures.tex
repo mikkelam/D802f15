@@ -7,7 +7,7 @@ $C = \{1, 2, \dots, m\}$ is the set of all champions, where each champion is rep
 $P = \{p_1, p_2, \dots\}$ denotes the set of all players.
 $T = \{T_\text{blue}$, $T_\text{purple}\}$ is a set containing the two teams \emph{blue} and \emph{purple} respectively.
 $T_i = \{ (p_j, c_j) \in P \times C \mid c_j \text{ is controlled by } p_j \text{ on team } i \}$.
-
+$L = \{\text{top},\text{bottom},\text{mid},\text{jungle},\}$ is the set of lanes.
 Some champions may be better than other champions. To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
 We define a feature $\phi_{\text{SINGLE}, t, c}(x)$, such that $\forall t \in T, \forall c \in C:$
 \[
@@ -73,6 +73,15 @@ $\forall(p, c) \in T_\text{blue} \cup T_\text{purple}$, we define a feature
 \phi_{\text{PLAYER-RANK},p}(x) = S(p)
 \]
 
+Some champions are better at suited for a particular lane. For instance, mages tend to go mid as they generally loose both mana and health fast, and the path back to the base for regeneration is shortest from mid.
+$\forall(l) \in L, \forall(p, c) \in T_\text{blue} \cup T_\text{purple}$, we define a feature
+\[
+\phi_{\text{CHAMPION-LANE},c,l}(x) =
+\begin{cases} 
+  1 & \text{if champion } c \text{ fought at lane } l)\\
+  0 & \text{otherwise} 
+\end{cases}
+\]
 
 \subsection{Feature sparsity}\label{sec:featuresparsity}
 The size of $\phi_{\text{SINGLE}}$ is $|T| \cdot |C| = 2 \cdot 124 = 248$. In each match, only $2 \cdot 5 = 10$ of those features appear.\\
