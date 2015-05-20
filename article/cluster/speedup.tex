@@ -32,7 +32,7 @@ To test the speedup 50GB match data were used to train a logistic regression mod
 \end{tikzpicture}
    \caption{Cluster speed up}\label{fig:cluster-speedup}
 \end{figure}
-The results of test is shown in \Cref{fig:cluster-speedup} the reason these numbers are irregular is because one node only has 2 cores, while the other two nodes has 4 cores. We can measure the speedup using Amdahl's law:
+The results of test is shown in \Cref{fig:cluster-speedup} the reason these numbers are irregular is because one node only has 2 processor, while the other two nodes has 4 processor. We can measure the speedup using Amdahl's law:
 
 \[S(N) = \frac{1}{(1-P)+\frac{P}{N}}\]
 
@@ -40,4 +40,115 @@ Where $N$ is the number pro processors, and $P$ is the proportion of the program
 
 \[P = \frac{\frac{1}{S_m}-1}{\frac{1}{N}-1}  \]
 
-Where \( S_m=\frac{2614}{1405} = 1.86 \). We then get $P = 0.528$, which is quite good.
+Where \( S_m=\frac{2614}{1405} = 1.86 \). We then get $P = 0.528$. Using this $P$ value we can estimate the maximal number of processors worth using, this is shown in \Cref{fig:speedupcon}. The plot shows that our speedup converges at around 2 using between 40 and 80 processors. This means that adding more processors will help only marginally more.
+
+
+\begin{figure}[!htb]
+  \centering
+  \begin{tikzpicture}[] 
+    \begin{axis}[
+      xlabel=Speedup, 
+      ylabel=Processors,
+      xtick={1,1.2,1.4,1.6,1.8,2,2.2,3},
+      xticklabel style={anchor=near xticklabel},
+      scaled x ticks=false,
+      x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+      legend style={at={(1.4,1.001)},
+        anchor=north,legend columns=1},] 
+      \addplot[color=brown] coordinates { 
+(1.0,1.0)
+(1.358695652,2)
+(1.543209877,3)
+(1.655629139,4)
+(1.731301939,5)
+(1.785714286,6)
+(1.826722338,7)
+(1.858736059,8)
+(1.884422111,9)
+(1.905487805,10)
+(1.923076923,11)
+(1.937984496,12)
+(1.950780312,13)
+(1.961883408,14)
+(1.971608833,15)
+(1.98019802,16)
+(1.987839102,17)
+(1.994680851,18)
+(2.00084246,19)
+(2.006420546,20)
+(2.011494253,21)
+(2.016129032,22)
+(2.02037948,23)
+(2.024291498,24)
+(2.027903958,25)
+(2.03125,26)
+(2.034358047,27)
+(2.037252619,28)
+(2.03995498,29)
+(2.04248366,30)
+(2.044854881,31)
+(2.047082907,32)
+(2.049180328,33)
+(2.051158301,34)
+(2.053026748,35)
+(2.054794521,36)
+(2.056469542,37)
+(2.058058925,38)
+(2.059569075,39)
+(2.061005771,40)
+(2.062374245,41)
+(2.063679245,42)
+(2.064925086,43)
+(2.066115702,44)
+(2.067254686,45)
+(2.068345324,46)
+(2.069390631,47)
+(2.070393375,48)
+(2.071356104,49)
+(2.072281167,50)
+(2.073170732,51)
+(2.074026803,52)
+(2.074851237,53)
+(2.075645756,54)
+(2.07641196,55)
+(2.077151335,56)
+(2.077865267,57)
+(2.078555046,58)
+(2.079221878,59)
+(2.079866889,60)
+(2.080491132,61)
+(2.081095596,62)
+(2.081681205,63)
+(2.082248829,64)
+(2.082799282,65)
+(2.083333333,66)
+(2.083851704,67)
+(2.084355076,68)
+(2.08484409,69)
+(2.085319352,70)
+(2.085781434,71)
+(2.086230876,72)
+(2.086668191,73)
+(2.087093863,74)
+(2.08750835,75)
+(2.087912088,76)
+(2.088305489,77)
+(2.088688946,78)
+(2.089062831,79)
+(2.089427497,80)
+(2.089783282,81)
+(2.090130506,82)
+(2.090469474,83)
+(2.090800478,84)
+(2.091123795,85)
+(2.091439689,86)
+(2.091748413,87)
+(2.092050209,88)
+(2.092345308,89)
+(2.092633929,90)
+      };
+  \legend{Speedup curve}
+  \end{axis} 
+\end{tikzpicture}
+   \caption{Speedup convergence}\label{fig:speedupcon}
+\end{figure}
