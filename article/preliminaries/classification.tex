@@ -7,7 +7,7 @@
 \subsubsection{Supervised learning}
 Supervised learning is the process of learning the parameters of a linear model using a corpus of labeled data.
 In supervised learning the data consists of objects with labels of the form 
-$(\textbf{x}_1,y),(\textbf{x}_2,y), \text{ ... } (\textbf{x}_n,y)$.
+$(\textbf{x}_1,y),(\textbf{x}_2,y), \text{ ... } (\textbf{x}_N,y)$.
 Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the datapoint.
 The goal of supervised learning is to produce a model that is able to predict a label from the inputs alone.
 When the domain of the label is continuous this is called a regression model and if it is discrete it is called a classification model.
@@ -21,66 +21,55 @@ x &\rightarrow \phi(x) \\
 &\rightarrow (1, x_1, x_1^2, \phi_2(x)\phi_3(x))
 \end{align*} 
 
-\paragraph{Classification Function}
+In the example above we have a few examples of how an input vector $x$ can be transformed.
+The examples include a constant, the identity, a polynomiel and the combination of two previously defined features.
 
-% classification function
-
-% classification process: features -> phi(x) -> f(phi(x)) -> {+,-}
-
-
-
-
-
-
-
-
- 
-\subsubsection{Linear Classification Models}
-
-%Linear models assign weights to the input features and computes the value of the class variable as a linear combination of the weights and the input features.
-%When the value of the class variable is continuous it is called a regression model and when it is discrete it is called a classification model.
-
+\subsubsection{Linear Models}
 % insert image showing a line and some data points.
 
-A Linear model uses a se
+When attempting to predict a continous value, one standard method is by using linear regression.
+%A very popular model for classification is the linear classification model.
+The linear regression model predicts the value of $y$ with a hypothesis function $h(x)$ by assigning weights to the features and computing their sum.
+$$h(x) = w_0 + \sum_{i=1}^M w_i \phi_i(x)$$ 
+
+Where $w_0$ is called the intercept, to avoid having it be a special case we add the feature $\phi_0(x)=1$.
+
+The next question becomes, how do we assign a value to the weights?
+Given the amount of data we have avaliable, it would be preferable to learn these weights from the data. 
+
+\paragraph{Linear Regression}
+Since the goal is to fit the hypothesis function to the training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
+
+$$L_D = \sum_{n=1}^N (y_n-\hat{y}_n)^2$$ 
+
+By minimizing the loss function the value of the parameters can be determined.
+This can be done analyticly using the derivative of the function or by an iterative method introduced later called gradient descent.
+
+When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function.
+
+$$\hat{y} = \begin{cases}
+	1 &\text{ if } f(x) > 0.5 \\
+	0 &\text{ if } f(x) \leq 0.5  % should this be 0 < f(x) \leq 0 ????
+\end{cases}$$ 
+
+Although this may work in some cases, a dataset with a few outliers can significantly skew the decision boundary.
+%insert image of a skewed descision boundary.
+
+In order to combat this problem we introduce a new linear model for classification called logistic regression.
+
+\paragraph{Logistic Regression}
+%\paragraph{Gradient Descent}
+%\paragraph{Regularization}
+
+In logistic regression we use the so called logistic or sigmoid function to squash the prediction into the interval $[0,1]$.
+
+\[ \sigma(\textbf{x}) = \frac{1}{1+e^{- \textbf{x}}} \]
+
+By doing this a single outlying in the training data is no longer able to skew the decision boundary of the hypothesis function.
 
 
 
 
-
-
-\paragraph{Overfitting and Underfitting}
-% overfitting vs. underfitting
-Learning the parameters of a linear model can sometimes result a model that is too simple or too complex.
-In the case of a model that is too simple, it is unable to catch the nuances presented in the data.
-% insert image with a model that is too simple.  
-When a model is too complex or the data used in training has a bias compare to the real world examples.
-This can result in overfitting.
-Overfitting means that the model is too closely fitted to the training data.
-It will therefore provide good results on the training data but do increasingly poor on real world data.
-% insert image of a model that overfits the data. 
-
-\paragraph{Dealing with Overfitting}
-% dividing data into test, training and validation sets.
-% cross validation
-
-One way of avoiding overfitting is by using a technique called cross validation.
-With cross validation the data is divided into two seperate sets.
-Where one is used for training and the other to test for overfitting. 
-This way it becomes possible to detect when the model starts to overfit the training data.
-A typical way to do this is by using a 60-30 split thereby using 60\% for training and 30\% for testing.
-If the dataset is small, 30\% may be too much of a sacrifice.
-
-% K-Fold cross validation
-Another possibility is to use k-fold cross validation.
-When applying this method the dataset is partitioned into a number of 'folds'.
-The model is then trained for $k$ iterations.
-In each iteration a different fold is used as the test set and the rest as the training data.
-Thereby it becomes possible to use all of the data as both training and test set.
-% Source: AI pool, macworth, p. 324
-\begin{flushright}
-\cite[p. 324]{AI2010}
-\end{flushright}
 
 \subsubsection{Logistic Regression}\label{sec:logistic}
 % write: problem with logistic regression.
@@ -119,8 +108,46 @@ Furthermore the sigmoid function has a simple derivative that makes it easy to w
 
 %\[ E_D = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 \] 
 
-%The problem with this % ???? 
 
+
+
+
+
+
+
+
+\subsubsection{Overfitting and Underfitting}
+% overfitting vs. underfitting
+Learning the parameters of a linear model can sometimes result a model that is too simple or too complex.
+In the case of a model that is too simple, it is unable to catch the nuances presented in the data.
+% insert image with a model that is too simple.  
+When a model is too complex or the data used in training has a bias compare to the real world examples.
+This can result in overfitting.
+Overfitting means that the model is too closely fitted to the training data.
+It will therefore provide good results on the training data but do increasingly poor on real world data.
+% insert image of a model that overfits the data. 
+
+\paragraph{Dealing with Overfitting}
+% dividing data into test, training and validation sets.
+% cross validation
+
+One way of avoiding overfitting is by using a technique called cross validation.
+With cross validation the data is divided into two seperate sets.
+Where one is used for training and the other to test for overfitting. 
+This way it becomes possible to detect when the model starts to overfit the training data.
+A typical way to do this is by using a 60-30 split thereby using 60\% for training and 30\% for testing.
+If the dataset is small, 30\% may be too much of a sacrifice.
+
+% K-Fold cross validation
+Another possibility is to use k-fold cross validation.
+When applying this method the dataset is partitioned into a number of 'folds'.
+The model is then trained for $k$ iterations.
+In each iteration a different fold is used as the test set and the rest as the training data.
+Thereby it becomes possible to use all of the data as both training and test set.
+% Source: AI pool, macworth, p. 324
+\begin{flushright}
+\cite[p. 324]{AI2010}
+\end{flushright}
 
 
 
