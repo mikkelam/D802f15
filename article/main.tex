@@ -53,6 +53,7 @@
 
 % document
 \begin{document}
+
 \usetikzlibrary{arrows,intersections,shapes.geometric,calc}
 \maketitle
 
@@ -60,6 +61,10 @@
 \input{abstract}
 
 % CONTENT
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=1\textwidth]{img/kent.jpg}
+\end{figure}
 \section{Introduction}\label{sec:intro}
 Intro stuff
 \input{introduction/online-video-games}
@@ -96,8 +101,8 @@ To validated that the cluster gives us an improvement when working on big data, 
 \input{test/clustertests}
 \input{test/weights}
 
-
-\section{Conclusion}
+%Conclusion
+\input{conclusion/conclusion}
 
 \bibliography{Literature}
 
