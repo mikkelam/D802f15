@@ -1,5 +1,5 @@
 
-#Fra modeller til virkelighed
+#Fra polle til virkelighed
 
 ##Omfang
 15
