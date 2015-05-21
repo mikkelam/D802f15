@@ -48,7 +48,7 @@ The best accuracy of all the machine learning technique can be seen in \Cref{fig
 \end{figure}
 
 \subsubsection{Feature symmetry test}
-In \Cref{sec:representationoffeatures} we represented four different ways to capture the symmetry of the chosen champions, in this section we are going to test these representations and measure their accuracy. The test was done on an increasing number of matches with all the different methods to check how they hold up with much data. The result, shown in \Cref{fig:feat-rep}, indicates that method 1 and 4 are very close, but binary being slightly above ternary majority of the time, which is the reason for us choosing binary. 
+In \Cref{sec:representationoffeatures} we represented four different ways of representing features, to capture a possible symmetry in the choice of champions and the layout of the map. In this section we test each representation by training a classifier using logistic regression using the given representation of features. The test was done on an increasing number of matches with all the different methods to check how they hold up with much data. The result, shown in \Cref{fig:feat-rep}, indicates that method 1 and 4 are very close, but binary being slightly above ternary majority of the time, which is the reason for us choosing binary. 
 
 \begin{figure}[!htb]
   \centering
