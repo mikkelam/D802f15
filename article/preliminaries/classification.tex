@@ -113,8 +113,6 @@ Thereby it becomes possible to use all of the data as both training and test set
 \cite[p. 324]{AI2010}
 \end{flushright}
 
-
-
 \subsubsection{Regularisation}
 % Write about L1 regularization, restructure subsubsection to be more general and present both types of regularization as equals.
 To combat the problem of overfitting, we can use a method called L2-Regularisation.
@@ -141,9 +139,11 @@ For Logistic regression the combined loss function looks like this.
 %\cite[online course]{courseraAI}
 %\end{flushright}
 
-\subsubsection{Batch Gradient Descent}
+\todo{TODO: WRITE ABOUT L1 REGULARIZATION.}
 
-Since we are using a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
+\subsubsection{Batch Gradient Descent}\label{sec:batch}
+
+Since we have a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
@@ -151,21 +151,38 @@ In batch gradient descent we iteratively update the weights by a value proportin
 
 %\[ w_j \leftarrow w_j - \eta \nabla_w E(\textbf{w}) \]
 
-\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} \]
+\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
+	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
 
 The value $\eta$ represent the learning rate i.e. how big a step the algorithm should take in each iteration.
 This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
 
-\subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
+When dealing with large dataset this method runs into a problem, namely that computing the partial derivative requires summing over all of the datapoints in the training set. 
 
-When dealing with large data sets calculating the sum in the cost function becomes problematic.
+\subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
+\todo{TODO: finish writing  this section}
+
+Stochastic gradient descent solves the problem of large dataset by updating the weights on each datapoint.
+The algorithm goes as follows.
+
+\begin{enumerate}
+\item Randomly shuffle the dataset D \\
+\item $\forall (x,y) \in D. w_j \leftarrow w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}$  \\
+\end{enumerate}
 
 % Non convergence of stochastic gradient descent
-
 
 \begin{flushright}
 \cite{Bishop2006}[p. ??]
 \end{flushright}
+
+
+\subsubsection{Mini-Batch Gradient Descent}\label{sec:mini-batch}
+
+
+\todo{TODO: WRITE STUFF}
+
+
 
 % ###################################################################
 %
@@ -192,9 +209,7 @@ When dealing with large data sets calculating the sum in the cost function becom
 %\[ f(x) = \frac{1}{1+e^{-x}} \]
 %Unlike the previous activation function this function has a very simple derivative.
 %
-%\[ f'(x) = f(x) \times (1-f(x)) \]
-%
-%Which makes it easy to implement in a gradient descent algorithm.
+%\[ f'(x) = f(x) \times (1-f(x)) \] % %Which makes it easy to implement in a gradient descent algorithm.
 %
 %The cost function then becomes.
 %\[ Error_E(\overline{w}) = \sum_{e \in E} \left(val(e,Y)-f\left(pval^{\overline{w}}(e,Y)\right)\right)^2 \]
@@ -232,19 +247,6 @@ When dealing with large data sets calculating the sum in the cost function becom
 
 %\subsection{Large Datasets}
 % Large datasets
-
-% Stochastic regression
-
-
-
-
-
-
-
-
-
-
-
 
 %%% Local Variables:
 %%% mode: latex
