@@ -69,7 +69,7 @@ However this comes at a cost.
 When combining the sigmoid and squared sums loss function, the resulting function is no longer convex.
 Therefore we need a different loss function in order to find the optimal weights.
 
-$$E_w(y,\hat{y}) = \begin{cases}
+$$E_w(y,h_w(x)) = \begin{cases}
 	-ln(h_w(x)) &\text{if y = 1}\\	
 	-ln(1-h_w(x)) &\text{if y = 0}
 %	-ln(\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 1}\\	
@@ -79,51 +79,6 @@ $$E_w(y,\hat{y}) = \begin{cases}
 This error function assigns a logaritmicly increasing penalty the further the hypothesis is from the correct label value.
 The loss function we want to minimize therefore becomes. 
 $$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$ 
-
-\subsubsection{Logistic Regression}
-% write: problem with logistic regression.
-To predict the outcome of a match, we use a linear classification model.
-The model consists of a hypothesis function that is linear in the parameters.
-
-\[ \hat{y} = w_0 + \sum_{j=1}^{M-1} w_j \phi_j(x) \]
-
-Where $w_j$ represents the impact of of $\phi_j(x)$ on the hypothesis,
-$w_0$ is the intercept and $\phi_j$ is a basis function that
-performs a transformation on the input features. 
-
-% write: typical feature transformations -ref. bo slides.
-% write: decision boundary.
-
-In order to classify the result of the hypothesis function into wins and losses. 
-We use the so called logistic or sigmoid function.
-
-\[ \sigma(\textbf{x}) = \frac{1}{1+e^{- \textbf{x}}} \]
-
-The sigmoid function squashes the result of the hypothesis function into an inverval between one and zero.
-This is appropriate because we never want a prediction less than zero or greater than one on a binary feature.
-Furthermore the sigmoid function has a simple derivative that makes it easy to work with when using iterative methods.
-
-\[ \sigma'(x) = \sigma(x) \times (1-\sigma(x)) \] 
-
-%\subsubsection{Cost Function}
-
-%In order to find the weights that produce the most accurate classification.
-%We minimise the squared error function.
-
-% squared error with logistic regression becomes a non-convex cost function.
-% write: alternative surrogate cost function.
-
-%When using the hypothesis for logistic regression, we are no longer able to use the squared error function.
-
-%\[ E_D = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 \] 
-
-
-
-
-
-
-
-
 
 \subsubsection{Overfitting and Underfitting}
 % overfitting vs. underfitting
@@ -165,15 +120,23 @@ Thereby it becomes possible to use all of the data as both training and test set
 To combat the problem of overfitting, we can use a method called L2-Regularisation.
 In regularisation we penalise large weights, by adding the following term to the cost function.
 
-\[ E_w = \lambda \sum_{j=1}^{M-1} w_j^2 \]
+%\[ E_w = \lambda \sum_{j=1}^{M-1} w_j^2 \]
+
+\[ L_w = \lambda \sum_{j=1}^{M-1} w_j^2 \]
 
 Where the regularisation constant $\lambda$ scales the penalty. 
-The new cost function looks like this.
+For Logistic regression the combined loss function looks like this.
 
-\[ E(\textbf{w})
-  = E_D + E_w 
-  = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 + \lambda \sum_{j=1}^{M-1} w_j^2 \]
+%\[ E(\textbf{w})
+%  = E_D + E_w 
+%  = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 + \lambda \sum_{j=1}^{M-1} w_j^2 \]
 
+\[ L(\textbf{w})
+  = L_D(w) + L_w 
+  = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \lambda \sum_{j=1}^{M-1} w_j^2 \] 
+
+%  = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 + \lambda \sum_{j=1}^{M-1} w_j^2 \]
+ 
 \begin{flushright}
 \cite[online course]{courseraAI}
 \end{flushright}
