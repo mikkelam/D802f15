@@ -1,5 +1,5 @@
 
-#Fra modeller til virkelighed
+#Fra modeller til pølse
 
 ##Omfang
 15

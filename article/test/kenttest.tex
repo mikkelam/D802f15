@@ -2,11 +2,18 @@
 In this section several tests will be performed which does not require the cluster. These tests will be run to find the settings the cluster should be run with when the final cluster tests will be performed.
 
 \subsubsection{Best machine learning technique}
-First the best machine learning technique needs to be identified. In this test six different methods are tested, which are: naive bayes, hidden naive bayes, logistic regression, neural network, support vector machines(SVM) and adaboost(using decision stump). All the different methods are tested with multiple parameter settings to find the configuration that yields the best result. For naive bayes and hidden naive bayes, no parameters are needed, and their results are thus plotted as a straight line. For logistic regression different L2-regularisation factors have been tested. For SVM, different kernel methods have been tested, namely linear, polynomial, radial, and sigmoid. For Adaboost, different number of iterations have been tested. For neural networks, different number of hidden neurons have been tested, always using a single hidden layer.
+First the best machine learning technique needs to be identified. In this test six different methods are tested, which are: naive bayes, hidden naive bayes, logistic regression, neural network, support vector machine(C-SVM) and adaboost(using decision stump). All the different methods are tested with multiple parameter settings to find the configuration that yields the best result. Note that no parameters are needed for naive bayes and hidden naive bayes. For logistic regression, different L2-regularisation factors have been tested. For C-SVM, different values for the $c$-constant has been tested as well as linear, polynomial, radial, and sigmoid kernel methods. For Adaboost, different number of iterations have been tested. For neural networks, different number of hidden neurons have been tested, always placed in a single hidden layer.
 
 The feature representation used for this test is binary representation, presented in \Cref{sec:representationoffeatures}, and 35000 matches are used. The data will be split, using $\frac{2}{3}$ for training and $\frac{1}{3}$ for testing. 
 
-The best accuracy of all the machine learning technique can be seen in \Cref{fig:besttech}. As seen, SVM and Neural networks has the worst accuracy, even after testing different parameter configurations. Naive bayes, adaboost and Hidden naive bayes all have comparable results around 56.5\%, but logistic regression has the best accuracy almost hitting 57\% using a L2 regularisation factor of 750. Due to its performance, logistic regression will be the technique used in the following tests.  
+The best accuracy we obtained with each of the tested machine learning techniques can be seen in \Cref{fig:besttech}. As seen, SVM and Neural networks got the worst accuracy. Naive bayes, adaboost and Hidden naive bayes all have an accuracy close to 56.5\%, but logistic regression has the best accuracy almost hitting 57\%.
+The best parameters of each method was found to be:
+\begin{itemize}
+\item SVM: sigmoid kernel function, $c = 1$.
+\item Adaboost: 200 iterations
+\item Logistic regression: L2-regularisation constant = 750
+\item Neural Network: $(\text{attributes} + \text{classes}) / 2$ hidden neurons.
+\end{itemize}
 
 \begin{figure}[!htb]
   \begin{tikzpicture}
@@ -48,7 +55,7 @@ The best accuracy of all the machine learning technique can be seen in \Cref{fig
 \end{figure}
 
 \subsubsection{Feature symmetry test}
-In \Cref{sec:representationoffeatures} we represented four different ways of representing features, to capture a possible symmetry in the choice of champions and the layout of the map. In this section we test each representation by training a classifier using logistic regression using the given representation of features. The test was done on an increasing number of matches with all the different methods to check how they hold up with much data. The result, shown in \Cref{fig:feat-rep}, indicates that method 1 and 4 are very close, but binary being slightly above ternary majority of the time, which is the reason for us choosing binary. 
+In \Cref{sec:representationoffeatures} we represented four different ways of representing features, to capture a possible symmetry in the choice of champions and the layout of the map. In this section we test each representation by training a classifier using logistic regression using the given representation of features. The test was performed on a test set of 10,000 matches with training sets of up to 50,000 matches. The result, shown in \Cref{fig:feat-rep}, indicates that method 1 and 4 are very close, but as the binary representation is slightly more accurate than the ternary one the majority of the time, we choose to conduct all further tests using the binary representation. 
 
 \begin{figure}[!htb]
   \centering
