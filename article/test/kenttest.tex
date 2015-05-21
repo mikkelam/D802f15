@@ -165,7 +165,11 @@ The obtained accuracies can be seen in \Cref{fig:best-feat}.
 Interestingly, the baseline where no features are used gives an accuracy of $51.24 \%$, and results in a model that always predicts the blue team to win.
 Among the feature types that only consider the rank of players, the $\phi_\text{LANE-RANKS}$ feature did best.
 The $\phi_\text{PAIR}$ and $\phi_\text{COUNTER}$ features have not been tested, as they due to their size and density could not be handled in Weka on a machine with 8 GB memory.
-Those tests will therefore be performed on the cluster instead.
+Those tests are therefore performed on the cluster, described in \Cref{sec:clustertest}.
+When using more types of features at the same time, one may think that the accuracy always improves, but this is however not the case.
+If all 3 types of features concerned with player ranks are used, an accuracy of only $56.06 \%$ is achieved compared to $56,39 \%$ when using the $\phi_\text{LANE-RANKS}$ features alone. There is no combination of rank feature types that gives a better accuracy than just using the best of them alone.
+However, combining feature types that captures different phenomenons seems to increase the accuracy.
+Among the tested feature types, the best feature types to combine has been found to be the $\phi_\text{LANE-RANKS}$ and $\phi_\text{LANE-CHAMPION}$ feature types from which an accuracy of $58.73 \%$ were achieved.
 
 
 \begin{figure}[!htb]
