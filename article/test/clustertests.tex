@@ -2,18 +2,18 @@
 In this section are the tests that requires the cluster. This is due to the size of the tests, and the expected time frame.
 \todo{skriv mere}
 \subsubsection{Feature tests}\label{sec:feattest}
-Some features might be more expressive than others, and finding the set of features that will yield the best result is imperative. The tests on the cluster are performed with logistic regression using stochastic gradient descent and L2 regularization with a ridge value of 0.01. 
+Some types of features might be better for predicting the winning team.
+Tests are performed on the cluster with logistic regression using stochastic gradient descent and L2 regularisation with a ridge value of 0.01. 
 For each feature test 1348428 games are used for training and 577552 games are used for evaluation. 
 The different feature sets tested are:
 \begin{enumerate}
 \item Singles
 \item Pairs
 \item Singles, pairs
-\item Singles, pairs, counters 
+\item Singles, pairs, counters
 \item Singles, pairs, counters, best-ranks
 \item All prematch: Singles, pairs, counters, best-ranks, runes, lanes, queue, spells
 \end{enumerate}
-
 
 \begin{figure}[!htb]
   \centering
