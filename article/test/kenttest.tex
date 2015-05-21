@@ -45,7 +45,7 @@ The best parameters of each method was found to be:
       \addplot[fill=purple] coordinates {(1,55.6555) 
         (0,0)
       };
-      \addplot[fill=green] coordinates {(1,55.63)
+      \addplot[fill=green] coordinates {(1,55.98)
         (0,0)
       };
       \legend{Logistic Regression,Hidden Naive Bayes,Adaboost,Naive Bayes,Neural Network,SVM}
@@ -155,6 +155,19 @@ In \Cref{sec:representationoffeatures} we represented four different ways of rep
   \caption{Test for representation of features}\label{fig:feat-rep}
 \end{figure}
 
+
+
+\subsubsection{Best features}
+\label{sec:best-features}
+To get an idea of each type of features impact on our prediction capability, some quick tests are performed using the machine learning tool Weka.
+Logistic regression is used as classifier with an L2-regularization parameter of 750. A training set of ranging size is used, up to a total of 50,000 matches, and a test set of 10,000 matches is used for evaluation.
+The obtained accuracies can be seen in \Cref{fig:best-feat}.
+Interestingly, the baseline where no features are used gives an accuracy of $51.24 \%$, and results in a model that always predicts the blue team to win.
+Among the feature types that only consider the rank of players, the $\phi_\text{LANE-RANKS}$ feature did best.
+The $\phi_\text{PAIR}$ and $\phi_\text{COUNTER}$ features have not been tested, as they due to their size and density could not be handled in Weka on a machine with 8 GB memory.
+Those tests will therefore be performed on the cluster instead.
+
+
 \begin{figure}[!htb]
   \centering
   \begin{tikzpicture}[] 
@@ -206,7 +219,7 @@ In \Cref{sec:representationoffeatures} we represented four different ways of rep
         (45000,55.26)
         (50000,55.26)
       };
-      \addplot[color=purple,mark=square] coordinates { 
+      \addplot[color=green,mark=triangle] coordinates { 
         (1000,53.24)
         (5000,53.1)
         (10000,53.97)
@@ -219,46 +232,33 @@ In \Cref{sec:representationoffeatures} we represented four different ways of rep
         (45000,53.95)
         (50000,54.24)
       };
-      \addplot[color=green,mark=triangle] coordinates { 
-        (1000,52.26)
-        (5000,55.67)
-        (10000,56.71)
-        (15000,57.02)
-        (20000,57.31)
-        (25000,57.27)
-        (30000,57.74)
-        (35000,57.4)
-        (40000,57.67)
-        (45000,57.9)
-        (50000,57.64)
-      };
       \addplot[color=black,mark=x] coordinates { 
-        (1000,53.18)
-        (5000,55.64)
-        (10000,56.4)
-        (15000,57.39)
-        (20000,57.52)
-        (25000,57.28)
-        (30000,57.35)
-        (35000,57.5)
-        (40000,57.48)
-        (45000,57.73)
-        (50000,58.09)
+        (1000,52.54)
+        (5000,52.90)
+        (10000,54.29)
+        (15000,55.58)
+        (20000,56.31)
+        (25000,55.72)
+        (30000,56.00)
+        (35000,56.15)
+        (40000,56.64)
+        (45000,56.33)
+        (50000,56.39)
       };
       \addplot[color=blue,mark=pentagon] coordinates { 
-        (1000,52.31)
-        (5000,55.75)
-        (10000,56.76)
-        (15000,57.2)
-        (20000,57.02)
-        (25000,57.66)
-        (30000,57.57)
-        (35000,57.64)
-        (40000,57.77)
-        (45000,58.06)
-        (50000,58.02)
+        (1000,50.21)
+        (5000,54.16)
+        (10000,56.10)
+        (15000,56.52)
+        (20000,56.72)
+        (25000,56.88)
+        (30000,57.26)
+        (35000,57.56)
+        (40000,57.83)
+        (45000,58.09)
+        (50000,58.65)
       };
-      \legend{No features,Single,BestRanked,PlayerRanks,BestRanked+Single,PlayerRanks+Single,All}
+      \legend{No features,$\phi_\text{SINGLE}$, $\phi_\text{BEST-RANKED}$, $\phi_\text{PLAYER-RANKS}$,$\phi_\text{LANE-RANKS}$,$\phi_\text{LANE-CHAMPION-COMBO}$}
     \end{axis} 
   \end{tikzpicture}
   \caption{Accuracy of features}\label{fig:best-feat}
