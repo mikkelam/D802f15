@@ -77,15 +77,15 @@ $\forall(p, c) \in T_\text{blue}(x) \cup T_\text{purple}(x)$, we define a featur
 In the early stage of a match, players tend to keep their champion in the same lane.
 If a good player plays against a bad player in the same lane, the good player might get so strong, that the good player is able to carry the team to victory.
 To define a new feature that considers the rank of players that play against each other in the same lane,
-we first define a function that given a lane and team returns the rank of all players on the team that plays a champion in that lane.
+we first define a function that given a lane and team returns the rank of all players on the team that plays in that lane.
 $\forall l \in L, \forall t \in T(x)$, we define
 \[
 \xi(t,l) =
 \begin{cases} 
   \text{none} & \text{if } \forall(c, p) \in t: c \text{ does not play in lane } l. \\
-  r_1 & \text{if some } (c_1, p_1) \in t \text{ where } p_1 \text{ has rank } r_1 \text{ and } c_1 \text{ plays lane } l.\\
-  (r_1, r_2) & \text{if some } (c_1, p_1), (c_2, p_2) \in t \text{ where } p_1, p_2 \text{ has rank } r_1, r_2 \text{ respectively, }\\
-  & c_1, c_2 \text{ plays lane } l \text{ and } p_1 \neq p_2.\\
+  r_1 & \text{if only } (c_1, p_1) \in t \text{ plays lane } l \text{ and } p_1 \text{ has rank } r_1 \text{.}\\
+  (r_1, r_2) & \text{if only } (c_1, p_1), (c_2, p_2) \in t \text{ plays lane } l \text{, where } p_1, p_2 \text{ has rank } r_1, r_2 \text{ respectively,}\\
+  & \text{ and } p_1 \neq p_2.\\
   \text{many} & \text{otherwise}.
 \end{cases}
 \]
