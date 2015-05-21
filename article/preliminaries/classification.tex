@@ -7,7 +7,7 @@
 \subsubsection{Supervised learning}
 Supervised learning is the process of learning the parameters of a linear model using a corpus of labeled data.
 In supervised learning the data consists of objects with labels of the form 
-$(\textbf{x}_1,y),(\textbf{x}_2,y), \text{ ... } (\textbf{x}_N,y)$.
+$(\textbf{x}_1,y_1),(\textbf{x}_2,y_2), \text{ ... } (\textbf{x}_N,y_N)$.
 Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the datapoint.
 The goal of supervised learning is to produce a model that is able to predict a label from the inputs alone.
 When the domain of the label is continuous this is called a regression model and if it is discrete it is called a classification model.
@@ -30,7 +30,7 @@ The examples include a constant, the identity, a polynomiel and the combination 
 When attempting to predict a continous value, one standard method is by using linear regression.
 %A very popular model for classification is the linear classification model.
 The linear regression model predicts the value of $y$ with a hypothesis function $h(x)$ by assigning weights to the features and computing their sum.
-$$h(x) = w_0 + \sum_{i=1}^M w_i \phi_i(x)$$ 
+$$h(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x)$$ 
 
 Where $w_0$ is called the intercept, to avoid having it be a special case we add the feature $\phi_0(x)=1$.
 
@@ -40,7 +40,7 @@ Given the amount of data we have avaliable, it would be preferable to learn thes
 \paragraph{Linear Regression}
 Since the goal is to fit the hypothesis function to the training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
 
-$$L_D = \sum_{n=1}^N (y_n-\hat{y}_n)^2$$ 
+$$ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 $$ 
 
 By minimizing the loss function the value of the parameters can be determined.
 This can be done analyticly using the derivative of the function or by an iterative method introduced later called gradient descent.
@@ -63,12 +63,18 @@ In order to combat this problem we introduce a new linear model for classificati
 
 In logistic regression we use the so called logistic or sigmoid function to squash the prediction into the interval $[0,1]$.
 
-\[ \sigma(\textbf{x}) = \frac{1}{1+e^{- \textbf{x}}} \]
+\[ \sigma(h(x)) = \frac{1}{1+e^{-h(x)}} \]
 
-By doing this a single outlying in the training data is no longer able to skew the decision boundary of the hypothesis function.
+By doing this a single outlying datapoint is no longer able to skew the decision boundary of the hypothesis function.
+
+However this comes at a cost.
+When combining the sigmoid and squared sums loss function, the resulting function is no longer convex.
+Therefore we need a different loss function in order to find the optimal weights.
 
 
+ 
 
+% learning: unable to use SSE because it is nonconvex
 
 
 \subsubsection{Logistic Regression}\label{sec:logistic}
