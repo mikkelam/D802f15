@@ -137,22 +137,28 @@ For Logistic regression the combined loss function looks like this.
 
 %  = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 + \lambda \sum_{j=1}^{M-1} w_j^2 \]
  
-\begin{flushright}
-\cite[online course]{courseraAI}
-\end{flushright}
+%\begin{flushright}
+%\cite[online course]{courseraAI}
+%\end{flushright}
 
 \subsubsection{Batch Gradient Descent}
 
 Since we are using a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
-Therefore we use an iterative approach called batch gradient descent.
+Therefore we need to use an iterative approach.
+One such method is called batch gradient descent.
 
-In gradient descent we iteratively update the weights by the gradient of the cost function, multiplied by a learning rate $\eta$  
-\[ w_j \leftarrow w_j - \eta \nabla_w E(\textbf{w}) \]
+In batch gradient descent we iteratively update the weights by a value proportinal to the partial derivative of the loss function.  
+
+%\[ w_j \leftarrow w_j - \eta \nabla_w E(\textbf{w}) \]
+
+\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} \]
+
+The value $\eta$ represent the learning rate i.e. how big a step the algorithm should take in each iteration.
+This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
 
 \subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
 
 When dealing with large data sets calculating the sum in the cost function becomes problematic.
- 
 
 % Non convergence of stochastic gradient descent
 
