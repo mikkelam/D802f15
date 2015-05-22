@@ -1,10 +1,10 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
-In the following, we aim to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
+In the following, we are going to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
 We define 5 different types of features and argue argue why each type is a good candidates for predicting the winning team.
 The different types of features are each extracted by a mapping function, that maps a LoL match (in some cases with additional parameters) to a value. 
-Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a game.
+Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a match.
 $C = \{1, 2, \dots, m\}$ is the set of all champions, where each champion is represented by an id. $m = 124$ for the patch version of LoL used in this project.
-$P = \{p_1, p_2, \dots\}$ denotes the set of all players.
+$P = \{p_1, p_2, \dots, p_l\}$ denotes the set of all players, where $l$ is the amount of players in a match.
 $T(x) = \{T_\text{blue}$, $T_\text{purple}\}$ is a set containing the two teams of match $x$, namely \emph{blue} and \emph{purple} respectively.
 $T_i(x) = \{ (p_j, c_j) \in P \times C \mid c_j \text{ is controlled by } p_j \text{ on team } i  \text{ in match } x \}$.
 $R = \{\text{unranked},\text{bronze},\text{silver},\text{gold},\text{platinum},\text{diamond},\text{master},\text{challenger},\}$ is the set of ranks.
@@ -52,9 +52,7 @@ In this case, the feature $\phi_{\text{COUNTER},c_1,c_2}(x) = 1$ is favorable to
 Note that in some game modes, $\phi_{\text{COUNTER},c_1,c_2}(x) = 1$, is allowed for $c_1 = c_2$. That is, the same champion may appear on both teams.
 In that way we can capture if a champion can counter itself due to some asymmetries in the map layout.
 
-In LoL, players can compete in ranked games, where they are placed in one of 7 tiers. Better players achieve higher tiers.
-Before a match starts, we have access to data about the highest tier each player has achieved in a ranked game, which we will refer to as the rank of a player. We also know if a player has not competed in ranked games, in which case we say that he is unranked.
-A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{gold}, \textit{platinum}, \textit{diamond}, \textit{master}, \textit{challenger} (mentioned in increasing order of skills required to achieve the rank).
+As previously mentioned our dataset contains information about the ranks of the players, we will now try to map that to a feature. A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{gold}, \textit{platinum}, \textit{diamond}, \textit{master}, \textit{challenger} (mentioned in increasing order of skills required to achieve the rank).
 We define a score function $\varphi : P \rightarrow \mathcal{N}$, where $\varphi(p) = 0$ if $p$ is unranked, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
 We define the rank of a team to be the average rank of all players on that team who is not unranked:
 \begin{equation}\label{eq:eta}
