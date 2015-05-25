@@ -1,11 +1,10 @@
-\subsection{Cluster tests}\label{sec:clustertest}
-In this section we perform a number of tests on a cluster setup described in \Cref{sec:clustersetup}. The cluster setup is important due to the large size of data used for these tests.
-We use a 2/3 split on all of our data, yielding 1348428 games for training and 577552 for testing.
-
+\subsection{Cluster Experiments}\label{sec:clustertest}
+In this section we perform a number of experiments on a cluster setup described in \Cref{sec:clustersetup}. The cluster setup is important due to the large size of data used for these experiments.
+We use a 2/3 split on all of our data, yielding 1348428 games for training and 577552 for experimentation.
 
 \subsubsection{Accuracy convergence}
 In this section we are going to investigate how the accuracy of our prediction converges as the size of the data increases.
-All tests are done using a percentage of the 1348428 for training and 577552 games are used for evaluation. in each test we use all the prematch features. The classifier used in this test is logistic regression with stochastic gradient descent with L2 regularization and a ridge value of 0.01. The size of the training set used are as follows: 
+All experiments are done using a percentage of the 1348428 for training and 577552 games are used for evaluation. In each experiment we use all the prematch features. The classifier used in this experiment, is logistic regression with stochastic gradient descent with L2 regularization and a ridge value of 0.01. The size of the training set used are as follows: 
 \begin{enumerate}
 \item 6\%: 84529 matches
 \item 12.5\%: 168431 matches 
@@ -40,18 +39,18 @@ All tests are done using a percentage of the 1348428 for training and 577552 gam
 
 \end{axis}
 \end{tikzpicture}
-  \caption{Test for representation of features}\label{fig:clusterbigdata}
+  \caption{Experiment for representation of features}\label{fig:clusterbigdata}
 \end{figure}
-The results from \Cref{fig:clusterbigdata} shows that as more data is used to train the model the prediction accuracy on the test set increases the total change from 84529 matches to 134828 matches is $3.86\times10^{-1}\%$
+The results from \Cref{fig:clusterbigdata} shows that as more data is used to train the model, the accuracy on the test-set increases the total change from 84529 matches to 134828 matches is $3.86\times10^{-1}\%$
 
-The results also shows the as the size of the training data increases overfitting decreases. The difference in accuracy between the training set and test set moves from $3.79\%$ for $84529$ matches to $3.79\times10^{-1} \%$ for $1348428$ matches. The result shows that the model do not improve a lot as the amount of data increases. The test shows that as the amount of data used for training increases overfitting decreases.      
+The results also shows the as the size of the training data increases overfitting decreases. The difference in accuracy between the training set and the test-set moves from $3.79\%$ for $84529$ matches to $3.79\times10^{-1} \%$ for $1348428$ matches. The result shows that the model do not improve a lot as the amount of data increases. The experiment shows that as the amount of data used for training increases overfitting decreases.      
 
 
-\subsubsection{Feature tests}\label{sec:feattest}
-A number of tests are performed to see if combining different types of features may be beneficial.
-Tests are performed using logistic regression using stochastic gradient descent and L2 regularisation with a ridge value of 0.01. 
-For each feature test 1348428 games are used for training and 577552 games are used for evaluation. 
-The different types of features tested are:
+\subsubsection{Feature experiments}\label{sec:feattest}
+A number of experiments are performed to see if combining different types of features may be beneficial.
+Experiments are performed using logistic regression using stochastic gradient descent and L2 regularisation with a ridge value of 0.01. 
+For each feature experiment 1348428 games are used for training and 577552 games are used for evaluation. 
+The different types of features used are:
 \begin{enumerate}
 \item $\phi_\text{SINGLE}$
 \item $\phi_\text{PAIR}$
@@ -90,7 +89,7 @@ The different types of features tested are:
    \caption{Accuracy of features}\label{fig:cluster-feat}
 \end{figure}
 
-The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual test case we see the we have almost no overfitting. The largest difference is data point 2: (pairs) with a difference of $3.610^{-3}$ percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
+The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual case we can see that there is almost no overfitting. The largest difference is data point 2: (pairs) with a difference of $3.610^{-3}$ percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
 
 
 
