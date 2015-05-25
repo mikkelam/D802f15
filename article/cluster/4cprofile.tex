@@ -1,0 +1,107 @@
+\begin{tikzpicture}
+	%\pgfplotsset{every axis legend/.append style={ 
+		%at={(0.5,1.1)},
+		%anchor=south}}
+	\begin{axis}[
+			enlargelimits=false,
+			width=1.0\linewidth,
+			height=5cm,
+			stack plots=y,
+			area style,
+			%scaled ticks = true,
+			%scaled y ticks=base 10:-4,
+			xlabel = Seconds,
+            	ylabel = CPU usage (\%),
+			ymin = 0, 	
+			ymax = 120,
+            	%legend columns=-1,
+            	legend entries={CPU},
+			%legend style={/tikz/every even column/.append style={column sep=0.3cm}}
+			]
+		\addplot+table[x=Sec, y=CPUUser, col sep=space]
+		{cluster/mid.csv} \closedcycle;
+%		\addlegendentry{\textbf{BW}}
+	\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	%\pgfplotsset{every axis legend/.append style={ 
+		%at={(0.5,1.1)},
+		%anchor=south}}
+	\begin{axis}[
+			enlargelimits=false,
+			width=1.0\linewidth,
+			height=5cm,
+			stack plots=y,
+			area style,
+			%scaled ticks = true,
+			%scaled y ticks=base 10:-4,
+			xlabel = Seconds,
+            	ylabel = Memory used (KB),
+			ymin = 0, 	
+			ymax = 4500000,
+            	%legend columns=-1,
+            	legend entries={Memory},
+			%legend style={/tikz/every even column/.append style={column sep=0.3cm}}
+			]
+		\addplot+table[x=Sec, y=MEMUsed, col sep=space]
+		{cluster/mid.csv} \closedcycle;
+%		\addlegendentry{\textbf{BW}}
+	\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	%\pgfplotsset{every axis legend/.append style={ 
+		%at={(0.5,1.1)},
+		%anchor=south}}
+	\begin{axis}[
+			enlargelimits=false,
+			width=1.0\linewidth,
+			height=5cm,
+			stack plots=y,
+			area style,
+			%scaled ticks = true,
+			%scaled y ticks=base 10:-4,
+			xlabel = Seconds,
+            	ylabel = Disk Transfer (KB),
+			ymin = 0, 	
+			ymax = 220,
+            	%legend columns=-1,
+            	legend entries={Read, Write},
+			%legend style={/tikz/every even column/.append style={column sep=0.3cm}}
+			]
+		\addplot+table[x=Sec, y=DSKReadTot, col sep=space]
+		{cluster/mid.csv} \closedcycle;
+		\addplot+table[x=Sec, y=DSKWriteTot, col sep=space]
+		{cluster/mid.csv} \closedcycle;
+%		\addlegendentry{\textbf{BW}}
+	\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	%\pgfplotsset{every axis legend/.append style={ 
+		%at={(0.5,1.1)},
+		%anchor=south}}
+	\begin{axis}[
+			enlargelimits=false,
+			width=1.0\linewidth,
+			height=5cm,
+			stack plots=y,
+			area style,
+			%scaled ticks = true,
+			%scaled y ticks=base 10:-4,
+			xlabel = Seconds,
+            	ylabel = Network Transfer (KB),
+			ymin = 0, 	
+			ymax = 15000,
+            	%legend columns=-1,
+            	legend entries={Transmit, Recieve},
+			%legend style={/tikz/every even column/.append style={column sep=0.3cm}}
+			]
+		\addplot+table[x=Sec, y=NETRxKBTot, col sep=space]
+		{cluster/mid.csv} \closedcycle;
+		\addplot+table[x=Sec, y=NETTxKBTot, col sep=space]
+		{cluster/mid.csv} \closedcycle;
+%		\addlegendentry{\textbf{BW}}
+	\end{axis}
+\end{tikzpicture}

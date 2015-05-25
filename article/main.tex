@@ -60,37 +60,30 @@
 
 % CONTENT
 
-\section{Introduction}\label{sec:intro}
-Intro stuff
+%Introduction
 \input{introduction/online-video-games}
 \input{introduction/ml-and-online-video-games}
 \input{introduction/motivation}
 
-
+%Preliminaries
 \section{Preliminaries}\label{sec:prelim}
-In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:supervised learning}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, Hadoop filesystem (HDFS) is briefly outlined followed by an introduction to Apache spark which is the cluster computing system mainly used throughout this paper.
-
+In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:supervised learning}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, \emph{Hadoop distributed filesystem} (HDFS) is briefly outlined followed by an introduction to Apache spark which is the cluster computing system mainly used throughout this paper.
 \input{preliminaries/classification}
 \input{preliminaries/distcompute}
 
-\section{Data and Prediction Setup}\label{sec:features}
-In \Cref{sec:matchdata} we investigate the match data made available by the Riot Games API, which covers almost any detail of a given LoL match.
-\Cref{sec:choosingfeatures} identifies a number of features that can be extracted from match data, which we think are most important when it comes to prediction of the winning team. The choice is based on our intuition as more or less experience LoL players. The size of each type of feature's domain is calculated in \Cref{sec:featuresparsity}, as well as the sparsity with regards how many features that appear in each match.
-In \Cref{sec:representationoffeatures}, a possible feature symmetry is investigated which raises a number of concerns as to how the extracted features should be represented. 
+%prediction
 \input{prediction/matchdata}
 \input{prediction/choosingfeatures}
 \input{prediction/representationoffeatures}
 
-\section{Cluster}\label{sec:cluster}
-In this section the cluster that will be doing the computations will be outlined. In \Cref{sec:clustersetup} the setup of the cluster and the available resources are listed, followed by a profile of the resource usage in \Cref{sec:profile}.
+%cluster
 \input{cluster/setup}
 \input{cluster/profiling}
 \input{cluster/complications}
 \input{cluster/speedup}
 \input{cluster/benchmark}
 
-\section{Prediction and cluster test results}\label{sec:testing}
-To validated that the cluster gives us an improvement when working on big data, a list of tests will be explored. The first initial tests that will be performed, seen in \Cref{sec:initialtest}, will be run to find the settings the cluster should run with. In \Cref{sec:clustertest}, the tests run on the cluster and the results will be presented.
+%test
 \input{test/convergence}
 \input{test/kenttest}
 \input{test/clustertests}

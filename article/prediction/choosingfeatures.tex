@@ -1,14 +1,15 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
-In the following, we aim to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
+In the following, we are going to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
 We define 5 different types of features and argue argue why each type is a good candidates for predicting the winning team.
-The different types of features are each extracted by a mapping function, that maps a LoL match (in some cases with additional parameters) to a value. 
-Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a game.
+The different types of features are each extracted by a mapping function, that maps a LoL match, in some cases with additional parameters, to a value. 
+Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a match.
 $C = \{1, 2, \dots, m\}$ is the set of all champions, where each champion is represented by an id. $m = 124$ for the patch version of LoL used in this project.
-$P = \{p_1, p_2, \dots\}$ denotes the set of all players.
+$P = \{p_1, p_2, \dots, p_l\}$ denotes the set of all players, where $l$ is the amount of players in a match.
 $T(x) = \{T_\text{blue}$, $T_\text{purple}\}$ is a set containing the two teams of match $x$, namely \emph{blue} and \emph{purple} respectively.
 $T_i(x) = \{ (p_j, c_j) \in P \times C \mid c_j \text{ is controlled by } p_j \text{ on team } i  \text{ in match } x \}$.
-$R = \{\text{unranked},\text{bronze},\text{silver},\text{gold},\text{platinum},\text{diamond},\text{master},\text{challenger},\}$ is the set of ranks.
-$L = \{\text{top},\text{bottom},\text{mid},\text{jungle},\}$ is the set of lanes.
+$R = \{\text{unranked},\text{bronze},\text{silver},\text{gold},\text{platinum},\text{diamond},\text{master},\text{challenger}\}$ is the set of ranks.
+$L = \{\text{top},\text{bottom},\text{mid},\text{jungle}\}$ is the set of lanes.
+
 
 \subsubsection{Single champions}
 Some champions may be better than other champions. To capture the strength of individual champions, we will need a feature that represent the presence or absence of a particular champion on each team.
@@ -37,7 +38,7 @@ We make the restriction $c_1 < c_2$, because we want to ignore permutations. Thi
 
 \subsubsection{Champion counters}
 Some champions may have an advantage when fighting against a particular opponent.
-For instance, a champion that is good at dodging ranged attacks is good against an enemy that only has ranged attacks.
+E.g.\ a champion that is good at dodging ranged attacks is good against an enemy that only has ranged attacks.
 We say that the better suited champion \emph{counters} the other.
 To capture that one champion may counter another, we will for each champion on team $t$ need a feature that represents the presence or absence of every possible champion on the other team.
 We define a feature $\phi_{\text{COUNTER},c_1,c_2}(x)$ such that $\forall c_1, c_2 \in C:$
@@ -57,9 +58,7 @@ Note that in some game modes, $\phi_{\text{COUNTER},c_1,c_2}(x) = 1$, is allowed
 In that way we can capture if a champion can counter itself due to some asymmetries in the map layout.
 
 \subsubsection{Player ranks}
-In LoL, players can compete in ranked games, where they are placed in one of 7 tiers. Better players achieve higher tiers.
-Before a match starts, we have access to data about the highest tier each player has achieved in a ranked game, which we will refer to as the rank of a player. We also know if a player has not competed in ranked games, in which case we say that he is unranked.
-A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{gold}, \textit{platinum}, \textit{diamond}, \textit{master}, \textit{challenger} (mentioned in increasing order of skills required to achieve the rank).
+As previously mentioned our dataset contains information about the ranks of the players, we will now try to map that to a feature. A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{gold}, \textit{platinum}, \textit{diamond}, \textit{master}, \textit{challenger} (mentioned in increasing order of skills required to achieve the rank).
 We define a score function $\varphi : P \rightarrow \mathcal{N}$, where $\varphi(p) = 0$ if $p$ is unranked, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
 We define the rank of a team to be the average rank of all players on that team who is not unranked:
 \begin{equation}\label{eq:eta}
@@ -75,7 +74,7 @@ which we use to define a single feature
 \end{cases}  
 \end{equation}
 
-The $\phi_\text{BEST-RANK}$ feature may have some shortcomings. The assumption that the rank of each player can be mapped to a score on a linear scale may not be entirely on spot.
+The $\phi_\text{BEST-RANK}$ feature may have some shortcomings. The assumption that the rank of each player can be mapped to a score on a linear scale may not be entirely correct.
 Also, it may be easier to predict one team to be a winner, if the average rank of the two teams are considerably different. That is, if the players on one of the team have much greater ranks in average. The difference between the average rank of each team is not captured by the $\phi_\text{BEST-RANK}$ feature.
 Therefore, another type of feature $\phi_{\text{PLAYER-RANK},p}(x)$ is introduced that captures the exact rank of each player.
 $\forall(p, c) \in T_\text{blue}(x) \cup T_\text{purple}(x)$, we define a feature
@@ -86,7 +85,7 @@ $\forall(p, c) \in T_\text{blue}(x) \cup T_\text{purple}(x)$, we define a featur
 In the early stage of a match, players tend to keep their champion in the same lane.
 If a good player plays against a bad player in the same lane, the good player might get so strong, that the good player is able to carry the team to victory.
 To define a new feature that considers the rank of players that play against each other in the same lane,
-we first define a function that given a lane and team returns the rank of all players on the team that plays in that lane.
+we first define a function that given a lane and team, returns the rank of all players on the team that plays in that lane.
 $\forall l \in L, \forall t \in T(x)$, we define
 \begin{equation}\label{eq:xi}
   \xi(t,l) =
@@ -121,13 +120,18 @@ $\forall l \in L, \forall(p, c) \in T_\text{blue}(x) \cup T_\text{purple}(x)$, w
 \end{equation}
 
 \subsection{Feature sparsity}\label{sec:featuresparsity}
-The size of $\phi_{\text{SINGLE}}$ is $|T(x)| \cdot |C| = 2 \cdot 124 = 248$. In each match, only $2 \cdot 5 = 10$ of those features appear. By appearance, we mean having a value of 1.\\
-The size of $\phi_{\text{PAIR}}$ is $|T(x)| \cdot |C| \cdot (|C|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252$. In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.\\
-The size of $\phi_{\text{COUNTER}}$ is $|C|^2 = 124^2 = 15376$. In each match, only $5 \cdot 5 = 25$ of those features appear.\\
-The size of $\phi_{\text{BEST-RANK}}$ is 3 by definition. In each match, only $1$ of those features appear.\\
-The size of $\phi_{\text{PLAYER-RANK}}$ is $2 \cdot 5 \cdot 8 = 80$, since each of the $2$ teams have $5$ players, that each can have $1$ of $8$ ranks. In each match, only $10$ features appear, because each player has only $1$ rank.\\
+The size of $\phi_{\text{SINGLE}}$ is $|T(x)| \cdot |C| = 2 \cdot 124 = 248$. In each match, only $2 \cdot 5 = 10$ of those features appear. By appearance, we mean having a value of 1.
+
+The size of $\phi_{\text{PAIR}}$ is $|T(x)| \cdot |C| \cdot (|C|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252$. In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+
+The size of $\phi_{\text{COUNTER}}$ is $|C|^2 = 124^2 = 15376$. In each match, only $5 \cdot 5 = 25$ of those features appear.
+The size of $\phi_{\text{BEST-RANK}}$ is 3 by definition. In each match, only $1$ of those features appear.
+
+The size of $\phi_{\text{PLAYER-RANK}}$ is $2 \cdot 5 \cdot 8 = 80$, since each of the $2$ teams have $5$ players, that each can have $1$ of $8$ ranks. In each match, only $10$ features appear, because each player has only $1$ rank.
+
 The size of $\phi_{\text{LANE-RANKS}}$ is $|L| \cdot (2 + |R| + |R|^2)^2 = 21904$, because each lane contains either none, 1, 2, or many champions from each team.
 In each match only $5$ of these features appear, as each of the lanes has exactly one combination of ranks of the players / champions playing against each other.
+
 The size of $\phi_{\text{CHAMPION-LANE}}$ is $|T(x)| \cdot |C| \cdot |L| = 2 \cdot 124 \cdot 4 = 992$, because for each team, every champion can be in one of the 4 lanes. In each match, only $2 \cdot 5 \cdot 4 = 40$ features appear. 
 These figures are presented in \Cref{tab:featuresparsity}, which also includes the number of features that appeared in $60.000$ LoL matches.
 
