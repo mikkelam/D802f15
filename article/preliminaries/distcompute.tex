@@ -93,9 +93,58 @@ This can be seen in \Cref{fig:mapreduce}, where the input data will be split int
 
 \begin{figure}[!htb]
   \centering
-    \includegraphics[width=0.50\textwidth]{img/mapreduceimage}
-  \caption{The MapReduce Model}\label{fig:mapreduce}
-\end{figure}
+  \scalebox{0.75}{
+    \begin{tikzpicture}[->,>=stealth',bend angle=45,auto]
+      % Input data
+      \path node at (-6,0) [draw,shape=rectangle, style=rounded corners, minimum width=1cm, minimum height=4cm, label={[rotate=90,yshift=-0.35cm,xshift=-2cm]Input Data}] (ID) {};
+
+      % Output data
+      \path node at (6,0) [draw,shape=rectangle, style=rounded corners, minimum width=1cm, minimum height=4cm, label={[rotate=90,yshift=-0.35cm,xshift=-2cm]Output Data}] (OD) {};
+
+      % Mappers
+      \path node at (-2.5,1.5) [draw,shape=ellipse, style=rounded corners, minimum width=3cm, minimum height=1cm, label={[yshift=-0.8cm]Map}] (M1) {};
+      \path node at (-2.5,0) [draw,shape=ellipse, style=rounded corners, minimum width=3cm, minimum height=1cm, label={[yshift=-0.8cm]Map}] (M2) {};
+      \path node at (-2.5,-1.5) [draw,shape=ellipse, style=rounded corners, minimum width=3cm, minimum height=1cm, label={[yshift=-0.8cm]Map}] (M3) {};
+
+      % Reducers
+      \path node at (2.5,1) [draw,shape=ellipse, style=rounded corners, minimum width=3cm, minimum height=1cm, label={[yshift=-0.75cm]Reduce}] (R1) {};
+      \path node at (2.5,-1) [draw,shape=ellipse, style=rounded corners, minimum width=3cm, minimum height=1cm, label={[yshift=-0.75cm]Reduce}] (R2) {};
+      
+      % Text nodes
+      \path node at (-4.75,-2.5) [] (T1) {Split};
+      \path node at (-2.5,-2.5) [] (T2) {Map};
+      \path node at (0,-2.5) [] (T4) {Sort};
+      \path node at (2.5,-2.5) [] (T3) {Reduce};
+      \path node at (4.75,-2.5) [] (T5) {Merge};
+
+      %Edges
+      \path ([yshift=1.465cm]ID.east) edge (M1)
+            (ID) edge (M2)
+            ([yshift=-1.465cm]ID.east) edge (M3)
+            (M1) edge (R1)
+            (M1) edge (R2)
+            (M2) edge (R1)
+            (M2) edge (R2)
+            (M3) edge (R1)
+            (M3) edge (R2)
+            (R1) edge ([yshift=1cm]OD.west)
+            (R2) edge ([yshift=-1cm]OD.west);
+%       ([xshift=1cm]E2.south) edge ([xshift=1cm]E1.north)
+%       (CM) edge (W1)
+%       (CM) edge (W2)
+%       (W1) edge (CM)
+%       (W2) edge (CM)
+%       (SC) edge ([yshift=-0.25cm]CM.west)
+%       ([yshift=-0.25cm]CM.west) edge (SC)
+%       (SC.south east) edge [bend right] (E1.west)
+%       (E2.west) edge [bend right] (SC.north east)
+%       (SC.north east) edge [bend left] (E2.west)
+%       (E1.west) edge [bend left] (SC.south east);
+
+    \end{tikzpicture}
+  }
+  \caption{The MapReduce programming model}\label{fig:mapreduce}
+\end{figure} 
 
 A common MapReduce example is the word count, in which a large document would be split into small fragments. These fragments would be sent to workers assigned to mapping, the mapping procedure would treat each individual word as a key and give it the value 1. This would give the intermediate result of $\{w_1,1\}, \{w_2,1\} \dots$. These intermediate results are then distributed across workers assigned to reduce such that all the pairs of e.g.\ $\{w_i,1\}$ are sent to the same worker. That worker appends the values with the same key, such that it becomes a key with a list of values, $\{w_i, [1,1,\dots] \}$. In this specific case an additional action is taken; the values of the list are summed up such that all the 1's are added together giving $\{w_i,1+1+\cdots \}$, which is then returned as result. The pseudo code for word count in MapReduce can be seen in \Cref{lst:mrwordcount}. 
 \begin{lstlisting}[language=, caption={MapReduce Wordcount},label={lst:mrwordcount},belowcaptionskip=4pt]

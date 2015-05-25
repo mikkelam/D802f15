@@ -1,20 +1,9 @@
 \section{Conclusion}\label{sec:conclusion}
-We solved the big data problem by storing the 456GB of data on a cluster which consists of a master and three worker nodes. The cluster runs with Debian linux distribution as operating system, with Hadoop filesystem as distributed file system and Apache Spark as the data processing engine. We showed that doing the work on the cluster decreases the computation time in comparison to a singular computer.
+We solved the big data problem by storing the 456GB of data on a cluster which consists of a master and three worker nodes. The cluster runs with Debian linux distribution as operating system, with Hadoop filesystem as distributed file system and Apache Spark as the data processing engine.
 
 To help players pick a winning combination of champions we trained a model using logistic regression on the cluster. The model was trained on almost 2 million matches using 70\% for training and 30\% as test samples. After running for a long duration, the test sample gave an accuracy of 58.5\%, while tests on the training data gave an accuracy of 58.73\%, which shows that we have no overfitting. We believe that the accuracy shows that LoL is a rather well balanced game that favours the skills of the individual players rather than the power of champion selection. In addition the method of matching players also adds an extra layer of balance as players of roughly the same skill level, will be playing against each other.
 
-\subsection{Future work}\label{sec:futurework}
-The next step of this project will be to add additional features, this could be done using feature hashing with generation of random feature combinations. This would create a lot of new features where some might be a better than expected, while others would be completely useless.
-If the number of tests increases greatly, increasing the number of worker nodes in the cluster could cut the computation time down. If the cluster grows a lot, then making it more fault tolerant by increasing the number of replications could be a good idea.
 
-The next major step is to consider the information we know about the midgame. This could be used for an agent that from champion selection until the end of the game would give recommendations for decisions to make. These decisions would, be based on events as they are happening in the game. The further development of this agent would be to eventually let it control a champion, essentially playing the game instead of a human. This development would have to involve deep analysis for optimal decision making for all the abilities.
-
-
-%More features, hashing trick, random features
-%Midgame features
-%bigger cluster 
-%Agent that updates live as the game runs
-%system that plays for us
 
 
 %%% Local Variables:

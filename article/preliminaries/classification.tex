@@ -5,7 +5,7 @@
 % write motivation for using supervised learning (DATA!!!) 
 
 \subsubsection{Supervised learning}
-Supervised learning is the process of learning the parameters of a linear model using a corpus of labeled data.
+Supervised learning is the process of learning the parameters of a prediction model using a corpus of labeled data.
 In supervised learning the data consists of objects with labels of the form 
 $(\textbf{x}_1,y_1),(\textbf{x}_2,y_2), \text{ ... } (\textbf{x}_N,y_N)$.
 Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the datapoint.
@@ -18,11 +18,11 @@ It is possible to design alot of features for the model by combining and transfo
 \begin{align*}
 x &\rightarrow \phi(x) \\
 &\rightarrow (\phi_1(x), \phi_2(x), \phi_3(x), \phi_4(x)) \\
-&\rightarrow (1, x_1, x_1^2, \phi_2(x)\phi_3(x))
+&\rightarrow (1, x_1, x_1^2, x_1x_2)
 \end{align*} 
 
 In the example above we have a few examples of how an input vector $x$ can be transformed.
-The examples include a constant, the identity, a polynomiel and the combination of two previously defined features.
+The examples include a constant, the identity, a polynomiel and the combination of two inputs.
 
 \subsubsection{Linear Models}
 % insert image showing a line and some data points.
@@ -114,32 +114,24 @@ Thereby it becomes possible to use all of the data as both training and test set
 \end{flushright}
 
 \subsubsection{Regularisation}
-% Write about L1 regularization, restructure subsubsection to be more general and present both types of regularization as equals.
-To combat the problem of overfitting, we can use a method called L2-Regularisation.
-In regularisation we penalise large weights, by adding the following term to the cost function.
 
-%\[ E_w = \lambda \sum_{j=1}^{M-1} w_j^2 \]
+To combat the problem of overfitting, we can also use a method called Regularisation.
+In regularisation we penalise large weights, by adding a second term to the loss function.
+Generally speaking there exist two types of regularisation L1 and L2.
+L1-Regularisation is good at encouraging sparse solutions when there are many irrelivant features whereas L2-Regularisation is better when most features are relevant.
 
-\[ L_w = \lambda \sum_{j=1}^{M-1} w_j^2 \]
+\begin{itemize}
+\item L1-Regularization: $L_w = \lambda \sum_{m} \vert w_m \vert $ \\
+\item L2-Regularisation: $L_w = \frac{\lambda}{2} \sum_{m} {w_m}^2$
+\end{itemize}
 
-Where the regularisation constant $\lambda$ scales the penalty. 
-For Logistic regression the combined loss function looks like this.
+Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data. 
 
-%\[ E(\textbf{w})
-%  = E_D + E_w 
-%  = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 + \lambda \sum_{j=1}^{M-1} w_j^2 \]
+For Logistic regression with L2-Regularisation the combined loss function looks like this.
 
 \[ L(\textbf{w})
   = L_D(w) + L_w 
-  = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \lambda \sum_{j=1}^{M-1} w_j^2 \] 
-
-%  = \sum_{n=1}^{N} \left(y_n - \textbf{w} \phi(\textbf{x}_n) \right)^2 + \lambda \sum_{j=1}^{M-1} w_j^2 \]
- 
-%\begin{flushright}
-%\cite[online course]{courseraAI}
-%\end{flushright}
-
-\todo{TODO: WRITE ABOUT L1 REGULARIZATION.}
+  = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2} \sum_{m=1}^{M} {w_m}^2 \] 
 
 \subsubsection{Batch Gradient Descent}\label{sec:batch}
 
@@ -147,17 +139,19 @@ Since we have a large number of features, applying an analytic solution to find 
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights by a value proportinal to the partial derivative of the loss function.  
+In batch gradient descent we iteratively update the weights by a value proportinal to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$.
+We do this for all weights $w_j$ for $0 \leq j \leq M$.
 
-%\[ w_j \leftarrow w_j - \eta \nabla_w E(\textbf{w}) \]
+%\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
+%	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
 
-\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
-	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
+\[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\textbf{w})}{\partial w_j^{(i-1)}}
+       = w_{j}^{(i-1)} - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} \]  
 
 The value $\eta$ represent the learning rate i.e. how big a step the algorithm should take in each iteration.
 This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
 
-When dealing with large dataset this method runs into a problem, namely that computing the partial derivative requires summing over all of the datapoints in the training set. 
+When dealing with a large dataset this method runs into a problem, namely that computing the partial derivative requires summing over all of the datapoints in the training set in every iteration. 
 
 \subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
 \todo{TODO: finish writing  this section}
