@@ -139,15 +139,19 @@ Since we have a large number of features, applying an analytic solution to find 
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights by a value proportinal to the partial derivative of the loss function.  
+In batch gradient descent we iteratively update the weights by a value proportinal to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$.
+We do this for all weights $w_j$ for $0 \leq j \leq M$.
 
-\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
-	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
+%\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
+%	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
+
+\[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\textbf{w})}{\partial w_j^{(i-1)}}
+       = w_{j}^{(i-1)} - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} \]  
 
 The value $\eta$ represent the learning rate i.e. how big a step the algorithm should take in each iteration.
 This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
 
-When dealing with large dataset this method runs into a problem, namely that computing the partial derivative requires summing over all of the datapoints in the training set. 
+When dealing with a large dataset this method runs into a problem, namely that computing the partial derivative requires summing over all of the datapoints in the training set in every iteration. 
 
 \subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
 \todo{TODO: finish writing  this section}
