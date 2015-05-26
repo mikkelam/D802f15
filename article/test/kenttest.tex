@@ -107,15 +107,18 @@ In \Cref{sec:representationoffeatures} we represented four different ways of rep
 \end{figure}
 
 \subsubsection{Best machine learning technique}
-First the best machine learning technique needs to be identified. In this experiment six different methods are used, which are: naive bayes, hidden naive bayes, logistic regression, neural network, support vector machine(C-SVM) and adaboost(using decision stump). All the different methods are run with multiple parameter settings to find the configuration that yields the best result. Note that no parameters are needed for naive bayes and hidden naive bayes. For logistic regression, different L2-regularisation factors have been used. For C-SVM, different values for the $c$-constant has been used as well as linear, polynomial, radial, and sigmoid kernel methods. For Adaboost, different number of iterations have been used. For neural networks, different number of hidden neurons have been used, always placed in a single hidden layer.
+Many different machine learning algorithms exists for learning a classifier. In this experiment, we test eight different classifiers provided by Weka (a machine learning tool from The University of Waikato) to see which one gives the best result for our particular problem. The tested classifiers are naive bayes, hidden naive bayes, logistic regression, neural network, support vector machine(C-SVM), adaboost(using decision stump), Hoeffding Tree, and Decision Stump. All the different methods are run with multiple parameter settings to find the configuration that yields the best result. Note that no parameters are needed for naive bayes, hidden naive bayes and decision stump. For logistic regression, different values of the L2-regularisation parameter has been tested. For C-SVM, different values for the $c$-constant has been used as well as linear, polynomial, radial, and sigmoid kernel methods. For Adaboost, different number of iterations have been used. For neural networks, different number of hidden neurons have been used, always placed in a single hidden layer. For Hoeffding Trees, Weka has 7 different parameters, but only the Hoeffding tie threshold and leaf prediction strategy caused a different accuracy when adjusted.
 
-For this experiments 35,000 matches are used, using the Weka tool as implementation \todo{ref weka}. The best accuracy we obtained with each of the tested machine learning techniques can be seen in \Cref{fig:besttech}. As seen, SVM and Neural networks got the worst accuracy. Naive bayes, adaboost and Hidden naive bayes all have an accuracy close to 56.5\%, but logistic regression has the best accuracy almost hitting 57\%.
+Using 35000 matches in a 2/3 split of train and evaluation, the best accuracy obtained with each of the methods can be seen in \Cref{fig:besttech}. As seen, SVM and Neural networks got the worst accuracy. Naive bayes, adaboost and Hidden naive bayes all have an accuracy close to 56.5\%, but logistic regression has the best accuracy almost hitting 57\%.
 The best parameters of each method was found to be:
+
+\begin{center}
 \begin{itemize}
 \item SVM: sigmoid kernel function, $c = 1$.
 \item Adaboost: 200 iterations
 \item Logistic regression: L2-regularisation constant = 750
 \item Neural Network: $(\text{attributes} + \text{classes}) / 2$ hidden neurons.
+\item Hoeffding Tree: Hoeffding tie threshold: 0.001, leaf prediction strategy: Naive Bayes.
 \end{itemize}
 
 \begin{figure}[!htb]
@@ -139,23 +142,33 @@ The best parameters of each method was found to be:
       \addplot[fill=black] coordinates {(1,56.6807) 
         (0,56.6807)
       };
+
+\addplot[fill=gray] coordinates {(1,56.48)
+        (0,0)
+      };      
+      
+      
       \addplot[fill=yellow] coordinates {(1,56.479) 
         (0,2)
       };
       \addplot[fill=blue] coordinates {(1,56.4454) 
         (0,56.4454)
       };
-      \addplot[fill=purple] coordinates {(1,55.6555) 
-        (0,0)
-      };
       \addplot[fill=green] coordinates {(1,55.98)
         (0,0)
       };
-      \legend{Logistic Regression,Hidden Naive Bayes,Adaboost,Naive Bayes,Neural Network,SVM}
+      \addplot[fill=purple] coordinates {(1,55.6555) 
+        (0,0)
+      };      
+      \addplot[fill=Fuchsia] coordinates {(1,52.64)
+        (0,0)
+      };
+      \legend{Logistic Regression,Hidden Naive Bayes,Hoeffding Tree,Adaboost,Naive Bayes,SVM,Neural Network, Decision Stump}
     \end{axis} 
   \end{tikzpicture}
   \caption{Test of best machine learning technique}\label{fig:besttech}
 \end{figure}
+\end{center}
 
 \subsubsection{Best features}
 \label{sec:best-features}
