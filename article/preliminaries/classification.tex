@@ -139,8 +139,7 @@ Since we have a large number of features, applying an analytic solution to find 
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights by a value proportinal to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$.
-We do this for all weights $w_j$ for $0 \leq j \leq M$.
+In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportinal to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
 
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
 %	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
@@ -157,90 +156,30 @@ When dealing with a large dataset this method runs into a problem, namely that c
 \todo{TODO: finish writing  this section}
 
 Stochastic gradient descent solves the problem of large dataset by updating the weights on each datapoint.
-The algorithm goes as follows.
+This also makes the algorithm a good choice for updating a model online with continously incoming data. 
 
-\begin{enumerate}
-\item Randomly shuffle the dataset D \\
-\item $\forall (x,y) \in D. w_j \leftarrow w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}$  \\
-\end{enumerate}
+In the algorithm for Stochastic gradient descent we first randomly shuffle all objects in the dataset $D$.
+We then iteratively update the weights in a way similar to batch gradient descent but using this equation.
 
+ \[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\textbf{w})}{\partial w_j^{(i-1)}}
+              = w_{j}^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n)) 
+              + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} 
+ \]  
+
+For each object $(x_n, y_n)$ in the dataset.
+ 
 % Non convergence of stochastic gradient descent
+% Solutions to the non convergence problem.
+%	batch phase at the end
+%	avg. of final 10 iterations.
 
-\begin{flushright}
-\cite{Bishop2006}[p. ??]
-\end{flushright}
-
-
-\subsubsection{Mini-Batch Gradient Descent}\label{sec:mini-batch}
+\paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
 
 
 \todo{TODO: WRITE STUFF}
 
 
 
-% ###################################################################
-%
-%%\subsection{Logistic Regression}\label{sec:logistic}
-%\subsection{Logistic Regression (old)}
-%% logistic function
-%
-%For classification we use an activation function, whose purpose is to squash the result into the interval $(0,1)$.
-%\[ f^{\overline{w}}(X_1, X_2, \dots X_n) = f(w_0 + w_1 \times X_1 + w_2 \times X_2 + \cdots + w_n \times X_n) \]
-%
-%\paragraph{Activation Functions}
-%
-%The most basic activation function is the so called step function defined as 
-%\[ f(x) = \begin{cases}
-%%	1 &\text{ if } f^{\overline{w}}(X_1,X_2, \text{ ... }, X_n) > 0 \\
-%%	0 &\text{ if } f^{\overline{w}}(X_1,X_2, \text{ ... }, X_n) \leq 0 
-%
-%	1 &\text{ if } x \geq 0 \\
-%	0 &\text{ if } x < 0 
-%\end{cases}\]
-%
-%However the step function is not differentiable, and since this is a requirement for gradient descent we use another
-%function called the sigmoid or logistic function.
-%\[ f(x) = \frac{1}{1+e^{-x}} \]
-%Unlike the previous activation function this function has a very simple derivative.
-%
-%\[ f'(x) = f(x) \times (1-f(x)) \] % %Which makes it easy to implement in a gradient descent algorithm.
-%
-%The cost function then becomes.
-%\[ Error_E(\overline{w}) = \sum_{e \in E} \left(val(e,Y)-f\left(pval^{\overline{w}}(e,Y)\right)\right)^2 \]
-%and the partial derivative becomes.
-%\[ \frac{\partial \text{Error}_E(\overline{w})}{\partial w_i} 
-%	= -2 \times \delta \times f'\left(\sum_i w_i \times val(e,X_i)\right) \times val(e,X_i) \]
-%When using the sigmoid activation function the update step in gradient descent looks like this.
-%\[ w_i := w_i + \eta \times \delta \times pval^{\overline{w}}(e,Y) \times \left(1 - pval^{\overline{w}}(e,Y)\right) \times val(e,X_i) \]
-%
-%Where $pval^{\overline{w}}(e,Y) = f(\sum_i w_i \times val(e,X_i))$.  
-%
-%
-%\begin{flushright}
-%\cite[p. 306-307]{AI2010}
-%\end{flushright}
-%
-%
-%\subsubsection{Regularisation}\label{sec:regular}
-%To combat the problem of overfitting, we can use a method called regularisation.
-%In regularisation we penalise large weights, by adding the following term to the cost function.
-%
-%% insert two pictures that show how regularization solves the overfitting problem.
-%
-%\[ \lambda \sum_{w_i \in \overline{w}} w_i^2 \]
-%
-%Where the regularisation constant $\lambda$ scales the penalty. 
-%The new cost function looks like this.
-%
-%\[ Error_E(\overline{w}) = \sum_{e \in E} \left(val(e,Y) - pval^{\overline{w}}(e,Y)\right)^2 + \lambda \sum_{w_i \in \overline{w}} w_i^2 \]
-%
-%
-%\begin{flushright}
-%\cite[online course]{courseraAI}
-%\end{flushright}
-
-%\subsection{Large Datasets}
-% Large datasets
 
 %%% Local Variables:
 %%% mode: latex
