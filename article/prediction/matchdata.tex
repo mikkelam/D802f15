@@ -5,18 +5,32 @@ In \Cref{sec:representationoffeatures}, a possible feature symmetry issue is inv
 
 
 \subsection{League of Legends Match Information}\label{sec:matchdata}
-Riot Games records large amounts of information about played matches as well as the players~\cite{matchinfo}. Much, if not all, of this data is publicly available through their online API. In this paper the focus will be on the match data only. The information is divided into three categories; \emph{basic information}, \emph{pregame}, and \emph{midgame}. Basic information is general and summarised information about the match and each player, such as who won, how much gold a player earned totally, etc.. As the goal is to predict the outcome of a match, before the game starts, the pregame information is the most important. A description of the used information follows:
-\todo{diskussion: hvor er postgame?}
-\begin{description}
-\item[Basic information] 
-The most important information here is, which team who won the match, as we need this when training and evaluating. Another important detail is what game mode the match is. For instance the \texttt{BOT\_5x5\_BEGINNER} game mode is unwanted, as bots do not act like humans, which in turn makes the prediction of human performance harder. The most common game modes are of the 5x5 type, which is 5 versus 5. Players can compete in \emph{ranked} or \emph{unranked} games, where they are placed in one of 7 tiers. Better players achieve higher tiers. We have data about the highest tier each player has achieved in a ranked game, which we will refer to as the rank of a player. We also know if a player has not competed in ranked games, in which case we say that he is unranked. We also have information about if players have a premade group for a game or if the game automatically placed them together. This is relevant since premade groups will probably communicate better. There exists many custom game modes, but we will only consider classic games which most people are playing. Finally the matches patch version should be taken into account as well. For instance if a champion is changed with an update, the trained model will decrease in predictive power.
-\item[Pregame]
-Before a game begins, it is known which champions that have been selected, as well as the players selected \textit{masteries}, \emph{runes}, \emph{summoner spells}, and \emph{rank}. %Champions are the playable characters (124). All champions have a pre-defined set of abilities (4), 
-%as well as masteries (57), runes (297) and summoner spells (14), which are supplementary choices the player can make to boost attribute points and add abilities.
-%Dette skal op i introduktionen //Funder
-\item[Midgame]
-As the match begins, the main body of the match information is recorded. Many significant events of the match are recorded in 1 minute intervals, called timeline data, such as champion kills, deaths, level up, selection of champion skills, taking down towers and etc.. At the same 1 minute interval some information about the champion's state is also recorded, such as earned experience, gold, creep kills, player position and etc.. Another piece of midgame information is which lane on the map a champion plays. Although this is not pregame information and therefore not absolutely certain before game start, we still assume to know the champions positions. The reasoning behind this is that champions have abilities and attributes that make them relatively better suited for different positions on the map, which high ranked players will know how to utilise. It should be noted that this paper does not present a solution to the problem of predicting lane selection, given a set of champions.
-\end{description}
+Riot Games records large amounts of information about played matches as well as the players~\cite{matchinfo}. Much, if not all, of this data is publicly available through their online API. In this paper the focus will be on the match data only, and more particularly the data that can be extracted before a match starts. The only exception is information about which team that won each match. Since we want to predict who wins, we need that data to train and evaluate a classifier.
+We have chosen to extract the following data from each match:
+\begin{itemize}
+\item The team that won the match.
+\item The champions on each of the two teams.
+\item The rank of all players in the match.
+\item The lane played by each player.
+\item The runes used by each player.
+\item The masteries used by each player.
+\item The summoner spells used by each player.
+\item The game mode of the match.
+\item The queue type of the match.
+\end{itemize}
 
-The dataset which we are going to use, is a dataset of matches played from $23^{\text{rd}}$ of March 2015 to $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. The dataset includes matches from all types of games, including games against bots, which we are not interested in. Among the filtered interesting games, are 1925980 matches which we will be training on. The patch version of our dataset is $5.6$.
+All the extracted information has be chosen because we think it might be useful for estimating how good a particular team is against another team.
+The champions on each of the two teams have been included because some champions may be better than other.
+The rank of players are considered because the rank system in LoL aims to assign better players a greater rank.
+Intuitively, a team of high ranked players must be better than a team of low ranked players.
+The lane played by each player may be useful, because players often stick to one particular \textit{lane} for the first half a match.
+Note that the lanes of the opponent team is not known before the game starts, but we have still chosen to include it, because it very often can determined based on the picked champions. Knowing the lane of the players means knowing the ranks and champion of the players that most often fights against each other.
+The masteries and runes are worth knowing, because each of them improve some property of a champion. 
+The summoner spells are also worth considering because they adds additional properties to a champion.
+Different game modes imply different play styles. By only considering the 5v5 game mode (where two teams of 5 players fight each other), we hope to achieve better predictions.
+The queue type of the match lets us know if the LoL match making system has formed the two teams, or the players have formed the two teams themselves.
+Teams formed on their own may be better, because the players in self formed teams often know each other better and more often use voice communication tools.
+Finally the matches patch version is used to make sure that we only use matches from the same patches. Different patches change many aspects of the game, e.g. the strength of particular champions, and without accounting for different patches, the trained classifier accuracy may decrease.  
+
+The data set we use use consists of matches played from $23^{\text{rd}}$ of March 2015 to $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. When filtering the games to include only 5v5 game modes, we are left with 1925980 matches. The patch version of all matches used is $5.6$.
 

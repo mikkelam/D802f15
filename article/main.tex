@@ -60,25 +60,27 @@
 
 % CONTENT
 
-%Introduction
+% introduction
 \input{introduction/online-video-games}
 \input{introduction/ml-and-online-video-games}
 \input{introduction/motivation}
 
-%Preliminaries
+
 \section{Preliminaries}\label{sec:prelim}
+In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In \Cref{sec:supervisedclassification}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, the distributed file system Hadoop and the large scale data processing engine Apache Spark is introduced, as well as the motivation for using those tools in this project.
+
 \input{preliminaries/classification}
 \input{preliminaries/distcompute}
 
-%prediction
+% features 
 \input{prediction/matchdata}
 \input{prediction/choosingfeatures}
 \input{prediction/representationoffeatures}
 
-%cluster
+% cluster
 \input{cluster/setup}
 \input{cluster/profiling}
-\input{cluster/complications}
+%\input{cluster/complications}
 \input{cluster/benchmark}
 \input{cluster/speedup}
 
