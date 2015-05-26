@@ -1,25 +1,13 @@
-\subsection{Profiling resource usage}\label{sec:profile}
+\subsection{Profiling resource consumption}\label{sec:profile}
+\todo{læs og udkommenter figref på linje 2}
+To understand the load on the cluster's resources, we use a monitoring tool to measure the resource consumption of the nodes, including main memory, CPU load and transfer speeds across the network and disk. We see that the majority of bottlenecking appears on the worker nodes, while the logistic regression model is being trained. In %\Cref{fig:profile} 
+we can see four graphs with an extract of these measurements. The graphs are aligned over the X-axis which spans 1.677 seconds, or what seems to be two iterations of MapReduce. Looking at one of the iterations, we first see that the CPU bottlenecks the system, while the disk continuously read new data into main memory, keeping as much data ready for computations as possible. The resource consumption of this phase is presumably caused by a map procedure. The second phase is bottlenecked by the transfer speeds of the network, which is presumably caused by a reduce operation. Note that the short spike in network transfer rate exist, as for at few seconds the measured node $A$ is the only one that sends data to a second worker $B$. Expectedly the transfer rate on the measured node is halved, as a third worker $C$ begins to transfer data to node $B$ as well. In other words, the transfer speed is bottlenecked on the $Switch \rightarrow B$ connection, while the rate from $A \rightarrow Switch$ and $C \rightarrow Switch$ each transfer with half of the $Switch \rightarrow B$ connection's maximum rate.
 
-Avoiding resource bottlenecks is a concern when working on a big data problem. 
-The cluster setup used for this work has much less resources than what is generally found in normal cluster. 
-Initially, using only one disk pr cluster node, limits the read/write speed to between 50 and 80MB/s, depending on which part of the disk that is being read from. 
-When doing computationally simple tasks like a word count, it is possible to imagine that the cluster will hit a bottleneck due to the disk read/write speed. 
-However when a computationally demanding task is introduced, like training a logistic regression model, the limited read/write speed of the disk might not be as problematic a bottleneck anymore. %Vi skal have et bedre argument for dette //Funder 
-Naturally one would want to have a balanced pool of resources for the task at hand. 
-In case no changes can be made to the cluster's hardware, it is possible to utilise data compression to circumvent a disk-based bottleneck. 
-Running a compression algorithm will naturally decrease the read time from disk, at the cost of more computation time to do the compression and deflation procedures.
+The measurements shows that the overall job execution can be sped up by improving either the processing or network speeds of the cluster. This observation is not that surprising, as stochastic gradient descent is a relatively expensive computation. Other strategies to increase job execution speeds include a more complex parsing, such that the entire JSON object is not parsed into memory, reducing the computation overhead. In the same manner, it is also possible to split match data across multiple files. For instance the pre- and mid-game data can be split into separate files, allowing pre-selection of only the needed pieces of data, which again reduce the overhead of loading and parsing unnecessary data.
 
-To understand whether our cluster is significantly bottlenecked, we profile the resource usage of the two unique cluster node setups, while training a logistic regression model:
+As a final note, we can observe that compression of match data would probably only increase the job execution time, as the cluster is already computationally bottlenecked. The JSON data is however very compressible, as there is a large amount of recurring keys and values in the JSON objects. As an example, 1000 matches of JSON has the size of 157 MB, which can be compressed to 35MB (22\%) with the Hadoop supported compression algorithm LZ4. The very fast LZ4 format is normally used at the shuffle/sorting step of MapReduce, to improve the transfer time of intermediate data to reducer-workers. However no compression has been used on the cluster and the benefits of using a format like LZ4 with logistic regression is unknown.
 
-dual core setup
-* Profile of an entire job, maybe cut into initialization, work loop and termination
+\todo{uncomment the graph-input}
+%\input{./cluster/4cprofile.tex}
 
-quad core setup
-
-\textcolor{red}{Example graphs, data is being updated}
-
-\input{./cluster/4cprofile.tex}
 \FloatBarrier
-
-
-\textcolor{red}{Work in progress}
