@@ -1,36 +1,42 @@
 \section{Data and Feature Setup}\label{sec:features}
-In \Cref{sec:matchdata} we investigate the match data made available by the RGs API, which covers almost any detail of a given LoL match.
+In \Cref{sec:matchdata} we investigate the match data made available by the RGs API, which covers almost any detail of a match.
 \Cref{sec:choosingfeatures} identifies a number of features that can be extracted from match data, which we think are most important when it comes to prediction of the winning team. The choice is based on our intuition as more or less experienced LoL players. The size of each type of features domain is calculated in \Cref{sec:featuresparsity}, as well as the sparsity with regards to how many features that appear in each match.
 In \Cref{sec:representationoffeatures}, a possible feature symmetry issue is investigated which raises a number of concerns and suggestions for solutions as to how the extracted features should be represented. 
 
 
 \subsection{League of Legends Match Information}\label{sec:matchdata}
-Riot Games records large amounts of information about played matches as well as the players~\cite{matchinfo}. Much, if not all, of this data is publicly available through their online API. In this paper the focus will be on the match data only, and more particularly the data that can be extracted before a match starts. The only exception is information about which team that won each match. Since we want to predict who wins, we need that data to train and evaluate a classifier.
+RG records large amounts of information about played matches and players~\cite{matchinfo}. Much, if not all, of this data is publicly available through their online API. In this paper the focus will be on the match data only, and more particularly the data that can be extracted before a match starts. The only exception is information about which team that won each match. Since we want to predict who wins, we need that data to train and evaluate a classifier.
 We have chosen to extract the following data from each match:
 \begin{itemize}
-\item The team that won the match.
-\item The champions on each of the two teams.
-\item The rank of all players in the match.
-\item The lane played by each player.
-\item The runes used by each player.
-\item The masteries used by each player.
-\item The summoner spells used by each player.
-\item The game mode of the match.
-\item The queue type of the match.
+\item Winning team
+\item Champions on each of the two teams
+\item The rank of all players
+\item Game mode
+\item Queue type
 \end{itemize}
-
-All the extracted information has be chosen because we think it might be useful for estimating how good a particular team is against another team.
-The champions on each of the two teams have been included because some champions may be better than other.
-The rank of players are considered because the rank system in LoL aims to assign better players a greater rank.
-Intuitively, a team of high ranked players must be better than a team of low ranked players.
-The lane played by each player may be useful, because players often stick to one particular \textit{lane} for the first half a match.
+And the following data from each player:
+\begin{itemize}
+\item Lane occupied 
+\item Runes 
+\item Masteries 
+\item Summoner spells 
+\end{itemize}
+All the extracted information has be chosen because we think it might be useful for estimating how good a particular team is against another team. \todo{kommetar: dårlig begrundelse}
+The champions on each of the two teams have been included because some champions may be better than others.
+The rank of players are considered because the rank system in LoL aims to assign better players a greater rank. Intuitively, a team of high ranked players must be better than a team of low ranked players.
+The lane played by each player may be useful, because players often stick to one particular lane for the first half a match.
 Note that the lanes of the opponent team is not known before the game starts, but we have still chosen to include it, because it very often can determined based on the picked champions. Knowing the lane of the players means knowing the ranks and champion of the players that most often fights against each other.
-The masteries and runes are worth knowing, because each of them improve some property of a champion. 
-The summoner spells are also worth considering because they adds additional properties to a champion.
-Different game modes imply different play styles. By only considering the 5v5 game mode (where two teams of 5 players fight each other), we hope to achieve better predictions.
+Both the masteries, runes. and summoner spells are worth knowing, because each of them add or improve some property of a champion. 
+%The summoner spells are also worth considering because they adds additional properties to a champion.
+Different game modes imply different play styles. By only considering the 5 versus 5 game mode, we hope to achieve better predictions.
 The queue type of the match lets us know if the LoL match making system has formed the two teams, or the players have formed the two teams themselves.
 Teams formed on their own may be better, because the players in self formed teams often know each other better and more often use voice communication tools.
-Finally the matches patch version is used to make sure that we only use matches from the same patches. Different patches change many aspects of the game, e.g. the strength of particular champions, and without accounting for different patches, the trained classifier accuracy may decrease.  
+Finally the matches patch version is used to make sure that we only use matches from the same patches. Different patches may change aspects of the game, e.g.\ the strength of particular champions, and without accounting for different patches, the trained classifier accuracy may decrease.  
 
-The data set we use use consists of matches played from $23^{\text{rd}}$ of March 2015 to $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. When filtering the games to include only 5v5 game modes, we are left with 1925980 matches. The patch version of all matches used is $5.6$.
+The data set we use use consists of matches played from $23^{\text{rd}}$ of March 2015 to $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. When filtering the games to include only 5 versus 5 game modes, we are left with 1925980 matches. The patch version of all matches used is $5.6$.
 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
