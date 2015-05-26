@@ -1,19 +1,21 @@
 \subsection{Supervised Classification with Big Data}
+\label{sec:supervisedclassification}
 % The problem of supervised classification bla bla bla...
 % when dealing with a large amount of labelled data ect.
 
 % write motivation for using supervised learning (DATA!!!) 
+In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:supervised learning}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, \emph{Hadoop distributed filesystem} (HDFS) is briefly outlined followed by an introduction to Apache spark which is the cluster computing system mainly used throughout this paper.
 
 \subsubsection{Supervised learning}
-Supervised learning is the process of learning the parameters of a prediction model using a corpus of labeled data.
+Supervised learning is the process of learning the parameters of a prediction model using a corpus of labelled data.
 In supervised learning the data consists of objects with labels of the form 
 $(\textbf{x}_1,y_1),(\textbf{x}_2,y_2), \text{ ... } (\textbf{x}_N,y_N)$.
-Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the datapoint.
+Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the data point.
 The goal of supervised learning is to produce a model that is able to predict a label from the inputs alone.
 When the domain of the label is continuous this is called a regression model and if it is discrete it is called a classification model.
 
 \paragraph{Feature Representation}\label{sec:phi}
-It is possible to design alot of features for the model by combining and transforming the original inputs.
+It is possible to design alot\footnote{www.goo.gl/ssSvog} of features for the model by combining and transforming the original inputs.
 
 \begin{align*}
 x &\rightarrow \phi(x) \\
@@ -22,12 +24,12 @@ x &\rightarrow \phi(x) \\
 \end{align*} 
 
 In the example above we have a few examples of how an input vector $x$ can be transformed.
-The examples include a constant, the identity, a polynomiel and the combination of two inputs.
+The examples include a constant, the identity, a polynomial and the combination of two inputs.
 
 \subsubsection{Linear Models}
 % insert image showing a line and some data points.
 
-When attempting to predict a continous value, one standard method is by using linear regression.
+When attempting to predict a continuous value, one standard method is by using linear regression.
 %A very popular model for classification is the linear classification model.
 The linear regression model predicts the value of $y$ with a hypothesis function $h(x)$ by assigning weights to the features and computing their sum.
 $$h_w(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x)$$ 
@@ -35,15 +37,15 @@ $$h_w(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x)$$
 Where $w_0$ is called the intercept, to avoid having it be a special case we add the feature $\phi_0(x)=1$.
 
 The next question becomes, how do we assign a value to the weights?
-Given the amount of data we have avaliable, it would be preferable to learn these weights from the data. 
+Given the amount of data we have available, it would be preferable to learn these weights from the data. 
 
 \paragraph{Linear Regression}
 Since the goal is to fit the hypothesis function to the training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
 
 $$ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 $$ 
-
+    
 By minimizing the loss function the value of the parameters can be determined.
-This can be done analyticly using the derivative of the function or by an iterative method introduced later called gradient descent.
+This can be done analytically using the derivative of the function or by an iterative method introduced later called gradient descent.
 
 When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function.
 
@@ -63,7 +65,7 @@ In logistic regression we use the so called logistic or sigmoid function to squa
 
 \[ \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
 
-By doing this a single outlying datapoint is no longer able to skew the decision boundary of the hypothesis function.
+By doing this a single outlying data point is no longer able to skew the decision boundary of the hypothesis function.
 
 However this comes at a cost.
 When combining the sigmoid and squared sums loss function, the resulting function is no longer convex.
@@ -76,7 +78,7 @@ $$E_w(y,h_w(x)) = \begin{cases}
 %	-ln(1-\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 0}
 \end{cases}$$
 
-This error function assigns a logaritmicly increasing penalty the further the hypothesis is from the correct label value.
+This error function assigns a logarithmically increasing penalty the further the hypothesis is from the correct label value.
 The loss function we want to minimize therefore becomes. 
 $$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$ 
 
@@ -96,7 +98,7 @@ It will therefore provide good results on the training data but do increasingly 
 % cross validation
 
 One way of avoiding overfitting is by using a technique called cross validation.
-With cross validation the data is divided into two seperate sets.
+With cross validation the data is divided into two separate sets.
 Where one is used for training and the other to test for overfitting. 
 This way it becomes possible to detect when the model starts to overfit the training data.
 A typical way to do this is by using a 60-30 split thereby using 60\% for training and 30\% for testing.
@@ -104,7 +106,7 @@ If the dataset is small, 30\% may be too much of a sacrifice.
 
 % K-Fold cross validation
 Another possibility is to use k-fold cross validation.
-When applying this method the dataset is partitioned into a number of 'folds'.
+When applying this method the dataset is partitioned into a number of ``folds''.
 The model is then trained for $k$ iterations.
 In each iteration a different fold is used as the test set and the rest as the training data.
 Thereby it becomes possible to use all of the data as both training and test set.
@@ -118,7 +120,7 @@ Thereby it becomes possible to use all of the data as both training and test set
 To combat the problem of overfitting, we can also use a method called Regularisation.
 In regularisation we penalise large weights, by adding a second term to the loss function.
 Generally speaking there exist two types of regularisation L1 and L2.
-L1-Regularisation is good at encouraging sparse solutions when there are many irrelivant features whereas L2-Regularisation is better when most features are relevant.
+L1-Regularisation is good at encouraging sparse solutions when there are many irrelevant features whereas L2-Regularisation is better when most features are relevant.
 
 \begin{itemize}
 \item L1-Regularization: $L_w = \lambda \sum_{m} \vert w_m \vert $ \\
@@ -139,8 +141,7 @@ Since we have a large number of features, applying an analytic solution to find 
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights by a value proportinal to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$.
-We do this for all weights $w_j$ for $0 \leq j \leq M$.
+In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportinal to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
 
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
 %	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
@@ -148,99 +149,39 @@ We do this for all weights $w_j$ for $0 \leq j \leq M$.
 \[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\textbf{w})}{\partial w_j^{(i-1)}}
        = w_{j}^{(i-1)} - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} \]  
 
-The value $\eta$ represent the learning rate i.e. how big a step the algorithm should take in each iteration.
+The value $\eta$ represent the learning rate i.e.\ how big a step the algorithm should take in each iteration.
 This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
 
-When dealing with a large dataset this method runs into a problem, namely that computing the partial derivative requires summing over all of the datapoints in the training set in every iteration. 
+When dealing with a large dataset this method runs into a problem, namely that computing the partial derivative requires summing over all of the data points in the training set in every iteration. 
 
 \subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
 \todo{TODO: finish writing  this section}
 
 Stochastic gradient descent solves the problem of large dataset by updating the weights on each datapoint.
-The algorithm goes as follows.
+This also makes the algorithm a good choice for updating a model online with continously incoming data. 
 
-\begin{enumerate}
-\item Randomly shuffle the dataset D \\
-\item $\forall (x,y) \in D. w_j \leftarrow w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}$  \\
-\end{enumerate}
+In the algorithm for Stochastic gradient descent we first randomly shuffle all objects in the dataset $D$.
+We then iteratively update the weights in a way similar to batch gradient descent but using this equation.
 
+ \[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\textbf{w})}{\partial w_j^{(i-1)}}
+              = w_{j}^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n)) 
+              + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} 
+ \]  
+
+For each object $(x_n, y_n)$ in the dataset.
+ 
 % Non convergence of stochastic gradient descent
+% Solutions to the non convergence problem.
+%	batch phase at the end
+%	avg. of final 10 iterations.
 
-\begin{flushright}
-\cite{Bishop2006}[p. ??]
-\end{flushright}
-
-
-\subsubsection{Mini-Batch Gradient Descent}\label{sec:mini-batch}
+\paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
 
 
 \todo{TODO: WRITE STUFF}
 
 
 
-% ###################################################################
-%
-%%\subsection{Logistic Regression}\label{sec:logistic}
-%\subsection{Logistic Regression (old)}
-%% logistic function
-%
-%For classification we use an activation function, whose purpose is to squash the result into the interval $(0,1)$.
-%\[ f^{\overline{w}}(X_1, X_2, \dots X_n) = f(w_0 + w_1 \times X_1 + w_2 \times X_2 + \cdots + w_n \times X_n) \]
-%
-%\paragraph{Activation Functions}
-%
-%The most basic activation function is the so called step function defined as 
-%\[ f(x) = \begin{cases}
-%%	1 &\text{ if } f^{\overline{w}}(X_1,X_2, \text{ ... }, X_n) > 0 \\
-%%	0 &\text{ if } f^{\overline{w}}(X_1,X_2, \text{ ... }, X_n) \leq 0 
-%
-%	1 &\text{ if } x \geq 0 \\
-%	0 &\text{ if } x < 0 
-%\end{cases}\]
-%
-%However the step function is not differentiable, and since this is a requirement for gradient descent we use another
-%function called the sigmoid or logistic function.
-%\[ f(x) = \frac{1}{1+e^{-x}} \]
-%Unlike the previous activation function this function has a very simple derivative.
-%
-%\[ f'(x) = f(x) \times (1-f(x)) \] % %Which makes it easy to implement in a gradient descent algorithm.
-%
-%The cost function then becomes.
-%\[ Error_E(\overline{w}) = \sum_{e \in E} \left(val(e,Y)-f\left(pval^{\overline{w}}(e,Y)\right)\right)^2 \]
-%and the partial derivative becomes.
-%\[ \frac{\partial \text{Error}_E(\overline{w})}{\partial w_i} 
-%	= -2 \times \delta \times f'\left(\sum_i w_i \times val(e,X_i)\right) \times val(e,X_i) \]
-%When using the sigmoid activation function the update step in gradient descent looks like this.
-%\[ w_i := w_i + \eta \times \delta \times pval^{\overline{w}}(e,Y) \times \left(1 - pval^{\overline{w}}(e,Y)\right) \times val(e,X_i) \]
-%
-%Where $pval^{\overline{w}}(e,Y) = f(\sum_i w_i \times val(e,X_i))$.  
-%
-%
-%\begin{flushright}
-%\cite[p. 306-307]{AI2010}
-%\end{flushright}
-%
-%
-%\subsubsection{Regularisation}\label{sec:regular}
-%To combat the problem of overfitting, we can use a method called regularisation.
-%In regularisation we penalise large weights, by adding the following term to the cost function.
-%
-%% insert two pictures that show how regularization solves the overfitting problem.
-%
-%\[ \lambda \sum_{w_i \in \overline{w}} w_i^2 \]
-%
-%Where the regularisation constant $\lambda$ scales the penalty. 
-%The new cost function looks like this.
-%
-%\[ Error_E(\overline{w}) = \sum_{e \in E} \left(val(e,Y) - pval^{\overline{w}}(e,Y)\right)^2 + \lambda \sum_{w_i \in \overline{w}} w_i^2 \]
-%
-%
-%\begin{flushright}
-%\cite[online course]{courseraAI}
-%\end{flushright}
-
-%\subsection{Large Datasets}
-% Large datasets
 
 %%% Local Variables:
 %%% mode: latex
