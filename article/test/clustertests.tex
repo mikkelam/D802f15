@@ -2,7 +2,7 @@
 In this section we perform a number of experiments on the cluster described in \Cref{sec:clustersetup}. The cluster setup is important due to the large size of data used for these experiments. Again we utilise the $\frac{2}{3}$ split on all of our data, yielding 1,348,428 games for training and 577,552 for experimentation.
 
 \subsubsection{Accuracy convergence}
-In this section we are going to investigate how the accuracy of our prediction converges as the size of the data increases. In each experiment we use all the prematch features described in \Cref{sec:choosingfeatures}. The classifier used in this experiment, is logistic regression with stochastic gradient descent with L2 regularization and a ridge value of 0.01. The size of the training set used are listed in \Cref{tab:trainingsize}.
+In this section we are going to investigate how the accuracy of our prediction converges as the size of the data increases. In each experiment we use all the prematch features described in \Cref{sec:choosingfeatures}. The classifier used in this experiment, is logistic regression with stochastic gradient descent with L2 regularisation and a ridge value of 0.01. The size of the training set used are listed in \Cref{tab:trainingsize}.
 
 \begin{table}[!htb]
   \centering
@@ -34,7 +34,7 @@ The results from \Cref{fig:clusterbigdata} shows that as more data is used to tr
     xtick={1,2,3,4,5, 6},
     ymin=56,
     legend entries={Training,Test},
-    legend style={at={(1.3,1.0)},
+    legend style={at={(1.25,1.0)},
         anchor=north,legend columns=1
     },
     legend image code/.code={%
@@ -78,7 +78,7 @@ Experiments are performed using logistic regression using stochastic gradient de
     xtick={1,2,3,4,5},
     ymin=53,
     legend entries={Training,Test},
-    legend style={at={(1.3,1.0)},
+    legend style={at={(1.25,1.0)},
         anchor=north,legend columns=1
     },
     legend image code/.code={%

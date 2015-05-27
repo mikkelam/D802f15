@@ -113,7 +113,7 @@ $\forall l \in L$, and for any $a,b$ that are possibles values in the range of $
 Some champions are better suited for a particular lane. For instance, mages tend to go mid as they generally loose both mana and health fast, and the path back to the base for regeneration is shortest from mid. To capture the lane each champion play, we define a new feature.
 $\forall l \in L, \forall(p, c) \in T_\text{blue}(x) \cup T_\text{purple}(x)$:
 \begin{equation}\label{eq:championlane}
-  \phi_{\text{CHAMPION-LANE},c,l}(x) =
+  \phi_{\text{LANE-CHAMPION},c,l}(x) =
 \begin{cases} 
   1 & \text{if champion } c \text{ fought at lane } l)\\
   0 & \text{otherwise} 
@@ -124,19 +124,28 @@ $\forall l \in L, \forall(p, c) \in T_\text{blue}(x) \cup T_\text{purple}(x)$:
 All of the introduced features can have value of either 1 or 0. If a feature has a value of $1$ in a given match, we say that the given feature \textit{appear} in that match.
 For a given match, a dense representation of features is a list of values, such that the $i$'th value denotes the value of feature $i$.
 A sparse representation is a list of indices $i$ of all features that appear in the given match.
-If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance  and thus be favorable.
+If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance  and thus be favourable.
+\[\phi_{\text{SINGLE}} = |T(x)| \cdot |C| = 2 \cdot 124 = 248\] 
+Because in each match, only $2 \cdot 5 = 10$ of those features appear.
+\[\phi_{\text{PAIR}} = |T(x)| \cdot |C| \cdot (|C|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] 
+Since in each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+\[\phi_{\text{COUNTER}} = |C|^2 = 124^2 = 15376\] 
+In each match, only $5 \cdot 5 = 25$ of those features appear.
+\[\phi_{\text{BEST-RANK}} = 3\] 
+By definition as in each match, only $1$ of those features appear.
+\[\phi_{\text{PLAYER-RANK}} = 2 \cdot 5 \cdot 8 = 80\] 
+Since each of the $2$ teams have $5$ players, that each can have $1$ of $8$ ranks. In each match, only $10$ features appear, because each player has only $1$ rank.
+\[\phi_{\text{LANE-RANKS}} = |L| \cdot (2 + |R| + |R|^2)^2 = 21904\]
+Because each lane contains either none, 1, 2, or many champions from each team.
+In each match only $5$ of these features appear, as each of the lanes has exactly one combination of ranks of the players / champions playing against each other.
 
-The size of $\phi_{\text{SINGLE}}$ is $|T(x)| \cdot |C| = 2 \cdot 124 = 248$. In each match, only $2 \cdot 5 = 10$ of those features appear.\\
-The size of $\phi_{\text{PAIR}}$ is $|T(x)| \cdot |C| \cdot (|C|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252$. In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.\\
-The size of $\phi_{\text{COUNTER}}$ is $|C|^2 = 124^2 = 15376$. In each match, only $5 \cdot 5 = 25$ of those features appear.\\
-The size of $\phi_{\text{BEST-RANK}}$ is 3 by definition. In each match, only $1$ of those features appear.\\
-The size of $\phi_{\text{PLAYER-RANK}}$ is $2 \cdot 5 \cdot 8 = 80$, since each of the $2$ teams have $5$ players, that each can have $1$ of $8$ ranks. In each match, only $10$ features appear, because each player has only $1$ rank.\\
-The size of $\phi_{\text{LANE-RANKS}}$ is $|L| \cdot (2 + |R| + |R|^2)^2 = 21904$, because each lane contains either none, 1, 2, or many champions from each team.
-In each match only $5$ of these features appear, as each of the lanes has exactly one combination of ranks of the players / champions playing against each other.\\
-The size of $\phi_{\text{CHAMPION-LANE}}$ is $|T(x)| \cdot |C| \cdot |L| = 2 \cdot 124 \cdot 4 = 992$, because for each team, every champion can be in one of the 4 lanes. In each match, only $2 \cdot 5 \cdot 4 = 40$ features appear.
+\[\phi_{\text{LANE-CHAMPION}} = |T(x)| \cdot |C| \cdot |L| = 2 \cdot 124 \cdot 4 = 992\]
+Because for each team, every champion can be in one of the 4 lanes. In each match, only $2 \cdot 5 \cdot 4 = 40$ features appear.
 
-\begin{center}
+
   \begin{table}[!htb]
+    \centering
+    \scalebox{0.95}{
     \begin{tabular}{|l|ccc|}
       \hline
       Feature type                  & Domain size & Appears in a single match & Appeared in 60,000 matches \\ \hline
@@ -146,12 +155,12 @@ The size of $\phi_{\text{CHAMPION-LANE}}$ is $|T(x)| \cdot |C| \cdot |L| = 2 \cd
       $\phi_{\text{BEST-RANK}}$     & 3           & 1   & 3                 \\ 
       $\phi_{\text{PLAYER-RANK}}$   & 80          & 10  & 80                \\ 
       $\phi_{\text{LANE-RANKS}}$    & 21904       & 5   & 1834              \\ 
-      $\phi_{\text{CHAMPION-LANE}}$ & 992         & 40  & 992               \\
+      $\phi_{\text{LANE-CHAMPION}}$ & 992         & 40  & 992               \\
       Total                    & 53855       & 111 & 33768             \\ \hline
     \end{tabular}
+  }
     \caption{The sparsity of each type of feature}\label{tab:featuresparsity}
   \end{table}
-\end{center}
 
 The calculated sparsities are shown in \Cref{tab:featuresparsity}, which also includes how many of each type of feature that appeared in 60,000 matches.
 In total, only $0.2\%$ of the possible features appear in a single game, hence we choose a sparse representation of features. 

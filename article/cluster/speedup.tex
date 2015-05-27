@@ -1,5 +1,5 @@
 \subsection{Cluster speedup}\label{sec:speedup}
-To test the speedup, 50GB match data were used to train a logistic regression model using stochastic gradient descent and L2 regularization with a ridge value of 0.01 the features used were all pre-match features described in \Cref{sec:choosingfeatures}. The following is the time taken by the master node controlling 1, 2 and 3 workers respectively.
+To test the speedup, 50GB match data were used to train a logistic regression model using stochastic gradient descent and L2 regularisation with a ridge value of 0.01 the features used were all pre-match features described in \Cref{sec:choosingfeatures}. The following is the time taken by the master node controlling 1, 2 and 3 workers respectively.
 
 \begin{enumerate}
     \item 43minutes 34seconds which is 2614seconds (2 cores)
@@ -12,12 +12,12 @@ To test the speedup, 50GB match data were used to train a logistic regression mo
   \begin{tikzpicture}[] 
     \begin{axis}[
       xlabel=Workers, 
-      ylabel=Time (seconds),
+      ylabel=Seconds,
       xtick={1,2,3},
       xticklabel style={anchor=near xticklabel},
       scaled x ticks=false,
-      x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
-      legend style={at={(1.4,1.001)},
+      x label style={at={(axis description cs:0.5,0.0)},anchor=north},
+      legend style={at={(1.2,1.001)},
         anchor=north,legend columns=1},] 
       \addplot[color=brown] coordinates { 
         (1,2614)
@@ -48,8 +48,8 @@ Where \( S_m=\frac{43m34s}{23m25s} = 1.86 \). We then get $P = 0.528$. Using thi
       xtick={1,10,20,30,40,50,60,70,80,90},
       xticklabel style={anchor=near xticklabel},
       scaled x ticks=false,
-      x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
-      legend style={at={(1.4,1.001)},
+      x label style={at={(axis description cs:0.5,0.0)},anchor=north},
+      legend style={at={(1.325,1.001)},
         anchor=north,legend columns=1},] 
       \addplot[color=brown] coordinates { 
 (1.0,1.0)

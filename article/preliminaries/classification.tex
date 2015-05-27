@@ -1,8 +1,8 @@
 \section{Preliminaries}\label{sec:prelim}
 In this section, theory and knowledge that is imperative for the understanding of this paper will be presented. In \Cref{sec:supervisedclassification}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, the distributed file system Hadoop and the large scale data processing engine Apache Spark is introduced, as well as the motivation for using those tools in this project.
 
-\subsection{Supervised Classification with Big Data}
-\label{sec:supervisedclassification}
+\subsection{Supervised Classification with Big Data}\label{sec:supervisedclassification}
+In this section several supervised classifications methods will be explored, including information on how they handle big data. 
 % The problem of supervised classification bla bla bla...
 % when dealing with a large amount of labelled data ect.
 
@@ -12,20 +12,18 @@ In this section, theory and knowledge that is imperative for the understanding o
 \subsubsection{Supervised learning}
 Supervised learning is the process of learning the parameters of a prediction model using a corpus of labelled data.
 In supervised learning the data consists of objects with labels of the form 
-$(\textbf{x}_1,y_1),(\textbf{x}_2,y_2), \text{ ... } (\textbf{x}_N,y_N)$.
+$(\mathbf{x}_1,y_1),(\mathbf{x}_2,y_2), \dots, (\mathbf{x}_N,y_N)$.
 Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the data point.
 The goal of supervised learning is to produce a model that is able to predict a label from the inputs alone.
 When the domain of the label is continuous this is called a regression model and if it is discrete it is called a classification model.
 
 \paragraph{Feature Representation}\label{sec:phi}
 It is possible to design a lot of features for the model by combining and transforming the original inputs.
-
 \begin{align*}
 x &\rightarrow \phi(x) \\
 &\rightarrow (\phi_1(x), \phi_2(x), \phi_3(x), \phi_4(x)) \\
 &\rightarrow (1, x_1, x_1^2, x_1x_2)
 \end{align*} 
-
 Above we have a few examples of how an input vector $x$ can be transformed.
 The examples include a constant, the identity, a polynomial and the combination of two inputs.
 
@@ -34,60 +32,54 @@ The examples include a constant, the identity, a polynomial and the combination 
 
 When attempting to predict a continuous value, one standard method is by using linear regression.
 %A very popular model for classification is the linear classification model.
-The linear regression model predicts the value of $y$ with $\hat{y}$. $\hat{y}$ is found with the hypothesis function $h(x)$ by assigning weights $(\textbf{w}_1\phi_1),(\textbf{w}_2\phi_2), \text{ ... } (\textbf{w}_M\phi_M)$. to the features and computing their sum.
-$$h_w(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x)$$ 
+The linear regression model predicts the value of $y$ with $\hat{y}$. $\hat{y}$ is found with the hypothesis function $h(x)$ by assigning weights $(\mathbf{w}_1\phi_1),(\mathbf{w}_2\phi_2), \dots (\mathbf{w}_M\phi_M)$ to the features and computing their sum.
+\[h_w(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x) \]
 
-Where $w_0$ is as special case called the intercept, however to avoid having this special case we add  $w_0$ to the feature $\phi_0(x)=1$, which allows us to use the intercept as a normal feature. 
-
+Where $w_0$ is a special case called the intercept, however to avoid having this special case we add  $w_0$ to the feature $\phi_0(x)=1$, which allows us to use the intercept as a normal feature. 
 The next question becomes, how do we assign a value to the weights?
 Given the amount of data we have available, it would be preferable to learn these weights from the data. 
 
 \paragraph{Linear Regression}
 Since the goal is to fit the hypothesis function to the training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
 
-$$ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 $$ 
+\[ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 \] 
     
-By minimizing the loss function the value of the parameters can be determined.
+By minimising the loss function the value of the parameters can be determined.
 This can be done analytically using the derivative of the function or by an iterative method introduced later called gradient descent.
 
 When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function.
-
-$$\hat{y} = \begin{cases}
-	1 &\text{ if } h_w(x) > \tau \\
-	0 &\text{ if } h_w(x) \leq \tau  % should this be 0 < f(x) \leq 0 ????
-\end{cases}$$ 
-
+\[
+\hat{y} = 
+\begin{cases}
+  1 &\text{ if } h_w(x) > \tau \\
+  0 &\text{ if } h_w(x) \leq \tau  % should this be 0 < f(x) \leq 0 ????
+\end{cases}
+\] 
 Although this may work in some cases, a dataset with a few outliers can significantly skew the decision boundary.
 %insert image of a skewed decision boundary.
-
 In order to combat this problem we introduce a new linear model for classification called logistic regression.
 
 \paragraph{Logistic Regression}\label{sec:logistic}
 
 In logistic regression we use the so called logistic or sigmoid function to squash the prediction into the interval $[0,1]$.
-
 \[ \hat{y} = \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
-
 By doing this a single outlying data point is no longer able to skew the decision boundary of the hypothesis function.
-
 However this comes at a cost.
 When combining the sigmoid and squared sums loss function, the resulting function is no longer convex.
 Therefore we need a different loss function in order to find the optimal weights.
-
-$$E_w(y,h_w(x)) = \begin{cases}
+\[E_w(y,h_w(x)) = \begin{cases}
 	-ln(\sigma(h_w(x))) &\text{if y = 1}\\	
 	-ln(1-\sigma(h_w(x))) &\text{if y = 0}
 %	-ln(\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 1}\\	
 %	-ln(1-\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 0}
-\end{cases}$$
-
+\end{cases}\]
 This error function assigns a logarithmically increasing penalty the further the hypothesis is from the correct label value.
-The loss function we want to minimize therefore becomes. 
+The loss function we want to minimise therefore becomes. 
 $$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$ 
 
 \subsubsection{Overfitting and Underfitting}
 % overfitting vs. underfitting
-Learning the parameters of a linear model can sometimes result a model that is too simple or too complex.
+Learning the parameters of a linear model can sometimes result in a model that is too simple or too complex.
 In the case of a model that is too simple, it is unable to catch the nuances presented in the data.
 % insert image with a model that is too simple.  
 When a model is too complex or the data used in training has a bias compare to the real world examples.
@@ -104,7 +96,7 @@ One way of avoiding overfitting is by using a technique called cross validation.
 With cross validation the data is divided into two separate sets.
 Where one is used for training and the other to test for overfitting. 
 This way it becomes possible to detect when the model starts to overfit the training data.
-A typical way to do this is by using a 60-30 split thereby using 60\% for training and 30\% for testing.
+A typical way to do this is by using a 70-30 split thereby using 70\% for training and 30\% for testing.
 If the dataset is small, 30\% may be too much of a sacrifice.
 
 % K-Fold cross validation
@@ -114,27 +106,25 @@ The model is then trained for $k$ iterations.
 In each iteration a different fold is used as the test set and the rest as the training data.
 Thereby it becomes possible to use all of the data as both training and test set.
 % Source: AI pool, macworth, p. 324
-\begin{flushright}
-\cite[p. 324]{AI2010}
-\end{flushright}
+
+
+
 
 \subsubsection{Regularisation}
 
-To combat the problem of overfitting, we can also use a method called Regularisation.
+To combat the problem of overfitting, we can also use a method called regularisation.
 In regularisation we penalise large weights, by adding a second term to the loss function.
 Generally speaking there exist two types of regularisation L1 and L2.
-L1-Regularisation is good at encouraging sparse solutions when there are many irrelevant features whereas L2-Regularisation is better when most features are relevant.
+L1-regularisation is good at encouraging sparse solutions when there are many irrelevant features whereas L2-regularisation is better when most features are relevant.
 
 \begin{itemize}
-\item L1-Regularization: $L_w = \lambda \sum_{m} \vert w_m \vert $ \\
+\item L1-Regularisation: $L_w = \lambda \sum_{m} \vert w_m \vert $ \\
 \item L2-Regularisation: $L_w = \frac{\lambda}{2} \sum_{m} {w_m}^2$
 \end{itemize}
 
-Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data. 
+Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data. For Logistic regression with L2-Regularisation the combined loss function looks like this.
 
-For Logistic regression with L2-Regularisation the combined loss function looks like this.
-
-\[ L(\textbf{w})
+\[ L(\mathbf{w})
   = L_D(w) + L_w 
   = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2} \sum_{m=1}^{M} {w_m}^2 \] 
 
@@ -144,7 +134,7 @@ Since we have a large number of features, applying an analytic solution to find 
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
+In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges, i.e.\ when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
 
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
 %	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
@@ -162,26 +152,26 @@ When dealing with a large dataset this method runs into a problem, namely that c
 Stochastic gradient descent solves the problem of large dataset by updating the weights on each data point.
 This also makes the algorithm a good choice for updating a model online with continuously incoming data. 
 
-In the algorithm for Stochastic gradient descent we first randomly shuffle all objects in the dataset $D$.
+In the algorithm for stochastic gradient descent we first randomly shuffle all objects in the dataset $D$.
 We then iteratively update the weights in a way similar to batch gradient descent but using this equation.
 
 $$ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n))}{\partial w_j^{(i-1)}} $$
 
 For each object $(x_n, y_n)$ in the dataset.
 
-One problem with stochastic gradient descent is that the algorithm never converges but instead moves the weight around in an area close to the minimum value.
+One problem with stochastic gradient descent is that the algorithm never converges, but instead moves the weight around in an area close to the minimum value.
 Therefore it becomes necessary to use a separate strategy to accomplish this.
-Among these strategies are
+Among these strategies are:
 \begin{itemize}
-\item Adding a final iteration that uses Batch Gradient Descent. 
-\item Have a final phase that takes the average of last 10 iterations. 
-\item Comparing change in weights with a threshold value. 
+\item Adding a final iteration that uses batch gradient descent 
+\item Have a final phase that takes the average of last 10 iterations 
+\item Comparing change in weights with a threshold value
 \end{itemize}
 
-The pseudocode for the algorithm looks like this.
+The pseudocode for the algorithm can be seen in \Cref{lst:sgt}.
 
-\begin{lstlisting}[language=python]
-
+\begin{listing}[H]
+\begin{minted}{python}
 def StochasticGradientDescent(W,E,D):
   Shuffle(D)
 
@@ -189,15 +179,17 @@ def StochasticGradientDescent(W,E,D):
     for x in D do:
       for w in W do: 
         w := w - eta * partial(E(W,x),w)
-
-\end{lstlisting}
+\end{minted}
+\caption{Stochastic Gradient Descent}
+\label{lst:sgt}
+\end{listing}
 
 \paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
 
-Because Stochastic Gradient Descent updates the weights using individual data points.
+Because stochastic gradient descent updates the weights using individual data points.
 The value has a tendency to jump around a lot instead of moving directly down the gradient towards the minimum.
-To alleviate this problem there exist a variant of stochastic gradient descent called Mini-Batch Gradient Descent. 
-The only difference between them being that each update is an average of ten updates in Mini-Batch Gradient Descent. 
+To alleviate this problem there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
+The only difference between them being that each update is an average of ten updates in mini-batch gradient descent. 
 
 
 

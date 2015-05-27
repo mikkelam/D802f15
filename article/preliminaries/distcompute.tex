@@ -149,7 +149,8 @@ This can be seen in \Cref{fig:mapreduce}, where the input data of key-value pair
 \end{figure} 
 
 A common MapReduce example is word counting. To use MapReduce for word count on a corpus of documents, each document is passed to a map task which treats each individual word as a key and give it the value 1. This would give the intermediate result of $\{(w_1,1), (w_2,1),\dots,(w_i,1)\} $. These intermediate results are then grouped by word and distributed across workers assigned to reduce such that all the pairs of e.g.\ $\{w_i,1\}$ are sent to the same worker. Each worker receives a key-value grouping of the form $(w_i, (1,1,\dots) )$. Each worker then sums up the 1's resulting in $(w_i, x)$ where $x>0$. Effectively the output of the reduce task is a list of words and their frequency in the corpus. The pseudocode for word count in MapReduce can be seen in \Cref{lst:mrwordcount}. 
-\begin{lstlisting}[language=, caption={MapReduce Wordcount},label={lst:mrwordcount},belowcaptionskip=4pt]
+\begin{listing}[H]
+\begin{minted}{bash}
 map(name, document):
   for each word in document:
     emit (word, 1)
@@ -159,7 +160,10 @@ reduce(word, partialCounts):
   for each partialCount in partialCounts:
     sum += partialCount
   emit (word, sum)
-\end{lstlisting}
+\end{minted}
+\caption{MapReduce Wordcount}
+\label{lst:mrwordcount}
+\end{listing}
 
 \subsubsection{Apache Spark}\label{sec:spark}
 Apache Spark is a general purpose cluster-computing system, that offers a high level programming API, as well as a set of high level tools for SQL data manipulation, machine learning and graph processing~\cite{sparkintro}. The main advantage of Spark compared to the MapReduce offered by Hadoop, is when working with iterative processes across the same data. Simply by keeping data cleverly in memory using Directed Acyclic Graphs, Spark performs iterative processes much faster. An example of a iterative task, is when computing the gradient for a logistic regression classification, the gradient for the separating hyperplane is found iteratively~\cite{ApacheSpark}.
@@ -173,8 +177,8 @@ The RDD is a read-only collection of objects which is distributed across the mac
   \item[Foreach:] Calls a function on each element in the RDD
 \end{description}
 \Cref{lst:wordcount} shows an example of a Spark application for counting words on a HDFS and output it into standard output.
-\begin{listing}[H] %[caption={Wordcount in Spark on HDFS},label={lst:wordcount},belowcaptionskip=4pt]
-  \begin{minted}{python}
+\begin{listing}[H]
+\begin{minted}{python}
   from pyspark import SparkContext
   sc = SparkContext("spark://node1:7077")
   text_file = sc.textFile("hdfs://node1:9000/dictionary.txt")
@@ -183,8 +187,8 @@ The RDD is a read-only collection of objects which is distributed across the mac
                     .reduceByKey(lambda a, b: a + b)
   print counts.collect()
   \end{minted}
-  \label{lst:wordcount}
   \caption{Wordcount in Spark on HDFS}
+  \label{lst:wordcount}
 \end{listing} 
 The code can be run by invoking pyspark, which is similar to the python interpreter. When invoked, the application is submitted to Spark on \texttt{spark://node1:7077} through the sparkcontext. \texttt{text\_file} is an RDD with references to each line in the file on the HDFS. We then split each line on blank space, into arrays, which are flattened out by using flatmap. Each word is then sent a key-value pair and reduced by key, counting up the occurrences of the word. Lastly we use collect to print out words and their occurrences.
 
