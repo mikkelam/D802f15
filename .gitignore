@@ -12,4 +12,4 @@ Article/main.pdf
 *.swn
 *.swo
 code/spark_feature_test_example.py
-
+*.orig

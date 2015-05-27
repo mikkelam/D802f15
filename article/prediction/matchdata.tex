@@ -5,7 +5,7 @@ In \Cref{sec:representationoffeatures}, a possible feature symmetry issue is inv
 
 
 \subsection{League of Legends Match Information}\label{sec:matchdata}
-Riot records large amounts of information about played matches and players~\cite{matchinfo}. Much, if not all, of this data is publicly available through their online API. In this paper the focus will be on the match data only, and more particularly the data that can be extracted before a match starts. The only exception is information about which team that won each match. Since we want to predict who wins, we need that data to train and evaluate a classifier.
+Riot Games records large amounts of information about played matches and players~\cite{matchinfo}. Much, if not all of this data is publicly available through their online API. Since we aim to predict the winning team before the game starts, we will only focus on the data that can be extracted before a match starts. The only exception is information about which team that won each match, since that is the class label we want to predict and thus we need it for training and evaluating a classifier.
 We have chosen to extract the following data from each match:
 \begin{itemize}
 \item Winning team
