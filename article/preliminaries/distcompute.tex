@@ -78,12 +78,14 @@ The HDFS client write files by making requests on the namenode to create a file.
 \subsubsection{MapReduce}\label{sec:mapreduce_programming_model}
 MapReduce is a programming model that Hadoop applies and which was developed by J.\@ Dean et al.~\cite{DeanMapReduce}, and is designed to be used in the context of \emph{big data}. The model is useful in the context of processing large amounts of data, clustering as well as utilising parallelism. The main reason for the success of the MapReduce model, is because it is easy for the programmer to do parallel programming, and its low-cost, high-compute property, that support commodity hardware in a cluster configuration. MapReduce is also well-suited for handling data large enough to not fit into a single disk.
 
-The user has to construct the MapReduce procedure, which is a computation with two steps, where: 
+To program something using MapReduce, one has write the following two functions: 
 \begin{description}
 \item[Map] works by taking a set of key-value pairs. These pairs are turned into a new set of \emph{intermediate} key-value pairs where the value is now in a list with one element. The intermediate data is now grouped by their key and passed to Reduce.
 \item[Reduce] receives the intermediate data, then appends all the values, with the same keys, to a single list with the same key, which is returned as the result.
 \end{description}
-This can be seen in \Cref{fig:mapreduce}, where the input data will be split into smaller pieces and distributed across the workers which have been assigned to mapping. The mapping then splits the input data into sets of key-value pairs $\{k_1,v_1\}$, the sorting by $k_1$ is the step after the mapping. The next step is that the workers which have been assigned to reduce receives these results where each worker is assigned specific keys to receive. These key-value pairs are then turned into new sets where the values with same key is now a list, such as $\{k_1, [v_1,v_2,v_3,\dots,v_x]\}$, which is returned as the result.
+
+
+This can be seen in \Cref{fig:mapreduce}, where the input data of key-value pairs is given to each worker. Each worker then applies the Map function such that $map(k_1,v_1)\rightarrow list<k_2,v_2>$, the result is written to disk. The shuffling is then performed: Worker nodes redistribute the data, such that data of some key is placed on the same worker node, effectively grouping by key. Each group can now be reduced by the worker nodes such that $reduce(k_2, list<v_2>) \rightarrow list<v_3>$ 
 
 % The user has to construct a \emph{map} and \emph{reduce} procedure. The two procedures are split into the following actions:
 %\begin{description}
@@ -113,7 +115,7 @@ This can be seen in \Cref{fig:mapreduce}, where the input data will be split int
       % Text nodes
       \path node at (-4.75,-2.5) [] (T1) {Split};
       \path node at (-2.5,-2.5) [] (T2) {Map};
-      \path node at (0,-2.5) [] (T4) {Sort};
+      \path node at (0,-2.5) [] (T4) {Shuffle};
       \path node at (2.5,-2.5) [] (T3) {Reduce};
       \path node at (4.75,-2.5) [] (T5) {Merge};
 
@@ -146,7 +148,7 @@ This can be seen in \Cref{fig:mapreduce}, where the input data will be split int
   \caption{The MapReduce programming model}\label{fig:mapreduce}
 \end{figure} 
 
-A common MapReduce example is the word count, in which a large document would be split into small fragments. These fragments would be sent to workers assigned to mapping, the mapping procedure would treat each individual word as a key and give it the value 1. This would give the intermediate result of $\{w_1,1\}, \{w_2,1\} \dots$. These intermediate results are then distributed across workers assigned to reduce such that all the pairs of e.g.\ $\{w_i,1\}$ are sent to the same worker. That worker appends the values with the same key, such that it becomes a key with a list of values, $\{w_i, [1,1,\dots] \}$. In this specific case an additional action is taken; the values of the list are summed up such that all the 1's are added together giving $\{w_i,1+1+\cdots \}$, which is then returned as result. The pseudo code for word count in MapReduce can be seen in \Cref{lst:mrwordcount}, in which the making of the list is skipped as the final result is just a sum of the values. 
+A common MapReduce example is word counting. To use MapReduce for word count on a corpus of documents, each document is passed to a map task which treats each individual word as a key and give it the value 1. This would give the intermediate result of $\{(w_1,1), (w_2,1),\dots,(w_i,1)\} $. These intermediate results are then grouped by word and distributed across workers assigned to reduce such that all the pairs of e.g.\ $\{w_i,1\}$ are sent to the same worker. Each worker receives a key-value grouping of the form $(w_i, (1,1,\dots) )$. Each worker then sums up the 1's resulting in $(w_i, x)$ where $x>0$. Effectively the output of the reduce task is a list of words and their frequency in the corpus. The pseudocode for word count in MapReduce can be seen in \Cref{lst:mrwordcount}. 
 \begin{lstlisting}[language=, caption={MapReduce Wordcount},label={lst:mrwordcount},belowcaptionskip=4pt]
 map(name, document):
   for each word in document:

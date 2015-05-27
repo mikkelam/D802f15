@@ -1,10 +1,13 @@
+\section{Preliminaries}\label{sec:prelim}
+In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In \Cref{sec:supervisedclassification}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, the distributed file system Hadoop and the large scale data processing engine Apache Spark is introduced, as well as the motivation for using those tools in this project.
+
 \subsection{Supervised Classification with Big Data}
 \label{sec:supervisedclassification}
 % The problem of supervised classification bla bla bla...
 % when dealing with a large amount of labelled data ect.
 
 % write motivation for using supervised learning (DATA!!!) 
-In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:supervised learning}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, \emph{Hadoop distributed filesystem} (HDFS) is briefly outlined followed by an introduction to Apache spark which is the cluster computing system mainly used throughout this paper.
+In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In \Cref{sec:supervised learning}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, \emph{Hadoop distributed filesystem} (HDFS) is briefly outlined followed by an introduction to Apache spark which is the cluster computing system mainly used throughout this paper.
 
 \subsubsection{Supervised learning}
 Supervised learning is the process of learning the parameters of a prediction model using a corpus of labelled data.
@@ -15,7 +18,7 @@ The goal of supervised learning is to produce a model that is able to predict a 
 When the domain of the label is continuous this is called a regression model and if it is discrete it is called a classification model.
 
 \paragraph{Feature Representation}\label{sec:phi}
-It is possible to design alot\footnote{www.goo.gl/ssSvog} of features for the model by combining and transforming the original inputs.
+It is possible to design a lot of features for the model by combining and transforming the original inputs.
 
 \begin{align*}
 x &\rightarrow \phi(x) \\
@@ -55,7 +58,7 @@ $$\hat{y} = \begin{cases}
 \end{cases}$$ 
 
 Although this may work in some cases, a dataset with a few outliers can significantly skew the decision boundary.
-%insert image of a skewed descision boundary.
+%insert image of a skewed decision boundary.
 
 In order to combat this problem we introduce a new linear model for classification called logistic regression.
 
@@ -141,7 +144,7 @@ Since we have a large number of features, applying an analytic solution to find 
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportinal to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
+In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
 
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
 %	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
@@ -155,30 +158,49 @@ This value need to be chosen wisely as a value that is too small will increase t
 When dealing with a large dataset this method runs into a problem, namely that computing the partial derivative requires summing over all of the data points in the training set in every iteration. 
 
 \subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
-\todo{TODO: finish writing  this section}
 
-Stochastic gradient descent solves the problem of large dataset by updating the weights on each datapoint.
-This also makes the algorithm a good choice for updating a model online with continously incoming data. 
+Stochastic gradient descent solves the problem of large dataset by updating the weights on each data point.
+This also makes the algorithm a good choice for updating a model online with continuously incoming data. 
 
 In the algorithm for Stochastic gradient descent we first randomly shuffle all objects in the dataset $D$.
 We then iteratively update the weights in a way similar to batch gradient descent but using this equation.
 
- \[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\textbf{w})}{\partial w_j^{(i-1)}}
-              = w_{j}^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n)) 
-              + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} 
- \]  
+$$ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n))}{\partial w_j^{(i-1)}} $$
 
 For each object $(x_n, y_n)$ in the dataset.
- 
-% Non convergence of stochastic gradient descent
-% Solutions to the non convergence problem.
-%	batch phase at the end
-%	avg. of final 10 iterations.
+
+One problem with stochastic gradient descent is that the algorithm never converges but instead moves the weight around in an area close to the minimum value.
+Therefore it becomes necessary to use a separate strategy to accomplish this.
+Among these strategies are
+\begin{itemize}
+\item Adding a final iteration that uses Batch Gradient Descent. 
+\item Have a final phase that takes the average of last 10 iterations. 
+\item Comparing change in weights with a threshold value. 
+\end{itemize}
+
+The pseudocode for the algorithm looks like this.
+
+\begin{lstlisting}[language=python]
+
+def StochasticGradientDescent(W,E,D):
+  Shuffle(D)
+
+  Repeat Until hasConverged(W,oldW):
+    for x in D do:
+      for w in W do: 
+        w := w - eta * partial(E(W,x),w)
+
+\end{lstlisting}
 
 \paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
 
+Because Stochastic Gradient Descent updates the weights using individual data points.
+The value has a tendency to jump around a lot instead of moving directly down the gradient towards the minimum.
+To alleviate this problem there exist a variant of stochastic gradient descent called Mini-Batch Gradient Descent. 
+The only difference between them being that each update is an average of ten updates in Mini-Batch Gradient Descent. 
 
-\todo{TODO: WRITE STUFF}
+
+
 
 
 
