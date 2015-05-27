@@ -1,13 +1,14 @@
+\section{Preliminaries}\label{sec:prelim}
+In \Cref{sec:supervisedclassification} supervised classification is described followed by a more detailed explanation of a particular classification model called logistic regression, which is widely used in this project. In \Cref{sec:distributed}, the distributed file system Hadoop and the large scale data processing engine Apache Spark is introduced, as well as the motivation for using those tools in this project.
+
 \subsection{Supervised Classification with Big Data}
 \label{sec:supervisedclassification}
-% The problem of supervised classification bla bla bla...
-% when dealing with a large amount of labelled data ect.
-
-% write motivation for using supervised learning (DATA!!!) 
-In this section, theory or knowledge that is imperative for the understanding of this paper will be presented. In Cref{sec:supervised learning}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, \emph{Hadoop distributed filesystem} (HDFS) is briefly outlined followed by an introduction to Apache spark which is the cluster computing system mainly used throughout this paper.
+In the following, we describe supervised learning in general followed by an introduction to linear models for classification.
+We take a look at logistic regression and explain how the model can account for overfitting. 
+Finally, we discuss a technique that is paramount when learning a logistic regression model from large amounts of data.
 
 \subsubsection{Supervised learning}
-Supervised learning is the process of learning the parameters of a prediction model using a corpus of labelled data.
+Supervised learning is the process of learning the parameters of a prediction model using a corpus of labeled data.
 In supervised learning the data consists of objects with labels of the form 
 $(\textbf{x}_1,y_1),(\textbf{x}_2,y_2), \text{ ... } (\textbf{x}_N,y_N)$.
 Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the data point.
