@@ -66,7 +66,7 @@ In order to combat this problem we introduce a new linear model for classificati
 
 In logistic regression we use the so called logistic or sigmoid function to squash the prediction into the interval $[0,1]$.
 
-\[ \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
+\[ \hat{y} = \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
 
 By doing this a single outlying data point is no longer able to skew the decision boundary of the hypothesis function.
 
@@ -75,8 +75,8 @@ When combining the sigmoid and squared sums loss function, the resulting functio
 Therefore we need a different loss function in order to find the optimal weights.
 
 $$E_w(y,h_w(x)) = \begin{cases}
-	-ln(h_w(x)) &\text{if y = 1}\\	
-	-ln(1-h_w(x)) &\text{if y = 0}
+	-ln(\sigma(h_w(x))) &\text{if y = 1}\\	
+	-ln(1-\sigma(h_w(x))) &\text{if y = 0}
 %	-ln(\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 1}\\	
 %	-ln(1-\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 0}
 \end{cases}$$
