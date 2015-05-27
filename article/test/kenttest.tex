@@ -1,12 +1,12 @@
 \section{Experiments}\label{sec:testing}
-In this section we are going to perform a number of experiments on our 456 GB dataset of 2 million matches. Firstly we are going to perform some initial experiments on a single computer, to get an idea of the strength of features in \Cref{sec:initialtest}. In \Cref{sec:clustertest}, we will present the experiments that have been running on the cluster. Lastly in \Cref{sub:knowledge} we present a list of the knowledge which can be extracted from our results. All following experiments will be performed using a split of $\frac{2}{3}$ for training set and $\frac{1}{3}$ for testing set. 
+In this section we are going to perform a number of experiments on our 456 GB dataset of two million matches. Firstly we are going to perform some initial experiments on a single computer, to get an idea of the strength of features in \Cref{sec:initialtest}. In \Cref{sec:clustertest}, we will present the experiments that have been running on the cluster. Lastly in \Cref{sub:knowledge} we present a list of the knowledge which can be extracted from our results. All following experiments will be performed using a split of $\frac{2}{3}$ for training set and $\frac{1}{3}$ for testing set. 
 
 \subsection{Initial experimentation}\label{sec:initialtest}
 In this section we will present experiments which have been run on a smaller dataset, to get a quick overview of the strength of features. These experiments are used to find the settings, which the cluster should be run with when the final cluster experiments will be performed. 
 
 
 \subsubsection{Feature symmetry experiment}
-In \Cref{sec:representationoffeatures} we represented four different ways of representing features, to capture a possible symmetry in the choice of champions and the layout of the map. In this section we test each representation by training a classifier using logistic regression using the given representation of features. The experiment was performed on a test set of 10,000 matches with training sets of up to 50,000 matches. The result, shown in \Cref{fig:feat-rep}, indicates that method 1 and 4 are very close, but as the binary representation is slightly more accurate than the ternary one the majority of the time, we choose to conduct all the following tests using the binary representation. 
+In \Cref{sec:representationoffeatures} we represented four different ways of representing features, to capture a possible symmetry in the choice of champions and the layout of the map. In this section we test each representation by training a classifier using logistic regression using the given representation of features. The experiment was performed on a test set of 10,000 matches with training sets of up to 50,000 matches. The result, shown in \Cref{fig:feat-rep}, indicates that binary and ternary are very close, but as the binary representation is slightly more accurate than the ternary one the majority of the time, we choose to conduct all the following tests using the binary representation. 
 
 \begin{figure}[!htb]
   \centering
@@ -107,9 +107,9 @@ In \Cref{sec:representationoffeatures} we represented four different ways of rep
 \end{figure}
 
 \subsubsection{Best machine learning technique}
-Many different machine learning algorithms exists for learning a classifier. In this experiment, we test eight different classifiers provided by Weka (a machine learning tool from The University of Waikato) to see which one gives the best result for our particular problem. The tested classifiers are naive bayes, hidden naive bayes, logistic regression, neural network, support vector machine(C-SVM), adaboost(using decision stump), Hoeffding Tree, and Decision Stump. All the different methods are run with multiple parameter settings to find the configuration that yields the best result. Note that no parameters are needed for naive bayes, hidden naive bayes and decision stump. For logistic regression, different values of the L2-regularisation parameter has been tested. For C-SVM, different values for the $c$-constant has been used as well as linear, polynomial, radial, and sigmoid kernel methods. For Adaboost, different number of iterations have been used. For neural networks, different number of hidden neurons have been used, always placed in a single hidden layer. For Hoeffding Trees, Weka has 7 different parameters, but only the Hoeffding tie threshold and leaf prediction strategy caused a different accuracy when adjusted.
+Many different machine learning algorithms exists for learning a classifier. In this experiment, we test eight different classifiers provided by Weka to see which one gives the best result for our particular problem~\cite{weka}. The tested classifiers are naive bayes, hidden naive bayes, logistic regression, neural network, support vector machine(C-SVM), adaboost(using decision stump), Hoeffding Tree, and Decision Stump. All the different methods are run with multiple parameter settings to find the configuration that yields the best result. Note that no parameters are needed for naive bayes, hidden naive bayes and decision stump. For logistic regression, different values of the L2-regularisation parameter has been tested. For C-SVM, different values for the $c$-constant has been used as well as linear, polynomial, radial, and sigmoid kernel methods. For Adaboost, different number of iterations have been used. For neural networks, different number of hidden neurons have been used, always placed in a single hidden layer. For Hoeffding Trees, Weka has 7 different parameters, but only the Hoeffding tie threshold and leaf prediction strategy caused a different accuracy when adjusted.
 
-Using 35000 matches in a 2/3 split of train and evaluation, the best accuracy obtained with each of the methods can be seen in \Cref{fig:besttech}. As seen, SVM and Neural networks got the worst accuracy. Naive bayes, adaboost and Hidden naive bayes all have an accuracy close to 56.5\%, but logistic regression has the best accuracy almost hitting 57\%.
+Using 35000 matches in a $\frac{2}{3}$ split of train and evaluation, the best accuracy obtained with each of the methods can be seen in \Cref{fig:besttech}. As seen, SVM and Neural networks got the worst accuracy. Naive bayes, adaboost and Hidden naive bayes all have an accuracy close to 56.5\%, but logistic regression has the best accuracy almost hitting 57\%.
 The best parameters of each method was found to be:
 
 \begin{center}
@@ -173,14 +173,14 @@ The best parameters of each method was found to be:
 \subsubsection{Best features}
 \label{sec:best-features}
 To get an idea of each type of features impact on our prediction capability, some quick tests are performed using the machine learning tool Weka.
-Logistic regression is used as classifier with an L2-regularization parameter of 750. A training set of ranging size is used, up to a total of 50,000 matches, and a test set of 10,000 matches is used for evaluation.
+Logistic regression is used as classifier with an L2-regularisation parameter of 750. A training set of ranging size is used, up to a total of 50,000 matches, and a test set of 10,000 matches is used for evaluation.
 The obtained accuracies can be seen in \Cref{fig:best-feat}.
 Interestingly, the baseline where no features are used gives an accuracy of $51.24 \%$, and results in a model that always predicts the blue team to win.
 Among the feature types that only consider the rank of players, the $\phi_\text{LANE-RANKS}$ feature did best.
 The $\phi_\text{PAIR}$ and $\phi_\text{COUNTER}$ features have not been tested, as they due to their size and density could not be handled in Weka on a machine with 8 GB memory.
 Those tests are therefore performed on the cluster, described in \Cref{sec:clustertest}.
 When using more types of features at the same time, one may think that the accuracy always improves, but this is however not the case.
-If all 3 types of features concerned with player ranks are used, an accuracy of only $56.06 \%$ is achieved compared to $56,39 \%$ when using the $\phi_\text{LANE-RANKS}$ features alone. There is no combination of rank feature types that gives a better accuracy than just using the best of them alone.
+If all 3 types of features concerned with player ranks are used, an accuracy of only $56.06\%$ is achieved compared to $56.39\%$ when using the $\phi_\text{LANE-RANKS}$ features alone. There is no combination of rank feature types that gives a better accuracy than just using the best of them alone.
 However, combining feature types that captures different phenomenons seems to increase the accuracy.
 Among the tested feature types, the best feature types to combine has been found to be the $\phi_\text{LANE-RANKS}$ and $\phi_\text{LANE-CHAMPION}$ feature types from which an accuracy of $58.73 \%$ were achieved.
 
@@ -275,8 +275,14 @@ Among the tested feature types, the best feature types to combine has been found
         (45000,58.09)
         (50000,58.65)
       };
-      \legend{No features,$\phi_\text{SINGLE}$, $\phi_\text{BEST-RANKED}$, $\phi_\text{PLAYER-RANKS}$,$\phi_\text{LANE-RANKS}$,$\phi_\text{LANE-CHAMPION-COMBO}$}
+      \legend{Baseline,$\phi_\text{SINGLE}$, $\phi_\text{BEST-RANKED}$, $\phi_\text{PLAYER-RANKS}$,$\phi_\text{LANE-RANKS}$,$\phi_\text{LANE-CHAMPION}$}
     \end{axis} 
   \end{tikzpicture}
   \caption{Accuracy of features}\label{fig:best-feat}
 \end{figure}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
