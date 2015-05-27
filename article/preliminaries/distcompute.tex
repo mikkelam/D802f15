@@ -173,15 +173,19 @@ The RDD is a read-only collection of objects which is distributed across the mac
   \item[Foreach:] Calls a function on each element in the RDD
 \end{description}
 \Cref{lst:wordcount} shows an example of a Spark application for counting words on a HDFS and output it into standard output.
-\begin{lstlisting}[caption={Wordcount in Spark on HDFS},label={lst:wordcount},belowcaptionskip=4pt]
-from pyspark import SparkContext
-sc = SparkContext("spark://node1:7077")
-text_file = sc.textFile("hdfs://node1:9000/dictionary.txt")
-counts = text_file.flatMap(lambda line: line.split(" ")) \
-                  .map(lambda word: (word, 1)) \
-                  .reduceByKey(lambda a, b: a + b)
-print counts.collect()
-\end{lstlisting} 
+\begin{listing}[H] %[caption={Wordcount in Spark on HDFS},label={lst:wordcount},belowcaptionskip=4pt]
+  \begin{minted}{python}
+  from pyspark import SparkContext
+  sc = SparkContext("spark://node1:7077")
+  text_file = sc.textFile("hdfs://node1:9000/dictionary.txt")
+  counts = text_file.flatMap(lambda line: line.split(" ")) \
+                    .map(lambda word: (word, 1)) \
+                    .reduceByKey(lambda a, b: a + b)
+  print counts.collect()
+  \end{minted}
+  \label{lst:wordcount}
+  \caption{Wordcount in Spark on HDFS}
+\end{listing} 
 The code can be run by invoking pyspark, which is similar to the python interpreter. When invoked, the application is submitted to Spark on \texttt{spark://node1:7077} through the sparkcontext. \texttt{text\_file} is an RDD with references to each line in the file on the HDFS. We then split each line on blank space, into arrays, which are flattened out by using flatmap. Each word is then sent a key-value pair and reduced by key, counting up the occurrences of the word. Lastly we use collect to print out words and their occurrences.
 
 
