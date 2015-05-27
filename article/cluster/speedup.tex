@@ -2,9 +2,9 @@
 To test the speedup, 50GB match data were used to train a logistic regression model using stochastic gradient descent and L2 regularization with a ridge value of 0.01 the features used were all pre-match features described in \Cref{sec:choosingfeatures}. The following is the time taken by the master node controlling 1, 2 and 3 workers respectively.
 
 \begin{enumerate}
-    \item 43m34s (2 cores)
-    \item 36m22s (6 cores)
-    \item 23m25s (8 cores)
+    \item 43minutes 34seconds which is 2614seconds (2 cores)
+    \item 36minutes 22seconds which is 2182seconds (6 cores)
+    \item 23minutes 25seconds which is 1405seconds (8 cores)
 \end{enumerate}
 
 \begin{figure}[!htb]
@@ -12,7 +12,7 @@ To test the speedup, 50GB match data were used to train a logistic regression mo
   \begin{tikzpicture}[] 
     \begin{axis}[
       xlabel=Workers, 
-      ylabel=Time,
+      ylabel=Time (seconds),
       xtick={1,2,3},
       xticklabel style={anchor=near xticklabel},
       scaled x ticks=false,
@@ -29,7 +29,6 @@ To test the speedup, 50GB match data were used to train a logistic regression mo
 \end{tikzpicture}
    \caption{Cluster speed up}\label{fig:cluster-speedup}
 \end{figure}
-\todo{Diskussion: Burde vi skrive tidsenheden på figur 6 altså at det er sekunder og ikke bare time?}
 The results of test is shown in \Cref{fig:cluster-speedup} the reason these numbers are irregular is because one node has 4 processor, while the other two nodes has 4 processor. We can measure the speedup using Amdahl's law:
 
 \[S(N) = \frac{1}{(1-P)+\frac{P}{N}}\]
