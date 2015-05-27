@@ -16,7 +16,7 @@ The goal of supervised learning is to produce a model that is able to predict a 
 When the domain of the label is continuous this is called a regression model and if it is discrete it is called a classification model.
 
 \paragraph{Feature Representation}\label{sec:phi}
-It is possible to design alot\footnote{www.goo.gl/ssSvog} of features for the model by combining and transforming the original inputs.
+It is possible to design a lot of features for the model by combining and transforming the original inputs.
 
 \begin{align*}
 x &\rightarrow \phi(x) \\
@@ -56,7 +56,7 @@ $$\hat{y} = \begin{cases}
 \end{cases}$$ 
 
 Although this may work in some cases, a dataset with a few outliers can significantly skew the decision boundary.
-%insert image of a skewed descision boundary.
+%insert image of a skewed decision boundary.
 
 In order to combat this problem we introduce a new linear model for classification called logistic regression.
 
@@ -64,7 +64,7 @@ In order to combat this problem we introduce a new linear model for classificati
 
 In logistic regression we use the so called logistic or sigmoid function to squash the prediction into the interval $[0,1]$.
 
-\[ \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
+\[ \hat{y} = \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
 
 By doing this a single outlying data point is no longer able to skew the decision boundary of the hypothesis function.
 
@@ -73,8 +73,8 @@ When combining the sigmoid and squared sums loss function, the resulting functio
 Therefore we need a different loss function in order to find the optimal weights.
 
 $$E_w(y,h_w(x)) = \begin{cases}
-	-ln(h_w(x)) &\text{if y = 1}\\	
-	-ln(1-h_w(x)) &\text{if y = 0}
+	-ln(\sigma(h_w(x))) &\text{if y = 1}\\	
+	-ln(1-\sigma(h_w(x))) &\text{if y = 0}
 %	-ln(\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 1}\\	
 %	-ln(1-\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 0}
 \end{cases}$$
@@ -142,7 +142,7 @@ Since we have a large number of features, applying an analytic solution to find 
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportinal to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
+In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges, i.e. when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
 
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
 %	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
@@ -157,8 +157,8 @@ When dealing with a large dataset this method runs into a problem, namely that c
 
 \subsubsection{Stochastic Gradient Descent}\label{sec:stochastic}
 
-Stochastic gradient descent solves the problem of large dataset by updating the weights on each datapoint.
-This also makes the algorithm a good choice for updating a model online with continously incoming data. 
+Stochastic gradient descent solves the problem of large dataset by updating the weights on each data point.
+This also makes the algorithm a good choice for updating a model online with continuously incoming data. 
 
 In the algorithm for Stochastic gradient descent we first randomly shuffle all objects in the dataset $D$.
 We then iteratively update the weights in a way similar to batch gradient descent but using this equation.
@@ -168,8 +168,8 @@ $$ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n))}{\partial w_
 For each object $(x_n, y_n)$ in the dataset.
 
 One problem with stochastic gradient descent is that the algorithm never converges but instead moves the weight around in an area close to the minimum value.
-Therefore it becomes nessasary to use a separate strategy to accomplish this.
-Amoung these strategies are
+Therefore it becomes necessary to use a separate strategy to accomplish this.
+Among these strategies are
 \begin{itemize}
 \item Adding a final iteration that uses Batch Gradient Descent. 
 \item Have a final phase that takes the average of last 10 iterations. 
@@ -192,8 +192,8 @@ def StochasticGradientDescent(W,E,D):
 
 \paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
 
-Because Stochastic Gradient Descent updates the weights using individual datapoints.
-The value has a tendency to jump around alot instead of moving directly down the gradient towards the minimum.
+Because Stochastic Gradient Descent updates the weights using individual data points.
+The value has a tendency to jump around a lot instead of moving directly down the gradient towards the minimum.
 To alleviate this problem there exist a variant of stochastic gradient descent called Mini-Batch Gradient Descent. 
 The only difference between them being that each update is an average of ten updates in Mini-Batch Gradient Descent. 
 

@@ -1,8 +1,8 @@
 \subsection{Profiling resource consumption}\label{sec:profile}
 \todo{læs og udkommenter figref på linje 2}
 To understand the load on the cluster's resources, we use a monitoring tool to measure the resource consumption of the nodes, including main memory, CPU load, and transfer speeds across the network and disks. We see that the majority of bottlenecking appears on the worker nodes, while the logistic regression model is being trained. In 
-%\Cref{fig:profile} 
-we can see four graphs with an extract of these measurements. The graphs are aligned over the X-axis which spans 1.677 seconds, or what seems to be two iterations of MapReduce. Looking at one of the iterations, we first see that the CPU bottlenecks the system, while the disk continuously read new data into main memory, keeping as much data ready for computations as possible. The resource consumption of this phase is presumably caused by a map procedure. The second phase is bottlenecked by the transfer speeds of the network, which is presumably caused by a reduce operation. Note that the short spike in network transfer rate exist, as for at few seconds the measured node $A$ is the only one that sends data to a second worker $B$. Expectedly the transfer rate on the measured node is halved, as a third worker $C$ begins to transfer data to node $B$ as well. In other words, the transfer speed is bottlenecked on the $Switch \rightarrow B$ connection, while the rate from $A \rightarrow Switch$ and $C \rightarrow Switch$ each transfer with half of the $Switch \rightarrow B$ connection's maximum rate.
+%\Cref{fig:profilegraph} 
+we can see four graphs with an extract of these measurements. The graphs are aligned over the X-axis which spans 1,677 seconds, or what seems to be two iterations of MapReduce. Looking at one of the iterations, we first see that the CPU bottlenecks the system, while the disk continuously read new data into main memory, keeping as much data ready for computations as possible. The resource consumption of this phase is presumably caused by a map procedure. The second phase is bottlenecked by the transfer speeds of the network, which is presumably caused by a reduce operation. Note that the short spike in network transfer rate exist, as for at few seconds the measured node $A$ is the only one that sends data to a second worker $B$. Expectedly the transfer rate on the measured node is halved, as a third worker $C$ begins to transfer data to node $B$ as well. In other words, the transfer speed is bottlenecked on the $Switch \rightarrow B$ connection, while the rate from $A \rightarrow Switch$ and $C \rightarrow Switch$ each transfer with half of the $Switch \rightarrow B$ connection's maximum rate.
 
 The measurements shows that the overall job execution can be sped up by improving either the processing or network speeds of the cluster. This observation is not that surprising, as stochastic gradient descent is a relatively expensive computation. Other strategies to increase job execution speeds include a more complex parsing, such that the entire JSON object is not parsed into memory, reducing the computation overhead. In the same manner, it is also possible to split match data across multiple files. For instance the pre- and mid-game data can be split into separate files, allowing pre-selection of only the needed pieces of data, which again reduce the overhead of loading and parsing unnecessary data.
 
@@ -10,8 +10,6 @@ As a final note, we can observe that compression of match data would probably on
 
 %\input{cluster/4cprofile}
 \todo{uncomment the graph-input}
-
-\FloatBarrier
 
 
 %%% Local Variables:
