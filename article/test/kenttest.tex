@@ -176,9 +176,9 @@ To get an idea of each type of features impact on our prediction capability, som
 Logistic regression is used as classifier with an L2-regularization parameter of 750. A training set of ranging size is used, up to a total of 50,000 matches, and a test set of 10,000 matches is used for evaluation.
 The obtained accuracies can be seen in \Cref{fig:best-feat}.
 Interestingly, the baseline where no features are used gives an accuracy of $51.24 \%$, and results in a model that always predicts the blue team to win.
+Note that the baseline is a flat line because it is clear already after 1,000 matches that the blue team wins the most, thus adding more training data does not change the learned model that always predicts the blue team to be the winner. Since the test set is the same regardless of how much training data that is used, the plot is a flat line. For the same reason, the $\phi_\text{BEST-RANKED}$ feature type also shows up as a straight line, because 1,000 matches is enough to learn a model that predicts the winning team to be the team with the highest average rank of its players.
 Among the feature types that only consider the rank of players, the $\phi_\text{LANE-RANKS}$ feature did best.
-The $\phi_\text{PAIR}$ and $\phi_\text{COUNTER}$ features have not been tested, as they due to their size and density could not be handled in Weka on a machine with 8 GB memory.
-Those tests are therefore performed on the cluster, described in \Cref{sec:clustertest}.
+
 When using more types of features at the same time, one may think that the accuracy always improves, but this is however not the case.
 If all 3 types of features concerned with player ranks are used, an accuracy of only $56.06 \%$ is achieved compared to $56,39 \%$ when using the $\phi_\text{LANE-RANKS}$ features alone. There is no combination of rank feature types that gives a better accuracy than just using the best of them alone.
 However, combining feature types that captures different phenomenons seems to increase the accuracy.
@@ -197,20 +197,20 @@ Among the tested feature types, the best feature types to combine has been found
       x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
       legend style={at={(1.4,1.001)},
         anchor=north,legend columns=1},] 
-      \addplot[color=brown] coordinates { 
-        (1000,51.24)
-        (5000,51.24)
-        (10000,51.24)
-        (15000,51.24)
-        (20000,51.24)
-        (25000,51.24)
-        (30000,51.24)
-        (35000,51.24)
-        (40000,51.24)
-        (45000,51.24)
-        (50000,51.24)
+      \addplot[color=yellow,mark=pentagon] coordinates { 
+        (1000,50.21)
+        (5000,54.16)
+        (10000,56.10)
+        (15000,56.52)
+        (20000,56.72)
+        (25000,56.88)
+        (30000,57.26)
+        (35000,57.56)
+        (40000,57.83)
+        (45000,58.09)
+        (50000,58.65)
       };
-      \addplot[color=red,mark=o] coordinates { 
+       \addplot[color=red,mark=o] coordinates { 
         (1000,52.17)
         (5000,54.8)
         (10000,55.34)
@@ -222,32 +222,6 @@ Among the tested feature types, the best feature types to combine has been found
         (40000,57.08)
         (45000,56.77)
         (50000,57.01)
-      };
-      \addplot[color=YellowOrange,mark=*] coordinates { 
-        (1000,55.26)
-        (5000,55.26)
-        (10000,55.26)
-        (15000,55.26)
-        (20000,55.26)
-        (25000,55.26)
-        (30000,55.26)
-        (35000,55.26)
-        (40000,55.26)
-        (45000,55.26)
-        (50000,55.26)
-      };
-      \addplot[color=green,mark=triangle] coordinates { 
-        (1000,53.24)
-        (5000,53.1)
-        (10000,53.97)
-        (15000,53.7)
-        (20000,53.86)
-        (25000,54.26)
-        (30000,53.59)
-        (35000,53.57)
-        (40000,53.71)
-        (45000,53.95)
-        (50000,54.24)
       };
       \addplot[color=black,mark=x] coordinates { 
         (1000,52.54)
@@ -262,20 +236,72 @@ Among the tested feature types, the best feature types to combine has been found
         (45000,56.33)
         (50000,56.39)
       };
-      \addplot[color=blue,mark=pentagon] coordinates { 
-        (1000,50.21)
-        (5000,54.16)
-        (10000,56.10)
-        (15000,56.52)
-        (20000,56.72)
-        (25000,56.88)
-        (30000,57.26)
-        (35000,57.56)
-        (40000,57.83)
-        (45000,58.09)
-        (50000,58.65)
+            \addplot[color=YellowOrange,mark=*] coordinates { 
+        (1000,52.74)
+        (5000,52.98)
+        (10000,53.24)
+        (15000,53.77)
+        (20000,54.56)
+        (25000,54.78)
+        (30000,55.3)
+        (35000,55.53)
+        (40000,55.93)
+        (45000,56.12)
+        (50000,56.31)
       };
-      \legend{No features,$\phi_\text{SINGLE}$, $\phi_\text{BEST-RANKED}$, $\phi_\text{PLAYER-RANKS}$,$\phi_\text{LANE-RANKS}$,$\phi_\text{LANE-CHAMPION-COMBO}$}
+      \addplot[color=blue,mark=square] coordinates { 
+        (1000,55.26)
+        (5000,55.26)
+        (10000,55.26)
+        (15000,55.26)
+        (20000,55.26)
+        (25000,55.26)
+        (30000,55.26)
+        (35000,55.26)
+        (40000,55.26)
+        (45000,55.26)
+        (50000,55.26)
+      };
+      \addplot[color=gray,mark=+] coordinates { 
+        (1000,52.58)
+        (5000,52.63)
+        (10000,52.89)
+        (15000,53.45)
+        (20000,53.88)
+        (25000,54.5)
+        (30000,54.43)
+        (35000,54.55)
+        (40000,54.86)
+        (45000,54.95)
+        (50000,55.04)
+      };
+       \addplot[color=green,mark=triangle] coordinates { 
+        (1000,53.24)
+        (5000,53.1)
+        (10000,53.97)
+        (15000,53.7)
+        (20000,53.86)
+        (25000,54.26)
+        (30000,53.59)
+        (35000,53.57)
+        (40000,53.71)
+        (45000,53.95)
+        (50000,54.24)
+      };
+      \addplot[color=brown] coordinates { 
+        (1000,51.24)
+        (5000,51.24)
+        (10000,51.24)
+        (15000,51.24)
+        (20000,51.24)
+        (25000,51.24)
+        (30000,51.24)
+        (35000,51.24)
+        (40000,51.24)
+        (45000,51.24)
+        (50000,51.24)
+      };
+      \legend{$\phi_\text{LANE-CHAMPION}$,$\phi_\text{SINGLE}$,$\phi_\text{LANE-RANKS}$,$\phi_\text{COUNTERS}$,$\phi_\text{BEST-RANKED}$,$\phi_\text{PAIRS}$,$\phi_\text{PLAYER-RANKS}$,No features}
     \end{axis} 
   \end{tikzpicture}
   \caption{Accuracy of features}\label{fig:best-feat}
