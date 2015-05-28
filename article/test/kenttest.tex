@@ -7,19 +7,10 @@ In this section we will present experiments which have been run on a smaller dat
 \subsubsection{Best machine learning technique}
 Many different machine learning algorithms exists for learning a classifier. In this experiment, we test eight different classifiers provided by Weka to see which one gives the best result for our particular problem~\cite{weka}. The tested classifiers are naive bayes, hidden naive bayes, logistic regression, neural network, support vector machine(C-SVM), adaboost(using decision stump), Hoeffding Tree, and Decision Stump. All the different methods are run with multiple parameter settings to find the configuration that yields the best result. Note that no parameters are needed for naive bayes, hidden naive bayes and decision stump. For logistic regression, different values of the L2-regularisation parameter has been tested. For C-SVM, different values for the $c$-constant has been used as well as linear, polynomial, radial, and sigmoid kernel methods. For Adaboost, different number of iterations have been used. For neural networks, different number of hidden neurons have been used, always placed in a single hidden layer. For Hoeffding Trees, Weka has 7 different parameters, but only the Hoeffding tie threshold and leaf prediction strategy caused a different accuracy when adjusted.
 
-Using 35000 matches in a $\frac{2}{3}$ split of train and evaluation, the best accuracy obtained with each of the methods can be seen in \Cref{fig:besttech}. As seen, SVM and Neural networks got the worst accuracy. Naive bayes, adaboost and Hidden naive bayes all have an accuracy close to 56.5\%, but logistic regression has the best accuracy almost hitting 57\%.
-The best parameters of each method was found to be:
-
-\begin{center}
-\begin{itemize}
-\item SVM: sigmoid kernel function, $c = 1$.
-\item Adaboost: 200 iterations
-\item Logistic regression: L2-regularisation constant = 0.0016
-\item Neural Network: $(\text{attributes} + \text{classes}) / 2$ hidden neurons.
-\item Hoeffding Tree: Hoeffding tie threshold: 0.001, leaf prediction strategy: Naive Bayes.
-\end{itemize}
+Using 35,000 matches in a $\frac{2}{3}$ split of train and evaluation, the best accuracy obtained with each of the methods can be seen in \Cref{fig:besttech}. 
 
 \begin{figure}[!htb]
+\centering
   \begin{tikzpicture}
     \begin{axis}[
       %x tick label style={/pgf/number format/1000 sep=},
@@ -31,7 +22,7 @@ The best parameters of each method was found to be:
         anchor=north,legend columns=1},
       ybar interval=0.7,
       width=.50\textwidth,
-      ymin=50, ymax=58,
+      ymin=40, ymax=60,
       reverse legend,
       ]
       \addplot[fill=red] coordinates {(1,56.916) 
@@ -44,8 +35,7 @@ The best parameters of each method was found to be:
 \addplot[fill=gray] coordinates {(1,56.48)
         (0,0)
       };      
-      
-      
+            
       \addplot[fill=yellow] coordinates {(1,56.479) 
         (0,2)
       };
@@ -66,7 +56,19 @@ The best parameters of each method was found to be:
   \end{tikzpicture}
   \caption{Test of best machine learning technique}\label{fig:besttech}
 \end{figure}
-\end{center}
+
+
+As seen, SVM and Neural networks got the worst accuracy. Naive bayes, adaboost and Hidden naive bayes all have an accuracy close to 56.5\%, but logistic regression has the best accuracy almost hitting 57\%.
+The best parameters of each method was found to be:
+\begin{itemize}
+\item SVM: sigmoid kernel function, $c = 1$.
+\item Adaboost: 200 iterations
+\item Logistic regression: L2-regularisation constant = 0.0016
+\item Neural Network: $(\text{attributes} + \text{classes}) / 2$ hidden neurons.
+\item Hoeffding Tree: Hoeffding tie threshold: 0.001, leaf prediction strategy: Naive Bayes.
+\end{itemize}
+In addition, it is noteworthy that the difference in result, between all the 8 classifiers is minimal, this means that we can choose a simple model as the advanced models does not offer any additional accuracy. Some of these classifiers do also not scale very well with big data. Therefore we choose to use logistic regression as it is simple and it scales very well with big data. 
+
 
 \subsubsection{Feature symmetry experiment}
 In \Cref{sec:representationoffeatures} we represented four different ways of representing features, to capture a possible symmetry in the choice of champions and the layout of the map. In this section we test each representation by training a classifier using logistic regression using the given representation of features. The experiment was performed on a test set of 10,000 matches with training sets of up to 50,000 matches. The result, shown in \Cref{fig:feat-rep}, indicates that binary and ternary are very close, but as the binary representation is slightly more accurate than the ternary one the majority of the time, we choose to conduct all the following tests using the binary representation. 
