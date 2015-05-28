@@ -1,8 +1,8 @@
 \section{Preliminaries}\label{sec:prelim}
-In this section, theory and knowledge that is imperative for the understanding of this paper will be presented. In \Cref{sec:supervisedclassification}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, the distributed file system Hadoop and the large scale data processing engine Apache Spark is introduced, as well as the motivation for using those tools in this project.
+In this section, theory and knowledge that is imperative for the understanding of this paper will be presented. In \Cref{sec:supervisedclassification}, several supervised learning concepts will be explained as it is the primary method used in this paper. In \Cref{sec:distributed}, the distributed file system Hadoop and the large scale data processing engine Apache Spark is introduced, as well as the motivation for using those tools in this project. Finally in \Cref{sec:sparklogreg}, Apache's logistic regression implementation is explored and explained. 
 
 \subsection{Supervised Classification with Big Data}\label{sec:supervisedclassification}
-In this section several supervised classifications methods will be explored, including information on how they handle big data. 
+In this section several supervised classification methods will be explored, including information on how they handle big data. 
 % The problem of supervised classification bla bla bla...
 % when dealing with a large amount of labelled data ect.
 
@@ -13,16 +13,16 @@ In this section several supervised classifications methods will be explored, inc
 Supervised learning is the process of learning the parameters of a prediction model using a corpus of labelled data.
 In supervised learning the data consists of objects with labels of the form 
 $(\mathbf{x}_1,y_1),(\mathbf{x}_2,y_2), \dots, (\mathbf{x}_N,y_N)$.
-Where $\textbf{x}$ is a vector of inputs and $y$ is the class label for the data point.
+Where $\mathbf{x}$ is a vector of inputs and $y$ is the class label for the data point.
 The goal of supervised learning is to produce a model that is able to predict a label from the inputs alone.
 When the domain of the label is continuous this is called a regression model and if it is discrete it is called a classification model.
 
 \paragraph{Feature Representation}\label{sec:phi}
 It is possible to design a lot of features for the model by combining and transforming the original inputs.
 \begin{align*}
-x &\rightarrow \phi(x) \\
-&\rightarrow (\phi_1(x), \phi_2(x), \phi_3(x), \phi_4(x)) \\
-&\rightarrow (1, x_1, x_1^2, x_1x_2)
+x & \rightarrow \phi(x) \\
+  & \rightarrow (\phi_1(x), \phi_2(x), \phi_3(x), \phi_4(x)) \\
+  & \rightarrow (1, x_1, x_1^2, x_1x_2)
 \end{align*} 
 Above we have a few examples of how an input vector $x$ can be transformed.
 The examples include a constant, the identity, a polynomial and the combination of two inputs.
@@ -32,6 +32,7 @@ The examples include a constant, the identity, a polynomial and the combination 
 
 When attempting to predict a continuous value, one standard method is by using linear regression.
 %A very popular model for classification is the linear classification model.
+\todo{Spørgsmål: Ville det give mening at alle 'w' her har samme font?}
 The linear regression model generates a prediction $\hat{y}$ of the value $y$. $\hat{y}$ is found with the hypothesis function $h(x)$ by assigning weights $(\mathbf{w}_1\phi_1),(\mathbf{w}_2\phi_2), \dots (\mathbf{w}_M\phi_M)$ to the features and computing their sum.
 \[h_w(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x) \]
 
@@ -43,7 +44,7 @@ Given the amount of data we have available, it would be preferable to learn thes
 Since the goal is to fit the hypothesis function to a training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
 
 \[ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 \] 
-The best parameters are those that minimize the loss function. Since the function is convex, the best parameters can be found either analytically by setting the derivative to 0, or by using an iterative method introduced later called gradient descent.
+The best parameters are those that minimise the loss function. Since the function is convex, the best parameters can be found either analytically by setting the derivative to 0, or by using an iterative method introduced later called gradient descent.
 
 When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function:
 \[
@@ -111,12 +112,11 @@ Generally speaking there exist two types of regularisation L1 and L2.
 L1-regularisation is good at encouraging sparse solutions when there are many irrelevant features whereas L2-regularisation is better when most features are relevant.
 
 \begin{itemize}
-\item L1-Regularisation: $L_w = \lambda \sum_{m} \vert w_m \vert $ \\
+\item L1-Regularisation: $L_w = \lambda \sum_{m} \vert w_m \vert $
 \item L2-Regularisation: $L_w = \frac{\lambda}{2} \sum_{m} {w_m}^2$
 \end{itemize}
 
-Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data. For Logistic regression with L2-Regularisation the combined loss function looks like this.
-
+Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data. For logistic regression with L2-Regularisation the combined loss function looks like this.
 \[ L(\mathbf{w})
   = L_D(w) + L_w 
   = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2} \sum_{m=1}^{M} {w_m}^2 \] 
@@ -128,13 +128,10 @@ Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
 In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges, i.e.\ when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
-
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
 %	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
-
-\[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\textbf{w})}{\partial w_j^{(i-1)}}
+\[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\mathbf{w})}{\partial w_j^{(i-1)}}
        = w_{j}^{(i-1)} - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} \]  
-
 The value $\eta$ represent the learning rate i.e.\ how big a step the algorithm should take in each iteration.
 This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
 
@@ -147,9 +144,7 @@ This also makes the algorithm a good choice for updating a model online with con
 
 In the algorithm for stochastic gradient descent we first randomly shuffle all objects in the dataset $D$.
 We then iteratively update the weights in a way similar to batch gradient descent but using this equation.
-
-$$ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n))}{\partial w_j^{(i-1)}} $$
-
+\[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n))}{\partial w_j^{(i-1)}} \]
 For each object $(x_n, y_n)$ in the dataset.
 
 One problem with stochastic gradient descent is that the algorithm never converges, but instead moves the weight around in an area close to the minimum value.
@@ -160,9 +155,7 @@ Among these strategies are:
 \item Have a final phase that takes the average of last 10 iterations 
 \item Comparing change in weights with a threshold value
 \end{itemize}
-
 The pseudocode for the algorithm can be seen in \Cref{lst:sgt}.
-
 \begin{listing}[H]
 \begin{minted}{python}
 def StochasticGradientDescent(W,E,D):
@@ -178,7 +171,6 @@ def StochasticGradientDescent(W,E,D):
 \end{listing}
 
 \paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
-
 Because stochastic gradient descent updates the weights using individual data points.
 The value has a tendency to jump around a lot instead of moving directly down the gradient towards the minimum.
 To alleviate this problem there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
