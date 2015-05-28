@@ -29,21 +29,21 @@ The main function involved with calculating the weights is runMiniBatchSGD from 
 \begin{minted}[linenos, firstnumber=181]{scala}
 var regVal = updater.compute(
       weights, Vectors.dense(new Array[Double](weights.size)), 0, 1, regParam)._2
-  for (i <- 1 to numIterations) {
-    val bcWeights = data.context.broadcast(weights)
-    // Sample a subset (fraction miniBatchFraction) of the total data
-    // compute and sum up the subgradients on this subset (this is one map-reduce)
-    val (gradientSum, lossSum, miniBatchSize) = data.sample(false, miniBatchFraction, 
-        42 + i).treeAggregate((BDV.zeros[Double](n), 0.0, 0L))(
-        seqOp = (c, v) => {
-          // c: (grad, loss, count), v: (label, features)
-          val l = gradient.compute(v._2, v._1, bcWeights.value, Vectors.fromBreeze(c._1))
-          (c._1, c._2 + l, c._3 + 1)
-        },
-        combOp = (c1, c2) => {
-          // c: (grad, loss, count)
-          (c1._1 += c2._1, c1._2 + c2._2, c1._3 + c2._3)
-        })
+for (i <- 1 to numIterations) {
+  val bcWeights = data.context.broadcast(weights)
+  // Sample a subset (fraction miniBatchFraction) of the total data
+  // compute and sum up the subgradients on this subset (this is one map-reduce)
+  val (gradientSum, lossSum, miniBatchSize) = data.sample(false, miniBatchFraction, 
+      42 + i).treeAggregate((BDV.zeros[Double](n), 0.0, 0L))(
+      seqOp = (c, v) => {
+        // c: (grad, loss, count), v: (label, features)
+        val l = gradient.compute(v._2, v._1, bcWeights.value, Vectors.fromBreeze(c._1))
+        (c._1, c._2 + l, c._3 + 1)
+      },
+      combOp = (c1, c2) => {
+        // c: (grad, loss, count)
+        (c1._1 += c2._1, c1._2 + c2._2, c1._3 + c2._3)
+      })
 
     if (miniBatchSize > 0) {
       /**
@@ -60,8 +60,8 @@ var regVal = updater.compute(
 \caption{Lines from GradientDescent.scala}
 \label{lst:runMiniBatchSGD}
 \end{listing}
-
-From Gradient.scala a LogisticGradient is used to calculate loss using the following code. 
+The lines 187 to 209 in side the for-loop is a map reduce resonsible for calculating loss accordingly to the weights, and then updating the weights to minimize loss with respect to regolization. Lines 191 and 192 use the LogisticGradient object created by the LogisticRegression object to compute loss besed on the  label, features current weights and gradient. On line 205 the updater computes new weights and a new regVal from the given weights, avage gradient, stepSize, iteration and regularization factor.  
+To inspect how the loss is calculated the sniplet responsible for this calculation is indluded. 
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=173]{scala}
 val margin = -1.0 * dot(data, weights)
