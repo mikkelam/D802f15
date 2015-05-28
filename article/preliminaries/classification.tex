@@ -32,7 +32,7 @@ The examples include a constant, the identity, a polynomial and the combination 
 
 When attempting to predict a continuous value, one standard method is by using linear regression.
 %A very popular model for classification is the linear classification model.
-The linear regression model predicts the value of $y$ with $\hat{y}$. $\hat{y}$ is found with the hypothesis function $h(x)$ by assigning weights $(\mathbf{w}_1\phi_1),(\mathbf{w}_2\phi_2), \dots (\mathbf{w}_M\phi_M)$ to the features and computing their sum.
+The linear regression model generates a prediction $\hat{y}$ of the value $y$. $\hat{y}$ is found with the hypothesis function $h(x)$ by assigning weights $(\mathbf{w}_1\phi_1),(\mathbf{w}_2\phi_2), \dots (\mathbf{w}_M\phi_M)$ to the features and computing their sum.
 \[h_w(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x) \]
 
 Where $w_0$ is a special case called the intercept, however to avoid having this special case we add  $w_0$ to the feature $\phi_0(x)=1$, which allows us to use the intercept as a normal feature. 
@@ -40,14 +40,12 @@ The next question becomes, how do we assign a value to the weights?
 Given the amount of data we have available, it would be preferable to learn these weights from the data. 
 
 \paragraph{Linear Regression}
-Since the goal is to fit the hypothesis function to the training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
+Since the goal is to fit the hypothesis function to a training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
 
 \[ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 \] 
-    
-By minimising the loss function the value of the parameters can be determined.
-This can be done analytically using the derivative of the function or by an iterative method introduced later called gradient descent.
+The best parameters are those that minimize the loss function. Since the function is convex, the best parameters can be found either analytically by setting the derivative to 0, or by using an iterative method introduced later called gradient descent.
 
-When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function.
+When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function:
 \[
 \hat{y} = 
 \begin{cases}
@@ -65,17 +63,18 @@ In logistic regression we use the so called logistic or sigmoid function to squa
 \[ \hat{y} = \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
 By doing this a single outlying data point is no longer able to skew the decision boundary of the hypothesis function.
 However this comes at a cost.
-When combining the sigmoid and squared sums loss function, the resulting function is no longer convex.
-Therefore we need a different loss function in order to find the optimal weights.
+When combining the sigmoid and squared sums loss function, the resulting loss function is no longer convex, which means that we may only find a local minimum when searching for the best parameters.
+Logistic regression solves this problem by introducing an error function:
 \[E_w(y,h_w(x)) = \begin{cases}
 	-ln(\sigma(h_w(x))) &\text{if y = 1}\\	
 	-ln(1-\sigma(h_w(x))) &\text{if y = 0}
 %	-ln(\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 1}\\	
 %	-ln(1-\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 0}
 \end{cases}\]
-This error function assigns a logarithmically increasing penalty the further the hypothesis is from the correct label value.
-The loss function we want to minimise therefore becomes. 
-$$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$ 
+When the error of the hypothesis function is 0, the error function returns 0 as well. When the error of the hypothesis function goes towards 1, the penalty caused by the error function goes towards infinity.
+When using the error function to define the loss function
+$$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$
+the loss function becomes convex again.
 
 \subsubsection{Overfitting and Underfitting}
 % overfitting vs. underfitting
@@ -84,31 +83,25 @@ In the case of a model that is too simple, it is unable to catch the nuances pre
 % insert image with a model that is too simple.  
 When a model is too complex or the data used in training has a bias compare to the real world examples.
 This can result in overfitting.
-Overfitting means that the model is too closely fitted to the training data.
-It will therefore provide good results on the training data but do increasingly poor on real world data.
+Overfitting means that the model is too closely fitted to the training data, where it will provide good results on the training data but do increasingly poor on new and unseen data.
 % insert image of a model that overfits the data. 
 
 \paragraph{Dealing with Overfitting}
 % dividing data into test, training and validation sets.
 % cross validation
 
-One way of avoiding overfitting is by using a technique called cross validation.
-With cross validation the data is divided into two separate sets.
-Where one is used for training and the other to test for overfitting. 
+One way of avoiding overfitting is by using a technique called cross validation. \todo{der skal være mere end 1 training set til cross validation}
+With cross validation the data is divided into two separate sets, where one is used for training and the other to test for overfitting. 
 This way it becomes possible to detect when the model starts to overfit the training data.
 A typical way to do this is by using a 70-30 split thereby using 70\% for training and 30\% for testing.
 If the dataset is small, 30\% may be too much of a sacrifice.
 
 % K-Fold cross validation
 Another possibility is to use k-fold cross validation.
-When applying this method the dataset is partitioned into a number of ``folds''.
-The model is then trained for $k$ iterations.
-In each iteration a different fold is used as the test set and the rest as the training data.
+When applying this method the dataset is partitioned into $k$ numbers of ``folds'', with 1 test fold and $k-1$ training folds.
+The model is then trained for $k$ iterations, such that each iteration use a different fold.
 Thereby it becomes possible to use all of the data as both training and test set.
 % Source: AI pool, macworth, p. 324
-
-
-
 
 \subsubsection{Regularisation}
 
