@@ -40,10 +40,12 @@ The next question becomes, how do we assign a value to the weights?
 Given the amount of data we have available, it would be preferable to learn these weights from the data. 
 
 \paragraph{Linear Regression}
-Since the goal is to fit the hypothesis function to the training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
+\todo{er det klar hvad L_D(w) er?}
+Since the goal is to fit the hypothesis function to a training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
 
 \[ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 \] 
-    
+\todo{giver det ikke mening at bruge summen af h(x) fremfor summen af w_i phi_i?}
+
 By minimising the loss function the value of the parameters can be determined.
 This can be done analytically using the derivative of the function or by an iterative method introduced later called gradient descent.
 
@@ -84,31 +86,25 @@ In the case of a model that is too simple, it is unable to catch the nuances pre
 % insert image with a model that is too simple.  
 When a model is too complex or the data used in training has a bias compare to the real world examples.
 This can result in overfitting.
-Overfitting means that the model is too closely fitted to the training data.
-It will therefore provide good results on the training data but do increasingly poor on real world data.
+Overfitting means that the model is too closely fitted to the training data, where it will provide good results on the training data but do increasingly poor on new and unseen data.
 % insert image of a model that overfits the data. 
 
 \paragraph{Dealing with Overfitting}
 % dividing data into test, training and validation sets.
 % cross validation
 
-One way of avoiding overfitting is by using a technique called cross validation.
-With cross validation the data is divided into two separate sets.
-Where one is used for training and the other to test for overfitting. 
+One way of avoiding overfitting is by using a technique called cross validation. \todo{der skal være mere end 1 training set til cross validation}
+With cross validation the data is divided into two separate sets, where one is used for training and the other to test for overfitting. 
 This way it becomes possible to detect when the model starts to overfit the training data.
 A typical way to do this is by using a 70-30 split thereby using 70\% for training and 30\% for testing.
 If the dataset is small, 30\% may be too much of a sacrifice.
 
 % K-Fold cross validation
 Another possibility is to use k-fold cross validation.
-When applying this method the dataset is partitioned into a number of ``folds''.
-The model is then trained for $k$ iterations.
-In each iteration a different fold is used as the test set and the rest as the training data.
+When applying this method the dataset is partitioned into $k$ numbers of ``folds'', with 1 test fold and $k-1$ training folds.
+The model is then trained for $k$ iterations, such that each iteration use a different fold.
 Thereby it becomes possible to use all of the data as both training and test set.
 % Source: AI pool, macworth, p. 324
-
-
-
 
 \subsubsection{Regularisation}
 
