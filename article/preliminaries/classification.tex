@@ -40,16 +40,12 @@ The next question becomes, how do we assign a value to the weights?
 Given the amount of data we have available, it would be preferable to learn these weights from the data. 
 
 \paragraph{Linear Regression}
-\todo{er det klar hvad L_D(w) er?}
 Since the goal is to fit the hypothesis function to a training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
 
 \[ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 \] 
-\todo{giver det ikke mening at bruge summen af h(x) fremfor summen af w_i phi_i?}
+The best parameters are those that minimize the loss function. Since the function is convex, the best parameters can be found either analytically by setting the derivative to 0, or by using an iterative method introduced later called gradient descent.
 
-By minimising the loss function the value of the parameters can be determined.
-This can be done analytically using the derivative of the function or by an iterative method introduced later called gradient descent.
-
-When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function.
+When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function:
 \[
 \hat{y} = 
 \begin{cases}
@@ -67,17 +63,18 @@ In logistic regression we use the so called logistic or sigmoid function to squa
 \[ \hat{y} = \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
 By doing this a single outlying data point is no longer able to skew the decision boundary of the hypothesis function.
 However this comes at a cost.
-When combining the sigmoid and squared sums loss function, the resulting function is no longer convex.
-Therefore we need a different loss function in order to find the optimal weights.
+When combining the sigmoid and squared sums loss function, the resulting loss function is no longer convex, which means that we may only find a local minimum when searching for the best parameters.
+Logistic regression solves this problem by introducing an error function:
 \[E_w(y,h_w(x)) = \begin{cases}
 	-ln(\sigma(h_w(x))) &\text{if y = 1}\\	
 	-ln(1-\sigma(h_w(x))) &\text{if y = 0}
 %	-ln(\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 1}\\	
 %	-ln(1-\sum_{w_i \in w} w_i \phi_i(x_n)) &\text{if y = 0}
 \end{cases}\]
-This error function assigns a logarithmically increasing penalty the further the hypothesis is from the correct label value.
-The loss function we want to minimise therefore becomes. 
-$$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$ 
+When the error of the hypothesis function is 0, the error function returns 0 as well. When the error of the hypothesis function goes towards 1, the penalty caused by the error function goes towards infinity.
+When using the error function to define the loss function
+$$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$
+the loss function becomes convex again.
 
 \subsubsection{Overfitting and Underfitting}
 % overfitting vs. underfitting
