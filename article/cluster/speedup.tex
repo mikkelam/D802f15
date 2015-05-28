@@ -1,10 +1,10 @@
 \subsection{Cluster speedup}\label{sec:speedup}
-To test the speedup, 50GB match data were used to train a logistic regression model using stochastic gradient descent and L2 regularisation with a ridge value of 0.01 the features used were all pre-match features described in \Cref{sec:choosingfeatures}. The following is the time taken by the master node controlling 1, 2 and 3 workers respectively.
+In this section we will briefly present a small speedup test, to see the effect of adding more nodes to our cluster. This is done by training a logistic regression model using stochastic gradient descent and L2 regularisation with a ridge value of $0.01$ the features used were all pre-match features described in \Cref{sec:choosingfeatures}. The following is the time taken by the master node controlling 1, 2 and 3 workers respectively. Note that these workers do not have identical hardware.
 
 \begin{enumerate}
-    \item 43minutes 34seconds which is 2614seconds (2 cores)
+    \item 43minutes 34seconds which is 2614seconds (4 cores)
     \item 36minutes 22seconds which is 2182seconds (6 cores)
-    \item 23minutes 25seconds which is 1405seconds (8 cores)
+    \item 23minutes 25seconds which is 1405seconds (10 cores)
 \end{enumerate}
 
 \begin{figure}[!htb]
@@ -27,130 +27,131 @@ To test the speedup, 50GB match data were used to train a logistic regression mo
 	\legend{Speed}
 	\end{axis} 
 \end{tikzpicture}
-   \caption{Cluster speed up}\label{fig:cluster-speedup}
+   \caption{Cluster speed-up. On the x-axis: 1: 4 cores, 2: 6 cores and 3: 10 cores}\label{fig:cluster-speedup}
 \end{figure}
-The results of test is shown in \Cref{fig:cluster-speedup} the reason these numbers are irregular is because one node has 4 processor, while the other two nodes has 4 processor. We can measure the speedup using Amdahl's law:
+The results of this test is shown in \Cref{fig:cluster-speedup} the reason these numbers are irregular is because one node has 2 cores, while the other two nodes has 4 cores, including a difference in clock ratio. The difference in time taken from 4 cores to 8 cores is 13 minutes, while the difference from 8 cores to 10 cores is 7 minutes, and lastly from 4 to 10 cores is 20 minutes, almost a double in speedup. It is quite clear that the code being run is not entirely parallel, most likely it is bottlenecked by disk transfers. Thus, by adding two more workers to our cluster we attain almost a doubling in speedup. It is worth noting that adding more computing units will not scale the speedup linearly per Amdahl's Law. 
+% We can measure the speedup using Amdahl's law:
 
-\[S(N) = \frac{1}{(1-P)+\frac{P}{N}}\]
+% \[S(N) = \frac{1}{(1-P)+\frac{P}{N}}\]
 
-Where $N$ is the number of processors, and $P$ is the proportion of the program that is parallel. We do not know $P$ in this case, but we can estimate $P$ by calculating the difference of speedup between node 1(2 cores) and 3 (8 cores):
+% Where $N$ is the number of processors, and $P$ is the proportion of the program that is parallel. We do not know $P$ in this case, but we can estimate $P$ by calculating the difference of speedup between node 1(2 cores) and 3 (8 cores):
 
-\[P_{estimated} = \frac{\frac{1}{S_m}-1}{\frac{1}{N}-1}  \]
+% \[P_{estimated} = \frac{\frac{1}{S_m}-1}{\frac{1}{N}-1}  \]
 
-Where \( S_m=\frac{43m34s}{23m25s} = 1.86 \). We then get $P = 0.528$. Using this $P$ value we can estimate the maximal number of processors worth using, this is shown in \Cref{fig:speedupcon}. The plot shows that our speedup converges at around 2 using between 40 and 80 processors. This means that adding more processors will help only marginally more.
+% Where \( S_m=\frac{43m34s}{23m25s} = 1.86 \), note that here $N$ is the. We then get $P = 0.528$. Using this $P$ value we can estimate the maximal number of processors worth using, this is shown in \Cref{fig:speedupcon}. The plot shows that our speedup converges at around 2 using between 40 and 80 processors. This means that adding more processors will help only marginally more.
 
-\begin{figure}[!htb]
-  \centering
-  \begin{tikzpicture}[] 
-    \begin{axis}[
-      xlabel=Processors, 
-      ylabel=Speedup,
-      xtick={1,10,20,30,40,50,60,70,80,90},
-      xticklabel style={anchor=near xticklabel},
-      scaled x ticks=false,
-      x label style={at={(axis description cs:0.5,0.0)},anchor=north},
-      legend style={at={(1.325,1.001)},
-        anchor=north,legend columns=1},] 
-      \addplot[color=brown] coordinates { 
-(1.0,1.0)
-(2,1.358695652)
-(3,1.543209877)
-(4,1.655629139)
-(5,1.731301939)
-(6,1.785714286)
-(7,1.826722338)
-(8,1.858736059)
-(9,1.884422111)
-(10,1.905487805)
-(11,1.923076923)
-(12,1.937984496)
-(13,1.950780312)
-(14,1.961883408)
-(15,1.971608833)
-(16,1.98019802)
-(17,1.987839102)
-(18,1.994680851)
-(19,2.00084246)
-(20,2.006420546)
-(21,2.011494253)
-(22,2.016129032)
-(23,2.02037948)
-(24,2.024291498)
-(25,2.027903958)
-(26,2.03125)
-(27,2.034358047)
-(28,2.037252619)
-(29,2.03995498)
-(30,2.04248366)
-(31,2.044854881)
-(32,2.047082907)
-(33,2.049180328)
-(34,2.051158301)
-(35,2.053026748)
-(36,2.054794521)
-(37,2.056469542)
-(38,2.058058925)
-(39,2.059569075)
-(40,2.061005771)
-(41,2.062374245)
-(42,2.063679245)
-(43,2.064925086)
-(44,2.066115702)
-(45,2.067254686)
-(46,2.068345324)
-(47,2.069390631)
-(48,2.070393375)
-(49,2.071356104)
-(50,2.072281167)
-(51,2.073170732)
-(52,2.074026803)
-(53,2.074851237)
-(54,2.075645756)
-(55,2.07641196)
-(56,2.077151335)
-(57,2.077865267)
-(58,2.078555046)
-(59,2.079221878)
-(60,2.079866889)
-(61,2.080491132)
-(62,2.081095596)
-(63,2.081681205)
-(64,2.082248829)
-(65,2.082799282)
-(66,2.083333333)
-(67,2.083851704)
-(68,2.084355076)
-(69,2.08484409)
-(70,2.085319352)
-(71,2.085781434)
-(72,2.086230876)
-(73,2.086668191)
-(74,2.087093863)
-(75,2.08750835)
-(76,2.087912088)
-(77,2.088305489)
-(78,2.088688946)
-(79,2.089062831)
-(80,2.089427497)
-(81,2.089783282)
-(82,2.090130506)
-(83,2.090469474)
-(84,2.090800478)
-(85,2.091123795)
-(86,2.091439689)
-(87,2.091748413)
-(88,2.092050209)
-(89,2.092345308)
-(90,2.092633929)
-    };
-  \legend{Speedup curve}
-  \end{axis} 
-\end{tikzpicture}
-   \caption{Speedup convergence}\label{fig:speedupcon}
-\end{figure}
+% \begin{figure}[!htb]
+%   \centering
+%   \begin{tikzpicture}[] 
+%     \begin{axis}[
+%       xlabel=Processors, 
+%       ylabel=Speedup,
+%       xtick={1,10,20,30,40,50,60,70,80,90},
+%       xticklabel style={anchor=near xticklabel},
+%       scaled x ticks=false,
+%       x label style={at={(axis description cs:0.5,0.0)},anchor=north},
+%       legend style={at={(1.325,1.001)},
+%         anchor=north,legend columns=1},] 
+%       \addplot[color=brown] coordinates { 
+% (1.0,1.0)
+% (2,1.358695652)
+% (3,1.543209877)
+% (4,1.655629139)
+% (5,1.731301939)
+% (6,1.785714286)
+% (7,1.826722338)
+% (8,1.858736059)
+% (9,1.884422111)
+% (10,1.905487805)
+% (11,1.923076923)
+% (12,1.937984496)
+% (13,1.950780312)
+% (14,1.961883408)
+% (15,1.971608833)
+% (16,1.98019802)
+% (17,1.987839102)
+% (18,1.994680851)
+% (19,2.00084246)
+% (20,2.006420546)
+% (21,2.011494253)
+% (22,2.016129032)
+% (23,2.02037948)
+% (24,2.024291498)
+% (25,2.027903958)
+% (26,2.03125)
+% (27,2.034358047)
+% (28,2.037252619)
+% (29,2.03995498)
+% (30,2.04248366)
+% (31,2.044854881)
+% (32,2.047082907)
+% (33,2.049180328)
+% (34,2.051158301)
+% (35,2.053026748)
+% (36,2.054794521)
+% (37,2.056469542)
+% (38,2.058058925)
+% (39,2.059569075)
+% (40,2.061005771)
+% (41,2.062374245)
+% (42,2.063679245)
+% (43,2.064925086)
+% (44,2.066115702)
+% (45,2.067254686)
+% (46,2.068345324)
+% (47,2.069390631)
+% (48,2.070393375)
+% (49,2.071356104)
+% (50,2.072281167)
+% (51,2.073170732)
+% (52,2.074026803)
+% (53,2.074851237)
+% (54,2.075645756)
+% (55,2.07641196)
+% (56,2.077151335)
+% (57,2.077865267)
+% (58,2.078555046)
+% (59,2.079221878)
+% (60,2.079866889)
+% (61,2.080491132)
+% (62,2.081095596)
+% (63,2.081681205)
+% (64,2.082248829)
+% (65,2.082799282)
+% (66,2.083333333)
+% (67,2.083851704)
+% (68,2.084355076)
+% (69,2.08484409)
+% (70,2.085319352)
+% (71,2.085781434)
+% (72,2.086230876)
+% (73,2.086668191)
+% (74,2.087093863)
+% (75,2.08750835)
+% (76,2.087912088)
+% (77,2.088305489)
+% (78,2.088688946)
+% (79,2.089062831)
+% (80,2.089427497)
+% (81,2.089783282)
+% (82,2.090130506)
+% (83,2.090469474)
+% (84,2.090800478)
+% (85,2.091123795)
+% (86,2.091439689)
+% (87,2.091748413)
+% (88,2.092050209)
+% (89,2.092345308)
+% (90,2.092633929)
+%     };
+%   \legend{Speedup curve}
+%   \end{axis} 
+% \end{tikzpicture}
+%    \caption{Speedup convergence}\label{fig:speedupcon}
+% \end{figure}
 
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../main"
-%%% End:
+% %%% Local Variables:
+% %%% mode: latex
+% %%% TeX-master: "../main"
+% %%% End:
