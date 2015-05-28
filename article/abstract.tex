@@ -1,5 +1,6 @@
 \begin{abstract}
-In this paper, a method to help League of Legends players increase their probability of picking a winning set of champions is developed. It is done on a big data set of the size of 456GB which was supplied by, the developers of League of Legends, Riot Games' public API.\@ The data was stored on a cluster of 4 machines, consisting of one master and three worker nodes. All of them running Hadoop Distributed Filesystem and Apache Spark. Through testing, logistic regression was picked as the prediction method, and using it through spark on the big data, we arrived at 58.5\% accuracy. 
+In this paper a method to predict the outcome of League of Legends games is explored. Such a method can help League of Legends players increase their probability of picking a winning set of champions, or help developers balance elements of the game itself. The method is based on \emph{big data} and machine learning techniques, where a cluster of 4 machines and more than 456GB of data is used to develop classifiers. The data was supplied by Riot Games' public API. The cluster consists of a Hadoop Distributed Filesystem and Apache Spark. Through experiments with different supervised learning techniques and different feature sets, the logistic regression classifier was selected. When combined with Spark and a large dataset, and accuracy of 58.5\% was achieved. Finally we present the knowledge we gained from doing the match prediction problem on a cluster.
+  
 \end{abstract}
 
 %%% Local Variables:
