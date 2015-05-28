@@ -32,7 +32,7 @@ The examples include a constant, the identity, a polynomial and the combination 
 
 When attempting to predict a continuous value, one standard method is by using linear regression.
 %A very popular model for classification is the linear classification model.
-The linear regression model predicts the value of $y$ with $\hat{y}$. $\hat{y}$ is found with the hypothesis function $h(x)$ by assigning weights $(\mathbf{w}_1\phi_1),(\mathbf{w}_2\phi_2), \dots (\mathbf{w}_M\phi_M)$ to the features and computing their sum.
+The linear regression model generates a prediction $\hat{y}$ of the value $y$. $\hat{y}$ is found with the hypothesis function $h(x)$ by assigning weights $(\mathbf{w}_1\phi_1),(\mathbf{w}_2\phi_2), \dots (\mathbf{w}_M\phi_M)$ to the features and computing their sum.
 \[h_w(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x) \]
 
 Where $w_0$ is a special case called the intercept, however to avoid having this special case we add  $w_0$ to the feature $\phi_0(x)=1$, which allows us to use the intercept as a normal feature. 
@@ -76,7 +76,7 @@ Therefore we need a different loss function in order to find the optimal weights
 This error function assigns a logarithmically increasing penalty the further the hypothesis is from the correct label value.
 The loss function we want to minimise therefore becomes. 
 $$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$ 
-
+ 
 \subsubsection{Overfitting and Underfitting}
 % overfitting vs. underfitting
 Learning the parameters of a linear model can sometimes result in a model that is too simple or too complex.
