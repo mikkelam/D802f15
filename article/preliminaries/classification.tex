@@ -77,29 +77,17 @@ the loss function once again becomes convex.
 
 \subsubsection{Overfitting and Underfitting}
 % overfitting vs. underfitting
-Learning the parameters of a linear model can sometimes result in a model that is too simple or too complex.
-In the case of a model that is too simple, it is unable to catch the nuances presented in the data.
+Learning the parameters of a linear model can result in a model that is either too simple or too complex.
+If the model is too simple, the model will not be unable to catch the nuances present in the data, causing low predictive power. This behaviour is called underfitting.
 % insert image with a model that is too simple.  
-When a model is too complex or the data used in training has a bias compare to the real world examples.
-This can result in overfitting.
-Overfitting means that the model is too closely fitted to the training data, where it will provide good results on the training data but do increasingly poor on new and unseen data.
-% insert image of a model that overfits the data. 
+When a model is too complex, the model will be able to fit the training data too well, resulting in bad predictive power on previously unseen data. This behaviour is called overfitting. 
 
-\paragraph{Dealing with Overfitting}
-% dividing data into test, training and validation sets.
-% cross validation
+To evaluate how well a model fit some data, we can split the data into a training and test set. Evaluation can be done on both data sets and be compared. If the model is better at predicting the training data compared to the test data, some degree of overfitting is happening. If however the model has the same predictive power on both sets, we either have an underfitted or well fitted model. A common approach is to use more data for training than testing. For instance by using a 70/30 split.
 
-One way of avoiding overfitting is by using a technique called cross validation. \todo{der skal være mere end 1 training set til cross validation}
-With cross validation the data is divided into two separate sets, where one is used for training and the other to test for overfitting. 
-This way it becomes possible to detect when the model starts to overfit the training data.
-A typical way to do this is by using a 70-30 split thereby using 70\% for training and 30\% for testing.
-If the dataset is small, 30\% may be too much of a sacrifice.
-
-% K-Fold cross validation
 Another possibility is to use k-fold cross validation.
 When applying this method the dataset is partitioned into $k$ numbers of ``folds'', with 1 test fold and $k-1$ training folds.
-The model is then trained for $k$ iterations, such that each iteration use a different fold.
-Thereby it becomes possible to use all of the data as both training and test set.
+The model is then trained for $k$ iterations, such that each iteration use a different test fold.
+Thereby it becomes possible to use all of the data as both training and test set. In the following section we present a solution to overfitting linear models.
 % Source: AI pool, macworth, p. 324
 
 \subsubsection{Regularisation}
@@ -114,22 +102,26 @@ L1-regularisation is good at encouraging sparse solutions when there are many ir
 \item L2-Regularisation: $L_w = \frac{\lambda}{2} \sum_{m} {w_m}^2$
 \end{itemize}
 
-Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data. For logistic regression with L2-Regularisation the combined loss function looks like this.
+Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data loss function. For logistic regression with L2-Regularisation the combined loss function looks like this.
 \[ L(\mathbf{w})
-  = L_D(w) + L_w 
+  = L_D(\mathbf{w}) + L_w 
   = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2} \sum_{m=1}^{M} {w_m}^2 \] 
 
 \subsubsection{Batch Gradient Descent}\label{sec:batch}
 
-Since we have a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
+As we wish to use a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges, i.e.\ when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
+In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges to a local minimum of $L(\textbf{w})$, i.e.\ when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
+
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
-%	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
+%	= w_j - \eta \frac{\partial(\sum_{n=1}^N E_w(y_n, h_w(x_n)))}{ \partial w_j}  \]
+
 \[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\mathbf{w})}{\partial w_j^{(i-1)}}
-       = w_{j}^{(i-1)} - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} \]  
+       = w_{j}^{(i-1)} - \eta \frac{\partial \Big( \sum_{n=1}^N E_{w^{(i-1)}}(y_n, h_{w^{(i-1)}}(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M {w^{(i-1)}_m}^2 \Big) }{\partial w_j^{(i-1)}} \]  
+
+Because the loss function is convex, there is only one minimum i.e. the global minimum. 
 The value $\eta$ represent the learning rate i.e.\ how big a step the algorithm should take in each iteration.
 This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
 
