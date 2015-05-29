@@ -1,6 +1,6 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
 In the following, we aim to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
-We define 5 different types of features and argue argue why each type is a good candidates for predicting the winning team.
+We define 5 different types of features and argue why each type is a good candidates for predicting the winning team.
 The different types of features are each extracted by a mapping function, that maps a LoL match (in some cases with additional parameters) to a value. 
 Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a game.
 $C = \{1, 2, \dots, m\}$ is the set of all champions, where each champion is represented by an id. $m = 124$ for the patch version of LoL used in this project.
@@ -163,10 +163,5 @@ Because for each team, every champion can be in one of the 4 lanes. In each matc
   \end{table}
 
 The calculated sparsities are shown in \Cref{tab:featuresparsity}, which also includes how many of each type of feature that appeared in 60,000 matches.
-In total, only $0.2\%$ of the possible features appear in a single game, hence we choose a sparse representation of features. This is important because of the memory limitation, which will be present on the cluster which we have set up described in \Cref{sec:cluster}. 
 
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../main"
-%%% End:
+In total only $0.2\%$ of the possible features appear in a single game. Given such level sparsity, we choose a sparse representation of features, as this reduces the memory footprint significant and allows us to use feature sets of a much larger size. This allows us to fit much larger feature sets into a limited amount of memory. Being able to handle large feature sets is an important ability when working with big data, as a larger amount of data, can be used to learn more features.
