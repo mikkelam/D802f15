@@ -125,23 +125,34 @@ All of the introduced features can have value of either 1 or 0. If a feature has
 For a given match, a dense representation of features is a list of values, such that the $i$'th value denotes the value of feature $i$.
 A sparse representation is a list of indices $i$ of all features that appear in the given match.
 If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance  and thus be favourable.
+
+Each team can choose from $|C|$ different champions. Therefore:
 \[\phi_{\text{SINGLE}} = |T(x)| \cdot |C| = 2 \cdot 124 = 248\] 
-Because in each match, only $2 \cdot 5 = 10$ of those features appear.
+In each match, only $2 \cdot 5 = 10$ of those features appear.
+
+There are $|C| \cdot (|C|-1)$ different 2-combinations of champions. Therefore:
 \[\phi_{\text{PAIR}} = |T(x)| \cdot |C| \cdot (|C|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] 
-Since in each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+
+Both teams can choose from $|C|$ different champions. Therefore:
 \[\phi_{\text{COUNTER}} = |C|^2 = 124^2 = 15376\] 
 In each match, only $5 \cdot 5 = 25$ of those features appear.
+
+In each match, the best ranked team can either be blue, purple, or it can be a tie. Therefore:
 \[\phi_{\text{BEST-RANK}} = 3\] 
-By definition as in each match, only $1$ of those features appear.
+By definition, each match contains only $1$ of those features.
+
+Each of the $2$ teams have $5$ players that each can have $1$ of $8$ ranks:
 \[\phi_{\text{PLAYER-RANK}} = 2 \cdot 5 \cdot 8 = 80\] 
-Since each of the $2$ teams have $5$ players, that each can have $1$ of $8$ ranks. In each match, only $10$ features appear, because each player has only $1$ rank.
-\[\phi_{\text{LANE-RANKS}} = |L| \cdot (2 + |R| + |R|^2)^2 = 21904\]
-Because each lane contains either none, 1, 2, or many champions from each team.
+Since every player has only $1$ rank, only $10$ of those features appear.
+
+Each lane contains either none, 1, 2, or many champions from each team. The exact ranks are only considered for a given team and lane if the team has either 1 or 2 champions in a given lane. Therefore:
+\[\phi_{\text{LANE-RANKS}} = |L| \cdot (1 + |R| + |R|^2 + 1)^2 = 21904\]
 In each match only $5$ of these features appear, as each of the lanes has exactly one combination of ranks of the players / champions playing against each other.
 
+For each team, every champion can be in one of 4 lanes. Therefore, we get that:
 \[\phi_{\text{LANE-CHAMPION}} = |T(x)| \cdot |C| \cdot |L| = 2 \cdot 124 \cdot 4 = 992\]
-Because for each team, every champion can be in one of the 4 lanes. In each match, only $2 \cdot 5 \cdot 4 = 40$ features appear.
-
+In each match, only $2 \cdot 5 \cdot 4 = 40$ features appear.
 
   \begin{table}[!htb]
     \centering
@@ -164,9 +175,3 @@ Because for each team, every champion can be in one of the 4 lanes. In each matc
 
 The calculated sparsities are shown in \Cref{tab:featuresparsity}, which also includes how many of each type of feature that appeared in 60,000 matches.
 In total, only $0.2\%$ of the possible features appear in a single game, hence we choose a sparse representation of features. This is important because of the memory limitation, which will be present on the cluster which we have set up described in \Cref{sec:cluster}. 
-
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../main"
-%%% End:
