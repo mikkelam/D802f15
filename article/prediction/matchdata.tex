@@ -5,7 +5,7 @@ In \Cref{sec:representationoffeatures}, a possible feature symmetry issue is inv
 
 
 \subsection{League of Legends Match Information}\label{sec:matchdata}
-Riot Games records large amounts of information about played matches and players~\cite{matchinfo}. Much, if not all of this data is publicly available through their online API. Since we aim to predict the winning team before the game starts, we will only focus on the data that can be extracted before a match starts. The only exception is information about which team that won each match, since that is the class label we want to predict and thus we need it for training and evaluating a classifier.
+Riot records large amounts of information about played matches and players~\cite{matchinfo}. Much, if not all of this data is publicly available through their online API. Since we aim to predict the winning team before the game starts, we will only focus on the data that can be extracted before a match starts. The only exception is information about which team that won each match, since that is the class label we want to predict and thus we need it for training and evaluating a classifier.
 We have chosen to extract the following data from each match:
 \begin{itemize}
 \item Winning team
@@ -26,14 +26,14 @@ The champions on each of the two teams have been included because some champions
 The rank of players are considered because the rank system in LoL aims to assign better players a greater rank. Intuitively, a team of high ranked players must be better than a team of low ranked players.
 The lane played by each player may be useful, because players often stick to one particular lane for the first half a match.
 Note that the lanes of the opponent team is not known before the game starts, but we have still chosen to include it, because it very often can determined based on the picked champions. Knowing the lane of the players means knowing the ranks and champion of the players that most often fights against each other.
-Both the masteries, runes. and summoner spells are worth knowing, because each of them add or improve some property of a champion. 
+Both the masteries, runes, and summoner spells are worth knowing, because each of them add or improve some property of a champion. 
 %The summoner spells are also worth considering because they adds additional properties to a champion.
 Different game modes imply different play styles. By only considering the 5 versus 5 game mode, we hope to achieve better predictions.
 The queue type of the match lets us know if the LoL match making system has formed the two teams, or the players have formed the two teams themselves.
 Teams formed on their own may be better, because the players in self formed teams often know each other better and more often use voice communication tools.
 Finally the matches patch version is used to make sure that we only use matches from the same patches. Different patches may change aspects of the game, e.g.\ the strength of particular champions, and without accounting for different patches, the trained classifier accuracy may decrease.  
 
-The data set we use use consists of matches played from $23^{\text{rd}}$ of March 2015 to $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. When filtering the games to include only 5 versus 5 game modes, we are left with 1925980 matches. The patch version of all matches used is $5.6$.
+The data set we use use consists of matches played from the $23^{\text{rd}}$ to the $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. When filtering the games to include only 5 versus 5 game modes, we are left with 1925980 matches. The patch version of all matches used is $5.6$.
 
 
 %%% Local Variables:
