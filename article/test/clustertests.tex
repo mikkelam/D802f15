@@ -50,7 +50,15 @@ The results from \Cref{fig:clusterbigdata} shows that as more data is used to tr
   \caption{Experiment for representation of features}\label{fig:clusterbigdata}
 \end{figure}
 
-The results also shows that as the size of the training data increases overfitting decreases. The difference in accuracy between the training set and the test-set moves from $3.79\%$ for 84,529 matches to $3.79\times10^{-1} \%$ for 1,348,428 matches. We can also see that the model does not improve by much as the amount of data increases. The experiment shows that as the amount of data used for training increases, overfitting decreases severely.      
+The results also shows that as the size of the training data increases overfitting decreases. The difference in accuracy between the training set and the test-set moves from $3.79\%$ for 84,529 matches to $3.79\times10^{-1} \%$ for 1,348,428 matches. We can also see that the model does not improve by much as the amount of data increases. The experiment shows that as the amount of data used for training increases, overfitting decreases severely. \todo{konklusion mangler}
+% 0-vægte 
+% 6: 71861
+% 12: 65189
+% 25: 60376
+% 50: 56992
+% 100: 54702
+
+% total: 189183      
 
 
 \subsubsection{Feature experiments}\label{sec:feattest}
@@ -91,7 +99,7 @@ Experiments are performed using logistic regression using stochastic gradient de
 
 \end{axis}
 \end{tikzpicture}
-   \caption{Accuracy of features}\label{fig:cluster-feat}
+   \caption{Accuracy of feature sets. The features used for each test are shown in \Cref{sec:feattest}}\label{fig:cluster-feat}
 \end{figure}
 
 The feature evaluation results from \Cref{fig:cluster-feat} shows two interesting results, by looking at each individual case we can see that there is almost no overfitting. The largest difference is data point 2: (pairs) with a difference of $3.610^{-3}$ percentage points. The results shows some tendency between the complexity of the model and the performance of the classifier. Higher complexity in general yields a better classifier. The best result was achieved using all pre-match features.
