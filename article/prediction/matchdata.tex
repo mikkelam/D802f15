@@ -1,11 +1,10 @@
 \section{Data and Feature Setup}\label{sec:features}
 In \Cref{sec:matchdata} we investigate the match data made available by the Riot's API, which covers almost any detail of a match.
-\Cref{sec:choosingfeatures} identifies a number of features that can be extracted from match data, which we think are most important when it comes to prediction of the winning team. The choice is based on our intuition as more or less experienced LoL players. The size of each type of features domain is calculated in \Cref{sec:featuresparsity}, as well as the sparsity with regards to how many features that appear in each match.
-In \Cref{sec:representationoffeatures}, a possible feature symmetry issue is investigated which raises a number of concerns and suggestions for solutions as to how the extracted features should be represented. 
-
+\Cref{sec:choosingfeatures} identifies a number of features that can be extracted from match data. These are features which we consider the most important when it comes to prediction of the winning team. The choice is based on our intuition as more or less experienced LoL players. The size of each type of features domain is calculated in \Cref{sec:featuresparsity}, as well as the sparsity with regards to how many features that appear in each match.
+In \Cref{sec:representationoffeatures}, a possible feature symmetry issue is investigated which raises a number of concerns. Suggestions for solutions as to how the extracted features is represented. 
 
 \subsection{League of Legends Match Information}\label{sec:matchdata}
-Riot records large amounts of information about played matches and players~\cite{matchinfo}. Much, if not all of this data is publicly available through their online API. Since we aim to predict the winning team before the game starts, we will only focus on the data that can be extracted before a match starts. The only exception is information about which team that won each match, since that is the class label we want to predict and thus we need it for training and evaluating a classifier.
+Riot records large amounts of information about played matches and players~\cite{matchinfo}. Much, if not all of this data is publicly available through their online API, and it is on JSON format. Since we aim to predict the winning team before the game starts, we will only focus on the data that can be extracted before a match starts. The only exception is information about which team that won each match, since that is the class label we want to predict and thus we need it for training and evaluating a classifier.
 We have chosen to extract the following data from each match:
 \begin{itemize}
 \item Winning team
@@ -21,9 +20,9 @@ And the following data from each player:
 \item Masteries 
 \item Summoner spells 
 \end{itemize}
-All the extracted information has be chosen because we think it might be useful for estimating how good a particular team is against another team. \todo{kommetar: dårlig begrundelse}
+All the extracted information has be chosen as we consider it to be useful for estimating how good a particular team is against another team. 
 The champions on each of the two teams have been included because some champions may be better than others.
-The rank of players are considered because the rank system in LoL aims to assign better players a greater rank. Intuitively, a team of high ranked players must be better than a team of low ranked players.
+The rank of players are considered, because the rank system in LoL aims to assign better players a greater rank. Intuitively, a team of high ranked players must be better than a team of low ranked players.
 The lane played by each player may be useful, because players often stick to one particular lane for the first half a match.
 Note that the lanes of the opponent team is not known before the game starts, but we have still chosen to include it, because it very often can determined based on the picked champions. Knowing the lane of the players means knowing the ranks and champion of the players that most often fights against each other.
 Both the masteries, runes, and summoner spells are worth knowing, because each of them add or improve some property of a champion. 
@@ -33,7 +32,7 @@ The queue type of the match lets us know if the LoL match making system has form
 Teams formed on their own may be better, because the players in self formed teams often know each other better and more often use voice communication tools.
 Finally the matches patch version is used to make sure that we only use matches from the same patches. Different patches may change aspects of the game, e.g.\ the strength of particular champions, and without accounting for different patches, the trained classifier accuracy may decrease.  
 
-The data set we use use consists of matches played from the $23^{\text{rd}}$ to the $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. When filtering the games to include only 5 versus 5 game modes, we are left with 1925980 matches. The patch version of all matches used is $5.6$.
+The data set we use use consists of matches played from the $23^{\text{rd}}$ to the $27^{\text{th}}$ of March 2015. It includes match details for matches played across the world. When filtering the games to include only 5 versus 5 game modes, we are left with 1,925,980 matches. The patch version of all matches used is $5.6$.
 
 
 %%% Local Variables:

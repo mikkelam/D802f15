@@ -1,7 +1,7 @@
 \subsection{Video Games and Machine Learning}\label{sec:mlandonlinevideogames}
-In video games, one or more players make a number of choices trying to win. The choices made by a single player can be seen as a strategy. The state space of video games can be so enormous that it is impossible to comprehend for a human, which means decisions not optimal for winning, may be made. For such video games, machine learning techniques may be able to either outperform human players or provide them valuable support for their decisions.
+In video games, one or more players make a number of choices trying to win. The choices made by a single player can be seen as a strategy. The state space of video games can be so enormous that it is impossible to comprehend for a human, which means decisions not optimal for winning, may be made. For such video games, machine learning techniques may be able to either outperform human players or provide them with valuable support for their decisions.
 
-Machine learning has been applied to various games H.\ Park et al.\ applied scouting algorithms and various machine learning techniques to predict early game strategy in StarCraft~\cite{Park:2012:PES:2425296.2425298}. J.\ Mullen et al.\ applied several machine learning techniques to develop an agent that successfully played Super Mario Bros.~\cite{supermario}. For Dota 2, which is a video game very similar to LoL, K.\ Conley and D.\ Perry have trained a classifier to predict the winning team of a Dota 2 match~\cite{dota2article}, by only considering the heroes chosen at the beginning of the game. Each feature used represents the presence or absence of all champions on both of the teams, putting the feature amount in the hundreds. When training on 18,000 matches an accuracy of 69.8\% were reached on the 5,669 matches a test set. Only matches between players of similar skill levels were considered. 
+Machine learning has been applied to various games, H.\ Park et al.\ applied scouting algorithms and various machine learning techniques to predict early game strategy in StarCraft~\cite{Park:2012:PES:2425296.2425298}. J.\ Mullen et al.\ applied several machine learning techniques to develop an agent that successfully played Super Mario Bros.~\cite{supermario}. For Dota 2, which is a video game very similar to LoL, K.\ Conley and D.\ Perry have trained a classifier to predict the winning team of a Dota 2 match, by only considering the heroes chosen at the beginning of the game~\cite{dota2article}. Each feature used represents the presence or absence of all champions on both of the teams, putting the feature amount in the hundreds. When training on 18,000 matches an accuracy of 69.8\% were reached on the 5,669 matches a test set. Only matches between players of similar skill levels were considered. 
 
 Such a classifier can assist players in picking a good combination of heroes, giving them a competitive edge. Game developers can use classifiers as a tool to balance game elements; this is especially true for competitive multiplayer games as LoL, where champion unbalances reduce the competitiveness of the game.
 
@@ -14,8 +14,6 @@ Such a classifier can assist players in picking a good combination of heroes, gi
 %
 %Matei Zaharia, et al.\ have created Apache Spark and using this framework, the computation time is reduced if the data is being reused, in e.g.\ iterative machine learning or 
 %iterative data analysis tools~\cite{ApacheSpark}.
-
-
 
 %%% Local Variables:
 %%% mode: latex

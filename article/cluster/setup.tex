@@ -1,9 +1,10 @@
 \section{Cluster}\label{sec:cluster}
-In this section, the cluster that will be doing the computations will be outlined. In \Cref{sec:clustersetup} the setup of the cluster and the available resources are listed, followed by a profile of the resource usage in \Cref{sec:profile}. In \Cref{sec:benchmark} the performance of the cluster will be tested against a standalone computer, both doing word count as a measurement. In \Cref{sec:speedup} the speedup from using additional nodes for computations will be measured.
+In this section, the cluster that will be doing the computations will be outlined. In \Cref{sec:clustersetup} the setup of the cluster and the available resources are listed, followed by a profile of the resource usage in \Cref{sec:profile}. In \Cref{sec:benchmark} the performance of the cluster will be tested against a a single worker node, both doing word count as a measurement. In \Cref{sec:speedup} the speedup from using additional nodes for computations will be measured.
+\todo{hvis 4.3 og 4.4 slåes sammen}
 
 \subsection{Cluster Setup}\label{sec:clustersetup}
 
-The cluster used for this work consist of four nodes, one master and three worker nodes. The master is master both in terms of cluster management on Spark and storage manegement on HDFS.\ Because of the limited resources for the project and small size of the cluster and dataset, some of the common fault tolerance functionality of Hadoop and Spark has not been employed. Most significantly, only one replication of data exist across HDFS, which naturally put large parts of the data at risk. There are two unique setups the cluster consist of which only differs on the CPU:\@
+The cluster used for this work consist of four nodes, one master and three worker nodes. The master is master both in terms of cluster management on Spark and storage management on HDFS.\ Because of the limited resources for the project and small size of the cluster and dataset, some of the common fault tolerance functionality of Hadoop and Spark has not been employed. Most significantly, only one replication of data exist across HDFS, which naturally put large parts of the data at risk. There are two unique setups the nodes consist of which only differs on the CPU:\@
 \begin{description}
 \item[CPU:] Dual core intel e8400 3Ghz or Quad core q9400 2.66Ghz
 \item[Storage:] 220 GB

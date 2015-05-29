@@ -13,15 +13,13 @@ validateData=True):
 \caption{Lines from classification.py}
 \label{lst:py_logreg}
 \end{listing}
-
-The main scripts involved with logistic regression in spark are.
+The main scripts involved with logistic regression in spark are as follows.
 \begin{itemize}
 \item LogisticRegression.scala
 \item GradientDescent.scala
 \item Updater.scala
 \item Gradient.scala
 \end{itemize}
-
 In \Cref{lst:gd_logreg} a LogisticGradient and SquaredL2Updater is created and passed to GradientDescent which returns the weights needed to create the model.
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=211]{scala}
@@ -37,7 +35,8 @@ override val optimizer = new GradientDescent(gradient, updater)
 \label{lst:gd_logreg}
 \end{listing}
 
-The main function involved with calculating the weights is runMiniBatchSGD from line 149 in GradientDescent.scala. The runMiniBatchSGD is shown in \Cref{lst:runMiniBatchSGD}. 
+The main function involved with calculating the weights is runMiniBatchSGD from line 149 in GradientDescent.scala. The runMiniBatchSGD is shown in \Cref{lst:runMiniBatchSGD}. \todo{Fix noget med \textbackslash ContiuedFloat}
+
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=181]{scala}
 var regVal = updater.compute(
@@ -73,7 +72,7 @@ regVal = update._2
 \caption{Lines from GradientDescent.scala}
 \label{lst:runMiniBatchSGD}
 \end{listing}
-The lines 187 to 209 in side the for-loop in \Cref{lst:runMiniBatchSGD} is a map reduce calculating loss accordingly to the weights, and then updates the weights to minimize loss with respect to the regularization parameter. Lines 191 and 192 use the LogisticGradient object created by the LogisticRegression object to compute the loss based on the label, features, current weights and gradient. On line 205 the updater computes new weights and a new regVal from the given weights, average gradient, stepSize, iteration and regularization factor.
+The lines 187 to 209 inside the for-loop in \Cref{lst:runMiniBatchSGD} is a map reduce calculating loss accordingly to the weights, and then updates the weights to minimise loss with respect to the regularisation parameter. Lines 191 and 192 use the LogisticGradient object created by the LogisticRegression object to compute the loss based on the label, features, current weights, and gradient. On line 205 the updater computes new weights and a new regVal from the given weights, average gradient, stepSize, iteration, and regularisation factor.
 From \Cref{lst:sparkloss} taken from compute function in Gradient.scala it is clear that loss computed is a logistic loss.  
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=173]{scala}

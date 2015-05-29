@@ -1,21 +1,22 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
-In the following, we aim to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
-We define 7 different types of features and argue argue why each type is a good candidates for predicting the winning team.
-The different types of features are each extracted by a mapping function, that maps a LoL match (in some cases with additional parameters) to a value. 
-Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a game.\\
-$\text{CHAMPIONS}$ is the set of all champions, where each champion is represented by an id. A total of 124 champions exist in the patch version of LoL used in this project.\\
-$\text{PLAYERS}$ is the set of all players.\\
-$\text{TEAMS} = \{\text{blue}, \text{purple}\}$ are the two teams.\\
-$T_i(x) = \{ (p, c) \in \text{PLAYERS} \times \text{CHAMPIONS} \mid c \text{ is controlled by } p \text{ on team } i  \text{ in match } x \}$, where $i \in \text{TEAMS}$.\\
-$\text{RANKS} = \{\text{unranked},\text{bronze},\text{silver},\text{gold},\text{platinum},\text{diamond},\text{master},\text{challenger}\}$ is the set of ranks.\\
-$\text{LANES} = \{\text{top},\text{bottom},\text{mid},\text{jungle}\}$ is the set of lanes.\\
-$\text{SPELLS}$ is the set of summoner spells. In total, there are 22 summoner spells.\\
-$\text{RUNES}$ is the set of runes. In total, there are 296 runes.
-$\text{MASTERIES}$ is the set of masteries. In total, there are 57 masteries.
-
+In this section, we aim to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
+We define 7 different types of features and argue why each type is a good candidates for predicting the winning team.
+The different types of features are each extracted by a mapping function, that maps a LoL match to a value, in some cases with additional parameters. 
+Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a game.
+$\text{CHAMPIONS}$ is the set of all champions, where each champion is represented by an id. A total of 124 champions exist in the patch version of LoL used in this project.
+\begin{itemize}
+\item $\text{PLAYERS}$ is the set of all players.
+\item $\text{TEAMS} = \{\text{blue}, \text{purple}\}$ are the two teams.
+$T_i(x) = \{ (p, c) \in \text{PLAYERS} \times \text{CHAMPIONS} \mid c \text{ is controlled by } p \text{ on team } i  \text{ in match } x \}$, where $i \in \text{TEAMS}$.
+\item $\text{RANKS} = \{\text{unranked},\text{bronze},\text{silver},\text{gold},\text{platinum},\text{diamond},\text{master},\text{challenger}\}$ is the set of ranks.
+\item $\text{LANES} = \{\text{top},\text{bottom},\text{mid},\text{jungle}\}$ is the set of lanes.
+\item $\text{SPELLS}$ is the set of summoner spells, there are 22 summoner spells.
+\item $\text{RUNES}$ is the set of runes, there are 296 runes.
+\item $\text{MASTERIES}$ is the set of masteries, there are 57 masteries.
+\end{itemize}
 
 \subsubsection{Single champions}
-Some champions may be better than other champions. To capture the strength of individual champions, we define features that represent the presence or absence of a particular champion on each team.
+Some champions may be better than others. To capture the strength of individual champions, we define a features that represent the presence or absence of a particular champion on each team.
 $\forall t \in \text{TEAMS}, \forall c \in C:$
 \begin{equation}\label{eq:single}  
 \phi_{\text{SINGLE}, t, c}(x) = 
@@ -26,7 +27,7 @@ $\forall t \in \text{TEAMS}, \forall c \in C:$
 \end{equation}
 
 \subsubsection{Champion pairs}
-Some champions are considered damage dealers. They deal very high damage, but die easily. Other champions deal very little damage, but can be almost impossible to kill - these are considered tanks. These two types of champions are weak when alone, but when they team up, they can pose a serious threat. The tank can be used by the damage dealer as a living shield, allowing him to stay alive for much longer, thus deal more damage.
+Some champions are considered damage dealers. They deal very high damage, but die easily. Other champions deal very little damage, but can be almost impossible to kill, these are considered tanks. These two types of champions are weak when alone, but when they team up, they can pose a serious threat. The tank can be used by the damage dealer as a living shield, allowing him to stay alive for much longer, thus deal more damage.
 To capture the synergy between two champions on the same team, we define features that represent the presence or absence of every 2-combination of champions on that team. $\forall t \in \text{TEAMS}, \forall c_1, c_2 \in C$ where $c_1 < c_2$:
 \begin{equation}\label{eq:pair}
 \phi_{\text{PAIR}, t, c_1, c_2}(x) =
@@ -42,7 +43,7 @@ We make the restriction $c_1 < c_2$, because we want to ignore permutations. Thi
 Some champions may have an advantage when fighting against a particular opponent.
 For instance, a champion that is good at dodging ranged attacks is good against an enemy that only has ranged attacks.
 We say that the better suited champion \emph{counters} the other.
-To capture that one champion may counter another, we will for each champion on team $t$ need a feature that represents the presence or absence of every possible champion on the other team. $\forall c_1, c_2 \in C:$
+To capture that one champion may counter another, we will for each champion on team $t$ need a feature that represents the presence or absence of every possible champion on the opposing team. $\forall c_1, c_2 \in C:$
 \begin{equation}\label{eq:counter}
 \phi_{\text{COUNTER},c_1,c_2}(x) = 
 \begin{cases} 
@@ -53,7 +54,7 @@ To capture that one champion may counter another, we will for each champion on t
 
 For this type of feature, we do not have the restriction $c_1 < c_2$ and thus consider permutations instead of combinations.
 To understand why, consider that $c_1$ counters $c_2$.
-In this case, the feature $\phi_{\text{COUNTER},c_1,c_2}(x) = 1$ is favorable to the blue team, while $\phi_{\text{COUNTER},c_2,c_1}(x) = 1$ is favorable to the red team.
+In this case, the feature $\phi_{\text{COUNTER},c_1,c_2}(x) = 1$ is favorable to the blue team, while $\phi_{\text{COUNTER},c_2,c_1}(x) = 1$ is favourable to the purple team.
 Note that in some game modes, $\phi_{\text{COUNTER},c_1,c_2}(x) = 1$, is allowed for $c_1 = c_2$. That is, the same champion may appear on both teams.
 In that way we can capture if a champion can counter itself due to some asymmetries in the map layout.
 
@@ -61,10 +62,10 @@ In that way we can capture if a champion can counter itself due to some asymmetr
 In LoL, players can compete in ranked games, where they are placed in one of 7 tiers. Better players achieve higher tiers.
 Before a match starts, we have access to data about the highest tier each player has achieved in a ranked game, which we will refer to as the rank of a player. We also know if a player has not competed in ranked games, in which case we say that he is unranked.
 A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{gold}, \textit{platinum}, \textit{diamond}, \textit{master}, \textit{challenger}, mentioned in increasing order of skills required to achieve the rank.
-We define a score function $\varphi : P \rightarrow \mathcal{N}$, where $\varphi(p) = 0$ if $p$ is unranked, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
+We define a score function $\mu : P \rightarrow \mathcal{N}$, where $\mu(p) = 0$ if $p$ is unranked, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
 We define the rank of team $t$ in a match $x$, to be the average rank of all players on that team who is not unranked:
 \begin{equation}\label{eq:eta}
-\eta(t, x) = \frac{\sum\limits_{(p,c) \in T_t(x)} \varphi(p)}{|\{(p, c) \in T_t(x) \mid \varphi(p) > 0\}|}
+\eta(t, x) = \frac{\sum\limits_{(p,c) \in T_t(x)} \mu(p)}{|\{(p, c) \in T_t(x) \mid \mu(p) > 0\}|}
 \end{equation}
 Note that if all players are unranked, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define a single feature
 \begin{equation}\label{eq:bestrank}
@@ -92,7 +93,7 @@ In the early stage of a match, players tend to keep their champion in the same l
 If a good player plays against a bad player in the same lane, the good player might get so strong that he can carry the team to victory.
 Therefore it may be good to have a feature that considers the rank of players who fights in the same lane.
 Before defining a feature that considers the rank of players that play against each other in the same lane,
-we first define a function that given a match, a lane and a team returns the rank(s) of the players(s) playing that lane on the given team.
+we first define a function that given a match, a lane, and a team, returns the rank(s) of the players(s) playing that lane on the given team.
 $\forall l \in \text{LANES}, \forall t \in \text{TEAMS}$ and a given match $x$:
 \begin{equation}\label{eq:xi}
   \xi(t,l,x) =
@@ -104,7 +105,7 @@ $\forall l \in \text{LANES}, \forall t \in \text{TEAMS}$ and a given match $x$:
   \text{many} & \text{otherwise}.
 \end{cases}
 \end{equation}
-Note that if more than two players on the same team plays the same lane, $\xi$ does not capture any ranks for that team and lane. This is because of the huge amount of combinations and the fact that playing 3 champions in the same lane is a very bad strategy. Therefore, we think a single feature is enough to capture all the bad strategies of having 3 champions in the same lane.
+Note that if more than two players on the same team plays the same lane, $\xi$ does not capture any ranks for that team and lane. This is because of the huge amount of combinations and the fact that playing three champions in the same lane is a very bad strategy. Therefore, we think a single feature is enough to capture all the bad strategies of having three champions in the same lane.
  
 The function $\xi$ is now used to define a new feature that captures the rank of players playing in each lane.
 $\forall l \in \text{LANES}$, and for any $a$ and $b$ that are possibles values in the range of $\xi$:
@@ -117,21 +118,21 @@ $\forall l \in \text{LANES}$, and for any $a$ and $b$ that are possibles values 
 \end{equation}
 
 \subsubsection{Champion lanes}
-Some champions are better suited for a particular lane. For instance, mages tend to go mid as they generally loose both mana and health fast, and the path back to the base for regeneration is shortest from mid. To capture the lane each champion play, we define a new feature.
+Some champions are better suited for a particular lane. For instance, mages tend to go mid as they generally lose both mana and health fast, and the path back to the base for regeneration is shortest from mid. To capture the lane each champion play, we define a new feature.
 $\forall c \in \text{CHAMPIONS}, \forall l \in \text{LANES}, \forall t \in \text{TEAMS}$:
 \begin{equation}\label{eq:championlane}
   \phi_{\text{LANE-CHAMPION},c,l,t}(x) =
 \begin{cases}
-  1 & \text{if champion } c \text{ fought at lane } l \text{ for team } t)\\
+  1 & \text{if champion } c \text{ fought at lane } l \text{ for team } t\\
   0 & \text{otherwise}
 \end{cases}
 \end{equation}
 
 \subsubsection{Champion spells}
 Some summoner spells are better suited for particular champions. For instance, a healing or shielding spell is good for the high damaging champions that die easily.
-To capture the spells used by the different champions, we define a new feature:
+To capture the spells used by the different summoners, we define a new feature:
 $\forall c \in \text{CHAMPIONS}, \forall s \in \text{SPELLS}, \forall t \in \text{TEAMS}$:
-\begin{equation}\label{eq:championlane}
+\begin{equation}\label{eq:championspell}
   \phi_{\text{CHAMPION-SPELL},c,s,t}(x) =
 \begin{cases} 
   1 & \text{if champion } c \text{ uses spell } s \text{ on team } t\\
@@ -142,7 +143,7 @@ $\forall c \in \text{CHAMPIONS}, \forall s \in \text{SPELLS}, \forall t \in \tex
 \subsubsection{Champion runes}
 Some runes are better suited for particular champions. For instance, champions that deal physical damage will benefit more from having runes that increase physical damage instead of magic damage. To capture the runes used by the different champions, we define a new feature:
 $\forall c \in \text{CHAMPIONS}, \forall r \in \text{RUNES}, \forall t \in \text{TEAMS}$:
-\begin{equation}\label{eq:championlane}
+\begin{equation}\label{eq:championrunes}
   \phi_{\text{CHAMPION-RUNE},c,r,t}(x) =
 \begin{cases} 
   1 & \text{if champion } c \text{ uses rune } r \text{ on team } t\\
@@ -153,7 +154,7 @@ $\forall c \in \text{CHAMPIONS}, \forall r \in \text{RUNES}, \forall t \in \text
 \subsubsection{Champion masteries}
 With same reasoning as for runes, some masteries are better suited for particular champions. To capture the runes used by the different champions, we define a new feature:
 $\forall c \in \text{CHAMPIONS}, \forall m \in \text{MASTERIES}, \forall t \in \text{TEAMS}$:
-\begin{equation}\label{eq:championlane}
+\begin{equation}\label{eq:championmastery}
   \phi_{\text{CHAMPION-MASTERY},c,m,t}(x) =
 \begin{cases} 
   1 & \text{if champion } c \text{ uses mastery } m \text{ on team } t\\
@@ -162,7 +163,7 @@ $\forall c \in \text{CHAMPIONS}, \forall m \in \text{MASTERIES}, \forall t \in \
 \end{equation}
 
 \subsection{Feature sparsity}\label{sec:featuresparsity}
-All of the introduced features can have value of either 1 or 0. If a feature has a value of $1$ in a given match, we say that the given feature \textit{appear} in that match.
+All of the introduced features can have value of either 1 or 0. If a feature has a value of $1$ in a given match, we say that the given feature \emph{appear} in that match.
 For a given match, a dense representation of features is a list of values, such that the $i$'th value denotes the value of feature $i$.
 A sparse representation is a list of indices $i$ of all features that appear in the given match.
 If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance  and thus be favourable.
