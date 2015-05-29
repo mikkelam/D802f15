@@ -102,14 +102,14 @@ L1-regularisation is good at encouraging sparse solutions when there are many ir
 \item L2-Regularisation: $L_w = \frac{\lambda}{2} \sum_{m} {w_m}^2$
 \end{itemize}
 
-Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data. For logistic regression with L2-Regularisation the combined loss function looks like this.
+Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data loss function. For logistic regression with L2-Regularisation the combined loss function looks like this.
 \[ L(\mathbf{w})
   = L_D(w) + L_w 
   = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2} \sum_{m=1}^{M} {w_m}^2 \] 
 
 \subsubsection{Batch Gradient Descent}\label{sec:batch}
 
-Since we have a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
+As we wish to use a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
