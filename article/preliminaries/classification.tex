@@ -104,7 +104,7 @@ L1-regularisation is good at encouraging sparse solutions when there are many ir
 
 Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data loss function. For logistic regression with L2-Regularisation the combined loss function looks like this.
 \[ L(\mathbf{w})
-  = L_D(w) + L_w 
+  = L_D(\mathbf{w}) + L_w 
   = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2} \sum_{m=1}^{M} {w_m}^2 \] 
 
 \subsubsection{Batch Gradient Descent}\label{sec:batch}
@@ -113,11 +113,15 @@ As we wish to use a large number of features, applying an analytic solution to f
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
-In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges, i.e.\ when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
+In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges to a local minimum of $L(\textbf{w})$, i.e.\ when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
+
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
-%	= w_j - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n))}{ \partial w_j}  \]
+%	= w_j - \eta \frac{\partial(\sum_{n=1}^N E_w(y_n, h_w(x_n)))}{ \partial w_j}  \]
+
 \[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\mathbf{w})}{\partial w_j^{(i-1)}}
-       = w_{j}^{(i-1)} - \eta \frac{\partial \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M w_m^2}{\partial w_j^{(i-1)}} \]  
+       = w_{j}^{(i-1)} - \eta \frac{\partial \Big( \sum_{n=1}^N E_{w^{(i-1)}}(y_n, h_{w^{(i-1)}}(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M {w^{(i-1)}_m}^2 \Big) }{\partial w_j^{(i-1)}} \]  
+
+Because the loss function is convex, there is only one minimum i.e. the global minimum. 
 The value $\eta$ represent the learning rate i.e.\ how big a step the algorithm should take in each iteration.
 This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
 
