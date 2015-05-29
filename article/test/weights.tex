@@ -12,16 +12,18 @@ While experimenting with various features, we found various weights which seem t
 Firstly, one should know that no weights were much higher than others, which would imply the game is relatively balanced! If the opposite was the case, certain strategies would be too good. Which probably would result in a patch that would rebalance the game. Also note that the weights of our model are mostly symmetric around 0, which implies that the game is somewhat symmetric across the two teams. It is also important to realise the weights are based on the matches in our dataset, and the symmetric match might not have been played. 
 
 Note that the sign implies which team the feature is good for. Since we are predicting if blue team wins, negative features are bad for the blue team. 
-
-\textbf{Counter-pair} \Cref{eq:counter}
+\\
+\\
+\textbf{Counter-pair:} \Cref{eq:counter}
 \begin{itemize}
     \item[$-$] Jinx-BLUE-VS-LeeSin-PURPLE 
     \item[$-$] Blitzcrank-BLUE-VS-LeeSin-PURPLE 
     \item[$+$] LeeSin-BLUE-VS-Blitzcrank-PURPLE 
 \end{itemize} 
 This means that the champion Jinx is bad versus LeeSin, to explain this one can look at their abilities. Jinx dies easily, but deal high damage, while LeeSin can teleport close to enemies and deal high damage. Blitzcrank versus LeeSin and Nidalee, might be bad for Blitzcrank because he can pull enemies close to him and deal damage, but LeeSin can quickly jump away from Blitzcrank.
-
-\textbf{Single champions} \Cref{eq:single}
+\\
+\\
+\textbf{Single champions:} \Cref{eq:single}
 \begin{itemize}
     \item[$-$] Bard-PURPLE 
     \item[$-$] Sejuani-PURPLE
@@ -38,7 +40,4 @@ We also defined the feature vector \Cref{eq:best-rank}, this is by far the best 
 
 \todo{need more text here}
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "../main"
-%%% End:
+
