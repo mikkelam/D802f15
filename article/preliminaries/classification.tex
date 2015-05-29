@@ -31,19 +31,18 @@ The examples include a constant, the identity, a polynomial and the combination 
 % insert image showing a line and some data points.
 
 When attempting to predict a continuous value, one standard method is by using linear regression.
-%A very popular model for classification is the linear classification model.
-\todo{Spørgsmål: Ville det give mening at alle 'w' her har samme font?}
-The linear regression model generates a prediction $\hat{y}$ of the value $y$. $\hat{y}$ is found with the hypothesis function $h(x)$ by assigning weights $(\mathbf{w}_1\phi_1),(\mathbf{w}_2\phi_2), \dots (\mathbf{w}_M\phi_M)$ to the features and computing their sum.
-\[h_w(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x) \]
+The linear regression model generates a prediction $\hat{y}$ of the value $y$. This prediction is found with the hypothesis function $h(x)$ by assigning weights $\textbf{w} = w_1, w_2, \dots w_M$ to the features and computing their sum.
 
-Where $w_0$ is a special case called the intercept, however to avoid having this special case we add  $w_0$ to the feature $\phi_0(x)=1$, which allows us to use the intercept as a normal feature. 
+\[h_{\textbf{w}}(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x) \]
+
+Where $w_0$ is a special case called the intercept, however to avoid having this special case we add the feature $\phi_0(x)=1$, which allows us to use the intercept as a normal feature. 
 The next question becomes, how do we assign a value to the weights?
 Given the amount of data we have available, it would be preferable to learn these weights from the data. 
 
 \paragraph{Linear Regression}
-Since the goal is to fit the hypothesis function to a training set, linear regression uses the following loss function given the data $D$ and the weights $w$.
+Since the goal is to fit the hypothesis function to a training set, linear regression uses the following loss function given the data $D$ and the weights $\textbf{w}$.
 
-\[ L_D(w) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{w_i \in w} w_i \phi_i(x_n))^2 \] 
+\[ L_D(\textbf{w}) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{i=0}^M w_i \phi_i(x_n))^2 \] 
 The best parameters are those that minimise the loss function. Since the function is convex, the best parameters can be found either analytically by setting the derivative to 0, or by using an iterative method introduced later called gradient descent.
 
 When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function:
@@ -51,11 +50,10 @@ When giving a prediction $\hat{y}$ on the value of a discrete binary label we us
 \hat{y} = 
 \begin{cases}
   1 &\text{ if } h_w(x) > \tau \\
-  0 &\text{ if } h_w(x) \leq \tau  % should this be 0 < f(x) \leq 0 ????
+  0 &\text{ if } h_w(x) \leq \tau  
 \end{cases}
 \] 
 Although this may work in some cases, a dataset with a few outliers can significantly skew the decision boundary.
-%insert image of a skewed decision boundary.
 In order to combat this problem we introduce a new linear model for classification called logistic regression.
 
 \paragraph{Logistic Regression}\label{sec:logistic}
@@ -75,7 +73,7 @@ Logistic regression solves this problem by introducing an error function:
 When the error of the hypothesis function is 0, the error function returns 0 as well. When the error of the hypothesis function goes towards 1, the penalty caused by the error function goes towards infinity.
 When using the error function to define the loss function
 $$L_D(w) = \sum_{n=1}^N E_w(y_n, h_w(x_n))$$
-the loss function becomes convex again.
+the loss function once again becomes convex.
 
 \subsubsection{Overfitting and Underfitting}
 % overfitting vs. underfitting
