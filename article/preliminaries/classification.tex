@@ -80,7 +80,9 @@ the loss function once again becomes convex.
 Learning the parameters of a linear model can result in a model that is either too simple or too complex.
 If the model is too simple, the model will not be unable to catch the nuances present in the data, causing low predictive power. This behaviour is called underfitting.
 % insert image with a model that is too simple.  
-When a model is too complex, the model will be able to fit the training data too well, resulting in bad predictive power on previously unseen data. This behaviour is called overfitting. To evaluate how well a model fit some data, we can split the data into a training and test set. Evaluation can be done on both data sets and be compared. If the model is better at predicting the training data compared to the test data, some degree of overfitting is happening. If however the model has the same predictive power on both sets, we either have an underfitted or well fitted model. A common approach is to use more data for training than testing. For instance by using a 70/30 split.
+When a model is too complex, the model will be able to fit the training data too well, resulting in bad predictive power on previously unseen data. This behaviour is called overfitting. 
+
+To evaluate how well a model fit some data, we can split the data into a training and test set. Evaluation can be done on both data sets and be compared. If the model is better at predicting the training data compared to the test data, some degree of overfitting is happening. If however the model has the same predictive power on both sets, we either have an underfitted or well fitted model. A common approach is to use more data for training than testing. For instance by using a 70/30 split.
 
 Another possibility is to use k-fold cross validation.
 When applying this method the dataset is partitioned into $k$ numbers of ``folds'', with 1 test fold and $k-1$ training folds.
