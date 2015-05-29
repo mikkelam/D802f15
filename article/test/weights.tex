@@ -1,11 +1,19 @@
 \subsection{Knowledge Extraction}\label{sub:knowledge}
 In this section we are going to compile an overview of some knowledge which we have extracted from the data. 
 
+\subsubsection{Low accuracy}
+
+We are not able to achieve a higher accuracy and there are two options why this is the case. Either we have not used thoroughly representing features or the maximally achievable accuracy is close to ours and it is simply not possible to get a better accuracy. There is not much we can do about the first point, but we definitely have tested with a lot of different features. But then, why is it the case that we can not achieve higher accuracy? It is quite clear that the intention of the game maker is to balance the game, such that no champion or combination of champions is too powerful. If one champion becomes too strong it will be changed and reduced in power. If we look at the newest version of the game, the champions which we have selected as strong and weak have had their power changed. It is definitely the case that picking certain champions or even picking a counter to the enemy champion, will make winning the game easier, but skill is also very important. 
+
+\subsubsection{Notable weights}
+
 While experimenting with various features, we found various weights which seem to be very indicative of the outcome of the match. In this section we will list some of them. It is useful to list these, because they imply a good strategy in the game.
 
 Firstly, one should know that no weights were much higher than others, which would imply the game is relatively balanced! If the opposite was the case, certain strategies would be too good. Which probably would result in a patch that would rebalance the game. Also note that the weights of our model are mostly symmetric around 0, which implies that the game is somewhat symmetric across the two teams. It is also important to realise the weights are based on the matches in our dataset, and the symmetric match might not have been played. 
 
-Note that the sign implies which team the feature is good for. Since we are predicting if blue team wins, negative features are bad for the blue team. The most notable counter pair features:
+Note that the sign implies which team the feature is good for. Since we are predicting if blue team wins, negative features are bad for the blue team. 
+
+\textbf{Counter-pair} \Cref{eq:counter}
 \begin{itemize}
     \item[$-$] Jinx-BLUE-VS-LeeSin-PURPLE 
     \item[$-$] Blitzcrank-BLUE-VS-LeeSin-PURPLE 
@@ -13,7 +21,7 @@ Note that the sign implies which team the feature is good for. Since we are pred
 \end{itemize} 
 This means that the champion Jinx is bad versus LeeSin, to explain this one can look at their abilities. Jinx dies easily, but deal high damage, while LeeSin can teleport close to enemies and deal high damage. Blitzcrank versus LeeSin and Nidalee, might be bad for Blitzcrank because he can pull enemies close to him and deal damage, but LeeSin can quickly jump away from Blitzcrank.
 
-Single champions 
+\textbf{Single champions} \Cref{eq:single}
 \begin{itemize}
     \item[$-$] Bard-PURPLE 
     \item[$-$] Sejuani-PURPLE
@@ -23,16 +31,10 @@ Single champions
 
 Most of these features directly correlate to the average winrate of each champion. In this case Bard, Sejuani and Blitzcrank have the highest winrates individually while Azir has the lowest winrate.
 
-We also defined the feature vector \Cref{eq:best-rank}, this is by far the best feature. That is, the team with the highest rank will often be the winner.
-
-
-\textcolor{red}{ADD MORE WHEN TESTS ARE DONE, MAYBE REMOVE SOME}
+We also defined the feature vector \Cref{eq:best-rank}, this is by far the best feature. This implies that the team with the highest rank will often be the winner.
 
 
 
-\subsubsection{Low accuracy}
-
-We are not able to achieve a higher accuracy and there are two options why this is the case. We have not used thoroughly representing features or the maximally achievable accuracy is close to ours and it is simply not possible to get a better accuracy. There is not much we can do about the first point, but we definitely have tested with a lot of different features. But then, why is it the case that we can not achieve higher accuracy? It is quite clear that the intention of the game maker is to balance the game, such that no champion or combination of champions is too powerful. If one champion becomes too strong it will be changed and reduced in power. If we look at the newest version of the game, the champions which we have selected as strong and weak have had their power changed. It is definitely the case that picking certain champions or even picking a counter to the enemy champion, will make winning the game easier, but skill is also very important.
 
 \todo{need more text here}
 
