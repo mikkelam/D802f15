@@ -1,19 +1,24 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
 In this section, we aim to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
-We define 7 different types of features and argue why each type is a good candidates for predicting the winning team.
-The different types of features are each extracted by a mapping function, that maps a LoL match to a value, in some cases with additional parameters. 
+Each feature is extracted by a mapping function, that maps a LoL match to a binary value, that is either $0$ or $1$.
 Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a game.
-$\text{CHAMPIONS}$ is the set of all champions, where each champion is represented by an id. A total of 124 champions exist in the patch version of LoL used in this project.
 \begin{itemize}
+
+\item $\text{CHAMPIONS}$ is the set of all champions, each represented by an id. $|\text{CHAMPIONS}| = 124$ in the patch version of LoL used in this project.
 \item $\text{PLAYERS}$ is the set of all players.
-\item $\text{TEAMS} = \{\text{blue}, \text{purple}\}$ are the two teams.
-$T_i(x) = \{ (p, c) \in \text{PLAYERS} \times \text{CHAMPIONS} \mid c \text{ is controlled by } p \text{ on team } i  \text{ in match } x \}$, where $i \in \text{TEAMS}$.
-\item $\text{RANKS} = \{\text{unranked},\text{bronze},\text{silver},\text{gold},\text{platinum},\text{diamond},\text{master},\text{challenger}\}$ is the set of ranks.
-\item $\text{LANES} = \{\text{top},\text{bottom},\text{mid},\text{jungle}\}$ is the set of lanes.
-\item $\text{SPELLS}$ is the set of summoner spells, there are 22 summoner spells.
-\item $\text{RUNES}$ is the set of runes, there are 296 runes.
-\item $\text{MASTERIES}$ is the set of masteries, there are 57 masteries.
+\item $\text{TEAMS} = \{\textit{blue}, \textit{purple}\}$ are the two teams.
+\item $T_i(x) = \{ p \in \text{PLAYERS} \mid p \text{ plays on team } i \text{ in match } x \}$, where $i \in \text{TEAMS}$.
+\item $\text{RANKS} = \{\textit{unranked},\textit{bronze},\textit{silver},\textit{gold},\textit{platinum},\textit{diamond},\textit{master},\textit{challenger}\}$ is the set of ranks.
+\item $\text{rank}(p) : \text{PLAYERS} \rightarrow \text{RANKS}$ returns the rank of player $p$.
+\item $\text{LANES} = \{\textit{top},\textit{bottom},\textit{mid},\textit{jungle}\}$ is the set of lanes.
+\item $\text{SPELLS}$ is the set of summoner spells. $|\text{SPELLS}| = 22$.
+\item $\text{RUNES}$ is the set of runes. $|\text{RUNES}| = 296$.
+\item $\text{MASTERIES}$ is the set of masteries. $|\text{MASTERIES}| = 57$.
 \end{itemize}
+
+Many features are very similar. Therefore, we group features by similarity.
+In the following, 10 different types of features are defined. Most type of features take additional parameters to index specific features within that group.
+Remember that the definition of every feature is with respect to the match $x$ taken as input.
 
 \subsubsection{Single champions}
 Some champions may be better than others. To capture the strength of individual champions, we define a features that represent the presence or absence of a particular champion on each team.
@@ -21,7 +26,7 @@ $\forall t \in \text{TEAMS}, \forall c \in C:$
 \begin{equation}\label{eq:single}  
 \phi_{\text{SINGLE}, t, c}(x) = 
 \begin{cases} 
-  1 & \text{if } (p, c) \in T_t(x) \text{ for some } p \\
+  1 & \text{if } c \text{ is on team } t\\
   0 & \text{otherwise} 
 \end{cases}
 \end{equation}
@@ -32,7 +37,7 @@ To capture the synergy between two champions on the same team, we define feature
 \begin{equation}\label{eq:pair}
 \phi_{\text{PAIR}, t, c_1, c_2}(x) =
 \begin{cases}
-  1 & \text{if } (p_1, c_1), (p_2, c_2) \in T_t(x) \text{ for some }p_1, p_2\\
+  1 & \text{if both } c_1 \text{ and } c_2 \text{ are on team } t\\
   0 & \text{otherwise}
 \end{cases}
 \end{equation}
@@ -47,7 +52,7 @@ To capture that one champion may counter another, we will for each champion on t
 \begin{equation}\label{eq:counter}
 \phi_{\text{COUNTER},c_1,c_2}(x) = 
 \begin{cases} 
-1 & \text{if } (p_1, c_1) \in T_\text{blue}(x) \text{ and } (p_2, c_2) \in T_\text{purple}(x) \text{ for some } p_1, p_2 \\ 
+1 & \text{if } c_1 \text{ is on blue team and } c_2 \text{ is on purple} \\ 
 0 & \text{otherwise} 
 \end{cases}
 \end{equation}
@@ -62,12 +67,12 @@ In that way we can capture if a champion can counter itself due to some asymmetr
 In LoL, players can compete in ranked games, where they are placed in one of 7 tiers. Better players achieve higher tiers.
 Before a match starts, we have access to data about the highest tier each player has achieved in a ranked game, which we will refer to as the rank of a player. We also know if a player has not competed in ranked games, in which case we say that he is unranked.
 A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{gold}, \textit{platinum}, \textit{diamond}, \textit{master}, \textit{challenger}, mentioned in increasing order of skills required to achieve the rank.
-We define a score function $\mu : P \rightarrow \mathcal{N}$, where $\mu(p) = 0$ if $p$ is unranked, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
+We define a score function $\mu : P \rightarrow \mathcal{N}$, where $\mu(p) = 0$ if $p$ is \textit{unranked}, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
 We define the rank of team $t$ in a match $x$, to be the average rank of all players on that team who is not unranked:
 \begin{equation}\label{eq:eta}
-\eta(t, x) = \frac{\sum\limits_{(p,c) \in T_t(x)} \mu(p)}{|\{(p, c) \in T_t(x) \mid \mu(p) > 0\}|}
+\eta(t, x) = \frac{\sum\limits_{p \in T_t(x)} \mu(p)}{|\{p \in T_t(x) \mid \mu(p) > 0\}|}
 \end{equation}
-Note that if all players are unranked, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define 3 new features that capture whether blue, purple, or no team has the highest rank:
+Note that if all players are \textit{unranked}, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define 3 new features that capture whether blue, purple, or no team has the highest rank:
 $\forall t \in \text{TEAMS} \cup \{\text{none}\}$
 \begin{equation}\label{eq:bestrank}
 \phi_\text{BEST-RANK},t(x) = 
@@ -99,10 +104,9 @@ $\forall l \in \text{LANES}, \forall t \in \text{TEAMS}$ and a given match $x$:
 \begin{equation}\label{eq:xi}
   \xi(t,l,x) =
 \begin{cases} 
-  \text{none} & \text{if } \forall(p,c) \in T_t(x): c \text{ does not play in lane } l. \\
-  r_1 & \text{if only } (p_1, c_1) \in T_t(x) \text{ plays lane } l \text{ and } p_1 \text{ has rank } r_1 \text{.}\\
-  (r_1, r_2) & \text{if only } (p_1, c_1), (p_2, c_2) \in T_t(x) \text{ plays lane } l, \text{ where } p_1, p_2 \text{ has rank } r_1, r_2\\ 
-&\text{respectively, and } p_1 \neq p_2.\\
+  \text{none} & \text{if no players on team } t \text{ plays lane } l \text{ in match } x \\
+  \text{rank}(p) & \text{if some } p \text{ in match } x \text{ is the only one playing lane } l { on team } t.\\
+  (\text{rank}(p_1), \text{rank}(p_2)) & \text{if some } p_1, p_2 \text{ in match } x \text{ are the only ones playing lane } l \text{ for team } t and p_1 \neq p_2.\\
   \text{many} & \text{otherwise}.
 \end{cases}
 \end{equation}
@@ -113,7 +117,7 @@ $\forall l \in \text{LANES}$, and for any $a$ and $b$ that are possibles values 
 \begin{equation}\label{eq:laneranks}
 \phi_{\text{LANE-RANKS},l,a,b}(x) =
 \begin{cases} 
-  1 & \text{if } \xi(\text{blue},l,x) = a, \xi(\text{purple},l,x) = b\\
+  1 & \text{if } \xi(\textit{blue},l,x) = a, \xi(\textit{purple},l,x) = b\\
   0 & \text{otherwise} 
 \end{cases}  
 \end{equation}
