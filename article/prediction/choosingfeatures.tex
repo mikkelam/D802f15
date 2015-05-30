@@ -1,19 +1,24 @@
 \subsection{Choosing features}\label{sec:choosingfeatures}
 In this section, we aim to define the features $\phi_j(x)$ for each LoL match $x$, as described in \Cref{sec:phi}.
-We define 7 different types of features and argue why each type is a good candidates for predicting the winning team.
-The different types of features are each extracted by a mapping function, that maps a LoL match to a value, in some cases with additional parameters. 
+Each feature is extracted by a mapping function, that maps a LoL match to a binary value, that is either $0$ or $1$.
 Before the feature mappings are defined, convenient notations are introduced that mathematically describes the concept of a game.
-$\text{CHAMPIONS}$ is the set of all champions, where each champion is represented by an id. A total of 124 champions exist in the patch version of LoL used in this project.
 \begin{itemize}
+
+\item $\text{CHAMPIONS}$ is the set of all champions, each represented by an id. $|\text{CHAMPIONS}| = 124$ in the patch version of LoL used in this project.
 \item $\text{PLAYERS}$ is the set of all players.
-\item $\text{TEAMS} = \{\text{blue}, \text{purple}\}$ are the two teams.
-$T_i(x) = \{ (p, c) \in \text{PLAYERS} \times \text{CHAMPIONS} \mid c \text{ is controlled by } p \text{ on team } i  \text{ in match } x \}$, where $i \in \text{TEAMS}$.
-\item $\text{RANKS} = \{\text{unranked},\text{bronze},\text{silver},\text{gold},\text{platinum},\text{diamond},\text{master},\text{challenger}\}$ is the set of ranks.
-\item $\text{LANES} = \{\text{top},\text{bottom},\text{mid},\text{jungle}\}$ is the set of lanes.
-\item $\text{SPELLS}$ is the set of summoner spells, there are 22 summoner spells.
-\item $\text{RUNES}$ is the set of runes, there are 296 runes.
-\item $\text{MASTERIES}$ is the set of masteries, there are 57 masteries.
+\item $\text{TEAMS} = \{\textit{blue}, \textit{purple}\}$ are the two teams.
+\item $T_i(x) = \{ p \in \text{PLAYERS} \mid p \text{ plays on team } i \text{ in match } x \}$, where $i \in \text{TEAMS}$.
+\item $\text{RANKS} = \{\textit{unranked},\textit{bronze},\textit{silver},\textit{gold},\textit{platinum},\textit{diamond},\textit{master},\textit{challenger}\}$ is the set of ranks.
+\item $\text{rank}(p) : \text{PLAYERS} \rightarrow \text{RANKS}$ returns the rank of player $p$.
+\item $\text{LANES} = \{\textit{top},\textit{bottom},\textit{mid},\textit{jungle}\}$ is the set of lanes.
+\item $\text{SPELLS}$ is the set of summoner spells. $|\text{SPELLS}| = 22$.
+\item $\text{RUNES}$ is the set of runes. $|\text{RUNES}| = 296$.
+\item $\text{MASTERIES}$ is the set of masteries. $|\text{MASTERIES}| = 57$.
 \end{itemize}
+
+Many features are very similar. Therefore, we group features by similarity.
+In the following, 10 different types of features are defined. Most type of features take additional parameters to index specific features within that group.
+Remember that the definition of every feature is with respect to the match $x$ taken as input.
 
 \subsubsection{Single champions}
 Some champions may be better than others. To capture the strength of individual champions, we define a features that represent the presence or absence of a particular champion on each team.
@@ -21,7 +26,7 @@ $\forall t \in \text{TEAMS}, \forall c \in C:$
 \begin{equation}\label{eq:single}  
 \phi_{\text{SINGLE}, t, c}(x) = 
 \begin{cases} 
-  1 & \text{if } (c, p) \in T_t(x) \text{ for some } p \\
+  1 & \text{if } c \text{ is on team } t\\
   0 & \text{otherwise} 
 \end{cases}
 \end{equation}
@@ -32,7 +37,7 @@ To capture the synergy between two champions on the same team, we define feature
 \begin{equation}\label{eq:pair}
 \phi_{\text{PAIR}, t, c_1, c_2}(x) =
 \begin{cases}
-  1 & \text{if } (c_1, p_1), (c_2, p_2) \in T_t(x) \text{ for some }p_1, p_2\\
+  1 & \text{if both } c_1 \text{ and } c_2 \text{ are on team } t\\
   0 & \text{otherwise}
 \end{cases}
 \end{equation}
@@ -47,7 +52,7 @@ To capture that one champion may counter another, we will for each champion on t
 \begin{equation}\label{eq:counter}
 \phi_{\text{COUNTER},c_1,c_2}(x) = 
 \begin{cases} 
-1 & \text{if } (c_1, p_1) \in T_\text{blue}(x) \text{ and } (c_2, p_2) \in T_\text{purple}(x) \text{ for some } p_1, p_2 \\ 
+1 & \text{if } c_1 \text{ is on blue team and } c_2 \text{ is on purple} \\ 
 0 & \text{otherwise} 
 \end{cases}
 \end{equation}
@@ -62,17 +67,18 @@ In that way we can capture if a champion can counter itself due to some asymmetr
 In LoL, players can compete in ranked games, where they are placed in one of 7 tiers. Better players achieve higher tiers.
 Before a match starts, we have access to data about the highest tier each player has achieved in a ranked game, which we will refer to as the rank of a player. We also know if a player has not competed in ranked games, in which case we say that he is unranked.
 A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{gold}, \textit{platinum}, \textit{diamond}, \textit{master}, \textit{challenger}, mentioned in increasing order of skills required to achieve the rank.
-We define a score function $\mu : P \rightarrow \mathcal{N}$, where $\mu(p) = 0$ if $p$ is unranked, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
+We define a score function $\mu : P \rightarrow \mathcal{N}$, where $\mu(p) = 0$ if $p$ is \textit{unranked}, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
 We define the rank of team $t$ in a match $x$, to be the average rank of all players on that team who is not unranked:
 \begin{equation}\label{eq:eta}
-\eta(t, x) = \frac{\sum\limits_{(p,c) \in T_t(x)} \mu(p)}{|\{(p, c) \in T_t(x) \mid \mu(p) > 0\}|}
+\eta(t, x) = \frac{\sum\limits_{p \in T_t(x)} \mu(p)}{|\{p \in T_t(x) \mid \mu(p) > 0\}|}
 \end{equation}
-Note that if all players are unranked, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define a single feature
+Note that if all players are \textit{unranked}, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define 3 new features that capture whether blue, purple, or no team has the highest rank:
+$\forall t \in \text{TEAMS} \cup \{\text{none}\}$
 \begin{equation}\label{eq:bestrank}
-\phi_\text{BEST-RANK}(x) = 
+\phi_\text{BEST-RANK},t(x) = 
 \begin{cases} 
-  1 & \text{if } \eta(\text{blue},x) > \eta(\text{purple},x)\\
-  -1 & \text{if } \eta(\text{blue},x) < \eta(\text{purple},x)\\
+  1 & \text{if } t \neq \text{none} \wedge \eta(t,x) > \eta(t',x) \text{ for all } t' \in \text{TEAMS}\\
+  1 & \text{if } t = \text{none} \wedge \eta(t',x) = \eta(t'',x) \text{ for all } t',t'' \in \text{TEAMS}\\
   0 & \text{otherwise} 
 \end{cases}  
 \end{equation}
@@ -98,10 +104,9 @@ $\forall l \in \text{LANES}, \forall t \in \text{TEAMS}$ and a given match $x$:
 \begin{equation}\label{eq:xi}
   \xi(t,l,x) =
 \begin{cases} 
-  \text{none} & \text{if } \forall(c, p) \in T_t(x): c \text{ does not play in lane } l. \\
-  r_1 & \text{if only } (c_1, p_1) \in T_t(x) \text{ plays lane } l \text{ and } p_1 \text{ has rank } r_1 \text{.}\\
-  (r_1, r_2) & \text{if only } (c_1, p_1), (c_2, p_2) \in T_t(x) \text{ plays lane } l, \text{ where } p_1, p_2 \text{ has rank } r_1, r_2\\ 
-&\text{respectively, and } p_1 \neq p_2.\\
+  \text{none} & \text{if no players on team } t \text{ plays lane } l \text{ in match } x \\
+  \text{rank}(p) & \text{if some } p \text{ in match } x \text{ is the only one playing lane } l { on team } t.\\
+  (\text{rank}(p_1), \text{rank}(p_2)) & \text{if some } p_1, p_2 \text{ in match } x \text{ are the only ones playing lane } l \text{ for team } t and p_1 \neq p_2.\\
   \text{many} & \text{otherwise}.
 \end{cases}
 \end{equation}
@@ -112,7 +117,7 @@ $\forall l \in \text{LANES}$, and for any $a$ and $b$ that are possibles values 
 \begin{equation}\label{eq:laneranks}
 \phi_{\text{LANE-RANKS},l,a,b}(x) =
 \begin{cases} 
-  1 & \text{if } \xi(\text{blue},l,x) = a, \xi(\text{purple},l,x) = b\\
+  1 & \text{if } \xi(\textit{blue},l,x) = a, \xi(\textit{purple},l,x) = b\\
   0 & \text{otherwise} 
 \end{cases}  
 \end{equation}
@@ -166,47 +171,75 @@ $\forall c \in \text{CHAMPIONS}, \forall m \in \text{MASTERIES}, \forall t \in \
 All of the introduced features can have value of either 1 or 0. If a feature has a value of $1$ in a given match, we say that the given feature \emph{appear} in that match.
 For a given match, a dense representation of features is a list of values, such that the $i$'th value denotes the value of feature $i$.
 A sparse representation is a list of indices $i$ of all features that appear in the given match.
-If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance  and thus be favourable.
+If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance and thus be favourable.
 
-Each team can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
-\[\phi_{\text{SINGLE}} = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| = 2 \cdot 124 = 248\] 
-In each match, only $2 \cdot 5 = 10$ of those features appear.
+\paragraph{\[\phi_{\text{SINGLE}}\]}
+\begin{adjustwidth}{2cm}{}
+    Each team can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
+    \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| = 2 \cdot 124 = 248\] In each match, only $2 \cdot 5 = 10$ of those features appear.
+\end{adjustwidth}
 
-There are $|\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1)$ different 2-combinations of champions. Therefore:
-\[\phi_{\text{PAIR}} = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] 
-In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+\paragraph{\[\phi_{\text{PAIR}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
+    There are $|\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1)$ different 2-combinations of champions. Therefore:
+    \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+\end{adjustwidth}
 
+\paragraph{\[\phi_{\text{COUNTER}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
 Both teams can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
-\[\phi_{\text{COUNTER}} = |\text{CHAMPIONS}|^2 = 124^2 = 15376\] 
+\[|\text{CHAMPIONS}|^2 = 124^2 = 15376\] 
 In each match, only $5 \cdot 5 = 25$ of those features appear.
+\end{adjustwidth}
 
+\paragraph{\[\phi_{\text{BEST-RANK}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
 In each match, the best ranked team can either be blue, purple, or it can be a tie. Therefore:
 \[\phi_{\text{BEST-RANK}} = 3\] 
-By definition, each match contains only $1$ of those features.
+Each match contains only $1$ of those features since either blue, purple, or none of the teams have a the greatest rank.
+\end{adjustwidth}
 
+\paragraph{\[\phi_{\text{PLAYER-RANK}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
 Each of the $2$ teams have $5$ players that each can have $1$ of $8$ ranks:
-\[\phi_{\text{PLAYER-RANK}} = 2 \cdot 5 \cdot 8 = 80\] 
+\[ 2 \cdot 5 \cdot 8 = 80\] 
 Since every player has only $1$ rank, only $10$ of those features appear.
+\end{adjustwidth}
 
+\paragraph{\[\phi_{\text{LANE-RANKS}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
 Each lane contains either none, 1, 2, or many champions from each team. The exact ranks are only considered for a given team and lane if the team has either 1 or 2 champions in a given lane. Therefore:
-\[\phi_{\text{LANE-RANKS}} = |\text{LANES}| \cdot (1 + |\text{RANKS}| + |\text{RANKS}|^2 + 1)^2 = 21904\]
+\[|\text{LANES}| \cdot (1 + |\text{RANKS}| + |\text{RANKS}|^2 + 1)^2 = 21904\]
 In each match only $5$ of these features appear, as each of the lanes has exactly one combination of ranks of the players / champions playing against each other.
+\end{adjustwidth}
 
+\paragraph{\[\phi_{\text{LANE-CHAMPION}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
 On each team, every champion can be in one of 4 lanes. Therefore, we get that:
-\[\phi_{\text{LANE-CHAMPION}} = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |L| = 2 \cdot 124 \cdot 4 = 992\]
+\[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |L| = 2 \cdot 124 \cdot 4 = 992\]
 In each match, only $2 \cdot 5 \cdot 4 = 40$ features appear.
+\end{adjustwidth}
 
-There exists $|\text{CHAMPIONS}|$ champions and $|\text{SPELLS}|$ spells. Therefore, we get that:
-\[\phi_{\text{CHAMPION-SPELLS}} = |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 124 \cdot 22 = 2728\]
+\paragraph{\[\phi_{\text{CHAMPION-SPELLS}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
+There exist $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{SPELLS}|$ spells. Therefore, we get that:
+\[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 2 \cdot 124 \cdot 22 = 5456\]
 Since each of the 10 summoners have 2 spells, $2 \cdot 10 = 20$ features appear in each match.
+\end{adjustwidth}
 
-There exists $|\text{CHAMPIONS}|$ champions and $|\text{RUNES}|$ runes. Therefore, we get that:
-\[\phi_{\text{CHAMPION-RUNES}} = |\text{CHAMPIONS}| \cdot |\text{RUNES}| = 124 \cdot 296 = 36704\]
+\paragraph{\[\phi_{\text{CHAMPION-RUNES}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
+There exist $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{RUNES}|$ runes. Therefore, we get that:
+\[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{RUNES}| = 2 \cdot 124 \cdot 296 = 73408\]
 Since each of the 10 summoners have at most 30 runes, at most $10 \cdot 30 = 300$ features appear in each match.
+\end{adjustwidth}
 
-There exists $|\text{CHAMPIONS}|$ champions and $|\text{MASTERIES}|$ masteries. Therefore, we get that:
-\[\phi_{\text{CHAMPION-MASTERIES}} = |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 124 \cdot 57 = 7068\]
+\paragraph{\[ \phi_{\text{CHAMPION-MASTERIES}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
+There exists $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{MASTERIES}|$ masteries. Therefore, we get that:
+\[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 2 \cdot 124 \cdot 57 = 14136\]
 Since each of the 10 summoners have chosen at most 30 masteries, at most $10 \cdot 30 = 300$ features appear in each match.
+\end{adjustwidth}
 
   \begin{table}[!htb]
     \centering
@@ -214,17 +247,17 @@ Since each of the 10 summoners have chosen at most 30 masteries, at most $10 \cd
     \begin{tabular}{|l|ccc|}
       \hline
       Feature type                       & Domain size & Appears in a single match & Appeared in 60,000 matches \\ \hline
-      $\phi_{\text{SINGLE}}$             & 248         & 10   & 248               \\ 
-      $\phi_{\text{PAIR}}$               & 15252       & 20   & 15252             \\ 
-      $\phi_{\text{COUNTER}}$            & 15376       & 25   & 15359             \\ 
-      $\phi_{\text{BEST-RANK}}$          & 3           & 1    & 3                 \\ 
-      $\phi_{\text{PLAYER-RANK}}$        & 80          & 10   & 80                \\ 
-      $\phi_{\text{LANE-RANKS}}$         & 21904       & 5    & 1834              \\ 
-      $\phi_{\text{LANE-CHAMPION}}$      & 992         & 40   & 992               \\
-      $\phi_{\text{CHAMPION-SPELLS}}$    & 2728        & 20   &                   \\
-      $\phi_{\text{CHAMPION-RUNES}}$     & 36704       & 300* &                   \\
-      $\phi_{\text{CHAMPION-MASTERIES}}$ & 7068        & 300* &                   \\
-      Total                              & 53855       & 111  &                   \\ \hline
+      $\phi_{\text{SINGLE}}$             & 248         & 10    & 248               \\ 
+      $\phi_{\text{PAIR}}$               & 15252       & 20    & 15252             \\ 
+      $\phi_{\text{COUNTER}}$            & 15376       & 25    & 15359             \\ 
+      $\phi_{\text{BEST-RANK}}$          & 3           & 1     & 3                 \\ 
+      $\phi_{\text{PLAYER-RANK}}$        & 80          & 10    & 80                \\ 
+      $\phi_{\text{LANE-RANKS}}$         & 21904       & 5     & 1834              \\ 
+      $\phi_{\text{LANE-CHAMPION}}$      & 992         & 40    & 992               \\
+      $\phi_{\text{CHAMPION-SPELLS}}$    & 5456        & 20    & 2434              \\
+      $\phi_{\text{CHAMPION-RUNES}}$     & 73408       & 0-300 & 52212             \\
+      $\phi_{\text{CHAMPION-MASTERIES}}$ & 14136       & 0-300 & 14120             \\
+      Total                              & 146855      & 131-731  & 102534           \\ \hline
     \end{tabular}
   }
     \caption{The sparsity of each type of feature. (*)At most.}\label{tab:featuresparsity}
@@ -232,4 +265,4 @@ Since each of the 10 summoners have chosen at most 30 masteries, at most $10 \cd
 
 The calculated sparsities are shown in \Cref{tab:featuresparsity}, which also includes how many of each type of feature that appeared in 60,000 matches.
 
-In total only $0.2\%$ of the possible features appear in a single game. Given such level sparsity, we choose a sparse representation of features, as this reduces the memory footprint significant and allows us to use feature sets of a much larger size. This allows us to fit much larger feature sets into a limited amount of memory. Being able to handle large feature sets is an important ability when working with big data, as a larger amount of data, can be used to learn more features.
+In total, at least $0.09 \%$ and at most $0.40\%$ of all possible features appear in a single game. Given a such level of sparsity, we choose a sparse representation of features, as this reduces the memory use significantly and allows us to use feature sets of a much larger size. This allows us to fit much larger feature sets into a limited amount of memory.
