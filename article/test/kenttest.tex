@@ -5,9 +5,9 @@ In this section we are going to perform a number of experiments on our 456 GB da
 In this section we will present experiments which have been run on a smaller dataset, to get a quick overview of the strength of features. These experiments are used to find the settings, which the cluster should be run with when the final cluster experiments will be performed. 
 
 \subsubsection{Best machine learning technique}
-Many different machine learning algorithms exists for learning a classifier. In this experiment, we test eight different classifiers provided by Weka to see which one gives the best result for our particular problem~\cite{weka}. The tested classifiers are naive bayes, hidden naive bayes, logistic regression, neural network, support vector machine (C-SVM), adaboost(using decision stump), Hoeffding tree, and decision stump. All the different methods are run with multiple parameter settings to find the configuration that yields the best result. Note that no parameters are needed for naive bayes, hidden naive bayes and decision stump. For logistic regression, different values of the L2-regularisation parameter has been tested. For C-SVM, different values for the $c$-constant has been used as well as linear, polynomial, radial, and sigmoid kernel methods. For adaboost, a different number of iterations have been used. For neural networks, different number of hidden neurons have been used, always placed in a single hidden layer. For Hoeffding trees, Weka has 7 different parameters, but only the Hoeffding tie threshold and leaf prediction strategy caused a different accuracy when adjusted.
+Many different machine learning algorithms exists for learning a classifier. In this experiment, we test eight different classifiers provided by Weka to see which one gives the best result for our particular problem~\cite{weka}. The tested classifiers are naive bayes, hidden naive bayes, logistic regression, neural network, support vector machine (C-SVM), adaboost(using decision stump), Hoeffding tree, and decision stump. All the different methods are run with multiple parameter settings to find the configuration that yields the best result. Note that naive bayes, hidden naive bayes and decision stump takes no parameters. For logistic regression, different values of the L2-regularisation parameter has been tested. For C-SVM, different values for the $c$-constant has been used as well as linear, polynomial, radial, and sigmoid kernel methods. For adaboost, a different number of iterations have been used. For neural networks, different number of hidden neurons have been used, always placed in a single hidden layer. For Hoeffding trees, Weka has 7 different parameters, but only the Hoeffding tie threshold and leaf prediction strategy caused a different accuracy when adjusted.
 
-Using 35,000 matches, the best accuracy obtained with each of the methods can be seen in \Cref{fig:besttech}. 
+Using 35,000 matches, the best accuracy obtained with each of the methods can be seen in \Cref{fig:besttech}.
 
 \begin{figure}[!htb]
 \centering
@@ -57,9 +57,7 @@ Using 35,000 matches, the best accuracy obtained with each of the methods can be
   \caption{Test of best machine learning technique}\label{fig:besttech}
 \end{figure}
 
-
-As seen, C-SVM and neural networks got the worst accuracy. Naive bayes, adaboost and hidden naive bayes all have an accuracy close to 56.5\%, but logistic regression has the best accuracy almost hitting 57\%.
-The best parameters of each method was found to be:
+The accuracies shown in \Cref{fig:besttech} were achieved after having adjusted the parameters of each method. The best parameters were found to be:
 \begin{itemize}
 \item C-SVM: sigmoid kernel function, $c = 1$.
 \item Adaboost: 200 iterations
@@ -67,7 +65,9 @@ The best parameters of each method was found to be:
 \item Neural network: $(\text{attributes} + \text{classes}) / 2$ hidden neurons.
 \item Hoeffding tree: Hoeffding tie threshold: 0.001, leaf prediction strategy: Naive bayes.
 \end{itemize}
-In addition, it is noteworthy that the difference in results, between all the 8 classifiers is minimal. This means that we can choose a simple model as the advanced models does not offer any additional accuracy. Some of these classifiers do also not scale very well with big data. Therefore we choose to use logistic regression as it is simple and it scales very well with big data. 
+
+As seen in \Cref{fig:besttech}, most of the algorithms achieve an accuracy close to $56 \%$. Only the Decision Stump seems to be an outlier. However, this is expected, since the decision stump only bases its prediction on the value of one single feature.
+Logistic Regression achieves the best accuracy. Since it also scales well for parallel computation, we choose Logistic Regression for further tests.
 
 \subsubsection{Feature symmetry experiment}
 In \Cref{sec:representationoffeatures} we represented four different ways of representing features, to capture a possible symmetry in the choice of champions and the layout of the map. In this section we test each representation by training a classifier using logistic regression using the given representation of features. The experiment was performed on a test set of 10,000 matches with training sets of up to 50,000 matches. The result, shown in \Cref{fig:feat-rep}, indicates that binary and ternary are very close, but the mirrored is not far behind. The compact is the only representation that shows some weakness, this is because it is actually missing information, it does not contain the opposing team, which means it is missing a valuable connection. The binary representation seems slightly more accurate than the ternary in the majority of the time. Therefore we choose to conduct all the following tests using the binary representation. 
@@ -174,7 +174,7 @@ In \Cref{sec:representationoffeatures} we represented four different ways of rep
 \label{sec:best-features}
 To get an idea of each type of features impact on our prediction capability, some quick tests are performed using the machine learning tool Weka.
 Logistic regression is used as classifier with an L2-regularisation parameter of 750 \todo{fik vi dobbelttjekket de 750?}. A training set of ranging size is used, up to a total of 50,000 matches, and a test set of 10,000 matches is used for evaluation \todo{forstår ikke denne sætning}. 
-The obtained accuracies can be seen in \Cref{fig:best-feat}.
+The obtained accuracies can be seen in \Cref{fig:best-feat}. Note that the $\phi_\text{CHAMPION-RUNE}$ feature type is not included, as it includes too many features for Weka to handle on a single machine with 8GB memory.
 Interestingly, the baseline where no features are used gives an accuracy of $51.24 \%$, and results in a model that always predicts the blue team to win.
 Note that the baseline is a flat line because it is clear already after 1,000 matches that the blue team wins the most, thus adding more training data does not change the learned model that always predicts the blue team to be the winner. Since the test set is the same regardless of how much training data that is used, the plot is a flat line. For the same reason, the $\phi_\text{BEST-RANKED}$ feature type also shows up as a straight line, because 1,000 matches is enough to learn a model that predicts the winning team to be the team with the highest average rank of its players.
 Among the feature types that only consider the rank of players, the $\phi_\text{LANE-RANKS}$ feature did best.
@@ -209,7 +209,7 @@ Among the tested feature types, the best feature types to combine has been found
         (45000,58.09)
         (50000,58.65)
       };
-       \addplot[color=red,mark=o] coordinates { 
+       \addplot[color=red,mark=otime] coordinates { 
         (1000,52.17)
         (5000,54.8)
         (10000,55.34)
@@ -221,6 +221,19 @@ Among the tested feature types, the best feature types to combine has been found
         (40000,57.08)
         (45000,56.77)
         (50000,57.01)
+      };
+      \addplot[color=green,mark=triangle] coordinates { 
+        (1000,53.09)
+        (5000,54.47)
+        (10000,55.34)
+        (15000,56.02)
+        (20000,56.55)
+        (25000,56.62)
+        (30000,56.74)
+        (35000,56.8)
+        (40000,57.09)
+        (45000,56.83)
+        (50000,56.74)
       };
       \addplot[color=black,mark=x] coordinates { 
         (1000,52.54)
@@ -235,7 +248,7 @@ Among the tested feature types, the best feature types to combine has been found
         (45000,56.33)
         (50000,56.39)
       };
-            \addplot[color=YellowOrange,mark=*] coordinates { 
+      \addplot[color=YellowOrange,mark=*] coordinates { 
         (1000,52.74)
         (5000,52.98)
         (10000,53.24)
@@ -247,6 +260,19 @@ Among the tested feature types, the best feature types to combine has been found
         (40000,55.93)
         (45000,56.12)
         (50000,56.31)
+      };
+      \addplot[color=blue,mark=diamond] coordinates { 
+        (1000,52.75)
+        (5000,54.56)
+        (10000,54.02)
+        (15000,54.53)
+        (20000,54.92)
+        (25000,55.39)
+        (30000,55.94)
+        (35000,55.91)
+        (40000,55.94)
+        (45000,56.12)
+        (50000,56.27)
       };
       \addplot[color=blue,mark=square] coordinates { 
         (1000,55.26)
@@ -274,7 +300,7 @@ Among the tested feature types, the best feature types to combine has been found
         (45000,54.95)
         (50000,55.04)
       };
-       \addplot[color=green,mark=triangle] coordinates { 
+       \addplot[color=green,mark=o] coordinates { 
         (1000,53.24)
         (5000,53.1)
         (10000,53.97)
@@ -301,7 +327,7 @@ Among the tested feature types, the best feature types to combine has been found
         (50000,51.24)
       };
 
-\legend{$\phi_\text{LANE-CHAMPION}$,$\phi_\text{SINGLE}$,$\phi_\text{LANE-RANKS}$,$\phi_\text{COUNTERS}$,$\phi_\text{BEST-RANKED}$,$\phi_\text{PAIRS}$,$\phi_\text{PLAYER-RANKS}$,Baseline}
+\legend{$\phi_\text{LANE-CHAMPION}$,$\phi_\text{SINGLE}$,$\phi_\text{CHAMPION-SPELL}$,$\phi_\text{LANE-RANKS}$,$\phi_\text{COUNTERS}$,$\phi_\text{CHAMPION-MASTERY}$,$\phi_\text{BEST-RANKED}$,$\phi_\text{PAIRS}$,$\phi_\text{PLAYER-RANKS}$,Baseline}
      
     \end{axis} 
   \end{tikzpicture}
