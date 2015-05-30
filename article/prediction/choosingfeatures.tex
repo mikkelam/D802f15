@@ -166,15 +166,20 @@ $\forall c \in \text{CHAMPIONS}, \forall m \in \text{MASTERIES}, \forall t \in \
 All of the introduced features can have value of either 1 or 0. If a feature has a value of $1$ in a given match, we say that the given feature \emph{appear} in that match.
 For a given match, a dense representation of features is a list of values, such that the $i$'th value denotes the value of feature $i$.
 A sparse representation is a list of indices $i$ of all features that appear in the given match.
-If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance  and thus be favourable.
+If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance and thus be favourable.
 
-Each team can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
-\[\phi_{\text{SINGLE}} = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| = 2 \cdot 124 = 248\] 
-In each match, only $2 \cdot 5 = 10$ of those features appear.
+\paragraph{\[\phi_{\text{SINGLE}}\]}
+\begin{adjustwidth}{2cm}{}
+    Each team can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
+    \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| = 2 \cdot 124 = 248\] In each match, only $2 \cdot 5 = 10$ of those features appear.
+\end{adjustwidth}
 
-There are $|\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1)$ different 2-combinations of champions. Therefore:
-\[\phi_{\text{PAIR}} = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] 
-In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+\paragraph{\[\phi_{\text{PAIR}}\]}\\\\
+\begin{adjustwidth}{2cm}{}
+    There are $|\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1)$ different 2-combinations of champions. Therefore:
+    \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+\end{adjustwidth}
+
 
 Both teams can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
 \[\phi_{\text{COUNTER}} = |\text{CHAMPIONS}|^2 = 124^2 = 15376\] 
