@@ -169,68 +169,68 @@ For a given match, a dense representation of features is a list of values, such 
 A sparse representation is a list of indices $i$ of all features that appear in the given match.
 If there in general only appear very few of the possible features in any given match, a sparse representation may be more memory efficient and hence provide better performance and thus be favourable.
 
-\paragraph{\[\phi_{\text{SINGLE}}\]}
+\paragraph{$\phi_{\text{SINGLE}}$}
 \begin{adjustwidth}{2cm}{}
     Each team can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
     \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| = 2 \cdot 124 = 248\] In each match, only $2 \cdot 5 = 10$ of those features appear.
 \end{adjustwidth}
 
-\paragraph{\[\phi_{\text{PAIR}}\]}\\\\
+\paragraph{$\phi_{\text{PAIR}}$}
 \begin{adjustwidth}{2cm}{}
     There are $|\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1)$ different 2-combinations of champions. Therefore:
     \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
 \end{adjustwidth}
 
-\paragraph{\[\phi_{\text{COUNTER}}\]}\\\\
+\paragraph{$\phi_{\text{COUNTER}}$}
 \begin{adjustwidth}{2cm}{}
 Both teams can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
 \[|\text{CHAMPIONS}|^2 = 124^2 = 15376\] 
 In each match, only $5 \cdot 5 = 25$ of those features appear.
 \end{adjustwidth}
 
-\paragraph{\[\phi_{\text{BEST-RANK}}\]}\\\\
+\paragraph{$\phi_{\text{BEST-RANK}}$}
 \begin{adjustwidth}{2cm}{}
 In each match, the best ranked team can either be blue, purple, or it can be a tie. Therefore:
 \[\phi_{\text{BEST-RANK}} = 3\] 
 Each match contains only $1$ of those features since either blue, purple, or none of the teams have a the greatest rank.
 \end{adjustwidth}
 
-\paragraph{\[\phi_{\text{PLAYER-RANK}}\]}\\\\
+\paragraph{$\phi_{\text{PLAYER-RANK}}$}
 \begin{adjustwidth}{2cm}{}
 Each of the $2$ teams have $5$ players that each can have $1$ of $8$ ranks:
 \[ 2 \cdot 5 \cdot 8 = 80\] 
 Since every player has only $1$ rank, only $10$ of those features appear.
 \end{adjustwidth}
 
-\paragraph{\[\phi_{\text{LANE-RANKS}}\]}\\\\
+\paragraph{$\phi_{\text{LANE-RANKS}}$}
 \begin{adjustwidth}{2cm}{}
 Each lane contains either none, 1, 2, or many champions from each team. The exact ranks are only considered for a given team and lane if the team has either 1 or 2 champions in a given lane. Therefore:
 \[|\text{LANES}| \cdot (1 + |\text{RANKS}| + |\text{RANKS}|^2 + 1)^2 = 21904\]
 In each match only $5$ of these features appear, as each of the lanes has exactly one combination of ranks of the players / champions playing against each other.
 \end{adjustwidth}
 
-\paragraph{\[\phi_{\text{LANE-CHAMPION}}\]}\\\\
+\paragraph{$\phi_{\text{LANE-CHAMPION}}$}
 \begin{adjustwidth}{2cm}{}
 On each team, every champion can be in one of 4 lanes. Therefore, we get that:
 \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |L| = 2 \cdot 124 \cdot 4 = 992\]
 In each match, only $2 \cdot 5 \cdot 4 = 40$ features appear.
 \end{adjustwidth}
 
-\paragraph{\[\phi_{\text{CHAMPION-SPELLS}}\]}\\\\
+\paragraph{$\phi_{\text{CHAMPION-SPELLS}}$}
 \begin{adjustwidth}{2cm}{}
 There exist $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{SPELLS}|$ spells. Therefore, we get that:
 \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 2 \cdot 124 \cdot 22 = 5456\]
 Since each of the 10 summoners have 2 spells, $2 \cdot 10 = 20$ features appear in each match.
 \end{adjustwidth}
 
-\paragraph{\[\phi_{\text{CHAMPION-RUNES}}\]}\\\\
+\paragraph{$\phi_{\text{CHAMPION-RUNES}}$}
 \begin{adjustwidth}{2cm}{}
 There exist $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{RUNES}|$ runes. Therefore, we get that:
 \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{RUNES}| = 2 \cdot 124 \cdot 296 = 73408\]
 Since each of the 10 summoners have at most 30 runes, at most $10 \cdot 30 = 300$ features appear in each match.
 \end{adjustwidth}
 
-\paragraph{\[ \phi_{\text{CHAMPION-MASTERIES}}\]}\\\\
+\paragraph{$\phi_{\text{CHAMPION-MASTERIES}}$}
 \begin{adjustwidth}{2cm}{}
 There exists $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{MASTERIES}|$ masteries. Therefore, we get that:
 \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 2 \cdot 124 \cdot 57 = 14136\]
