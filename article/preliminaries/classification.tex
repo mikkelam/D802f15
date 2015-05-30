@@ -155,10 +155,9 @@ def StochasticGradientDescent(W,E,D):
 \end{listing}
 
 \paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
-Because stochastic gradient descent updates the weights using individual data points.
-The value has a tendency to jump around a lot instead of moving directly down the gradient towards the minimum.
-To alleviate this problem there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
-The only difference between them being that each update is an average of ten updates in mini-batch gradient descent. 
+Because stochastic gradient descent updates the weights using individual data points, the gradient found could just as well move away from a minimum value, as it could move towards it. 
+To alleviate this problematic behaviour, there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
+The only difference between them is that each update is an average of ten updates in mini-batch gradient descent.
 
 
 
