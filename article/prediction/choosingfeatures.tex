@@ -17,7 +17,7 @@ Before the feature mappings are defined, convenient notations are introduced tha
 \end{itemize}
 
 Many features are very similar. Therefore, we group features by similarity.
-In the following, 10 different types of features are defined. Most type of features take additional parameters to index specific features within that group.
+In the following, 10 different types of features are defined. Most types of features take additional parameters to index specific features within that group.
 Remember that the definition of every feature is with respect to the match $x$ taken as input.
 
 \subsubsection{Single champions}
@@ -75,7 +75,7 @@ We define the rank of team $t$ in a match $x$, to be the average rank of all pla
 Note that if all players are \textit{unranked}, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define 3 new features that capture whether blue, purple, or no team has the highest rank:
 $\forall t \in \text{TEAMS} \cup \{\text{none}\}$
 \begin{equation}\label{eq:bestrank}
-\phi_\text{BEST-RANK},t(x) = 
+\phi_{\text{BEST-RANK},t}(x) = 
 \begin{cases} 
   1 & \text{if } t \neq \text{none} \wedge \eta(t,x) > \eta(t',x) \text{ for all } t' \in \text{TEAMS}\\
   1 & \text{if } t = \text{none} \wedge \eta(t',x) = \eta(t'',x) \text{ for all } t',t'' \in \text{TEAMS}\\
@@ -104,9 +104,11 @@ $\forall l \in \text{LANES}, \forall t \in \text{TEAMS}$ and a given match $x$:
 \begin{equation}\label{eq:xi}
   \xi(t,l,x) =
 \begin{cases} 
-  \text{none} & \text{if no players on team } t \text{ plays lane } l \text{ in match } x \\
-  \text{rank}(p) & \text{if some } p \text{ in match } x \text{ is the only one playing lane } l { on team } t.\\
-  (\text{rank}(p_1), \text{rank}(p_2)) & \text{if some } p_1, p_2 \text{ in match } x \text{ are the only ones playing lane } l \text{ for team } t and p_1 \neq p_2.\\
+  \text{none} & \text{if no players on team } t \text{ plays lane } l \text{.}\\
+  \text{rank}(p) & \text{if some } p \text{ is the only player playing}\\
+  & \text{lane } l \text{ on team } t.\\
+  (\text{rank}(p_1), \text{rank}(p_2)) & \text{if some } p_1, p_2 \text{ are the only players playing}\\
+                        & \text{lane }l \text{ on team } t \text{, and } p_1 \neq p_2.\\
   \text{many} & \text{otherwise}.
 \end{cases}
 \end{equation}
