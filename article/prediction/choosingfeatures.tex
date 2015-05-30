@@ -21,7 +21,7 @@ $\forall t \in \text{TEAMS}, \forall c \in C:$
 \begin{equation}\label{eq:single}  
 \phi_{\text{SINGLE}, t, c}(x) = 
 \begin{cases} 
-  1 & \text{if } (c, p) \in T_t(x) \text{ for some } p \\
+  1 & \text{if } (p, c) \in T_t(x) \text{ for some } p \\
   0 & \text{otherwise} 
 \end{cases}
 \end{equation}
@@ -32,7 +32,7 @@ To capture the synergy between two champions on the same team, we define feature
 \begin{equation}\label{eq:pair}
 \phi_{\text{PAIR}, t, c_1, c_2}(x) =
 \begin{cases}
-  1 & \text{if } (c_1, p_1), (c_2, p_2) \in T_t(x) \text{ for some }p_1, p_2\\
+  1 & \text{if } (p_1, c_1), (p_2, c_2) \in T_t(x) \text{ for some }p_1, p_2\\
   0 & \text{otherwise}
 \end{cases}
 \end{equation}
@@ -47,7 +47,7 @@ To capture that one champion may counter another, we will for each champion on t
 \begin{equation}\label{eq:counter}
 \phi_{\text{COUNTER},c_1,c_2}(x) = 
 \begin{cases} 
-1 & \text{if } (c_1, p_1) \in T_\text{blue}(x) \text{ and } (c_2, p_2) \in T_\text{purple}(x) \text{ for some } p_1, p_2 \\ 
+1 & \text{if } (p_1, c_1) \in T_\text{blue}(x) \text{ and } (p_2, c_2) \in T_\text{purple}(x) \text{ for some } p_1, p_2 \\ 
 0 & \text{otherwise} 
 \end{cases}
 \end{equation}
@@ -99,9 +99,9 @@ $\forall l \in \text{LANES}, \forall t \in \text{TEAMS}$ and a given match $x$:
 \begin{equation}\label{eq:xi}
   \xi(t,l,x) =
 \begin{cases} 
-  \text{none} & \text{if } \forall(c, p) \in T_t(x): c \text{ does not play in lane } l. \\
-  r_1 & \text{if only } (c_1, p_1) \in T_t(x) \text{ plays lane } l \text{ and } p_1 \text{ has rank } r_1 \text{.}\\
-  (r_1, r_2) & \text{if only } (c_1, p_1), (c_2, p_2) \in T_t(x) \text{ plays lane } l, \text{ where } p_1, p_2 \text{ has rank } r_1, r_2\\ 
+  \text{none} & \text{if } \forall(p,c) \in T_t(x): c \text{ does not play in lane } l. \\
+  r_1 & \text{if only } (p_1, c_1) \in T_t(x) \text{ plays lane } l \text{ and } p_1 \text{ has rank } r_1 \text{.}\\
+  (r_1, r_2) & \text{if only } (p_1, c_1), (p_2, c_2) \in T_t(x) \text{ plays lane } l, \text{ where } p_1, p_2 \text{ has rank } r_1, r_2\\ 
 &\text{respectively, and } p_1 \neq p_2.\\
   \text{many} & \text{otherwise}.
 \end{cases}
