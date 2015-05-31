@@ -20,7 +20,7 @@ The main scripts involved with logistic regression in spark are as follows.
 \item Gradient.scala
 \end{itemize}
 
-The main function involved with calculating the weights is runMiniBatchSGD from line 149 in GradientDescent.scala. The runMiniBatchSGD is shown in \Cref{lst:runMiniBatchSGD}. \todo{Fix noget med \textbackslash ContiuedFloat}
+The main function involved with calculating the weights is runMiniBatchSGD from line 149 in GradientDescent.scala. Part of the runMiniBatchSGD is shown in \Cref{lst:runMiniBatchSGD}. 
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=181]{scala}
 var regVal = updater.compute(
@@ -55,7 +55,7 @@ var regVal = updater.compute(
 \caption{Lines from GradientDescent.scala}
 \label{lst:runMiniBatchSGD}
 \end{listing}
-The lines 187 to 209 inside the for-loop in \Cref{lst:runMiniBatchSGD} is a map reduce calculating loss accordingly to the weights, and then updates the weights to minimise loss with respect to the regularisation parameter. Lines 191 and 192 use the LogisticGradient object created by the LogisticRegression object to compute the loss based on the label, features, current weights, and gradient. On line 205 the updater computes new weights and a new regVal from the given weights, average gradient, stepSize, iteration, and regularisation factor.
+The lines 187 to 197 inside the for-loop in \Cref{lst:runMiniBatchSGD} is a map reduce calculating loss accordingly to the weights, features and label. Line 200 updates the weights to minimise loss with respect to the regularisation parameter.
 From \Cref{lst:sparkloss} taken from compute function in Gradient.scala it is clear that loss computed is a logistic loss.  
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=173]{scala}
