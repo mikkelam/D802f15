@@ -80,7 +80,7 @@ To create a file, the HDFS client makes a request on the namenode. If the nameno
 MapReduce is a programming model that Hadoop applies. It was developed by J.\@ Dean et al.~\cite{DeanMapReduce}, and is designed to be used in the context of \emph{big data}. The model is useful in the context of processing large amounts of data, clustering as well as utilising parallelism. The main reason for the success of the MapReduce model, is because it is easy for the programmer to do parallel programming, and its low-cost, high-compute property, that supports commodity hardware in a cluster configuration. MapReduce is also well-suited for handling data too large to fit into a single disk.
 
 To program something using MapReduce, one has to write the following two functions. 
-\todo{det her er lort og forkert}
+\todo{det her er lort og forkert??}
 \begin{description}
 \item[Map:] Takes an input key-value pair and produces an \emph{intermediate} set of key-value pairs based on the input. The MapReduce library then shuffle all the intermediate values by associated keys and pass them to the reduce function. 
 
