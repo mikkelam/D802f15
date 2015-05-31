@@ -32,17 +32,14 @@ The examples include a constant, the identity, a polynomial and the combination 
 
 When attempting to predict a continuous value, one standard method is by using linear regression.
 The linear regression model generates a prediction $\hat{y}$ of the value $y$. This prediction is found with the hypothesis function $h(x)$ by assigning weights $\textbf{w} = w_1, w_2, \dots w_M$ to the features and computing their sum.
-
 \[h_{\textbf{w}}(x) = \hat{y} = w_0 + \sum_{i=1}^M w_i \phi_i(x) \]
-
 Where $w_0$ is a special case called the intercept, however to avoid having this special case we add the feature $\phi_0(x)=1$, which allows us to use the intercept as a normal feature. 
 The next question becomes, how do we assign a value to the weights?
 Given the amount of data we have available, it would be preferable to learn these weights from the data. 
 
 \paragraph{Linear Regression}
 Since the goal is to fit the hypothesis function to a training set, linear regression uses the following loss function given the data $D$ and the weights $\textbf{w}$.
-
-\[ L_D(\textbf{w}) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N (y_n - \sum_{i=0}^M w_i \phi_i(x_n))^2 \] 
+\[ L_D(\textbf{w}) = \sum_{n=1}^N (y_n-\hat{y}_n)^2 = \sum_{n=1}^N \left(y_n - \sum_{i=0}^M w_i \phi_i(x_n)\right)^{2} \] 
 The best parameters are those that minimise the loss function. Since the function is convex, the best parameters can be found either analytically by setting the derivative to 0, or by using an iterative method introduced later called gradient descent.
 
 When giving a prediction $\hat{y}$ on the value of a discrete binary label we use a thresholding function:
@@ -60,10 +57,10 @@ In order to combat this problem we introduce a new linear model for classificati
 
 In logistic regression we use the so called logistic or sigmoid function to squash the prediction into the interval $[0,1]$.
 \[ \hat{y} = \sigma(h_w(x)) = \frac{1}{1+e^{-h_w(x)}} \]
-By doing this a single outlying data point is no longer able to skew the decision boundary of the hypothesis function.
+By doing this, a single outlying data point is no longer able to skew the decision boundary of the hypothesis function.
 However this comes at a cost.
 When combining the sigmoid and squared sums loss function, the resulting loss function is no longer convex, which means that we may only find a local minimum when searching for the best parameters.
-Logistic regression solves this problem by introducing an error function:
+Logistic regression solves this problem by introducing an error function.
 \[E_w(y,h_w(x)) = \begin{cases}
 	-ln(\sigma(h_w(x))) &\text{if y = 1}\\	
 	-ln(1-\sigma(h_w(x))) &\text{if y = 0}
@@ -78,14 +75,14 @@ the loss function once again becomes convex.
 \subsubsection{Overfitting and Underfitting}
 % overfitting vs. underfitting
 Learning the parameters of a linear model can result in a model that is either too simple or too complex.
-If the model is too simple, the model will not be unable to catch the nuances present in the data, causing low predictive power. This behaviour is called underfitting.
+If the model is too simple, it will not be able to catch the nuances present in the data, causing low predictive power. This behaviour is called underfitting.
 % insert image with a model that is too simple.  
-When a model is too complex, the model will be able to fit the training data too well, resulting in bad predictive power on previously unseen data. This behaviour is called overfitting. 
+When a model is too complex, it will fit the training data too well, resulting in bad predictive power on previously unseen data. This behaviour is called overfitting. 
 
 To evaluate how well a model fit some data, we can split the data into a training and test set. Evaluation can be done on both data sets and be compared. If the model is better at predicting the training data compared to the test data, some degree of overfitting is happening. If however the model has the same predictive power on both sets, we either have an underfitted or well fitted model. A common approach is to use more data for training than testing. For instance by using a 70/30 split.
 
 Another possibility is to use k-fold cross validation.
-When applying this method the dataset is partitioned into $k$ numbers of ``folds'', with 1 test fold and $k-1$ training folds.
+When applying this method the dataset is partitioned into $k$ numbers of ``folds'', with one test fold and $k-1$ training folds.
 The model is then trained for $k$ iterations, such that each iteration use a different test fold.
 Thereby it becomes possible to use all of the data as both training and test set. In the following section we present a solution to overfitting linear models.
 % Source: AI pool, macworth, p. 324
@@ -102,25 +99,22 @@ L1-regularisation is good at encouraging sparse solutions when there are many ir
 \item L2-Regularisation: $L_w = \frac{\lambda}{2} \sum_{m} {w_m}^2$
 \end{itemize}
 
-Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data. For logistic regression with L2-Regularisation the combined loss function looks like this.
+Where the regularisation constant $\lambda$ scales the regularisation penalty in relation to the data loss function. For logistic regression with L2-Regularisation the combined loss function looks like this.
 \[ L(\mathbf{w})
   = L_D(\mathbf{w}) + L_w 
   = \sum_{n=1}^N E_w(y_n, h_w(x_n)) + \frac{\lambda}{2} \sum_{m=1}^{M} {w_m}^2 \] 
 
 \subsubsection{Batch Gradient Descent}\label{sec:batch}
 
-Since we have a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
+As we wish to use a large number of features, applying an analytic solution to find the weights quickly becomes impractical.
 Therefore we need to use an iterative approach.
 One such method is called batch gradient descent.
 
 In batch gradient descent we iteratively update the weights $w_j$ for $0 \leq j \leq M$, by a value proportional to the partial derivative of the loss function until the value converges to a local minimum of $L(\textbf{w})$, i.e.\ when $w_{j}^{(i)} = w_j^{(i+1)}$ for all weights.
-
 %\[ w_j \leftarrow w_j - \eta \frac{\partial L(\textbf{w})}{ \partial w_j} 
 %	= w_j - \eta \frac{\partial(\sum_{n=1}^N E_w(y_n, h_w(x_n)))}{ \partial w_j}  \]
-
-\[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\mathbf{w})}{\partial w_j^{(i-1)}}
-       = w_{j}^{(i-1)} - \eta \frac{\partial \Big( \sum_{n=1}^N E_{w^{(i-1)}}(y_n, h_{w^{(i-1)}}(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M {w^{(i-1)}_m}^2 \Big) }{\partial w_j^{(i-1)}} \]  
-
+\[w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial L(\mathbf{w})}{\partial w_j^{(i-1)}}
+       = w_{j}^{(i-1)} - \eta \frac{\partial \left(\displaystyle\sum_{n=1}^N E_{w^{(i-1)}}(y_n, h_{w^{(i-1)}}(x_n)) + \frac{\lambda}{2}\sum_{m=1}^M {w^{(i-1)}_m}^2 \right) }{\partial w_j^{(i-1)}} \]  
 Because the loss function is convex, there is only one minimum i.e. the global minimum. 
 The value $\eta$ represent the learning rate i.e.\ how big a step the algorithm should take in each iteration.
 This value need to be chosen wisely as a value that is too small will increase the number of iterations required and a value that is too large could cause the algorithm to diverge.
@@ -165,10 +159,9 @@ def StochasticGradientDescent(W,E,D):
 \end{listing}
 
 \paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
-Because stochastic gradient descent updates the weights using individual data points.
-The value has a tendency to jump around a lot instead of moving directly down the gradient towards the minimum.
-To alleviate this problem there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
-The only difference between them being that each update is an average of ten updates in mini-batch gradient descent. 
+Because stochastic gradient descent updates the weights using individual data points, the gradient found could just as well move away from a minimum value, as it could move towards it. 
+To alleviate this problematic behaviour, there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
+The only difference between them is that each update is an average of ten updates in mini-batch gradient descent.
 
 
 

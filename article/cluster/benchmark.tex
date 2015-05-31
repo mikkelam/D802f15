@@ -2,19 +2,19 @@
 Before using the cluster to perform machine learning operations on a large amount of data, a benchmark experiment to show how fast the cluster can do a simple word count. Three different files of the sizes 1GB, 5GB, and 10GB.\@ will be generated for the experiment. They contain unsorted random numbers between $-$2,147,483,646 and 2,147,483,647 which will be treated as strings. The specifications for the cluster was specified in \Cref{sec:clustersetup}, and the details of word count was described in \Cref{sec:mapreduce_programming_model}. The result of the experiment can be seen in \Cref{tab:bench}. 
 \begin{table}[!htb]
   \centering
-  \begin{tabular}{|c|c|}
+  \begin{tabular}{|c|c c|}
     \hline
-    File size & Time \\
+    File size & Cluster & Node \\
     \hline
-    1GB & 8m 24.9s  \\ %8m24.9s
-    5GB & 34m 39.9s \\ %34m39.9s
-    10GB & 1h 5m 25.6s \\ %65m25.6s
+    1GB & 8m & 14m\\ %8m24.9s
+    5GB & 34m & 1h 18m \\ %34m39.9s
+    10GB & 1h 5m & 2h 6m \\ %65m25.6s
     \hline
   \end{tabular}
   \caption{Benchmark tests for the cluster}
   \label{tab:bench}
 \end{table}
-
+\todo{skriv noget om hvad resultaterne betyder}
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../main"
