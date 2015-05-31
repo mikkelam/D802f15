@@ -1,17 +1,20 @@
 \subsection{Cluster speedup}\label{sec:speedup}
-In this section we will briefly present a small speedup test, to see the effect of adding more nodes to our cluster. This is done by training a logistic regression model using stochastic gradient descent and L2 regularisation with a ridge value of $0.01$, the features used were all pre-match features described in \Cref{sec:choosingfeatures}. The following is the time taken by the master node controlling 1, 2 and 3 workers respectively. Note that these workers do not have identical hardware.
+In this section we will briefly present a speedup experiment, to see the effect of adding more nodes to our cluster. This is done by training a logistic regression model and doing a simple word count. 
 
-\begin{enumerate}
-    \item 43minutes 34seconds which is 2614seconds (4 cores)
-    \item 36minutes 22seconds which is 2182seconds (6 cores)
-    \item 23minutes 25seconds which is 1405seconds (10 cores)
-\end{enumerate}
+\paragraph{Logistic Regression}
+Logistic regression uses stochastic gradient descent and L2 regularisation with a ridge value of $0.01$. All features described in \Cref{sec:choosingfeatures} are used as the feature set. \Cref{fig:cluster-speedup} shows the time taken by the master node controlling 1, 2 and 3 workers respectively. Note that these workers do not have identical hardware, however as the cluster is dominantly bottlenecked by computation, this experiment nicely shows that doubling computation power will almost double in computation speed.
+
+% \begin{enumerate}
+%     \item 43minutes 34seconds which is 2614seconds (4 cores)
+%     \item 36minutes 22seconds which is 2182seconds (6 cores)
+%     \item 23minutes 25seconds which is 1405seconds (10 cores)
+% \end{enumerate}
 
 \begin{figure}[!htb]
   \centering
   \begin{tikzpicture}[] 
     \begin{axis}[
-      xlabel=Workers, 
+      xlabel=Cores, 
       ylabel=Seconds,
       xtick={4,6,8,10},
       xticklabel style={anchor=near xticklabel},
@@ -25,11 +28,11 @@ In this section we will briefly present a small speedup test, to see the effect 
         (10,1405)  
       };
 	\legend{Speed}
-	\end{axis} 
+	\end{axis}
 \end{tikzpicture}
    \caption{Cluster speed-up. On the x-axis: 1: 4 cores, 2: 6 cores and 3: 10 cores}\label{fig:cluster-speedup}
 \end{figure}
-The results of this test is shown in \Cref{fig:cluster-speedup} the reason these numbers are irregular is because one node has 2 cores, while the other two nodes has 4 cores, including a difference in clock ratio. The difference in time taken from 4 cores to 8 cores is 13 minutes, while the difference from 8 cores to 10 cores is 7 minutes, and lastly from 4 to 10 cores is 20 minutes, almost a double in speedup. It is quite clear that the code being run is not entirely parallel, most likely it is bottlenecked by disk transfers. Thus, by adding two more workers to our cluster we attain almost a doubling in speedup. It is worth noting that adding more computing units will not scale the speedup linearly per Amdahl's Law. 
+The difference in job time between 4 cores and 8 cores is 13 minutes, while the difference between 8 cores and 10 cores is 7 minutes, and lastly from 4 to 10 cores is 20 minutes, almost a double in speedup. It is quite clear that the code being run is not entirely parallel, where job parallelism is presumably limited from job scheduling and merging of reduce results. Thus, by adding two more workers to our cluster we attain almost a doubling in speedup. It is worth noting that adding more computing units will not scale the speedup linearly per Amdahl's Law.
 % We can measure the speedup using Amdahl's law:
 
 % \[S(N) = \frac{1}{(1-P)+\frac{P}{N}}\]
