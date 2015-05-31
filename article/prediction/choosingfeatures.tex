@@ -52,7 +52,7 @@ To capture that one champion may counter another, we will for each champion on t
 \begin{equation}\label{eq:counter}
 \phi_{\text{COUNTER},c_1,c_2}(x) = 
 \begin{cases} 
-1 & \text{if } c_1 \text{ is on blue team and } c_2 \text{ is on purple} \\ 
+1 & \text{if } c_1 \text{ is on blue team and } c_2 \text{ is on purple team} \\ 
 0 & \text{otherwise} 
 \end{cases}
 \end{equation}
@@ -73,12 +73,20 @@ We define the rank of team $t$ in a match $x$, to be the average rank of all pla
 \eta(t, x) = \frac{\sum\limits_{p \in T_t(x)} \mu(p)}{|\{p \in T_t(x) \mid \mu(p) > 0\}|}
 \end{equation}
 Note that if all players are \textit{unranked}, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define 3 new features that capture whether blue, purple, or no team has the highest rank:
-$\forall t \in \text{TEAMS} \cup \{\text{none}\}$
+$\forall t \in \text{TEAMS}$
 \begin{equation}\label{eq:bestrank}
 \phi_{\text{BEST-RANK},t}(x) = 
 \begin{cases} 
-  1 & \text{if } t \neq \text{none} \wedge \eta(t,x) > \eta(t',x) \text{ for all } t' \in \text{TEAMS}\\
-  1 & \text{if } t = \text{none} \wedge \eta(t',x) = \eta(t'',x) \text{ for all } t',t'' \in \text{TEAMS}\\
+  1 & \text{if } \eta(t,x) > \eta(t',x) \text{ for all } t' \in \text{TEAMS where } t \neq t'\\
+  0 & \text{otherwise} 
+\end{cases}  
+\end{equation}
+
+Additionally, we define a feature to capture a tie between the rank of the two teams:
+\begin{equation}\label{eq:bestrank}
+\phi_{\text{BEST-RANK},\text{none}}(x) = 
+\begin{cases} 
+  1 & \text{if } \phi_{\text{BEST-RANK},t}(x) = 0 \text{ for all } t \in \text{TEAMS}\\
   0 & \text{otherwise} 
 \end{cases}  
 \end{equation}

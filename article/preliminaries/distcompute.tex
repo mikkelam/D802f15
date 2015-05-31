@@ -2,7 +2,7 @@
 In this section we will introduce the distributed systems, which we are going to use. These systems will help us distribute the data across multiple machines, as well as perform distributed parallel computations. 
 
 \subsubsection{Hadoop Distributed Filesystem}\label{sec:hadoopfilesystem}
-\emph{Hadoop Distributed Filesystem} (HDFS) is a technology where the main goal is to increase fault tolerance on very large data systems. It is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS operates in a master-worker architecture where the \emph{master} node, maintains the namespace hierarchy as well as the location of file blocks, this machine is called a \emph{namenode}. As shown in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS cluster. \emph{Datanodes} take commands from the \emph{namenode}, such as deleting or replicating file blocks.
+\emph{Hadoop Distributed Filesystem} (HDFS) is a technology where the main goal is to increase fault tolerance on very large data systems. It is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS operates in a master-worker architecture where the \emph{master} node maintains the namespace hierarchy as well as the location of file blocks. The master node is called a \emph{namenode}. As shown in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS cluster. \emph{Datanodes} take commands from the \emph{namenode}, such as deleting or replicating file blocks.
 
 \begin{figure}[!htb]
   \centering
@@ -80,7 +80,7 @@ To create a file, the HDFS client makes a request on the namenode. If the nameno
 MapReduce is a programming model that Hadoop applies. It was developed by J.\@ Dean et al.~\cite{DeanMapReduce}, and is designed to be used in the context of \emph{big data}. The model is useful in the context of processing large amounts of data, clustering as well as utilising parallelism. The main reason for the success of the MapReduce model, is because it is easy for the programmer to do parallel programming, and its low-cost, high-compute property, that supports commodity hardware in a cluster configuration. MapReduce is also well-suited for handling data too large to fit into a single disk.
 
 To program something using MapReduce, one has to write the following two functions. 
-\todo{det her er lort og forkert}
+\todo{det her er lort og forkert??}
 \begin{description}
 \item[Map:] Takes an input key-value pair and produces an \emph{intermediate} set of key-value pairs based on the input. The MapReduce library then shuffle all the intermediate values by associated keys and pass them to the reduce function. 
 
