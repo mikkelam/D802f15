@@ -1,44 +1,42 @@
 \subsection{Feature symmetry}
 \label{sec:representationoffeatures}
-Although uncommon, two identical teams may play against each other, on a map that is also essentially symmetric.
-This poses an interesting question:
-Consider a match $x$ between the two teams $T_\text{blue}(x)$ and $T_\text{purple}(x)$.
-If we define:
-\[T_\text{blue}'(x) = \{(c,p) \mid (c,p) \in T_\text{purple}(x)\}\] 
-and 
-\[T_\text{purple}'(x) = \{(c,p) \mid (c,p) \in T_\text{blue}(x)\}\]
-does it then hold that: 
-\[P(T_\text{blue}(x) \text{ wins}) \approx P(T_\text{purple}'(x) \text{ wins}) \approx P(T_\text{blue}'(x) \text{ loses}) \approx P(T_\text{purple}(x) \text{ loses})\]
-If such a symmetry exist, a representation of features different from the one defined in \Cref{sec:choosingfeatures} may be beneficial, simply because knowing that a feature is good for one team implies that it is also good for the other.
+The map layout in LoL is almost symmetrical, and Riot Games do their best to balance the game such that either of team blue and purple has the same change of winning.
+This poses an interesting question, namely whether it holds that:
+\[
+P(\text{blue wins } | \; C_\text{blue}(x) = A, C_\text{purple}(x) = B) \\
+\approx\\
+P(\text{purple wins } | \; C_\text{blue}(x) = B, C_\text{purple}(x) = A)
+\]
+If such a symmetry exists, a representation of features different from the one defined in \Cref{sec:choosingfeatures} may be beneficial, because knowing that a feature is good for one team implies that it is also good for the other.
 In the following, 4 different ways of representing the $\phi_\text{SINGLE}$ feature type, as defined in \Cref{sec:choosingfeatures}, are presented.
 Even though more types of features can be represented in these 4 ways, we only provide examples and tests for the $\phi_\text{SINGLE}$ features.
 
-To simplify the idea, let us assumed that only a total of $7$ champions exist, such that $C = \{c_1, c_2, \cdots, c_7\}$.
-All examples shows the transformation of a single match between the two teams \[t_\text{blue} = \{(c_1, p_1), (c_2,p_2), (c_3,p_3), (c_4,p_4), (c_5, p_5)\}\] 
+To provide simple examples, let us assume that only a total of $7$ champions exist, such that $\text{CHAMPIONS} = \{c_1, c_2, \cdots, c_7\}$.
+The match we consider was between the two teams \[C_\text{blue} = \{c_1, c_2, c_3, c_4, c_5\}\] 
 and
-\[t_\text{purple} = \{(c_1, p_6),(c_2,p7), (c_3,p_8),(c_6,p_9),(c_7,p_{10})\}\] 
-is won by $t_\text{blue}$. The match is transformed to one or more labeled feature vectors $(\phi, y)$, where $\phi$ is a feature vector and $y \in \{\mathtt{true}, \mathtt{false}\}$ is a label indicating whether $t_\text{blue}$ won or lost.
+\[C_\text{purple} = \{c_1, c_2, c_3, c_6, c_7\}\],
+ where $C_\text{blue}$ won the match. The match is transformed to one or more labeled feature vectors $(\phi, y)$, where $\phi$ is a feature vector and $y \in \{\mathtt{true}, \mathtt{false}\}$ is a label indicating whether $C_\text{blue}$ won or lost.
 
 \subsubsection{Binary representation}
 
 \[ \phi = (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y = \mathtt{true} \]
 
-The $|C|$ first features in $\phi$ represent the champions on team blue, followed by $|C|$ features representing the champions on team purple. The label is $\mathtt{true}$ if and only if the blue team won.
+The $|\text{CHAMPIONS}|$ first features in $\phi$ represent the champions on team blue, followed by $|\text{CHAMPIONS}|$ features representing the champions on team purple. The label is $\mathtt{true}$ if and only if the blue team won.
 This representation neglects the symmetry assumption in the sense that it captures the champions on both teams, as well as which side of the map both teams start.
 
 \subsubsection{Mirrored binary representation}
 
 \begin{align*}
-  \phi_1 &= (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y_1 = \texttt{true}\\
-  \phi_2 &= (1,1,1,0,0,1,1,1,1,1,1,1,0,0), y_2 = \texttt{false}
+  \phi^1 &= (1,1,1,1,1,0,0,1,1,1,0,0,1,1), y_1 = \texttt{true}\\
+  \phi^2 &= (1,1,1,0,0,1,1,1,1,1,1,1,0,0), y_2 = \texttt{false}
 \end{align*}
 
 This representation is the same as the binary representation, except that it tries to capture a possible symmetry by generating an additional training instance for each match, simply by mirroring the teams and negating the class label.
 
 \subsubsection{Compact binary representation}
 \begin{align*}
-  \phi_1 &= (1,1,1,1,1,0,0), y_1 = \mathtt{true} \\
-  \phi_2 &= (1,1,1,0,0,1,1), y_2 =\mathtt{false}
+  \phi^1 &= (1,1,1,1,1,0,0), y_1 = \mathtt{true} \\
+  \phi^2 &= (1,1,1,0,0,1,1), y_2 = \mathtt{false}
 \end{align*}
 With compact binary representation, a match is split into two labeled feature vectors, each representing a single team and a label indicating whether that team won or lost.
 This representation captures only the champions on a single team, not the champions on the opposing team.
@@ -52,8 +50,8 @@ For each match, a single feature vector is created where the label is true if an
 \[
     \phi_i = 
 \begin{cases}
-  1  & \text{if } c_i \in T_\text{blue}, c_i \not\in T_\text{purple}\\
-  -1 & \text{if } c_i \not\in T_\text{blue}, c_i \in T_\text{purple}\\
+  1  & \text{if } c_i \in C_\text{blue}, c_i \not\in C_\text{purple}\\
+  -1 & \text{if } c_i \not\in C_\text{blue}, c_i \in C_\text{purple}\\
   0  & \text{otherwise}
 \end{cases}
 \]
