@@ -2,7 +2,7 @@
 In this section we will introduce the distributed systems, which we are going to use. These systems will help us distribute the data across multiple machines, as well as perform distributed parallel computations. 
 
 \subsubsection{Hadoop Distributed Filesystem}\label{sec:hadoopfilesystem}
-\emph{Hadoop Distributed Filesystem} (HDFS) is a technology where the main goal is to increase fault tolerance on very large data systems. It is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS operates in a master-worker architecture where the \emph{master} node, maintains the namespace hierarchy as well as the location of file blocks, this machine is called a \emph{namenode}. As shown in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS cluster. \emph{Datanodes} take commands from the \emph{namenode}, such as deleting or replicating file blocks.
+\emph{Hadoop Distributed Filesystem} (HDFS) is a technology where the main goal is to increase fault tolerance on very large data systems. It is designed to be distributed across inexpensive commodity hardware, where recovery is done quickly and automatically. HDFS operates in a master-worker architecture where the \emph{master} node maintains the namespace hierarchy as well as the location of file blocks. The master node is called a \emph{namenode}. As shown in \Cref{fig:hadoop}, the namenode can be seen as the root of a HDFS cluster. \emph{Datanodes} take commands from the \emph{namenode}, such as deleting or replicating file blocks.
 
 \begin{figure}[!htb]
   \centering
