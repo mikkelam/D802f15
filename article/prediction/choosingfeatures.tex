@@ -7,13 +7,15 @@ Before the feature mappings are defined, convenient notations are introduced tha
 \item $\text{CHAMPIONS}$ is the set of all champions, each represented by an id. $|\text{CHAMPIONS}| = 124$ in the patch version of LoL used in this project.
 \item $\text{PLAYERS}$ is the set of all players.
 \item $\text{TEAMS} = \{\textit{blue}, \textit{purple}\}$ are the two teams.
-\item $T_i(x) = \{ p \in \text{PLAYERS} \mid p \text{ plays on team } i \text{ in match } x \}$, where $i \in \text{TEAMS}$.
 \item $\text{RANKS} = \{\textit{unranked},\textit{bronze},\textit{silver},\textit{gold},\textit{platinum},\textit{diamond},\textit{master},\textit{challenger}\}$ is the set of ranks.
 \item $\text{rank}(p) : \text{PLAYERS} \rightarrow \text{RANKS}$ returns the rank of player $p$.
 \item $\text{LANES} = \{\textit{top},\textit{bottom},\textit{mid},\textit{jungle}\}$ is the set of lanes.
 \item $\text{SPELLS}$ is the set of summoner spells. $|\text{SPELLS}| = 22$.
 \item $\text{RUNES}$ is the set of runes. $|\text{RUNES}| = 296$.
 \item $\text{MASTERIES}$ is the set of masteries. $|\text{MASTERIES}| = 57$.
+\item $P_i(x) = \{ p \in \text{PLAYERS} \mid p \text{ plays on team } i \text{ in match } x \}$, where $i \in \text{TEAMS}$.
+\item $C_i(x) = \{ c \in \text{CHAMPIONS} \mid c \text{ plays on team } i \text{ in match } x \}$, where $i \in \text{TEAMS}$.
+
 \end{itemize}
 
 Many features are very similar. Therefore, we group features by similarity.
@@ -70,23 +72,14 @@ A player can achieve one of the ranks \textit{bronze}, \textit{silver}, \textit{
 We define a score function $\mu : \text{PLAYERS} \rightarrow \mathcal{N}$, where $\mu(p) = 0$ if $p$ is \textit{unranked}, or $1, 2, \dots, 7$ if $p$ has rank \textit{bronze}, \textit{silver}, $\dots$, \textit{challenger} respectively.
 We define the rank of team $t$ in a match $x$, to be the average rank of all players on that team who is not unranked:
 \begin{equation}\label{eq:eta}
-\eta(t, x) = \frac{\sum\limits_{p \in T_t(x)} \mu(p)}{|\{p \in T_t(x) \mid \mu(p) > 0\}|}
+\eta(t, x) = \frac{\sum\limits_{p \in P_t(x)} \mu(p)}{|\{p \in P_t(x) \mid \mu(p) > 0\}|}
 \end{equation}
-Note that if all players are \textit{unranked}, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define 3 new features that capture whether blue, purple, or no team has the highest rank:
-$\forall t \in \text{TEAMS}$
+Note that if all players are \textit{unranked}, we exceptionally define $\eta(t, x) = 0$. We use the definition of rank to define 2 new features that capture if either of team blue or purple has the highest rank.
+$\forall t \in \text{TEAMS}$:
 \begin{equation}\label{eq:bestrank}
 \phi_{\text{BEST-RANK},t}(x) = 
 \begin{cases} 
   1 & \text{if } \eta(t,x) > \eta(t',x) \text{ for all } t' \in \text{TEAMS where } t \neq t'\\
-  0 & \text{otherwise} 
-\end{cases}  
-\end{equation}
-
-Additionally, we define a feature to capture a tie between the rank of the two teams:
-\begin{equation}\label{eq:bestrank}
-\phi_{\text{BEST-RANK},\text{none}}(x) = 
-\begin{cases} 
-  1 & \text{if } \phi_{\text{BEST-RANK},t}(x) = 0 \text{ for all } t \in \text{TEAMS}\\
   0 & \text{otherwise} 
 \end{cases}  
 \end{equation}
@@ -112,12 +105,12 @@ $\forall l \in \text{LANES}, \forall t \in \text{TEAMS}$ and a given match $x$:
 \begin{equation}\label{eq:xi}
   \xi(t,l,x) =
 \begin{cases} 
-  \text{none} & \text{if no players on team } t \text{ plays lane } l \text{.}\\
+  \text{none} & \text{if no players on team } t \text{ plays lane } l\\
   \text{rank}(p) & \text{if some } p \text{ is the only player playing}\\
-  & \text{lane } l \text{ on team } t.\\
+  & \text{lane } l \text{ on team } t\\
   (\text{rank}(p_1), \text{rank}(p_2)) & \text{if some } p_1, p_2 \text{ are the only players playing}\\
-                        & \text{lane }l \text{ on team } t \text{, and } p_1 \neq p_2.\\
-  \text{many} & \text{otherwise}.
+                        & \text{lane }l \text{ on team } t \text{, and } p_1 \neq p_2\\
+  \text{many} & \text{otherwise}
 \end{cases}
 \end{equation}
 Note that if more than two players on the same team plays the same lane, $\xi$ does not capture any ranks for that team and lane. This is because of the huge amount of combinations and the fact that playing three champions in the same lane is a very bad strategy. Therefore, we think a single feature is enough to capture all the bad strategies of having three champions in the same lane.
@@ -205,10 +198,9 @@ In each match, only $5 \cdot 5 = 25$ of those features appear.
 
 \item[{$\phi_{\text{BEST-RANK}}$}]\hfill
 
- In each match, the best ranked team can either be blue, purple, or it can be a tie. Therefore:
-\[|\phi_{\text{BEST-RANK}}| = 3\] 
-Each match contains only $1$ of those features since either blue, purple, or none of the teams have a the greatest rank.
-
+ In each match, the best ranked team can either be blue or purple. Therefore:
+\[|\phi_{\text{BEST-RANK}}| = 2\] 
+In each match $0$ or $1$ of those features appear.
 
 \item[{$\phi_{\text{PLAYER-RANK}}$}]\hfill
 
@@ -329,17 +321,17 @@ $10 \cdot 0 = 0$ and $10 \cdot 30 = 300$.
     \begin{tabular}{|l|ccc|}
       \hline
       Feature type                       & Domain size & Appears in a single match & Appeared in 60,000 matches \\ \hline
-      $\phi_{\text{SINGLE}}$             & 248         & 10    & 248               \\ 
-      $\phi_{\text{PAIR}}$               & 15252       & 20    & 15252             \\ 
-      $\phi_{\text{COUNTER}}$            & 15376       & 25    & 15359             \\ 
-      $\phi_{\text{BEST-RANK}}$          & 3           & 1     & 3                 \\ 
-      $\phi_{\text{PLAYER-RANK}}$        & 80          & 10    & 80                \\ 
-      $\phi_{\text{LANE-RANKS}}$         & 21904       & 5     & 1834              \\ 
-      $\phi_{\text{LANE-CHAMPION}}$      & 992         & 40    & 992               \\
-      $\phi_{\text{CHAMPION-SPELLS}}$    & 5456        & 20    & 2434              \\
-      $\phi_{\text{CHAMPION-RUNES}}$     & 73408       & 0-300 & 52212             \\
-      $\phi_{\text{CHAMPION-MASTERIES}}$ & 14136       & 0-300 & 14120             \\
-      Total                              & 146855      & 131-731  & 102534           \\ \hline
+      $\phi_{\text{SINGLE}}$             & 248         & 10      & 248               \\ 
+      $\phi_{\text{PAIR}}$               & 15252       & 20      & 15252             \\ 
+      $\phi_{\text{COUNTER}}$            & 15376       & 25      & 15359             \\ 
+      $\phi_{\text{BEST-RANK}}$          & 2           & 0-1     & 2                 \\ 
+      $\phi_{\text{PLAYER-RANK}}$        & 80          & 10      & 80                \\ 
+      $\phi_{\text{LANE-RANKS}}$         & 21904       & 5       & 1834              \\ 
+      $\phi_{\text{LANE-CHAMPION}}$      & 992         & 40      & 992               \\
+      $\phi_{\text{CHAMPION-SPELLS}}$    & 5456        & 20      & 2434              \\
+      $\phi_{\text{CHAMPION-RUNES}}$     & 73408       & 0-300   & 52212             \\
+      $\phi_{\text{CHAMPION-MASTERIES}}$ & 14136       & 0-300   & 14120             \\
+      Total                              & 146854      & 130-731 & 10253             \\ \hline
     \end{tabular}
   }
   \caption{The sparsity of each type of feature. (*)At most.}\label{tab:featuresparsity}
