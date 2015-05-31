@@ -179,69 +179,71 @@ If there in general only appear very few of the possible features in any given m
 \item[{$\phi_{\text{SINGLE}}$}]\hfill
  
 Each team can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
-    \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| = 2 \cdot 124 = 248\] In each match, only $2 \cdot 5 = 10$ of those features appear.
+    \[|\phi_{\text{SINGLE}}| = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| = 2 \cdot 124 = 248\] In each match, only $2 \cdot 5 = 10$ of those features appear.
 
 
 \item[{$\phi_{\text{PAIR}}$}]\hfill
 
 There are $|\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1)$ different 2-combinations of champions. Therefore:
-    \[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
+    \[|\phi_{\text{PAIR}}| = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot (|\text{CHAMPIONS}|-1) / 2 = 2 \cdot 124 \cdot 123 / 2 = 15252\] In each match, only $2 \cdot 5 \cdot 4 / 2 = 20$ of those features appear.
 
 
 \item[{$\phi_{\text{COUNTER}}$}]\hfill
 
  Both teams can choose from $|\text{CHAMPIONS}|$ different champions. Therefore:
-\[|\text{CHAMPIONS}|^2 = 124^2 = 15376\] 
+\[|\phi_{\text{COUNTER}}| = |\text{CHAMPIONS}|^2 = 124^2 = 15376\] 
 In each match, only $5 \cdot 5 = 25$ of those features appear.
 
 
 \item[{$\phi_{\text{BEST-RANK}}$}]\hfill
 
  In each match, the best ranked team can either be blue, purple, or it can be a tie. Therefore:
-\[\phi_{\text{BEST-RANK}} = 3\] 
+\[|\phi_{\text{BEST-RANK}}| = 3\] 
 Each match contains only $1$ of those features since either blue, purple, or none of the teams have a the greatest rank.
 
 
 \item[{$\phi_{\text{PLAYER-RANK}}$}]\hfill
 
 Each of the $2$ teams have $5$ players that each can have $1$ of $8$ ranks:
-\[ 2 \cdot 5 \cdot 8 = 80\] 
+\[|\phi_{\text{PLAYER-RANK}}| = 2 \cdot 5 \cdot 8 = 80\] 
 Since every player has only $1$ rank, only $10$ of those features appear.
 
 
 \item[{$\phi_{\text{LANE-RANKS}}$}]\hfill
 
- Each lane contains either none, 1, 2, or many champions from each team. The exact ranks are only considered for a given team and lane if the team has either 1 or 2 champions in a given lane. Therefore:
-\[|\text{LANES}| \cdot (1 + |\text{RANKS}| + |\text{RANKS}|^2 + 1)^2 = 21904\]
+ On each team, either \textit{none}, \textit{1}, \textit{2}, or \textit{many} champions play each of the $|\text{LANES}|$ lanes. For a given team and lane, the exact ranks are only considered if the team has either 1 or 2 champions in that. Therefore:
+\[|\phi_{\text{LANE-RANKS}}| = |\text{LANES}| \cdot (1 + |\text{RANKS}| + |\text{RANKS}|^2 + 1)^2 = 21904\]
 In each match only $5$ of these features appear, as each of the lanes has exactly one combination of ranks of the players / champions playing against each other.
 
 
 \item[{$\phi_{\text{LANE-CHAMPION}}$}]\hfill
 
-On each team, every champion can be in one of 4 lanes. Therefore, we get that:
-\[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |L| = 2 \cdot 124 \cdot 4 = 992\]
+On each team, every champion can be in one of $|\text{LANES}|$ lanes. Therefore, we get that:
+\[|\phi_{\text{LANE-CHAMPION}}| = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |L| = 2 \cdot 124 \cdot 4 = 992\]
 In each match, only $2 \cdot 5 \cdot 4 = 40$ features appear.
 
 
 \item[{$\phi_{\text{CHAMPION-SPELLS}}$}]\hfill
 
-There exist $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{SPELLS}|$ spells. Therefore, we get that:
-\[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 2 \cdot 124 \cdot 22 = 5456\]
+With $|\text{TEAMS}|$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{SPELLS}|$ spells. Therefore, we get that:
+\[|\phi_{\text{CHAMPION-SPELLS}}| = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 2 \cdot 124 \cdot 22 = 5456\]
 Since each of the 10 summoners have 2 spells, $2 \cdot 10 = 20$ features appear in each match.
 
 
 \item[{$\phi_{\text{CHAMPION-RUNES}}$}]\hfill
 
-There exist $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{RUNES}|$ runes. Therefore, we get that:
-\[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{RUNES}| = 2 \cdot 124 \cdot 296 = 73408\]
-Since each of the 10 summoners have at most 30 runes, at most $10 \cdot 30 = 300$ features appear in each match.
+With $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{RUNES}|$ runes. Therefore, we get that:
+\[|\phi_{\text{CHAMPION-RUNES}}| = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{RUNES}| = 2 \cdot 124 \cdot 296 = 73408\]
+Since each of the 10 summoners have between 0 and 30 runes, the number of features that appear in each match is between
+$10 \cdot 0 = 0$ and $10 \cdot 30 = 300$.
 
 
 \item[{$\phi_{\text{CHAMPION-MASTERIES}}$}]\hfill
 
-There exists $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{MASTERIES}|$ masteries. Therefore, we get that:
-\[|\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 2 \cdot 124 \cdot 57 = 14136\]
-Since each of the 10 summoners have chosen at most 30 masteries, at most $10 \cdot 30 = 300$ features appear in each match.
+With $\text{TEAMS}$ teams, $|\text{CHAMPIONS}|$ champions and $|\text{MASTERIES}|$ masteries. Therefore, we get that:
+\[|\phi_{\text{CHAMPION-MASTERIES}}| = |\text{TEAMS}| \cdot |\text{CHAMPIONS}| \cdot |\text{SPELLS}| = 2 \cdot 124 \cdot 57 = 14136\]
+Since each of the 10 summoners have between 0 and 30 masteries, the number of features that appear in each match is between
+$10 \cdot 0 = 0$ and $10 \cdot 30 = 300$.
 \end{description}
 
 
