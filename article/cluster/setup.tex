@@ -3,7 +3,7 @@ In this section, the cluster that will be doing the computations will be outline
 
 \subsection{Cluster Setup}\label{sec:clustersetup}
 
-The cluster used for this work consists of four nodes, one master and three worker nodes. We use the same master node for cluster management on Spark and storage management on HDFS.\ Some of the common fault tolerance functionality of Hadoop and Spark has not been employed due to the limited resources of the project and small size of the cluster and dataset. Most significantly, only one replication of data exists across HDFS, which naturally put large parts of the data at risk. However, given the relatively small amount of machines and ease of access to new match data, we chose to prioritise data volume over fault tolerance. There are two unique setups of the nodes which can be seen in \Cref{tab:setups}.
+The cluster used for this work consists of four nodes, one master and three worker nodes. We use the same master node for cluster management on Spark and storage management on HDFS.\ Some of the common fault tolerance functionality of Hadoop and Spark has not been employed due to the limited resources of the project and small size of the cluster and dataset. Most significantly, only one replication of data exists across HDFS, which naturally put large parts of the data at risk. However, given the relatively small amount of machines and ease of access to new match data, we chose to prioritise data volume over fault tolerance. We have two types of machines seen in \Cref{tab:setups}.
 \begin{table}[!htb]
   \centering
   \begin{tabular}{|r|ccc|}
