@@ -3,8 +3,7 @@
 \todo{flyt source code til appendix}
 
 The purpose of this section is to inspect Spark’s implementation of logistic regression.
-The models available in Spark's MLlib are all implemented in scala, all the models are made available in Pyspark through the PythonMLLibAPI module~\cite{hadoopIntro}.
-\Cref{lst:py_logreg} shows the implementation of the train function from the LogisticRegressionWithSGD data is the RDD, miniBatchFraction is the amount of data being used in each iteration 1.0 is 100\% of the data. The remaining inputs should be self explanatory.   
+In Spark, all machine learning models are implemented in scala \cite{sparkml}.\Cref{lst:py_logreg} shows the implementation of the train function from the LogisticRegressionWithSGD data is the RDD, miniBatchFraction is the amount of data being used in each iteration 1.0 is 100\% of the data. The remaining inputs should be self explanatory.   
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=219]{python}
 class LogisticRegressionWithSGD(object):
