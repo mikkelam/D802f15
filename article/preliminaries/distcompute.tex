@@ -82,8 +82,9 @@ MapReduce is a programming model that Hadoop applies. It was developed by J.\@ D
 To program something using MapReduce, one has to write the following two functions. 
 \todo{det her er lort og forkert}
 \begin{description}
-\item[Map] works by taking a set of key-value pairs. These pairs are turned into a new set of \emph{intermediate} key-value pairs where the value is now in a list with one element. The intermediate data is now grouped by their key and passed to Reduce.
-\item[Reduce] receives the intermediate data, then appends all the values, with the same keys, to a single list with the same key, which is returned as the result.
+\item[Map:] Takes an input key-value pair and produces an \emph{intermediate} set of key-value pairs based on the input. The MapReduce library then shuffle all the intermediate values by associated keys and pass them to the reduce function. 
+
+\item[Reduce:] receives an intermediate key and an iterable set of values for that key. Each key is then reduced by merging the values into a single value result.
 \end{description}
 
 This can be seen in \Cref{fig:mapreduce}, where the input data of key-value pairs is given to each worker. Each worker then applies the Map function such that $map(k_1,v_1)\rightarrow list\langle k_2,v_2\rangle$, the result is written to disk. The shuffling is then performed: Worker nodes redistribute the data, such that data of some key is placed on the same worker node, effectively grouping by key. Each group can now be reduced by the worker nodes such that $reduce(k_2, list\langle v_2\rangle) \rightarrow list\langle v_3 \rangle$ 
