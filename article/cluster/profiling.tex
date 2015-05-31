@@ -9,6 +9,5 @@ The measurements shows that the overall job execution can be sped up by improvin
 As a final note we can observe that compression of match data, would probably only increase the job execution time, as the cluster already has a computational bottleneck. The JSON data is however very compressible, as there is a large amount of recurring keys and values in the JSON objects. As an example 1000 matches of JSON has the size of 157 MB, which can be compressed to 35MB, 22\% of its original size, with the Hadoop supported compression algorithm LZ4. The very fast LZ4 algorithm is normally used at the shuffle step of MapReduce, to improve the transfer time of intermediate data to reducer-workers. However no compression has been used on the cluster and the benefits of using a format like LZ4 with logistic regression is unknown.
 
 \input{cluster/4cprofile}
-\todo{uncomment the graph-input}
 
 
