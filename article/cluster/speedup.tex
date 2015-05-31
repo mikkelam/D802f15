@@ -2,7 +2,7 @@
 In this section we will briefly present a speedup experiment, to see the effect of adding more nodes to our cluster. This is done by training a logistic regression model and doing a simple word count. 
 
 \paragraph{Logistic Regression}
-Logistic regression uses stochastic gradient descent and L2 regularisation with a ridge value of $0.01$. All features described in \Cref{sec:choosingfeatures} are used as the feature set. \Cref{fig:cluster-speedup} shows the time taken by the master node controlling 1, 2 and 3 workers respectively. Note that these workers do not have identical hardware, however as the cluster is dominantly bottlenecked by computation, this experiment nicely shows that doubling computation power will almost double in computation speed.
+Logistic regression uses stochastic gradient descent and L2 regularisation with a regularisation factor of $0.01$. All features described in \Cref{sec:choosingfeatures} are used as the feature set. \Cref{fig:cluster-speedup} shows the time taken by the master node controlling 1, 2 and 3 workers respectively. Note that these workers do not have identical hardware, however as the cluster is dominantly bottlenecked by computation, this experiment nicely shows that doubling computation power will almost double in computation speed.
 
 % \begin{enumerate}
 %     \item 43minutes 34seconds which is 2614seconds (4 cores)
@@ -22,7 +22,7 @@ Logistic regression uses stochastic gradient descent and L2 regularisation with 
       x label style={at={(axis description cs:0.5,0.0)},anchor=north},
       legend style={at={(1.2,1.001)},
         anchor=north,legend columns=1},] 
-      \addplot[color=brown,mark=o] coordinates { 
+      \addplot[color=black,mark=o] coordinates { 
         (4,2614)
         (6,2182)
         (10,1405)  
