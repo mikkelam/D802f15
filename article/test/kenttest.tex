@@ -1,9 +1,9 @@
 \section{Experiments}\label{sec:testing}
-In this section we are going to perform a number of experiments on our 456 GB dataset of two million matches. Firstly we are going to perform some initial experiments on a single computer, to get an idea of the strength of features in \Cref{sec:initialtest}. In \Cref{sec:clustertest}, we will present the experiments that have been running on the cluster. Lastly in \Cref{sub:knowledge} we present a list of the knowledge which can be extracted from our results. All following experiments will be performed using a split of $\frac{2}{3}$ for training set and $\frac{1}{3}$ for testing set. 
+In this section we are going to perform a number of experiments on our 456 GB dataset of two million matches. Firstly we are going to perform some initial experiments on a single computer, to get an idea of the strength of features in \Cref{sec:initialtest}. In \Cref{sec:clustertest}, we will present the experiments that have been running on the cluster. Lastly in \Cref{sub:knowledge} we present a list of the knowledge which can be extracted from our results.  
 
 \subsection{Initial experimentation}\label{sec:initialtest}
 In this section we will present experiments which have been run on a smaller dataset, to get a quick overview of the strength of features. 
-These experiments are used to find the settings, with which the cluster should be run when the final cluster experiments will be performed. 
+These experiments are used to find the settings, with which the cluster should be run when the final cluster experiments will be performed. The experiments in this section, will be performed using a split of $\frac{2}{3}$ for training set and $\frac{1}{3}$ for testing set.
 
 \subsubsection{Best machine learning technique}
 Many different machine learning algorithms exists for learning a classifier. In this experiment, we test eight different classifiers provided by Weka to see which one gives the best result for our particular problem~\cite{weka}. 
@@ -50,10 +50,10 @@ Using 35,000 matches, the best accuracy obtained with each of the methods can be
       \addplot[fill=blue] coordinates {(1,56.4454) 
         (0,56.4454)
       };
-      \addplot[fill=green] coordinates {(1,55.98)
+      \addplot[fill=purple] coordinates {(1,55.98)
         (0,0)
       };
-      \addplot[fill=purple] coordinates {(1,55.6555) 
+      \addplot[fill=green] coordinates {(1,55.6555) 
         (0,0)
       };      
       \addplot[fill=Fuchsia] coordinates {(1,52.64)
@@ -75,7 +75,7 @@ The accuracies shown in \Cref{fig:besttech} were achieved after having adjusted 
 \end{itemize}
 
 As seen in \Cref{fig:besttech}, most of the algorithms achieve an accuracy close to $56 \%$. Only the Decision Stump seems to be an outlier. However, this is expected, since the decision stump only bases its prediction on the value of one single feature.
-Logistic Regression achieves the best accuracy. Since it also scaled well for parallel computation, we chose Logistic Regression for further tests.
+Logistic regression achieves the best accuracy, and since it also scales well for parallel computation, we choose logistic regression for further experiments.
 
 \subsubsection{Feature symmetry experiment}
 In \Cref{sec:representationoffeatures} we represented four different ways of representing features, to capture a possible symmetry in the choice of champions and the layout of the map. In this section we test each representation by training a classifier using logistic regression using the given representation of features. The experiment was performed on a test set of 10,000 matches with training sets of up to 50,000 matches. The result, shown in \Cref{fig:feat-rep}, indicates that binary and ternary are very close, but the mirrored is not far behind. The compact is the only representation that shows some weakness, this is because it is actually missing information, it does not contain the opposing team, which means it is missing a valuable connection. The binary representation seems slightly more accurate than the ternary in the majority of the time. Therefore we choose to conduct all the following tests using the binary representation. 
@@ -181,7 +181,7 @@ In \Cref{sec:representationoffeatures} we represented four different ways of rep
 \subsubsection{Best features}
 \label{sec:best-features}
 To get an idea of each type of features impact on our prediction capability, some quick tests are performed using the machine learning tool Weka.
-Logistic regression is used as classifier with an L2-regularisation parameter of 750 \todo{fik vi dobbelttjekket de 750?}. A training set of ranging size is used, up to a total of 50,000 matches, and a test set of 10,000 matches is used for evaluation \todo{forstår ikke denne sætning}. 
+Logistic regression is used as classifier with an L2-regularisation parameter of 0.0016. Training sets of sizes up to 50,000 matches, and a test set of 10,000 matches is used. 
 The obtained accuracies can be seen in \Cref{fig:best-feat}. Note that the $\phi_\text{CHAMPION-RUNE}$ feature type is not included, as it includes too many features for Weka to handle on a single machine with 8GB memory.
 Interestingly, the baseline where no features are used gives an accuracy of $51.24 \%$, and results in a model that always predicts the blue team to win.
 Note that the baseline is a flat line because it is clear already after 1,000 matches that the blue team wins the most, thus adding more training data does not change the learned model that always predicts the blue team to be the winner. Since the test set is the same regardless of how much training data that is used, the plot is a flat line. For the same reason, the $\phi_\text{BEST-RANKED}$ feature type also shows up as a straight line, because 1,000 matches is enough to learn a model that predicts the winning team to be the team with the highest average rank of its players.
