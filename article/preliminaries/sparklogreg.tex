@@ -1,6 +1,6 @@
 \subsection{Spark's implementation of logistic regression}\label{sec:sparklogreg}
 The purpose of this section is to inspect Spark’s implementation of logistic regression.
-In Spark, all machine learning models are implemented in scala \cite{sparkml}.\Cref{lst:py_logreg} shows the implementation of the train function from the LogisticRegressionWithSGD data is the RDD, miniBatchFraction is the amount of data being used in each iteration 1.0 is 100\% of the data. The remaining inputs should be self explanatory.   
+In Spark, all machine learning models are implemented in scala \cite{sparkml}.\Cref{lst:py_logreg} shows the implementation of the train function from the LogisticRegressionWithSGD. \texttt{data} is the RDD, \texttt{miniBatchFraction} is the amount of data being used in each iteration 1.0 is 100\% of the data. The remaining inputs should be self explanatory.   
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=219]{python}
 class LogisticRegressionWithSGD(object):
@@ -9,7 +9,7 @@ class LogisticRegressionWithSGD(object):
   initialWeights=None, regParam=0.01, regType="l2", intercept=False,
     validateData=True):
 \end{minted}
-\caption{Lines from classification.py}
+\caption{Relevant code from classification.py}
 \label{lst:py_logreg}
 \end{listing}
 The main scripts involved with logistic regression in spark are as follows.
@@ -20,7 +20,7 @@ The main scripts involved with logistic regression in spark are as follows.
 \item Gradient.scala
 \end{itemize}
 
-The main function involved with calculating the weights is runMiniBatchSGD from line 149 in GradientDescent.scala. Part of the runMiniBatchSGD is shown in \Cref{lst:runMiniBatchSGD}. 
+The main function involved with calculating the weights is \texttt{runMiniBatchSGD} from line 149 in GradientDescent.scala. Part of the \texttt{runMiniBatchSGD} is shown in \Cref{lst:runMiniBatchSGD}. 
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=181]{scala}
 var regVal = updater.compute(
@@ -52,11 +52,11 @@ var regVal = updater.compute(
   }
   (weights, stochasticLossHistory.toArray)
 \end{minted}
-\caption{Lines from GradientDescent.scala}
+\caption{Relevant code from GradientDescent.scala}
 \label{lst:runMiniBatchSGD}
 \end{listing}
-The lines 187 to 197 inside the for-loop in \Cref{lst:runMiniBatchSGD} is a map reduce calculating loss accordingly to the weights, features and label. Line 200 updates the weights to minimise loss with respect to the regularisation parameter.
-From \Cref{lst:sparkloss} taken from compute function in Gradient.scala it is clear that loss computed is a logistic loss.  
+The lines 187 to 197 inside the for-loop in \Cref{lst:runMiniBatchSGD} is a MapReduce, which calculates loss according to the weights, features and label. Line 200 updates the weights to minimise loss with respect to the regularisation parameter.
+ 
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=173]{scala}
 val margin = -1.0 * dot(data, weights)
@@ -69,11 +69,12 @@ if (label > 0) {
   MLUtils.log1pExp(margin) - margin
 }
 \end{minted}
-\caption{Lines from Gradient.scala}
+\caption{Relevant code from Gradient.scala}
 \label{lst:sparkloss}
 \end{listing}
-The default updater used for logistic regression is a SquaredL2Updater from Updater.scala
-the code ran in the compute function is the following:
+\Cref{lst:sparkloss} shows the compute function from Gradient.scala. It is clear that the loss calculated is a logistic loss.
+ 
+
 
 \begin{listing}[H]
 \begin{minted}[linenos, firstnumber=138]{scala}
@@ -89,7 +90,12 @@ override def compute(
   (Vectors.fromBreeze(brzWeights), 0.5 * regParam * norm * norm)
 }
 \end{minted}
-\caption{Lines from Updater.scala}
+\caption{Relvant code from Updater.scala}
 \label{lst:updatercal}
 \end{listing}
+
+The default \texttt{updater} used for logistic regression is a L2-regularisation updater from Updater.scala
+the code for this compute function is shown in \Cref{lst:updatercal}
+
+
 
