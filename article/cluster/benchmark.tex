@@ -1,6 +1,4 @@
-\paragraph{Word Count}\label{sec:benchmark}
-
-
+\label{sec:benchmark}
 Before using the cluster to perform machine learning operations on a large amount of data, we benchmark how fast the cluster can do a simple word count. Three different files of the sizes 1GB, 5GB, and 10GB.\@ will be generated for the experiment. They contain unsorted random numbers between $-$2,147,483,646 and 2,147,483,647 which will be treated as strings. A detailed description of word count was described in \Cref{sec:mapreduce_programming_model}. The result of the experiment can be seen in \Cref{tab:bench}. 
 \begin{table}[!htb]
   \centering
@@ -17,7 +15,7 @@ Before using the cluster to perform machine learning operations on a large amoun
   \label{tab:bench}
 \end{table}
 
-We see that a significant speedup is gained, however the gain is not as great as we saw with logistic regression. One explanation for this difference, is that our network transfer rate is lower than disk transfer rate.
+We see that a significant speedup is gained, however the gain is not as great as we saw with logistic regression. An explanation for this difference is that our network transfer rate is lower than disk transfer rate.
 
 %%% Local Variables:
 %%% mode: latex
