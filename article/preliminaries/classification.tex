@@ -127,18 +127,22 @@ Stochastic gradient descent solves the problem of large dataset by updating the 
 This also makes the algorithm a good choice for updating a model online with continuously incoming data. 
 
 In the algorithm for stochastic gradient descent we first randomly shuffle all objects in the dataset $D$.
-We then iteratively update the weights in a way similar to batch gradient descent but using this equation.
-\[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial E_w(y_n, h_w(x_n))}{\partial w_j^{(i-1)}} \]
+We then iteratively update the weights in a way similar to batch gradient descent but using a different equation, here shown without regularisation.
+
+\[ w_j^{(i)} = w_j^{(i-1)} - \eta \frac{\partial E_{w^{(i-1)}}(y_n, h_{w^{(i-1)}}(x_n))}{\partial w_j^{(i-1)}} \]
+
 For each object $(x_n, y_n)$ in the dataset.
 
-One problem with stochastic gradient descent is that the algorithm never converges, but instead moves the weight around in an area close to the minimum value.
+One problem with stochastic gradient descent is that the algorithm fail to converge in some cases, but instead moves the weight around in an area close to the minimum value.
 Therefore it becomes necessary to use a separate strategy to accomplish this.
-Among these strategies are:
-\begin{itemize}
-\item Adding a final iteration that uses batch gradient descent 
-\item Have a final phase that takes the average of last 10 iterations 
-\item Comparing change in weights with a threshold value
-\end{itemize}
+A well known method is to do what is called simulated annealing on the learning rate.
+Simulated annealing works by reducing the value of the learning rate as the number of iterations increases.
+
+$$\eta_i = \frac{1}{(1+i)^\alpha}$$
+
+With an $\alpha$ chosen in the interval $(0.5,1]$. 
+
+
 The pseudocode for the algorithm can be seen in \Cref{lst:sgt}.
 \begin{listing}[H]
 \begin{minted}{python}
@@ -155,10 +159,9 @@ def StochasticGradientDescent(W,E,D):
 \end{listing}
 
 \paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
-Because stochastic gradient descent updates the weights using individual data points.
-The value has a tendency to jump around a lot instead of moving directly down the gradient towards the minimum.
-To alleviate this problem there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
-The only difference between them being that each update is an average of ten updates in mini-batch gradient descent. 
+Because stochastic gradient descent updates the weights using individual data points, the gradient found could just as well move away from a minimum value, as it could move towards it. 
+To alleviate this problematic behaviour, there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
+The only difference between them is that each update is an average of ten updates in mini-batch gradient descent.
 
 
 
