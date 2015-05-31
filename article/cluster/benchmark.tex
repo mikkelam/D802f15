@@ -1,10 +1,12 @@
-\subsubsection{Performance of the cluster}\label{sec:benchmark}
-Before using the cluster to perform machine learning operations on a large amount of data, a benchmark experiment to show how fast the cluster can do a simple word count. Three different files of the sizes 1GB, 5GB, and 10GB.\@ will be generated for the experiment. They contain unsorted random numbers between $-$2,147,483,646 and 2,147,483,647 which will be treated as strings. The specifications for the cluster was specified in \Cref{sec:clustersetup}, and the details of word count was described in \Cref{sec:mapreduce_programming_model}. The result of the experiment can be seen in \Cref{tab:bench}. 
+\paragraph{Word Count}\label{sec:benchmark}
+
+
+Before using the cluster to perform machine learning operations on a large amount of data, we benchmark how fast the cluster can do a simple word count. Three different files of the sizes 1GB, 5GB, and 10GB.\@ will be generated for the experiment. They contain unsorted random numbers between $-$2,147,483,646 and 2,147,483,647 which will be treated as strings. A detailed description of word count was described in \Cref{sec:mapreduce_programming_model}. The result of the experiment can be seen in \Cref{tab:bench}. 
 \begin{table}[!htb]
   \centering
   \begin{tabular}{|c|c c|}
     \hline
-    File size & Cluster & Node \\
+    File size & 3 Nodes & 1 Node \\
     \hline
     1GB & 8m & 14m\\ %8m24.9s
     5GB & 34m & 1h 18m \\ %34m39.9s
@@ -14,7 +16,9 @@ Before using the cluster to perform machine learning operations on a large amoun
   \caption{Benchmark tests for the cluster}
   \label{tab:bench}
 \end{table}
-\todo{skriv noget om hvad resultaterne betyder}
+
+We see that a significant speedup is gained, however the gain is not as great as we saw with logistic regression. One explanation for this difference, is that our network transfer rate is lower than disk transfer rate.
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../main"
