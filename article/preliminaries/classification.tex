@@ -150,10 +150,12 @@ The pseudocode for the algorithm can be seen in \Cref{lst:sgt}.
 def StochasticGradientDescent(W,E,D):
   Shuffle(D)
 
-  Repeat Until hasConverged(W,oldW):
-    for x in D do:
+  Repeat Until hasConverged():
+    for i in range(1,len(D)) do:
       for w in W do: 
-        w := w - eta * partial(E(W,x),w)
+        w := w - eta * partial(E(W,D[i]),w)
+      eta = 1 / pow(1+i, alpha)
+
 \end{minted}
 \caption{Stochastic Gradient Descent}
 \label{lst:sgt}
@@ -162,7 +164,8 @@ def StochasticGradientDescent(W,E,D):
 \paragraph{Mini-Batch Gradient Descent}\label{sec:mini-batch}
 Because stochastic gradient descent updates the weights using individual data points, the gradient found could just as well move away from a minimum value, as it could move towards it. 
 To alleviate this problematic behaviour, there exist a variant of stochastic gradient descent called mini-batch gradient descent. 
-The only difference between them is that each update is an average of ten updates in mini-batch gradient descent.
+The only difference between them is that in mini-batch gradient descent, each update is an average of several updates.
+The number of updates in each iteration is called the batch size.
 
 
 
