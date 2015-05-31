@@ -152,9 +152,9 @@ def StochasticGradientDescent(W,E,D):
 
   Repeat Until hasConverged():
     for i in range(1,len(D)) do:
+      eta = 1 / pow(1+i, alpha)
       for w in W do: 
         w := w - eta * partial(E(W,D[i]),w)
-      eta = 1 / pow(1+i, alpha)
 
 \end{minted}
 \caption{Stochastic Gradient Descent}
