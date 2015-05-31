@@ -184,13 +184,8 @@ To get an idea of each type of features impact on our prediction capability, som
 Logistic regression is used as classifier with an L2-regularisation parameter of 0.0016. Training sets of sizes up to 50,000 matches, and a test set of 10,000 matches is used. 
 The obtained accuracies can be seen in \Cref{fig:best-feat}. Note that the $\phi_\text{CHAMPION-RUNE}$ feature type is not included, as it includes too many features for Weka to handle on a single machine with 8GB memory.
 Interestingly, the baseline where no features are used gives an accuracy of $51.24 \%$, and results in a model that always predicts the blue team to win.
-Note that the baseline is a flat line because it is clear already after 1,000 matches that the blue team wins the most, thus adding more training data does not change the learned model that always predicts the blue team to be the winner. Since the test set is the same regardless of how much training data that is used, the plot is a flat line. For the same reason, the $\phi_\text{BEST-RANKED}$ feature type also shows up as a straight line, because 1,000 matches is enough to learn a model that predicts the winning team to be the team with the highest average rank of its players.
+Note that the baseline is a flat line because it is clear already after 1,000 matches that the blue team wins the most, thus adding more training data does not change the learned model that always predicts the blue team to be the winner. Since the test set is the same regardless of how much training data that is used, the plot is a flat line. For the same reason, the $\phi_\text{BEST-RANK}$ feature type also shows up as a straight line, because 1,000 matches is enough to learn a model that predicts the winning team to be the team with the highest average rank of its players.
 Among the feature types that only consider the rank of players, the $\phi_\text{LANE-RANKS}$ feature did best.
-
-When using more types of features at the same time, one may think that the accuracy always improves, but this is however not the case.
-If all three types of features concerned with player ranks are used, an accuracy of only $56.06\%$ is achieved compared to $56.39\%$ when using the $\phi_\text{LANE-RANKS}$ features alone. There is no combination of rank feature types that gives a better accuracy than just using the best of them alone.
-However, combining feature types that captures different phenomenons seems to increase the accuracy.
-Among the tested feature types, the best feature types to combine has been found to be the $\phi_\text{LANE-RANKS}$ and $\phi_\text{LANE-CHAMPION}$ feature types from which an accuracy of $58.73 \%$ were achieved.
 
 \begin{figure}[!htb]
   \centering
