@@ -1,7 +1,6 @@
 \subsection{Cluster speedup}\label{sec:speedup}
 In this section we will briefly present a speedup experiment, to see the effect of adding more nodes to our cluster. This is done by training a logistic regression model and doing a simple word count. 
 
-\paragraph{Logistic Regression}
 Logistic regression uses stochastic gradient descent and L2 regularisation with a ridge value of $0.01$. All features described in \Cref{sec:choosingfeatures} are used as the feature set. \Cref{fig:cluster-speedup} shows the time taken by the master node controlling 1, 2 and 3 workers respectively. Note that these workers do not have identical hardware, however as the cluster is dominantly bottlenecked by computation, this experiment nicely shows that doubling computation power will almost double in computation speed.
 
 % \begin{enumerate}
@@ -30,9 +29,9 @@ Logistic regression uses stochastic gradient descent and L2 regularisation with 
 	\legend{Speed}
 	\end{axis}
 \end{tikzpicture}
-   \caption{Cluster speed-up. On the x-axis: 1: 4 cores, 2: 6 cores and 3: 10 cores}\label{fig:cluster-speedup}
+   \caption{Cluster speed-up}\label{fig:cluster-speedup}
 \end{figure}
-The difference in job time between 4 cores and 8 cores is 13 minutes, while the difference between 8 cores and 10 cores is 7 minutes, and lastly from 4 to 10 cores is 20 minutes, almost a double in speedup. It is quite clear that the code being run is not entirely parallel, where job parallelism is presumably limited from job scheduling and merging of reduce results. Thus, by adding two more workers to our cluster we attain almost a doubling in speedup. It is worth noting that adding more computing units will not scale the speedup linearly per Amdahl's Law.
+The difference in job time between 4 cores and 8 cores is 13 minutes, while the difference between 8 core and 10 cores is 7 minutes, and lastly from 4 to 10 cores is 20 minutes, almost a double in speedup. It is quite clear that the code being run is not entirely parallel, where job parallelism is presumably limited from job scheduling and merging of reduce results. Thus, by adding two more workers to our cluster we attain almost a doubling in speedup. It is worth noting that adding more computing units will not scale the speedup linearly per Amdahl's Law.
 % We can measure the speedup using Amdahl's law:
 
 % \[S(N) = \frac{1}{(1-P)+\frac{P}{N}}\]
