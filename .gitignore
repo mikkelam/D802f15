@@ -13,3 +13,8 @@ Article/main.pdf
 *.swo
 code/spark_feature_test_example.py
 *.orig
+*.fls
+*.gz
+*.brf
+*.bbl
+*.fdb_latexmk
