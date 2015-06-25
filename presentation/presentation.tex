@@ -1,0 +1,75 @@
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  This Beamer template was created by Cameron Bracken.
+%%  Anyone can freely use or modify it for any purpose
+%%  without attribution.
+%%
+%%  Last Modified: January 9, 2009
+%%
+
+\documentclass[xcolor=x11names,compress]{beamer}
+
+%% General document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\usepackage{graphicx}
+	\usepackage{pgfplots}
+	\usepackage{tikz}
+	\usepackage{siunitx}
+	\usepackage{tikz}
+	\usetikzlibrary{arrows,automata}
+	\usepackage{siunitx}
+	\usepackage{pgf}
+	\usetikzlibrary{arrows}
+	\usetikzlibrary{decorations.fractals, arrows}
+	\usetikzlibrary{arrows,decorations.pathreplacing}
+	\usepackage{xcolor}
+	\usetikzlibrary{arrows, shapes, calc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\useoutertheme[subsection=false,shadow]{miniframes}
+	\useinnertheme{default}
+	\usefonttheme{serif}
+	\usepackage{palatino}
+	\setcounter{tocdepth}{1}
+
+	\setbeamerfont{title like}{shape=\scshape}
+	\setbeamerfont{frametitle}{shape=\scshape}
+
+	\setbeamercolor*{lower separation line head}{bg=DeepSkyBlue4}
+	\setbeamercolor*{normal text}{fg=black,bg=white}
+	\setbeamercolor*{alerted text}{fg=red}
+	\setbeamercolor*{example text}{fg=black}
+	\setbeamercolor*{structure}{fg=black}
+
+	\setbeamercolor*{palette tertiary}{fg=black,bg=black!10}
+	\setbeamercolor*{palette quaternary}{fg=black,bg=black!10}
+
+% Page numbering
+	\addtobeamertemplate{navigation symbols}{}{%
+	    \usebeamerfont{footline}%
+	    \usebeamercolor[fg]{footline}%
+	    \hspace{1em}%
+	    \insertframenumber/\inserttotalframenumber
+	}
+
+	\renewcommand{\(}{\begin{columns}}
+	\renewcommand{\)}{\end{columns}}
+	\newcommand{\<}[1]{\begin{column}{#1}}
+	\renewcommand{\>}{\end{column}}
+	\tikzset{onslide/.code args={<#1>#2}{%
+	  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+	}}  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Remove navigation
+	\beamertemplatenavigationsymbolsempty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+	\input{intromoto.tex}
+	\input{leagueoflegends/leagueoflegends.tex}
+	\input{dataandfeatures/dataandfeatures.tex}	
+	\input{prediction/prediction.tex}
+	\input{bigdataandcluster/bigdataandcluster.tex}
+	\input{experiments/experiments.tex}
+
+\end{document}
