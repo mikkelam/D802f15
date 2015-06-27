@@ -2,7 +2,7 @@
 \begin{itemize}
 \item Basic 5x5 game setup
 \begin{itemize}
-\item A game consists of 10 summoners, 5 on each team, each summoner selects a champion to play on a lane, the summon also selects which summoners spellsm runes and masteries the summoner want to help boost the champion selected.   
+\item A game consists of 10 summoners, 5 on each team, each summoner selects a champion to play on a lane, the summon also selects which summoners spells, runes and masteries the summoner want to help boost the champion selected.   
 \item Lanes: \{top, middel, jungle, bottom\}
 \item Summoner(player): \{level ,champion, summoner spells, runes, masteries\}
 \item Champion: \{level, passive, 3 tallents, 1 ulti, items\}
@@ -16,7 +16,7 @@
 \includegraphics[width=4cm]{leagueoflegends/ashe1}
 \includegraphics[width=4cm]{leagueoflegends/ashe2}
 \includegraphics[width=4cm]{leagueoflegends/volly}
-\caption{Ashe's stats, spells and example}
+\caption{Ashe's stats and spells}
 \end{figure}
 \end{frame}
 \begin{frame}{Match objectives}
@@ -36,4 +36,25 @@
 \includegraphics[width=\linewidth, height=\textheight]{leagueoflegends/map}
 \caption{Map of a classical 5x5 match}
 \end{figure}
+\end{frame}
+\begin{frame}{API and data}
+\begin{itemize}
+\item Riot games API
+\begin{itemize}
+\item All match data is available through riot games api. 
+\item Website: https://developer.riotgames.com/
+\item Path: /api/lol/\{region\}/v2.2/match/\{matchId\}
+\item match-v2.2 is used for data extraction 
+\end{itemize}
+\item Data 
+\begin{itemize}
+\item Json 
+\item Path parameters: \{region, matchid\}
+\item Query parameter: \{includeTimeline\} 
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}{Data object example}
+\includegraphics[scale=0.5]{leagueoflegends/gameobject}
+\includegraphics[scale=0.5]{leagueoflegends/participant}
 \end{frame}
