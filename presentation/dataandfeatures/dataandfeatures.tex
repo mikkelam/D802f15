@@ -26,7 +26,7 @@ $P(Winner = \textcolor{purple}{\text{purple}}) = \alpha ?$
 \includegraphics[scale=0.4]{img/kent/pickpurple.png}\\
 \end{frame}
 
-\begin{frame}{Features}
+\begin{frame}{Binary representation}
 \centering
 \textcolor{blue}{Team blue} (won) \hspace{40pt} \textcolor{purple}{Team purple} (lost)\\
 \includegraphics[width=0.47\textwidth]{img/kent/pickblue.png}\hspace{2pt}%
@@ -38,7 +38,7 @@ $x =$\\
 $y = \textcolor{blue}{\text{true}}$
 \end{frame}
 
-\begin{frame}{Features}
+\begin{frame}{Mirrored binary representation}
 \centering
 \textcolor{blue}{Team blue} (won) \hspace{40pt} \textcolor{purple}{Team purple} (lost)\\
 \includegraphics[width=0.47\textwidth]{img/kent/pickblue.png}\hspace{2pt}%
@@ -53,7 +53,7 @@ $x' =$\\
 $y' = \textcolor{purple}{\text{false}}$
 \end{frame}
 
-\begin{frame}{Features}
+\begin{frame}{Compact binary representation}
 \centering
 \textcolor{blue}{Team blue} (won):\\
 \hspace{20pt}\includegraphics[width=0.47\textwidth]{img/kent/pickblue.png}\\
@@ -68,7 +68,7 @@ $x' = (\textcolor{purple}{1,\;0,\;1,\;1,\;1,\;0,\;0,\;0,\;1,\;0,\;...})$\\
 $y' = \textcolor{purple}{\text{false}}$
 \end{frame}
 
-\begin{frame}{Features}
+\begin{frame}{Ternary representation}
 \centering
 \textcolor{blue}{Team blue} (won)\\
 \hspace{20pt}\includegraphics[scale=0.31]{img/kent/pickblue.png}\\
@@ -86,6 +86,11 @@ Forcing symmetry:
 \begin{itemize}
 \item Good for a small training set
 \item Worse or equal for a large training set
+\end{itemize}
+
+Best representation:
+\begin{itemize}
+\item Binary representation
 \end{itemize}
 \end{frame}
 
