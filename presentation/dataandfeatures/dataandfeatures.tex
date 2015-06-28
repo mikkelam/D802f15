@@ -82,31 +82,117 @@ $y = \textcolor{blue}{\text{true}}$\\
 
 \begin{frame}{Features}
 \centering
-Forcing symmetry:
-\begin{itemize}
-\item Good for a small training set
-\item Worse or equal for a large training set
-\end{itemize}
-
-Best representation:
-\begin{itemize}
-\item Binary representation
-\end{itemize}
+\begin{figure}[!htb]
+  \centering
+  \begin{tikzpicture}[scale=0.8] 
+    \begin{axis}[
+      xlabel=Number of matches, 
+      ylabel=Accuracy,
+      xtick={10000,20000,30000,40000,50000},
+      xticklabel style={rotate=45,anchor=near xticklabel},
+      scaled x ticks=false,
+      x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+      legend style={at={(1.25,1.005)},
+        anchor=north,legend columns=1},] 
+      \addplot[color=black,mark=x] coordinates { 
+        (7500, 55.55)
+        (10000, 55.46)
+        (12500, 55.36)
+        (15000, 55.74)
+        (17500, 56.01)
+        (20000, 56.17)
+        (22500, 56.24)
+        (25000, 56.08)
+        (27500, 56.14)
+        (30000, 56.16)
+        (32500, 56.50)
+        (35000, 56.14)
+        (37500, 56.33)
+        (40000, 56.55)
+        (42500, 56.30)
+        (45000, 56.64)
+        (47500, 56.59)
+        (50901, 56.54)
+      };
+      \addplot[color=blue,mark=o] coordinates { 
+        (7500, 55.51)  
+        (10000, 55.49)
+        (12500, 55.38)
+        (15000, 55.68)
+        (17500, 55.37)
+        (20000, 55.49)
+        (22500, 55.58)
+        (25000, 55.87)
+        (27500, 56.07)
+        (30000, 55.96)
+        (32500, 56.02)
+        (35000, 55.99)
+        (37500, 56.07)
+        (40000, 56.06)
+        (42500, 56.06)
+        (45000, 56.10)
+        (47500, 56.24)
+        (50901, 56.18)
+      };
+      \addplot[color=green,mark=triangle] coordinates { 
+        (7500, 52.395)  
+        (10000, 53.005)
+        (12500, 53.80)
+        (15000, 53.685)
+        (17500, 53.60)
+        (20000, 53.75)
+        (22500, 54.02)
+        (25000, 54.26)
+        (27500, 54.02)
+        (30000, 54.005)
+        (32500, 54.215)
+        (35000, 54.145)
+        (37500, 54.11)
+        (40000, 54.20)
+        (42500, 54.06)
+        (45000, 54.20)
+        (47500, 54.175)
+        (50901, 54.135)
+      };
+      \addplot[color=pink,mark=square] coordinates {
+        (7500, 55.22)  
+        (10000, 55.03)
+        (12500, 55.22)
+        (15000, 55.72)
+        (17500, 56.16)
+        (20000, 56.08)
+        (22500, 56.14)
+        (25000, 55.89)
+        (27500, 56.28)
+        (30000, 56.30)
+        (32500, 56.27)
+        (35000, 56.21)
+        (37500, 56.23)        
+        (40000, 56.50)
+        (42500, 56.24)
+        (45000, 56.50)
+        (47500, 56.66)
+        (50901, 56.63)
+      };
+      \legend{Binary, Mirrored, Compact, Ternary}
+    \end{axis} 
+  \end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Features}
 \centering
-Not only single champions:
+10 different types of features:\\
 \begin{itemize}
+\item Single champions
 \item Pairs of champions
-\item Rank of players
-\item Choice of runes
-\item Choice of masteries
-\item Lane of champions
-\item ...
+\item Champion counters
+\item Player ranks (captured in 3 different ways)
+\item Champion lanes
+\item Champion spells
+\item Champion runes
+\item Champion masteries
 \end{itemize}
-
-10 different types of features
 \end{frame}
 
 
@@ -132,7 +218,7 @@ Introducing feature $\phi_\text{SINGLE-CHAMPION}$
 \begin{itemize}
 \item Initializer function: 
 	\begin{itemize}
-	\item $\text{BLUE-Ahri},$
+	\item $\text{BLUE-Ahri}$
 	\item $\text{BLUE-Akali}$
 	\item ...
 	\item $\text{BLUE-Zyra}$
@@ -144,6 +230,27 @@ Introducing feature $\phi_\text{SINGLE-CHAMPION}$
 \item Feature extractor function:  
 	\begin{itemize}
 	\item Game object $\rightarrow \{\text{BLUE-Olaf}, \text{BLUE-Ryze}, \text{RED-Lulu}, ...\}$
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Features}
+Introducing feature $\phi_\text{SINGLE-CHAMPION}$
+\begin{itemize}
+\item Initializer function:
+	\begin{itemize}
+	\item $\text{BLUE-Ahri} \rightarrow m$
+	\item $\text{BLUE-Akali} \rightarrow m+1$
+	\item ...
+	\item $\text{BLUE-Zyra} \rightarrow m+123$
+	\item $\text{RED-Akali} \rightarrow m+124$
+	\item $\text{RED-Ahri} \rightarrow m+125$
+	\item ...
+	\item $\text{RED-Zyra}\rightarrow m+247$
+	\end{itemize}
+\item Feature extractor function:  
+	\begin{itemize}
+	\item Game object $\rightarrow \{87, 96, 168, ...\}$
 	\end{itemize}
 \end{itemize}
 \end{frame}
