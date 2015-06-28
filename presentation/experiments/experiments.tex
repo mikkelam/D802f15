@@ -1,27 +1,25 @@
 \section{Experiments}
-\label{sec-1}
 \subsection{Results}
-\label{sec-1-1}
-\begin{frame}[label=sec-1-1-1]{Accuracy convergance}
+\begin{frame}{Accuracy convergance}
 \begin{minipage}{0.55\linewidth} 
-\begin{tikzpicture}[scale=0.70]
-\begin{axis}[
-ybar,
-ylabel = Accuracy,
-xlabel = Training size,
-tick label style={font=\small},
-tickpos=left,
-xticklabels={6\%, 12\%, 25\%, 50\%, 100\%}, 
-xtick={1,2,3,4,5, 6},
-ymin=56,
-legend entries={Training,Test},
-legend style={at={(0.165,1.25)}, anchor=north,legend columns=1},
-legend image code/.code={\draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);},   
-]   
-\addplot +[bar shift=-.2cm] coordinates {(1,60.49) (2,59.66) (3,59.06) (4,58.85) (5,58.73)  };
-\addplot +[bar shift=.2cm]coordinates {(1,58.28) (2,58.36) (3,58.38) (4, 58.46) (5,58.50) };
-\end{axis}
-\end{tikzpicture}
+%\begin{tikzpicture}[scale=0.70]
+%  \begin{axis}[
+%    ybar,
+%    ylabel = Accuracy,
+%    xlabel = Training size,
+%    tick label style={font=\small},
+%    tickpos=left,
+%    xticklabels={6\%, 12\%, 25\%, 50\%, 100\%}, 
+%    xtick={1,2,3,4,5, 6},
+%    ymin=56,
+%    legend entries={Training,Test},
+%    legend style={at={(0.165,1.25)}, anchor=north,legend columns=1},
+%    legend image code/.\cite{} ode={\draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);},   
+%    ]   
+%    \addplot +[bar shift=-.2cm] coordinates {(1,60.49) (2,59.66) (3,59.06) (4,58.85) (5,58.73)  };
+%    \addplot +[bar shift=.2cm]coordinates {(1,58.28) (2,58.36) (3,58.38) (4, 58.46) (5,58.50) };
+%  \end{axis}
+%\end{tikzpicture}
 \end{minipage}
 \begin{minipage}{0.40\linewidth} 
 \begin{itemize}
@@ -38,28 +36,28 @@ legend image code/.code={\draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);},
 \end{minipage}
 \end{frame}
 
-\begin{frame}[label=sec-1-1-2]{Feature experiments}
+\begin{frame}{Feature experiments}
 \begin{minipage}{0.55\linewidth} 
-\begin{tikzpicture}[scale=0.70]
-\begin{axis}[
-ybar,
-ylabel = Accuracy,
-xlabel = Feature set,
-tick label style={font=\small},
-tickpos=left,
-xticklabels={1, 2, 3, 4, 5, 6}, 
-xtick={1,2,3,4,5, 6},
-ymin=53,
-legend entries={Training,Test},
-legend style={at={(0.165,1.25)}, anchor=north,legend columns=1},
-legend image code/.code={\draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);},   
-]   
-\addplot +[bar shift=-.2cm] coordinates {(1,55.12) (2,55.34) (3,55.31)  (4,55.58)     (5,56.08) (6, 58.73)};
+%\begin{tikzpicture}[scale=0.70]
+%\begin{axis}[
+%ybar,
+%ylabel = Accuracy,
+%xlabel = Feature set,
+%tick label style={font=\small},
+%tickpos=left,
+%xticklabels={1, 2, 3, 4, 5, 6}, 
+%xtick={1,2,3,4,5, 6},
+%ymin=53,
+%legend entries={Training,Test},
+%legend style={at={(0.165,1.25)}, anchor=north,legend columns=1},
+%legend image code/.code={\draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);},   
+%]   
+%\addplot +[bar shift=-.2cm] coordinates {(1,55.12) (2,55.34) (3,55.31)  (4,55.58)     (5,56.08) (6, 58.73)};
 
-\addplot +[bar shift=.2cm]coordinates {(1,55.01) (2,54.98) (3,55.22) (4,  55.46) (5,55.92) (6, 58.50)};
+%\addplot +[bar shift=.2cm]coordinates {(1,55.01) (2,54.98) (3,55.22) (4,  55.46) (5,55.92) (6, 58.50)};
 
-\end{axis}
-\end{tikzpicture}
+%\end{axis}
+%\end{tikzpicture}
 \end{minipage}    
 \begin{minipage}{0.40\linewidth}
 \footnotesize{
@@ -77,8 +75,7 @@ legend image code/.code={\draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);},
 
 
 \subsection{Knowledge extraction}
-\label{sec-1-2}
-\begin{frame}[label=sec-1-2-1]{Accuracy}
+\begin{frame}{Accuracy}
 \begin{itemize}
 \item Reasons for low accuracy:
 \begin{itemize}
@@ -93,29 +90,30 @@ legend image code/.code={\draw[#1] (0cm,-0.1cm) rectangle (0.6cm,0.1cm);},
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label=sec-1-2-2]{Notable weights}
-\begin{itemize}
-\item No weights that standout by a lot
-\item Mostly symmetric around 0
-\end{itemize}
-\vspace{0.05}
-\begin{itemize}
-\item Negative for Blue:
-\begin{itemize}
-\item Jinx-BLUE-VS-LeeSin-PURPLE
-\item Blitzcrank-BLUE-VS-LeeSin-PURPLE
-\end{itemize}
-\item Positive for Blue:
-\begin{itemize}
-\item LeeSin-BLUE-VS-Blitzcrank-PURPLE
-\end{itemize}
-\item Possible reason:
-\begin{itemize}
-\item Blitzcrank can pull enemies in
-\item LeeSin can jump away
-\end{itemize}
-\end{itemize}
+\begin{frame}{Notable weights}
+  \begin{itemize}
+  \item No weights that standout by a lot
+  \item Mostly symmetric around 0
+  \end{itemize}
+  \vspace{0.05cm}
+  \begin{itemize}
+  \item Negative for Blue:
+    \begin{itemize}
+    \item Jinx-BLUE-VS-LeeSin-PURPLE
+    \item Blitzcrank-BLUE-VS-LeeSin-PURPLE
+    \end{itemize}
+  \item Positive for Blue:
+    \begin{itemize}
+    \item LeeSin-BLUE-VS-Blitzcrank-PURPLE
+    \end{itemize}
+  \item Possible reason:
+    \begin{itemize}
+    \item Blitzcrank can pull enemies in
+    \item LeeSin can jump away
+    \end{itemize}
+  \end{itemize}
 \end{frame}
+
 \subsection{Conclusion}
 \label{sec-1-3}
 \begin{frame}[label=sec-1-3-1]{Conclusion}
