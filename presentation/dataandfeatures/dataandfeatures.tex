@@ -49,7 +49,7 @@ $x =$\\
 $y = \textcolor{blue}{\text{true}}$\\
 \vspace{18pt}
 $x' =$\\
-\hspace{2pt} $(\textcolor{purple}{0,\;1,\;0,\;0,\;1,\;1,\;0,\;1,\;1,\;0,\;...},\textcolor{blue}{1,\;0,\;1,\;1,\;1,\;0,\;0,\;0,\;1,\;0,...})$\\
+\hspace{2pt} $(\textcolor{purple}{1,\;0,\;1,\;1,\;1,\;0,\;0,\;0,\;1,\;0,...},\textcolor{blue}{0,\;1,\;0,\;0,\;1,\;1,\;0,\;1,\;1,\;0,\;...})$\\
 $y' = \textcolor{purple}{\text{false}}$
 \end{frame}
 
@@ -208,28 +208,28 @@ FeatureCreator:
 \begin{frame}{Features}
 Introducing a new type of feature:
 \begin{itemize}
-\item Initializer function: Provide the name of all possible features
+\item Initialiser function: Provide the name of all possible features
 \item Feature extractor function: Given a game object, identify the features present in that game
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Features}
-Introducing feature $\phi_\text{SINGLE-CHAMPION}$
+Introducing feature $\phi_\text{SINGLE}$
 \begin{itemize}
-\item Initializer function: 
+\item Initialiser function: 
 	\begin{itemize}
 	\item $\text{BLUE-Ahri}$
 	\item $\text{BLUE-Akali}$
 	\item ...
 	\item $\text{BLUE-Zyra}$
-	\item $\text{RED-Akali}$
-	\item $\text{RED-Ahri}$
+	\item $\text{PURPLE-Akali}$
+	\item $\text{PURPLE-Ahri}$
 	\item ...
-	\item $\text{RED-Zyra}$
+	\item $\text{PURPLE-Zyra}$
 	\end{itemize}
 \item Feature extractor function:  
 	\begin{itemize}
-	\item Game object $\rightarrow \{\text{BLUE-Olaf}, \text{BLUE-Ryze}, \text{RED-Lulu}, ...\}$
+	\item Game object $\rightarrow \{\text{BLUE-Olaf}, \text{BLUE-Ryze}, \text{PURPLE-Lulu}, ...\}$
 	\end{itemize}
 \end{itemize}
 \end{frame}
@@ -237,16 +237,16 @@ Introducing feature $\phi_\text{SINGLE-CHAMPION}$
 \begin{frame}{Features}
 Introducing feature $\phi_\text{SINGLE-CHAMPION}$
 \begin{itemize}
-\item Initializer function:
+\item Initialiser function:
 	\begin{itemize}
-	\item $\text{BLUE-Ahri} \rightarrow m$
-	\item $\text{BLUE-Akali} \rightarrow m+1$
+	\item $\text{BLUE-Ahri} \rightarrow 1$
+	\item $\text{BLUE-Akali} \rightarrow 2$
 	\item ...
-	\item $\text{BLUE-Zyra} \rightarrow m+123$
-	\item $\text{RED-Akali} \rightarrow m+124$
-	\item $\text{RED-Ahri} \rightarrow m+125$
+	\item $\text{BLUE-Zyra} \rightarrow m+124$
+	\item $\text{PURPLE-Akali} \rightarrow m+125$
+	\item $\text{PURPLE-Ahri} \rightarrow m+126$
 	\item ...
-	\item $\text{RED-Zyra}\rightarrow m+247$
+	\item $\text{PURPLE-Zyra}\rightarrow m+248$
 	\end{itemize}
 \item Feature extractor function:  
 	\begin{itemize}
