@@ -32,7 +32,7 @@ $P(Winner = \textcolor{purple}{\text{purple}}) = \alpha ?$
 \includegraphics[width=0.47\textwidth]{img/kent/pickblue.png}\hspace{2pt}%
 \includegraphics[width=0.47\textwidth]{img/kent/pickpurple.png}\\
 \vspace{18pt}
-$x =$\\
+$\phi =$\\
 \hspace{2pt} $(\textcolor{blue}{0,\;1,\;0,\;0,\;1,\;1,\;0,\;1,\;1,\;0,\;...},\textcolor{purple}{1,\;0,\;1,\;1,\;1,\;0,\;0,\;0,\;1,\;0,...})$\\
 \vspace{18pt}
 $y = \textcolor{blue}{\text{true}}$
@@ -44,11 +44,11 @@ $y = \textcolor{blue}{\text{true}}$
 \includegraphics[width=0.47\textwidth]{img/kent/pickblue.png}\hspace{2pt}%
 \includegraphics[width=0.47\textwidth]{img/kent/pickpurple.png}\\
 \vspace{18pt}
-$x =$\\
+$\phi =$\\
 \hspace{2pt} $(\textcolor{blue}{0,\;1,\;0,\;0,\;1,\;1,\;0,\;1,\;1,\;0,\;...},\textcolor{purple}{1,\;0,\;1,\;1,\;1,\;0,\;0,\;0,\;1,\;0,...})$\\
 $y = \textcolor{blue}{\text{true}}$\\
 \vspace{18pt}
-$x' =$\\
+$\phi' =$\\
 \hspace{2pt} $(\textcolor{purple}{1,\;0,\;1,\;1,\;1,\;0,\;0,\;0,\;1,\;0,...},\textcolor{blue}{0,\;1,\;0,\;0,\;1,\;1,\;0,\;1,\;1,\;0,\;...})$\\
 $y' = \textcolor{purple}{\text{false}}$
 \end{frame}
@@ -58,13 +58,13 @@ $y' = \textcolor{purple}{\text{false}}$
 \textcolor{blue}{Team blue} (won):\\
 \hspace{20pt}\includegraphics[width=0.47\textwidth]{img/kent/pickblue.png}\\
 \vspace{8pt}
-$x = (\textcolor{blue}{0,\;1,\;0,\;0,\;1,\;1,\;0,\;1,\;1,\;0,\;...})$\\
+$\phi = (\textcolor{blue}{0,\;1,\;0,\;0,\;1,\;1,\;0,\;1,\;1,\;0,\;...})$\\
 $y = \textcolor{blue}{\text{true}}$\\
 \vspace{40pt}
 \textcolor{purple}{Team purple} (lost):\\
 \hspace{20pt}\includegraphics[width=0.47\textwidth]{img/kent/pickpurple.png}\\
 \vspace{8pt}
-$x' = (\textcolor{purple}{1,\;0,\;1,\;1,\;1,\;0,\;0,\;0,\;1,\;0,\;...})$\\
+$\phi' = (\textcolor{purple}{1,\;0,\;1,\;1,\;1,\;0,\;0,\;0,\;1,\;0,\;...})$\\
 $y' = \textcolor{purple}{\text{false}}$
 \end{frame}
 
@@ -76,7 +76,7 @@ $y' = \textcolor{purple}{\text{false}}$
 \textcolor{purple}{Team purple} (lost)\\
 \hspace{20pt}\includegraphics[scale=0.31]{img/kent/pickpurple.png}\\
 \vspace{20pt}
-$x = (\textcolor{purple}{-1},\;\textcolor{blue}{1},\,\textcolor{purple}{-1},\textcolor{purple}{-1},\;0,\;\,\textcolor{blue}{1},\;\;0,\;\,\,\textcolor{blue}{1},\;\;0,\;\;0,\;\,...)$\\
+$\phi = (\textcolor{purple}{-1},\;\textcolor{blue}{1},\,\textcolor{purple}{-1},\textcolor{purple}{-1},\;0,\;\,\textcolor{blue}{1},\;\;0,\;\,\,\textcolor{blue}{1},\;\;0,\;\;0,\;\,...)$\\
 $y = \textcolor{blue}{\text{true}}$\\
 \end{frame}
 
@@ -208,13 +208,13 @@ FeatureCreator:
 \begin{frame}{Features}
 Introducing a new type of feature:
 \begin{itemize}
-\item Initialiser function: Provide the name of all possible features
+\item Initialiser function: Provide a unique name for all features
 \item Feature extractor function: Given a game object, identify the features present in that game
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Features}
-Introducing feature $\phi_\text{SINGLE}$
+Introducing feature $\phi_\text{SINGLE,t,c}$
 \begin{itemize}
 \item Initialiser function: 
 	\begin{itemize}
@@ -235,18 +235,18 @@ Introducing feature $\phi_\text{SINGLE}$
 \end{frame}
 
 \begin{frame}{Features}
-Introducing feature $\phi_\text{SINGLE-CHAMPION}$
+Introducing feature $\phi_\text{SINGLE,t,c}$
 \begin{itemize}
 \item Initialiser function:
 	\begin{itemize}
 	\item $\text{BLUE-Ahri} \rightarrow 1$
 	\item $\text{BLUE-Akali} \rightarrow 2$
 	\item ...
-	\item $\text{BLUE-Zyra} \rightarrow m+124$
-	\item $\text{PURPLE-Akali} \rightarrow m+125$
-	\item $\text{PURPLE-Ahri} \rightarrow m+126$
+	\item $\text{BLUE-Zyra} \rightarrow 124$
+	\item $\text{PURPLE-Akali} \rightarrow 125$
+	\item $\text{PURPLE-Ahri} \rightarrow 126$
 	\item ...
-	\item $\text{PURPLE-Zyra}\rightarrow m+248$
+	\item $\text{PURPLE-Zyra}\rightarrow 248$
 	\end{itemize}
 \item Feature extractor function:  
 	\begin{itemize}
