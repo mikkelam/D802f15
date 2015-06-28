@@ -58,5 +58,13 @@
 \includegraphics[scale=0.5]{leagueoflegends/gameobject}
 \includegraphics[scale=0.5]{leagueoflegends/participant}
 \end{frame}
-\begin{frame}{Data filtering}
+\begin{frame}[fragile]{Data filtering}
+\newminted{python}{fontsize=\footnotesize}
+\begin{minted}{python}
+ MatchFilter({"matchMode": ["CLASSIC"],
+    "matchType": ["MATCHED_GAME"],
+    "queueType": ["NORMAL_5x5_BLIND", "RANKED_SOLO_5x5", "RANKED_PREMADE_5x5",
+       "NORMAL_5x5_DRAFT", "RANKED_TEAM_5x5",  "GROUP_FINDER_5x5"],
+    "participants->*->timeline->xpPerMinDeltas->*": ["!0"]})
+\end{minted}
 \end{frame}
