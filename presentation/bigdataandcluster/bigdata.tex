@@ -31,18 +31,17 @@
 \begin{frame}{Hadoop Distributed File System(HDFS)}
     \begin{itemize}
         \item Distributed file system 
-        \item Hides complexity, seemlessly looks like a regular linux FS
+        \item Hides complexity, seemlessly looks like a regular unix FS
         \item Master-worker achitecture
         \begin{itemize}
             \item Master(namenode) $\rightarrow$ file hiearchy, location of file blocks
             \item Worker(datanode) $\rightarrow$ stores the actual blocks locally
         \end{itemize}
+        \item Fault tolerance
+        \item Widely established
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Hadoop Distributed File System(HDFS)}
-    \centering \includegraphics[scale=0.5]{bigdataandcluster/hdfs.png}
-\end{frame}
 
 \begin{frame}{MapReduce}
     \begin{itemize}
@@ -50,7 +49,7 @@
         \item Inspired by functional programmings \textbf{map} and \textbf{reduce} operations
         \begin{itemize}
             \item \textbf{Map} $(key1, value1) \rightarrow list<(key2, value2)>$
-            \item \textbf{Reduce} $(key2, list<value2>) \rightarrow list<value2>$
+            \item \textbf{Reduce} $(key2, list<value2>) \rightarrow list<value3>$
         \end{itemize}
     \end{itemize}
     Example word count
@@ -79,14 +78,12 @@
   \centering \includegraphics[width=0.8\textwidth]{bigdataandcluster/cluster2.jpg}
 \end{frame}
 \begin{frame}{Cluster}
-
-    4 computers with hardware from $\thicksim$ 2008
-      \begin{tabular}{|r|ccc|}
-    \hline
-      & CPU & Storage & Memory \\\hline
-    1 & Dual core intel e8400 3Ghz & 220 GB 7200 RPM & 4GB DDR2 \\
-    2 & Quad core intel q9400 2.66Ghz & 220 GB 7200 RPM & 8GB DDR2 \\\hline
-  \end{tabular}
+    \begin{itemize}
+        \item 4 computers with hardware from $\thicksim$ 2008
+        \item 2 x Dual core intel e8400 3Ghz, 220 GB 7200 RPM, 4GB DDR2
+        \item 2 x Quad core intel q9400 2.66Ghz, 220 GB 7200 RPM, 8GB DDR2
+    \end{itemize}
+    
 \end{frame}
 
 
